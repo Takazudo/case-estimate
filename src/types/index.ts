@@ -1,6 +1,5 @@
 export interface Panel {
   id: string;
-  type: string;
   name: string;
 }
 
@@ -15,7 +14,6 @@ export interface Case {
   hp: number;
   material: 'acrylic' | '3d-printed';
   panels: Panel[];
-  railOptions: RailOption[];
 }
 
 export interface Cases {

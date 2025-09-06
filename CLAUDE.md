@@ -69,7 +69,8 @@ case-estimate/
 │   │   └── rail-selector.tsx       # Rail type selection
 │   ├── data/
 │   │   ├── cases.ts                # Case configurations
-│   │   └── colors.ts               # Color definitions
+│   │   ├── colors.ts               # Color definitions
+│   │   └── rails.ts                # Rail options with pricing logic
 │   ├── types/
 │   │   └── index.ts                # TypeScript type definitions
 │   └── main.tsx                    # Application entry point

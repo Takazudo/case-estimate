@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { cases } from './data/cases';
 import { colors } from './data/colors';
+import { getRailOptions } from './data/rails';
 import type { RailOption, Color, Preset } from './types';
 import AllInOneSVG from './components/all-in-one-svg';
 import CaseSelector from './components/case-selector';
@@ -21,6 +22,7 @@ function App() {
 
   const currentCase = cases[selectedCase];
   const material = currentCase.material;
+  const availableRails = getRailOptions(currentCase.hp, currentCase.material);
 
   // Initialize rail selection when case changes (but not on initial load from URL)
   useEffect(() => {
@@ -29,7 +31,7 @@ function App() {
     const hasUrlParams = params.get('case') || params.get('rail');
 
     if (currentCase && !selectedRail && !hasUrlParams) {
-      setSelectedRail(currentCase.railOptions[0]);
+      setSelectedRail(availableRails[0]);
     }
   }, [currentCase, selectedRail]);
 
@@ -46,12 +48,13 @@ function App() {
 
       // Set rail type for the specific case
       const targetCase = cases[caseType];
+      const targetRails = getRailOptions(targetCase.hp, targetCase.material);
       if (railType) {
-        const rail = targetCase.railOptions.find((r) => r.type === railType);
+        const rail = targetRails.find((r) => r.type === railType);
         if (rail) setSelectedRail(rail);
       } else {
         // Set default rail if not specified
-        setSelectedRail(targetCase.railOptions[0]);
+        setSelectedRail(targetRails[0]);
       }
     }
 
@@ -101,7 +104,8 @@ function App() {
     setSelectedPanel(null);
     setSelectedColor(null);
     const newCase = cases[caseType];
-    setSelectedRail(newCase.railOptions[0]);
+    const newRails = getRailOptions(newCase.hp, newCase.material);
+    setSelectedRail(newRails[0]);
   };
 
   const handlePreset = (preset: Preset) => {
@@ -164,7 +168,7 @@ function App() {
 
           {/* Rail Selector */}
           <RailSelector
-            railOptions={currentCase.railOptions}
+            railOptions={availableRails}
             selectedRail={selectedRail}
             onRailSelect={setSelectedRail}
           />
