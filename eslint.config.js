@@ -10,9 +10,17 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
+  // Main configuration for source files
   {
     files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
-    ignores: ['dist/**', 'node_modules/**', '.git/**', 'coverage/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      '.git/**',
+      'coverage/**',
+      'playwright.config.ts',
+      'tests/**',
+    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -42,6 +50,31 @@ export default [
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'prettier/prettier': 'error',
       'no-console': ['error', { allow: ['warn', 'error'] }],
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      ...eslintConfigPrettier.rules,
+    },
+  },
+  // Configuration for Playwright config and test files
+  {
+    files: ['playwright.config.ts', 'tests/**/*.{ts,tsx,js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: { ...globals.browser, ...globals.node },
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...typescript.configs.recommended.rules,
+      'prettier/prettier': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       ...eslintConfigPrettier.rules,

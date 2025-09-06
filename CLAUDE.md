@@ -18,7 +18,11 @@ npm run dev      # Start development server
 npm run build    # Build for production
 npm run preview  # Preview production build
 npm run lint     # Run ESLint
-npm run typecheck # Run TypeScript type checking (if applicable)
+npm run typecheck # Run TypeScript type checking
+npm run test     # Run all Playwright tests
+npm run test:smoke # Run smoke tests only
+npm run test:ui  # Run tests with UI mode
+npm run test:debug # Debug tests interactively
 ```
 
 ## Code Style Guidelines
@@ -78,23 +82,33 @@ case-estimate/
 └── __inbox/                        # Temporary files and references
 ```
 
-## Known Issues
+## Testing
 
-- Side panel SVGs need viewBox adjustment for proper rendering
-- Some panels may appear stretched or distorted
+### Smoke Tests
 
-## AI File Conversion
+The project includes Playwright smoke tests that ensure:
 
-The project includes scripts to convert Adobe Illustrator files to SVG:
+- Page loads without 404 or JavaScript errors
+- Core UI elements are visible and functional
+- Case model switching works correctly
+- No console errors occur during usage
 
-- `convert-ai-to-svg.py` - Python script using AppleScript (macOS only)
-- `convert-ai-to-svg.jsx` - ExtendScript for Adobe Illustrator
+### CI/CD
 
-Usage:
+GitHub Actions runs automatically on:
 
-```bash
-./convert-ai-to-svg.py /path/to/ai/files -o /path/to/output
-```
+- Every push to `main` branch
+- Every pull request targeting `main`
+
+CI pipeline includes:
+
+1. TypeScript type checking
+2. ESLint code quality checks
+3. Prettier format validation
+4. Build process verification
+5. Smoke tests with Playwright
+
+Test results and screenshots are automatically uploaded as artifacts on failure.
 
 ## Development Notes
 
