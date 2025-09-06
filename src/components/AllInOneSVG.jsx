@@ -1,14 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 
+// Map SVG classes to panel IDs based on the SVG structure
+// These mappings are based on analyzing the SVG colors and positions
+const CLASS_TO_PANEL = {
+  b: 'left-side', // Black panel (left side)
+  c: 'right-side', // Magenta panel (right side)
+  d: 'top-front', // Green panel (top section)
+  e: 'top-back', // Red panel (second top section)
+  f: 'bottom-front', // Yellow panel (bottom section)
+  g: 'bottom-back', // Green panel (second bottom section)
+  h: 'center-bottom', // Brown panel (lower center)
+  i: 'center-top', // Orange panel (upper center)
+};
+
+// Default black color for all panels
+const DEFAULT_PANEL_COLOR = '#1f2937';
+
+// Timing constant for SVG rendering delay
+const SVG_RENDER_DELAY_MS = 50;
+
 const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => {
   const svgContainerRef = useRef(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
-
-  // Default black color for all panels
-  const defaultPanelColor = '#1f2937';
-
-  // Timing constant for SVG rendering delay
-  const SVG_RENDER_DELAY_MS = 50;
 
   // Load and inject the SVG
   useEffect(() => {
@@ -39,7 +52,7 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
               // Override the CSS rules to use black as default
               const classes = ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
               const newStyles = classes
-                .map((cls) => `.${cls}{fill:${defaultPanelColor};}`)
+                .map((cls) => `.${cls}{fill:${DEFAULT_PANEL_COLOR};}`)
                 .join('');
               styleElement.textContent = newStyles;
             }
@@ -59,26 +72,13 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
   useEffect(() => {
     if (!svgLoaded || !svgContainerRef.current) return;
 
-    // Map SVG classes to panel IDs based on the SVG structure
-    // These mappings are based on analyzing the SVG colors and positions
-    const classToPanel = {
-      b: 'left-side', // Black panel (left side)
-      c: 'right-side', // Magenta panel (right side)
-      d: 'top-front', // Green panel (top section)
-      e: 'top-back', // Red panel (second top section)
-      f: 'bottom-front', // Yellow panel (bottom section)
-      g: 'bottom-back', // Green panel (second bottom section)
-      h: 'center-bottom', // Brown panel (lower center)
-      i: 'center-top', // Orange panel (upper center)
-    };
-
     // Small delay to ensure SVG is fully rendered
     const timeoutId = setTimeout(() => {
       const svg = svgContainerRef.current.querySelector('svg');
       if (!svg) return;
 
       // Add click handlers to all paths
-      Object.entries(classToPanel).forEach(([className, panelId]) => {
+      Object.entries(CLASS_TO_PANEL).forEach(([className, panelId]) => {
         const paths = svg.querySelectorAll(`.${className}`);
 
         paths.forEach((path) => {
@@ -95,7 +95,7 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
           };
 
           // Update color if specified, otherwise use default black
-          const color = panelColors[panelId] || defaultPanelColor;
+          const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
           // Use both setAttribute and style to ensure the color is applied
           path.setAttribute('fill', color);
           path.style.fill = color;
@@ -133,7 +133,7 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
     }, SVG_RENDER_DELAY_MS); // Delay to ensure DOM is ready
 
     return () => clearTimeout(timeoutId);
-  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, defaultPanelColor]);
+  }, [svgLoaded, panelColors, selectedPanel, onPanelClick]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">
