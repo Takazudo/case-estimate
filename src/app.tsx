@@ -6,6 +6,14 @@ import AllInOneSVG from './components/all-in-one-svg';
 import HeaderCaseSelector from './components/header-case-selector';
 import ColorPicker from './components/color-picker';
 import PanelSelector from './components/panel-selector';
+import {
+  encodeCase,
+  decodeCase,
+  encodePanelColors,
+  decodePanelColors,
+  createColorIdMap,
+  createColorValueMap,
+} from './utils/url-encoder';
 
 interface PanelColors {
   [key: string]: string;
@@ -35,26 +43,34 @@ function App() {
   // Load state from URL on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const caseType = params.get('case');
-    const colorsParam = params.get('colors');
+    const caseParam = params.get('c'); // 'c' for case
+    const colorsParam = params.get('p'); // 'p' for panels
 
-    // Only set case if it's in the URL
-    if (caseType && cases[caseType]) {
-      setSelectedCase(caseType);
+    // Decode case type
+    const decodedCase = caseParam ? decodeCase(caseParam) : null;
+
+    if (decodedCase && cases[decodedCase]) {
+      setSelectedCase(decodedCase);
 
       // Load colors from URL or set defaults
       if (colorsParam) {
         try {
-          const parsedColors = JSON.parse(decodeURIComponent(colorsParam));
-          setPanelColors(parsedColors);
+          const colorValueMap = createColorValueMap(colors);
+          const decodedColors = decodePanelColors(colorsParam, colorValueMap);
+
+          // If decoded colors are valid, use them; otherwise use defaults
+          if (Object.keys(decodedColors).length > 0) {
+            setPanelColors(decodedColors);
+          } else {
+            setPanelColors(getDefaultColors(decodedCase));
+          }
         } catch (e) {
-          console.error('Failed to parse colors from URL', e);
-          // Set default colors on error
-          setPanelColors(getDefaultColors(caseType));
+          console.error('Failed to decode colors from URL', e);
+          setPanelColors(getDefaultColors(decodedCase));
         }
       } else {
         // Set default colors if no URL params
-        setPanelColors(getDefaultColors(caseType));
+        setPanelColors(getDefaultColors(decodedCase));
       }
     }
   }, []);
@@ -63,9 +79,16 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams();
     if (selectedCase) {
-      params.set('case', selectedCase);
+      // Encode case as short code
+      params.set('c', encodeCase(selectedCase));
+
+      // Encode panel colors if they exist
       if (Object.keys(panelColors).length > 0) {
-        params.set('colors', encodeURIComponent(JSON.stringify(panelColors)));
+        const colorIdMap = createColorIdMap(colors);
+        const encoded = encodePanelColors(panelColors, colorIdMap);
+        if (encoded) {
+          params.set('p', encoded);
+        }
       }
     }
 
