@@ -1,6 +1,8 @@
-export const cases = {
+import type { Cases } from '../types';
+
+export const cases: Cases = {
   'zudo-block-40': {
-    name: 'Zudo Block 40',
+    name: 'zudo-block-40',
     hp: 40,
     material: 'acrylic',
     panels: [
@@ -20,7 +22,7 @@ export const cases = {
     ],
   },
   'zudo-block-40-lite': {
-    name: 'Zudo Block 40 Lite',
+    name: 'zudo-block-40 Lite',
     hp: 40,
     material: '3d-printed',
     panels: [
@@ -40,7 +42,7 @@ export const cases = {
     ],
   },
   'zudo-block-60': {
-    name: 'Zudo Block 60',
+    name: 'zudo-block-60',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -60,7 +62,7 @@ export const cases = {
     ],
   },
   'zudo-block-60-lite': {
-    name: 'Zudo Block 60 Lite',
+    name: 'zudo-block-60 Lite',
     hp: 60,
     material: '3d-printed',
     panels: [

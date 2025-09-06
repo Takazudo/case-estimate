@@ -7,6 +7,7 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 ## Tech Stack
 
 - React 19 with Vite
+- TypeScript
 - Tailwind CSS 4
 - SVG panel components
 
@@ -16,6 +17,34 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 npm run dev      # Start development server
 npm run build    # Build for production
 npm run preview  # Preview production build
+npm run lint     # Run ESLint
+npm run typecheck # Run TypeScript type checking
+npm run test     # Run all Playwright tests
+npm run test:smoke # Run smoke tests only
+npm run test:ui  # Run tests with UI mode
+npm run test:debug # Debug tests interactively
+```
+
+## Code Style Guidelines
+
+### File Naming Convention
+
+All TypeScript and JavaScript files should use **kebab-case** naming:
+
+- ✅ Good: `all-in-one-svg.tsx`, `case-selector.tsx`, `panel-list.tsx`
+- ❌ Bad: `AllInOneSVG.tsx`, `CaseSelector.tsx`, `PanelList.tsx`
+
+This applies to:
+
+- Component files (`.tsx`, `.jsx`)
+- TypeScript/JavaScript modules (`.ts`, `.js`)
+- Test files (`.test.ts`, `.spec.ts`)
+
+Note: The exported component names should still use PascalCase as per React conventions:
+
+```tsx
+// File: case-selector.tsx
+export default function CaseSelector() { ... }
 ```
 
 ## Features
@@ -31,39 +60,55 @@ npm run preview  # Preview production build
 ```
 case-estimate/
 ├── src/
-│   ├── App.jsx                  # Main application component
+│   ├── app.tsx                      # Main application component
 │   ├── components/
-│   │   ├── CaseSelector.jsx     # Case model dropdown
-│   │   ├── PanelLayout.jsx      # 2D panel visualization
-│   │   ├── PanelSVG.jsx         # SVG panel components
-│   │   ├── ColorPicker.jsx      # Color selection
-│   │   ├── PanelList.jsx        # Panel list with selection
-│   │   └── RailSelector.jsx     # Rail type selection
+│   │   ├── all-in-one-svg.tsx      # All-in-one SVG visualization
+│   │   ├── case-selector.tsx       # Case model dropdown
+│   │   ├── color-picker.tsx        # Color selection
+│   │   ├── panel-list.tsx          # Panel list with selection
+│   │   └── rail-selector.tsx       # Rail type selection
 │   ├── data/
-│   │   ├── cases.js             # Case configurations
-│   │   └── colors.js            # Color definitions
-│   └── assets/
-│       └── panels/              # Original SVG files
-└── svg/                         # Converted SVG files from AI
+│   │   ├── cases.ts                # Case configurations
+│   │   └── colors.ts               # Color definitions
+│   ├── types/
+│   │   └── index.ts                # TypeScript type definitions
+│   └── main.tsx                    # Application entry point
+├── public/
+│   └── svg/                        # Case SVG diagrams
+│       ├── zudo-block-40.svg
+│       ├── zudo-block-40-lite.svg
+│       ├── zudo-block-60.svg
+│       └── zudo-block-60-lite.svg
+└── __inbox/                        # Temporary files and references
 ```
 
-## Known Issues
+## Testing
 
-- Side panel SVGs need viewBox adjustment for proper rendering
-- Some panels may appear stretched or distorted
+### Smoke Tests
 
-## AI File Conversion
+The project includes Playwright smoke tests that ensure:
 
-The project includes scripts to convert Adobe Illustrator files to SVG:
+- Page loads without 404 or JavaScript errors
+- Core UI elements are visible and functional
+- Case model switching works correctly
+- No console errors occur during usage
 
-- `convert-ai-to-svg.py` - Python script using AppleScript (macOS only)
-- `convert-ai-to-svg.jsx` - ExtendScript for Adobe Illustrator
+### CI/CD
 
-Usage:
+GitHub Actions runs automatically on:
 
-```bash
-./convert-ai-to-svg.py /path/to/ai/files -o /path/to/output
-```
+- Every push to `main` branch
+- Every pull request targeting `main`
+
+CI pipeline includes:
+
+1. TypeScript type checking
+2. ESLint code quality checks
+3. Prettier format validation
+4. Build process verification
+5. Smoke tests with Playwright
+
+Test results and screenshots are automatically uploaded as artifacts on failure.
 
 ## Development Notes
 

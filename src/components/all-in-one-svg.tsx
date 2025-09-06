@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
+interface AllInOneSVGProps {
+  caseType: string;
+  panelColors: { [key: string]: string };
+  onPanelClick: (panelId: string) => void;
+  selectedPanel: string | null;
+}
+
 // Map SVG classes to panel IDs based on the SVG structure
 // These mappings are based on analyzing the SVG colors and positions
-const CLASS_TO_PANEL = {
+const CLASS_TO_PANEL: { [key: string]: string } = {
   b: 'left-side', // Black panel (left side)
   c: 'right-side', // Magenta panel (right side)
   d: 'top-front', // Green panel (top section)
@@ -19,8 +26,8 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
 
-const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => {
-  const svgContainerRef = useRef(null);
+const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }: AllInOneSVGProps) => {
+  const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
 
   // Load and inject the SVG
@@ -36,15 +43,19 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
         if (svgContainerRef.current) {
           svgContainerRef.current.innerHTML = svgText;
 
-          // Ensure the SVG scales properly
-          const svg = svgContainerRef.current.querySelector('svg');
+          // Ensure the SVG scales properly and centers
+          const svg = svgContainerRef.current?.querySelector('svg');
           if (svg) {
-            svg.setAttribute('width', '100%');
-            svg.setAttribute('height', '100%');
-            svg.style.maxWidth = '800px';
-            svg.style.maxHeight = '680px';
+            // Remove width/height attributes to let viewBox handle sizing
+            svg.removeAttribute('width');
+            svg.removeAttribute('height');
+            // Set proper styling for centering and scaling
             svg.style.width = '100%';
-            svg.style.height = 'auto';
+            svg.style.height = '100%';
+            svg.style.maxWidth = '100%';
+            svg.style.maxHeight = '100%';
+            svg.style.display = 'block';
+            svg.style.margin = 'auto';
 
             // Remove or override the style element that contains default colors
             const styleElement = svg.querySelector('style');
@@ -74,22 +85,23 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
 
     // Small delay to ensure SVG is fully rendered
     const timeoutId = setTimeout(() => {
-      const svg = svgContainerRef.current.querySelector('svg');
+      const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
       // Add click handlers to all paths
       Object.entries(CLASS_TO_PANEL).forEach(([className, panelId]) => {
         const paths = svg.querySelectorAll(`.${className}`);
 
-        paths.forEach((path) => {
+        paths.forEach((path: Element) => {
+          const pathElement = path as HTMLElement;
           // Set cursor style
-          path.style.cursor = 'pointer';
+          pathElement.style.cursor = 'pointer';
 
           // Remove old event listener if it exists
-          path.onclick = null;
+          pathElement.onclick = null;
 
           // Add click handler
-          path.onclick = (e) => {
+          pathElement.onclick = (e: MouseEvent) => {
             e.stopPropagation();
             onPanelClick(panelId);
           };
@@ -97,36 +109,36 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
           // Update color if specified, otherwise use default black
           const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
           // Use both setAttribute and style to ensure the color is applied
-          path.setAttribute('fill', color);
-          path.style.fill = color;
+          pathElement.setAttribute('fill', color);
+          pathElement.style.fill = color;
           // Add !important to override any CSS rules
-          path.style.setProperty('fill', color, 'important');
+          pathElement.style.setProperty('fill', color, 'important');
 
           // Add hover effect
-          path.style.transition = 'opacity 0.2s, transform 0.2s';
+          pathElement.style.transition = 'opacity 0.2s, transform 0.2s';
 
           // Add selected state visual feedback
           if (selectedPanel === panelId) {
-            path.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 1))';
-            path.style.strokeWidth = '3';
-            path.style.stroke = '#3B82F6';
-            path.style.opacity = '1';
+            pathElement.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 1))';
+            pathElement.style.strokeWidth = '3';
+            pathElement.style.stroke = '#3B82F6';
+            pathElement.style.opacity = '1';
           } else {
-            path.style.filter = 'none';
-            path.style.strokeWidth = '0';
-            path.style.stroke = 'none';
-            path.style.opacity = '1';
+            pathElement.style.filter = 'none';
+            pathElement.style.strokeWidth = '0';
+            pathElement.style.stroke = 'none';
+            pathElement.style.opacity = '1';
           }
 
           // Hover effects
-          path.onmouseenter = () => {
+          pathElement.onmouseenter = () => {
             if (selectedPanel !== panelId) {
-              path.style.opacity = '0.8';
+              pathElement.style.opacity = '0.8';
             }
           };
 
-          path.onmouseleave = () => {
-            path.style.opacity = '1';
+          pathElement.onmouseleave = () => {
+            pathElement.style.opacity = '1';
           };
         });
       });
@@ -136,16 +148,13 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
   }, [svgLoaded, panelColors, selectedPanel, onPanelClick]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center p-4">
       <div
         ref={svgContainerRef}
-        className="max-w-full max-h-full"
+        className="w-full h-full flex items-center justify-center"
         style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          maxWidth: '600px',
+          maxHeight: '500px',
         }}
       />
       {!svgLoaded && (

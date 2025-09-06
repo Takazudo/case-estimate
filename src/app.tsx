@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import { cases } from './data/cases';
 import { colors } from './data/colors';
-import AllInOneSVG from './components/AllInOneSVG';
-import CaseSelector from './components/CaseSelector';
-import ColorPicker from './components/ColorPicker';
-import RailSelector from './components/RailSelector';
-import PanelList from './components/PanelList';
+import type { RailOption, Color, Preset } from './types';
+import AllInOneSVG from './components/all-in-one-svg';
+import CaseSelector from './components/case-selector';
+import ColorPicker from './components/color-picker';
+import RailSelector from './components/rail-selector';
+import PanelList from './components/panel-list';
+
+interface PanelColors {
+  [key: string]: string;
+}
 
 function App() {
   const [selectedCase, setSelectedCase] = useState('zudo-block-40');
-  const [selectedPanel, setSelectedPanel] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [panelColors, setPanelColors] = useState({});
-  const [selectedRail, setSelectedRail] = useState(null);
+  const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<Color | null>(null);
+  const [panelColors, setPanelColors] = useState<PanelColors>({});
+  const [selectedRail, setSelectedRail] = useState<RailOption | null>(null);
 
   const currentCase = cases[selectedCase];
   const material = currentCase.material;
@@ -76,11 +81,11 @@ function App() {
     window.history.replaceState({}, '', newUrl);
   }, [selectedCase, selectedRail, panelColors]);
 
-  const handlePanelClick = (panelId) => {
+  const handlePanelClick = (panelId: string) => {
     setSelectedPanel(panelId);
   };
 
-  const handleColorSelect = (color) => {
+  const handleColorSelect = (color: Color) => {
     setSelectedColor(color);
     if (selectedPanel) {
       setPanelColors((prev) => ({
@@ -90,7 +95,7 @@ function App() {
     }
   };
 
-  const handleCaseSelect = (caseType) => {
+  const handleCaseSelect = (caseType: string) => {
     setSelectedCase(caseType);
     setPanelColors({});
     setSelectedPanel(null);
@@ -99,8 +104,8 @@ function App() {
     setSelectedRail(newCase.railOptions[0]);
   };
 
-  const handlePreset = (preset) => {
-    const newColors = {};
+  const handlePreset = (preset: Preset) => {
+    const newColors: PanelColors = {};
     currentCase.panels.forEach((panel) => {
       if (preset.colors.all) {
         const color = colors[material].find((c) => c.id === preset.colors.all);
@@ -123,7 +128,7 @@ function App() {
   };
 
   // Create color map for display
-  const colorMap = {};
+  const colorMap: { [key: string]: string } = {};
   colors[material]?.forEach((color) => {
     colorMap[color.value] = color.name;
   });

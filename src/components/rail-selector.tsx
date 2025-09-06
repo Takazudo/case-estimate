@@ -1,4 +1,12 @@
-const RailSelector = ({ railOptions, selectedRail, onRailSelect }) => {
+import type { RailOption } from '../types';
+
+interface RailSelectorProps {
+  railOptions: RailOption[];
+  selectedRail: RailOption | null;
+  onRailSelect: (rail: RailOption) => void;
+}
+
+const RailSelector = ({ railOptions, selectedRail, onRailSelect }: RailSelectorProps) => {
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-700">Rail Type</h3>

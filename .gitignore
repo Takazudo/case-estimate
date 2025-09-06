@@ -140,3 +140,8 @@ vite.config.ts.timestamp-*
 
 # misc
 __inbox/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
