@@ -36,15 +36,19 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
         if (svgContainerRef.current) {
           svgContainerRef.current.innerHTML = svgText;
 
-          // Ensure the SVG scales properly
+          // Ensure the SVG scales properly and centers
           const svg = svgContainerRef.current.querySelector('svg');
           if (svg) {
-            svg.setAttribute('width', '100%');
-            svg.setAttribute('height', '100%');
-            svg.style.maxWidth = '800px';
-            svg.style.maxHeight = '680px';
+            // Remove width/height attributes to let viewBox handle sizing
+            svg.removeAttribute('width');
+            svg.removeAttribute('height');
+            // Set proper styling for centering and scaling
             svg.style.width = '100%';
-            svg.style.height = 'auto';
+            svg.style.height = '100%';
+            svg.style.maxWidth = '100%';
+            svg.style.maxHeight = '100%';
+            svg.style.display = 'block';
+            svg.style.margin = 'auto';
 
             // Remove or override the style element that contains default colors
             const styleElement = svg.querySelector('style');
@@ -136,16 +140,13 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
   }, [svgLoaded, panelColors, selectedPanel, onPanelClick]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center p-4">
       <div
         ref={svgContainerRef}
-        className="max-w-full max-h-full"
+        className="w-full h-full flex items-center justify-center"
         style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          maxWidth: '600px',
+          maxHeight: '500px',
         }}
       />
       {!svgLoaded && (
