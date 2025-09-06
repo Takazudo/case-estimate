@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { cases } from './data/cases'
 import { colors } from './data/colors'
-import PanelLayout from './components/PanelLayout'
+import AllInOneSVG from './components/AllInOneSVG'
 import CaseSelector from './components/CaseSelector'
 import ColorPicker from './components/ColorPicker'
 import RailSelector from './components/RailSelector'
@@ -130,7 +130,7 @@ function App() {
             </div>
           </div>
           <div className="flex-1 p-8">
-            <PanelLayout
+            <AllInOneSVG
               caseType={selectedCase}
               panelColors={panelColors}
               onPanelClick={handlePanelClick}
