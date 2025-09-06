@@ -17,6 +17,9 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
     'i': 'center-top',     // Orange panel (upper center)
   }
   
+  // Default black color for all panels
+  const defaultPanelColor = '#1f2937'
+  
   // Load and inject the SVG
   useEffect(() => {
     const loadSVG = async () => {
@@ -40,6 +43,15 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
             svg.style.maxHeight = '680px'
             svg.style.width = '100%'
             svg.style.height = 'auto'
+            
+            // Remove or override the style element that contains default colors
+            const styleElement = svg.querySelector('style')
+            if (styleElement) {
+              // Override the CSS rules to use black as default
+              const classes = ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+              const newStyles = classes.map(cls => `.${cls}{fill:${defaultPanelColor};}`).join('')
+              styleElement.textContent = newStyles
+            }
           }
           
           setSvgLoaded(true)
@@ -56,8 +68,10 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
   useEffect(() => {
     if (!svgLoaded || !svgContainerRef.current) return
     
-    const svg = svgContainerRef.current.querySelector('svg')
-    if (!svg) return
+    // Small delay to ensure SVG is fully rendered
+    const timeoutId = setTimeout(() => {
+      const svg = svgContainerRef.current.querySelector('svg')
+      if (!svg) return
     
     // Add click handlers to all paths
     Object.entries(classToPanel).forEach(([className, panelId]) => {
@@ -76,16 +90,13 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
           onPanelClick(panelId)
         }
         
-        // Update color if specified
-        const color = panelColors[panelId]
-        if (color) {
-          path.setAttribute('fill', color)
-          path.style.fill = color
-        } else {
-          // Reset to default color - use a neutral gray
-          path.setAttribute('fill', '#374151')
-          path.style.fill = '#374151'
-        }
+        // Update color if specified, otherwise use default black
+        const color = panelColors[panelId] || defaultPanelColor
+        // Use both setAttribute and style to ensure the color is applied
+        path.setAttribute('fill', color)
+        path.style.fill = color
+        // Add !important to override any CSS rules
+        path.style.setProperty('fill', color, 'important')
         
         // Add hover effect
         path.style.transition = 'opacity 0.2s, transform 0.2s'
@@ -115,7 +126,10 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
         }
       })
     })
-  }, [svgLoaded, panelColors, selectedPanel, onPanelClick])
+    }, 50) // 50ms delay to ensure DOM is ready
+    
+    return () => clearTimeout(timeoutId)
+  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, defaultPanelColor])
   
   return (
     <div className="w-full h-full flex items-center justify-center">

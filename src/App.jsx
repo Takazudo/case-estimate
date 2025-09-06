@@ -17,9 +17,13 @@ function App() {
   const currentCase = cases[selectedCase]
   const material = currentCase.material
 
-  // Initialize rail selection
+  // Initialize rail selection when case changes (but not on initial load from URL)
   useEffect(() => {
-    if (currentCase && !selectedRail) {
+    // Skip if this is the initial mount (URL params will handle it)
+    const params = new URLSearchParams(window.location.search)
+    const hasUrlParams = params.get('case') || params.get('rail')
+    
+    if (currentCase && !selectedRail && !hasUrlParams) {
       setSelectedRail(currentCase.railOptions[0])
     }
   }, [currentCase])
@@ -31,15 +35,22 @@ function App() {
     const railType = params.get('rail')
     const colorsParam = params.get('colors')
 
+    // Set case type first
     if (caseType && cases[caseType]) {
       setSelectedCase(caseType)
+      
+      // Set rail type for the specific case
+      const targetCase = cases[caseType]
+      if (railType) {
+        const rail = targetCase.railOptions.find(r => r.type === railType)
+        if (rail) setSelectedRail(rail)
+      } else {
+        // Set default rail if not specified
+        setSelectedRail(targetCase.railOptions[0])
+      }
     }
 
-    if (railType && currentCase) {
-      const rail = currentCase.railOptions.find(r => r.type === railType)
-      if (rail) setSelectedRail(rail)
-    }
-
+    // Load colors from URL
     if (colorsParam) {
       try {
         const parsedColors = JSON.parse(decodeURIComponent(colorsParam))
