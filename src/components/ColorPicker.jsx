@@ -1,9 +1,8 @@
-import React from 'react'
-import { colors } from '../data/colors'
+import { colors } from '../data/colors';
 
 const ColorPicker = ({ material, selectedColor, onColorSelect }) => {
-  const availableColors = colors[material] || []
-  
+  const availableColors = colors[material] || [];
+
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-700">Colors</h3>
@@ -14,13 +13,14 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }) => {
             onClick={() => onColorSelect(color)}
             className={`
               flex items-center justify-center p-3 rounded-lg border-2 transition-all
-              ${selectedColor?.id === color.id 
-                ? 'border-blue-500 bg-blue-50' 
-                : 'border-gray-200 hover:border-gray-300'
+              ${
+                selectedColor?.id === color.id
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
               }
             `}
           >
-            <div 
+            <div
               className="w-6 h-6 rounded mr-2 border border-gray-300"
               style={{ backgroundColor: color.value }}
             />
@@ -29,7 +29,7 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ColorPicker
+export default ColorPicker;

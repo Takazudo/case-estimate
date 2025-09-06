@@ -1,5 +1,3 @@
-import React from 'react'
-
 const RailSelector = ({ railOptions, selectedRail, onRailSelect }) => {
   return (
     <div className="space-y-3">
@@ -11,9 +9,10 @@ const RailSelector = ({ railOptions, selectedRail, onRailSelect }) => {
             onClick={() => onRailSelect(rail)}
             className={`
               w-full text-left p-3 rounded-lg border-2 transition-all
-              ${selectedRail?.type === rail.type
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-gray-300'
+              ${
+                selectedRail?.type === rail.type
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-gray-200 hover:border-gray-300'
               }
             `}
           >
@@ -25,7 +24,7 @@ const RailSelector = ({ railOptions, selectedRail, onRailSelect }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RailSelector
+export default RailSelector;
