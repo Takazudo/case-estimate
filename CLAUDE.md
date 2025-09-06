@@ -7,6 +7,7 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 ## Tech Stack
 
 - React 19 with Vite
+- TypeScript
 - Tailwind CSS 4
 - SVG panel components
 
@@ -24,21 +25,21 @@ npm run typecheck # Run TypeScript type checking (if applicable)
 
 ### File Naming Convention
 
-All JavaScript and JSX files should use **kebab-case** naming:
+All TypeScript and JavaScript files should use **kebab-case** naming:
 
-- ✅ Good: `all-in-one-svg.jsx`, `case-selector.jsx`, `panel-list.jsx`
-- ❌ Bad: `AllInOneSVG.jsx`, `CaseSelector.jsx`, `PanelList.jsx`
+- ✅ Good: `all-in-one-svg.tsx`, `case-selector.tsx`, `panel-list.tsx`
+- ❌ Bad: `AllInOneSVG.tsx`, `CaseSelector.tsx`, `PanelList.tsx`
 
 This applies to:
 
-- Component files (`.jsx`)
-- JavaScript modules (`.js`)
-- Test files (`.test.js`, `.spec.js`)
+- Component files (`.tsx`, `.jsx`)
+- TypeScript/JavaScript modules (`.ts`, `.js`)
+- Test files (`.test.ts`, `.spec.ts`)
 
 Note: The exported component names should still use PascalCase as per React conventions:
 
-```jsx
-// File: case-selector.jsx
+```tsx
+// File: case-selector.tsx
 export default function CaseSelector() { ... }
 ```
 
@@ -55,17 +56,19 @@ export default function CaseSelector() { ... }
 ```
 case-estimate/
 ├── src/
-│   ├── app.jsx                      # Main application component
+│   ├── app.tsx                      # Main application component
 │   ├── components/
-│   │   ├── all-in-one-svg.jsx      # All-in-one SVG visualization
-│   │   ├── case-selector.jsx       # Case model dropdown
-│   │   ├── color-picker.jsx        # Color selection
-│   │   ├── panel-list.jsx          # Panel list with selection
-│   │   └── rail-selector.jsx       # Rail type selection
+│   │   ├── all-in-one-svg.tsx      # All-in-one SVG visualization
+│   │   ├── case-selector.tsx       # Case model dropdown
+│   │   ├── color-picker.tsx        # Color selection
+│   │   ├── panel-list.tsx          # Panel list with selection
+│   │   └── rail-selector.tsx       # Rail type selection
 │   ├── data/
-│   │   ├── cases.js                # Case configurations
-│   │   └── colors.js               # Color definitions
-│   └── main.jsx                    # Application entry point
+│   │   ├── cases.ts                # Case configurations
+│   │   └── colors.ts               # Color definitions
+│   ├── types/
+│   │   └── index.ts                # TypeScript type definitions
+│   └── main.tsx                    # Application entry point
 ├── public/
 │   └── svg/                        # Case SVG diagrams
 │       ├── zudo-block-40.svg

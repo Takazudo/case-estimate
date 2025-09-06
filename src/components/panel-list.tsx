@@ -1,4 +1,20 @@
-const PanelList = ({ panels, panelColors, selectedPanel, onPanelSelect, colorMap }) => {
+import type { Panel } from '../types';
+
+interface PanelListProps {
+  panels: Panel[];
+  panelColors: { [key: string]: string };
+  selectedPanel: string | null;
+  onPanelSelect: (panelId: string) => void;
+  colorMap: { [key: string]: string };
+}
+
+const PanelList = ({
+  panels,
+  panelColors,
+  selectedPanel,
+  onPanelSelect,
+  colorMap,
+}: PanelListProps) => {
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-700">Panels</h3>

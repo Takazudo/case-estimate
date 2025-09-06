@@ -1,4 +1,6 @@
-export const colors = {
+import type { Colors } from '../types';
+
+export const colors: Colors = {
   acrylic: [
     { id: 'red', name: 'Red', value: '#dc2626' },
     { id: 'orange', name: 'Orange', value: '#ea580c' },

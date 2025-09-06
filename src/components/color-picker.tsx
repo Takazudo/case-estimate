@@ -1,6 +1,13 @@
 import { colors } from '../data/colors';
+import type { Color } from '../types';
 
-const ColorPicker = ({ material, selectedColor, onColorSelect }) => {
+interface ColorPickerProps {
+  material: 'acrylic' | '3d-printed';
+  selectedColor: Color | null;
+  onColorSelect: (color: Color) => void;
+}
+
+const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProps) => {
   const availableColors = colors[material] || [];
 
   return (

@@ -1,4 +1,6 @@
-export const cases = {
+import type { Cases } from '../types';
+
+export const cases: Cases = {
   'zudo-block-40': {
     name: 'zudo-block-40',
     hp: 40,

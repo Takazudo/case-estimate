@@ -1,6 +1,11 @@
 import { cases } from '../data/cases';
 
-const CaseSelector = ({ selectedCase, onCaseSelect }) => {
+interface CaseSelectorProps {
+  selectedCase: string;
+  onCaseSelect: (caseType: string) => void;
+}
+
+const CaseSelector = ({ selectedCase, onCaseSelect }: CaseSelectorProps) => {
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-700">Case Model</h3>
