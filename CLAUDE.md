@@ -16,6 +16,30 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 npm run dev      # Start development server
 npm run build    # Build for production
 npm run preview  # Preview production build
+npm run lint     # Run ESLint
+npm run typecheck # Run TypeScript type checking (if applicable)
+```
+
+## Code Style Guidelines
+
+### File Naming Convention
+
+All JavaScript and JSX files should use **kebab-case** naming:
+
+- ✅ Good: `all-in-one-svg.jsx`, `case-selector.jsx`, `panel-list.jsx`
+- ❌ Bad: `AllInOneSVG.jsx`, `CaseSelector.jsx`, `PanelList.jsx`
+
+This applies to:
+
+- Component files (`.jsx`)
+- JavaScript modules (`.js`)
+- Test files (`.test.js`, `.spec.js`)
+
+Note: The exported component names should still use PascalCase as per React conventions:
+
+```jsx
+// File: case-selector.jsx
+export default function CaseSelector() { ... }
 ```
 
 ## Features
@@ -31,20 +55,24 @@ npm run preview  # Preview production build
 ```
 case-estimate/
 ├── src/
-│   ├── App.jsx                  # Main application component
+│   ├── app.jsx                      # Main application component
 │   ├── components/
-│   │   ├── CaseSelector.jsx     # Case model dropdown
-│   │   ├── PanelLayout.jsx      # 2D panel visualization
-│   │   ├── PanelSVG.jsx         # SVG panel components
-│   │   ├── ColorPicker.jsx      # Color selection
-│   │   ├── PanelList.jsx        # Panel list with selection
-│   │   └── RailSelector.jsx     # Rail type selection
+│   │   ├── all-in-one-svg.jsx      # All-in-one SVG visualization
+│   │   ├── case-selector.jsx       # Case model dropdown
+│   │   ├── color-picker.jsx        # Color selection
+│   │   ├── panel-list.jsx          # Panel list with selection
+│   │   └── rail-selector.jsx       # Rail type selection
 │   ├── data/
-│   │   ├── cases.js             # Case configurations
-│   │   └── colors.js            # Color definitions
-│   └── assets/
-│       └── panels/              # Original SVG files
-└── svg/                         # Converted SVG files from AI
+│   │   ├── cases.js                # Case configurations
+│   │   └── colors.js               # Color definitions
+│   └── main.jsx                    # Application entry point
+├── public/
+│   └── svg/                        # Case SVG diagrams
+│       ├── zudo-block-40.svg
+│       ├── zudo-block-40-lite.svg
+│       ├── zudo-block-60.svg
+│       └── zudo-block-60-lite.svg
+└── __inbox/                        # Temporary files and references
 ```
 
 ## Known Issues

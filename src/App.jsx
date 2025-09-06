@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { cases } from './data/cases';
 import { colors } from './data/colors';
-import AllInOneSVG from './components/AllInOneSVG';
-import CaseSelector from './components/CaseSelector';
-import ColorPicker from './components/ColorPicker';
-import RailSelector from './components/RailSelector';
-import PanelList from './components/PanelList';
+import AllInOneSVG from './components/all-in-one-svg';
+import CaseSelector from './components/case-selector';
+import ColorPicker from './components/color-picker';
+import RailSelector from './components/rail-selector';
+import PanelList from './components/panel-list';
 
 function App() {
   const [selectedCase, setSelectedCase] = useState('zudo-block-40');
