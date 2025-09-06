@@ -20,7 +20,7 @@ export const colors: Colors = {
     { id: 'crimson-red', name: 'クリムゾンレッド', value: '#b71c1c', material: 'PLA' },
     { id: 'dark-orange', name: 'ダークオレンジ', value: '#e65100', material: 'PLA' },
     { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
-    { id: 'light-yellow', name: 'ライトイエロー', value: '#fff59d', material: 'PLA' },
+    { id: 'deep-yellow', name: 'ディープイエロー', value: '#d4a017', material: 'PLA' },
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA' },
     { id: 'clear-blue', name: 'クリアブルー', value: '#81d4fa', material: 'PETG' },
     { id: 'clear-red', name: 'クリアレッド', value: '#ff8a80', material: 'PETG' },
