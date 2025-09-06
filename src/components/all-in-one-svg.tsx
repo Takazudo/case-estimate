@@ -8,16 +8,16 @@ interface AllInOneSVGProps {
 }
 
 // Map SVG classes to panel IDs based on the SVG structure
-// These mappings are based on analyzing the SVG colors and positions
+// These mappings match the layout in the diagram:
 const CLASS_TO_PANEL: { [key: string]: string } = {
-  b: 'left-side', // Black panel (left side)
-  c: 'right-side', // Magenta panel (right side)
-  d: 'top-front', // Green panel (top section)
-  e: 'top-back', // Red panel (second top section)
-  f: 'bottom-front', // Yellow panel (bottom section)
-  g: 'bottom-back', // Green panel (second bottom section)
-  h: 'center-bottom', // Brown panel (lower center)
-  i: 'center-top', // Orange panel (upper center)
+  b: 'side1', // Panel 1: Left side (black)
+  c: 'side2', // Panel 2: Right side (magenta)
+  i: 'front1', // Panel 3: Top front (orange)
+  e: 'front2', // Panel 4: Second top (red - behind panel 3)
+  d: 'bottom1', // Panel 5: Center upper (green)
+  g: 'bottom2', // Panel 6: Center lower (green)
+  f: 'back1', // Panel 7: Bottom front (yellow)
+  h: 'back2', // Panel 8: Bottom back (brown)
 };
 
 // Default black color for all panels
