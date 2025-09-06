@@ -79,4 +79,4 @@ export const cases = {
       { type: 'metal', name: 'Metal', price: 14980 },
     ],
   },
-}
+};

@@ -1,5 +1,4 @@
-import React from 'react'
-import { cases } from '../data/cases'
+import { cases } from '../data/cases';
 
 const CaseSelector = ({ selectedCase, onCaseSelect }) => {
   return (
@@ -17,7 +16,7 @@ const CaseSelector = ({ selectedCase, onCaseSelect }) => {
         ))}
       </select>
     </div>
-  )
-}
+  );
+};
 
-export default CaseSelector
+export default CaseSelector;

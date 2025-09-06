@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+.cache
+public
+coverage
+package-lock.json
+*.min.js
+*.svg
+__inbox

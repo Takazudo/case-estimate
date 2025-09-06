@@ -1,134 +1,134 @@
-import React, { useState, useEffect } from 'react'
-import { cases } from './data/cases'
-import { colors } from './data/colors'
-import AllInOneSVG from './components/AllInOneSVG'
-import CaseSelector from './components/CaseSelector'
-import ColorPicker from './components/ColorPicker'
-import RailSelector from './components/RailSelector'
-import PanelList from './components/PanelList'
+import { useState, useEffect } from 'react';
+import { cases } from './data/cases';
+import { colors } from './data/colors';
+import AllInOneSVG from './components/AllInOneSVG';
+import CaseSelector from './components/CaseSelector';
+import ColorPicker from './components/ColorPicker';
+import RailSelector from './components/RailSelector';
+import PanelList from './components/PanelList';
 
 function App() {
-  const [selectedCase, setSelectedCase] = useState('zudo-block-40')
-  const [selectedPanel, setSelectedPanel] = useState(null)
-  const [selectedColor, setSelectedColor] = useState(null)
-  const [panelColors, setPanelColors] = useState({})
-  const [selectedRail, setSelectedRail] = useState(null)
+  const [selectedCase, setSelectedCase] = useState('zudo-block-40');
+  const [selectedPanel, setSelectedPanel] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [panelColors, setPanelColors] = useState({});
+  const [selectedRail, setSelectedRail] = useState(null);
 
-  const currentCase = cases[selectedCase]
-  const material = currentCase.material
+  const currentCase = cases[selectedCase];
+  const material = currentCase.material;
 
   // Initialize rail selection when case changes (but not on initial load from URL)
   useEffect(() => {
     // Skip if this is the initial mount (URL params will handle it)
-    const params = new URLSearchParams(window.location.search)
-    const hasUrlParams = params.get('case') || params.get('rail')
-    
+    const params = new URLSearchParams(window.location.search);
+    const hasUrlParams = params.get('case') || params.get('rail');
+
     if (currentCase && !selectedRail && !hasUrlParams) {
-      setSelectedRail(currentCase.railOptions[0])
+      setSelectedRail(currentCase.railOptions[0]);
     }
-  }, [currentCase])
+  }, [currentCase, selectedRail]);
 
   // Load state from URL on mount
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const caseType = params.get('case')
-    const railType = params.get('rail')
-    const colorsParam = params.get('colors')
+    const params = new URLSearchParams(window.location.search);
+    const caseType = params.get('case');
+    const railType = params.get('rail');
+    const colorsParam = params.get('colors');
 
     // Set case type first
     if (caseType && cases[caseType]) {
-      setSelectedCase(caseType)
-      
+      setSelectedCase(caseType);
+
       // Set rail type for the specific case
-      const targetCase = cases[caseType]
+      const targetCase = cases[caseType];
       if (railType) {
-        const rail = targetCase.railOptions.find(r => r.type === railType)
-        if (rail) setSelectedRail(rail)
+        const rail = targetCase.railOptions.find((r) => r.type === railType);
+        if (rail) setSelectedRail(rail);
       } else {
         // Set default rail if not specified
-        setSelectedRail(targetCase.railOptions[0])
+        setSelectedRail(targetCase.railOptions[0]);
       }
     }
 
     // Load colors from URL
     if (colorsParam) {
       try {
-        const parsedColors = JSON.parse(decodeURIComponent(colorsParam))
-        setPanelColors(parsedColors)
+        const parsedColors = JSON.parse(decodeURIComponent(colorsParam));
+        setPanelColors(parsedColors);
       } catch (e) {
-        console.error('Failed to parse colors from URL', e)
+        console.error('Failed to parse colors from URL', e);
       }
     }
-  }, [])
+  }, []);
 
   // Update URL when state changes
   useEffect(() => {
-    const params = new URLSearchParams()
-    params.set('case', selectedCase)
+    const params = new URLSearchParams();
+    params.set('case', selectedCase);
     if (selectedRail) {
-      params.set('rail', selectedRail.type)
+      params.set('rail', selectedRail.type);
     }
     if (Object.keys(panelColors).length > 0) {
-      params.set('colors', encodeURIComponent(JSON.stringify(panelColors)))
+      params.set('colors', encodeURIComponent(JSON.stringify(panelColors)));
     }
-    
-    const newUrl = `${window.location.pathname}?${params.toString()}`
-    window.history.replaceState({}, '', newUrl)
-  }, [selectedCase, selectedRail, panelColors])
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+  }, [selectedCase, selectedRail, panelColors]);
 
   const handlePanelClick = (panelId) => {
-    setSelectedPanel(panelId)
-  }
+    setSelectedPanel(panelId);
+  };
 
   const handleColorSelect = (color) => {
-    setSelectedColor(color)
+    setSelectedColor(color);
     if (selectedPanel) {
-      setPanelColors(prev => ({
+      setPanelColors((prev) => ({
         ...prev,
-        [selectedPanel]: color.value
-      }))
+        [selectedPanel]: color.value,
+      }));
     }
-  }
+  };
 
   const handleCaseSelect = (caseType) => {
-    setSelectedCase(caseType)
-    setPanelColors({})
-    setSelectedPanel(null)
-    setSelectedColor(null)
-    const newCase = cases[caseType]
-    setSelectedRail(newCase.railOptions[0])
-  }
+    setSelectedCase(caseType);
+    setPanelColors({});
+    setSelectedPanel(null);
+    setSelectedColor(null);
+    const newCase = cases[caseType];
+    setSelectedRail(newCase.railOptions[0]);
+  };
 
   const handlePreset = (preset) => {
-    const newColors = {}
-    currentCase.panels.forEach(panel => {
+    const newColors = {};
+    currentCase.panels.forEach((panel) => {
       if (preset.colors.all) {
-        const color = colors[material].find(c => c.id === preset.colors.all)
-        if (color) newColors[panel.id] = color.value
+        const color = colors[material].find((c) => c.id === preset.colors.all);
+        if (color) newColors[panel.id] = color.value;
       } else {
         // Apply primary/secondary pattern
-        const isPrimary = panel.id.includes('side') || panel.id.includes('center')
-        const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary
-        const color = colors[material].find(c => c.id === colorId)
-        if (color) newColors[panel.id] = color.value
+        const isPrimary = panel.id.includes('side') || panel.id.includes('center');
+        const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
+        const color = colors[material].find((c) => c.id === colorId);
+        if (color) newColors[panel.id] = color.value;
       }
-    })
-    setPanelColors(newColors)
-  }
+    });
+    setPanelColors(newColors);
+  };
 
   const resetColors = () => {
-    setPanelColors({})
-    setSelectedPanel(null)
-    setSelectedColor(null)
-  }
+    setPanelColors({});
+    setSelectedPanel(null);
+    setSelectedColor(null);
+  };
 
   // Create color map for display
-  const colorMap = {}
-  colors[material]?.forEach(color => {
-    colorMap[color.value] = color.name
-  })
+  const colorMap = {};
+  colors[material]?.forEach((color) => {
+    colorMap[color.value] = color.name;
+  });
 
-  const totalPrice = selectedRail ? selectedRail.price : 0
+  const totalPrice = selectedRail ? selectedRail.price : 0;
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -155,10 +155,7 @@ function App() {
       <div className="w-96 bg-gray-50 overflow-y-auto">
         <div className="p-6 space-y-6">
           {/* Case Selector */}
-          <CaseSelector 
-            selectedCase={selectedCase}
-            onCaseSelect={handleCaseSelect}
-          />
+          <CaseSelector selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
 
           {/* Rail Selector */}
           <RailSelector
@@ -190,7 +187,7 @@ function App() {
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-gray-700">Presets</h3>
               <div className="space-y-2">
-                {colors.presets['3d-printed'].map(preset => (
+                {colors.presets['3d-printed'].map((preset) => (
                   <button
                     key={preset.id}
                     onClick={() => handlePreset(preset)}
@@ -235,7 +232,7 @@ function App() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
