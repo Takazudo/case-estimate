@@ -2,15 +2,15 @@ import type { Colors } from '../types';
 
 export const colors: Colors = {
   acrylic: [
+    { id: 'red', name: 'レッド', value: '#f44336', material: 'Red' },
+    { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange' },
+    { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow' },
     { id: 'clear', name: 'クリア', value: '#f8f9fa', material: 'Transparent' },
     { id: 'frost-clear', name: 'フロストクリア', value: '#e3f2fd', material: 'Glass Cyan' },
     { id: 'ocean-blue', name: 'オーシャンブルー', value: '#0d47a1', material: 'Deep Blue' },
     { id: 'sky-blue', name: 'スカイブルー', value: '#42a5f5', material: 'Light Blue' },
     { id: 'forest', name: 'フォレスト', value: '#1b5e20', material: 'Deep Green' },
     { id: 'lime', name: 'ライム', value: '#8bc34a', material: 'Light Green' },
-    { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow' },
-    { id: 'red', name: 'レッド', value: '#f44336', material: 'Red' },
-    { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange' },
     { id: 'shadow', name: 'シャドー', value: '#616161', material: 'Gray' },
     { id: 'pink', name: 'ピンク', value: '#e91e63', material: 'Pink' },
   ],
