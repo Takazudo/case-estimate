@@ -1,7 +1,7 @@
 import { cases } from '../data/cases';
 
 interface HeaderCaseSelectorProps {
-  selectedCase: string;
+  selectedCase: string | null;
   onCaseSelect: (caseType: string) => void;
 }
 
@@ -10,10 +10,11 @@ const HeaderCaseSelector = ({ selectedCase, onCaseSelect }: HeaderCaseSelectorPr
     <div className="flex items-center gap-2">
       <label className="text-sm font-medium text-gray-600">Model:</label>
       <select
-        value={selectedCase}
-        onChange={(e) => onCaseSelect(e.target.value)}
+        value={selectedCase || ''}
+        onChange={(e) => e.target.value && onCaseSelect(e.target.value)}
         className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
       >
+        <option value="">Select a model</option>
         {Object.entries(cases).map(([key, caseData]) => (
           <option key={key} value={key}>
             {caseData.name}
