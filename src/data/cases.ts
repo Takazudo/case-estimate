@@ -19,7 +19,7 @@ export const cases: Cases = {
   'zudo-block-40-lite': {
     name: 'zudo-block-40 Lite',
     hp: 40,
-    material: '3d-printed',
+    material: '3dp',
     panels: [
       { id: 'top-front', name: 'Top Front' },
       { id: 'top-back', name: 'Top Back' },
@@ -49,7 +49,7 @@ export const cases: Cases = {
   'zudo-block-60-lite': {
     name: 'zudo-block-60 Lite',
     hp: 60,
-    material: '3d-printed',
+    material: '3dp',
     panels: [
       { id: 'top-front', name: 'Top Front' },
       { id: 'top-back', name: 'Top Back' },

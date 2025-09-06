@@ -12,7 +12,7 @@ export interface RailOption {
 export interface Case {
   name: string;
   hp: number;
-  material: 'acrylic' | '3d-printed';
+  material: 'acrylic' | '3dp';
   panels: Panel[];
 }
 
@@ -24,6 +24,7 @@ export interface Color {
   id: string;
   name: string;
   value: string;
+  material: string;
 }
 
 export interface Preset {
@@ -38,8 +39,8 @@ export interface Preset {
 
 export interface Colors {
   acrylic: Color[];
-  '3d-printed': Color[];
+  '3dp': Color[];
   presets: {
-    '3d-printed': Preset[];
+    '3dp': Preset[];
   };
 }

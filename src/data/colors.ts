@@ -2,33 +2,47 @@ import type { Colors } from '../types';
 
 export const colors: Colors = {
   acrylic: [
-    { id: 'red', name: 'Red', value: '#dc2626' },
-    { id: 'orange', name: 'Orange', value: '#ea580c' },
-    { id: 'green', name: 'Green', value: '#16a34a' },
+    { id: 'clear', name: 'クリア', value: '#f8f9fa', material: 'Transparent' },
+    { id: 'frost-clear', name: 'フロストクリア', value: '#e3f2fd', material: 'Glass Cyan' },
+    { id: 'ocean-blue', name: 'オーシャンブルー', value: '#0d47a1', material: 'Deep Blue' },
+    { id: 'sky-blue', name: 'スカイブルー', value: '#42a5f5', material: 'Light Blue' },
+    { id: 'forest', name: 'フォレスト', value: '#1b5e20', material: 'Deep Green' },
+    { id: 'lime', name: 'ライム', value: '#8bc34a', material: 'Light Green' },
+    { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow' },
+    { id: 'red', name: 'レッド', value: '#f44336', material: 'Red' },
+    { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange' },
+    { id: 'shadow', name: 'シャドー', value: '#616161', material: 'Gray' },
+    { id: 'pink', name: 'ピンク', value: '#e91e63', material: 'Pink' },
   ],
-  '3d-printed': [
-    { id: 'black', name: 'Black', value: '#1f2937' },
-    { id: 'red', name: 'Red', value: '#dc2626' },
-    { id: 'dark-orange', name: 'Dark Orange', value: '#c2410c' },
-    { id: 'bright-orange', name: 'Bright Orange', value: '#fb923c' },
+  '3dp': [
+    { id: 'carbon-black', name: 'カーボンブラック', value: '#212121', material: 'PLA-CF' },
+    { id: 'matte-black', name: 'マットブラック', value: '#424242', material: 'PLA' },
+    { id: 'crimson-red', name: 'クリムゾンレッド', value: '#b71c1c', material: 'PLA' },
+    { id: 'dark-orange', name: 'ダークオレンジ', value: '#e65100', material: 'PLA' },
+    { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
+    { id: 'light-yellow', name: 'ライトイエロー', value: '#fff59d', material: 'PLA' },
+    { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#ffc107', material: 'PLA' },
+    { id: 'clear-blue', name: 'クリアブルー', value: '#81d4fa', material: 'PETG' },
+    { id: 'clear-red', name: 'クリアレッド', value: '#ff8a80', material: 'PETG' },
+    { id: 'bone-white', name: 'ボーンホワイト', value: '#f5f5dc', material: 'PLA' },
   ],
   presets: {
-    '3d-printed': [
-      { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'black' } },
+    '3dp': [
+      { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'matte-black' } },
       {
         id: 'kurobeni',
         name: 'KuroBeni (Black & Red)',
-        colors: { primary: 'black', secondary: 'red' },
+        colors: { primary: 'matte-black', secondary: 'crimson-red' },
       },
       {
         id: 'akatsuki',
         name: 'Akatsuki (Black & Dark Orange)',
-        colors: { primary: 'black', secondary: 'dark-orange' },
+        colors: { primary: 'matte-black', secondary: 'dark-orange' },
       },
       {
         id: 'shibugaki',
-        name: 'ShibuGaki (Black & Bright Orange)',
-        colors: { primary: 'black', secondary: 'bright-orange' },
+        name: 'ShibuGaki (Black & Light Orange)',
+        colors: { primary: 'matte-black', secondary: 'light-orange' },
       },
     ],
   },

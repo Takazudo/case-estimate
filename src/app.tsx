@@ -191,12 +191,12 @@ function App() {
             />
           )}
 
-          {/* Presets for 3D Printed */}
-          {material === '3d-printed' && colors.presets['3d-printed'] && (
+          {/* Presets for 3DP */}
+          {material === '3dp' && colors.presets['3dp'] && (
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-gray-700">Presets</h3>
               <div className="space-y-2">
-                {colors.presets['3d-printed'].map((preset) => (
+                {colors.presets['3dp'].map((preset) => (
                   <button
                     key={preset.id}
                     onClick={() => handlePreset(preset)}

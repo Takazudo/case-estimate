@@ -2,7 +2,7 @@ import { colors } from '../data/colors';
 import type { Color } from '../types';
 
 interface ColorPickerProps {
-  material: 'acrylic' | '3d-printed';
+  material: 'acrylic' | '3dp';
   selectedColor: Color | null;
   onColorSelect: (color: Color) => void;
 }
@@ -13,13 +13,13 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-gray-700">Colors</h3>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 gap-2">
         {availableColors.map((color) => (
           <button
             key={color.id}
             onClick={() => onColorSelect(color)}
             className={`
-              flex items-center justify-center p-3 rounded-lg border-2 transition-all
+              flex items-center p-3 rounded-lg border-2 transition-all text-left
               ${
                 selectedColor?.id === color.id
                   ? 'border-blue-500 bg-blue-50'
@@ -28,10 +28,13 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
             `}
           >
             <div
-              className="w-6 h-6 rounded mr-2 border border-gray-300"
+              className="w-6 h-6 rounded mr-3 border border-gray-300 flex-shrink-0"
               style={{ backgroundColor: color.value }}
             />
-            <span className="text-sm">{color.name}</span>
+            <div className="flex-1">
+              <div className="text-sm font-medium text-gray-900">{color.name}</div>
+              <div className="text-xs text-gray-500">{color.material}</div>
+            </div>
           </button>
         ))}
       </div>
