@@ -5,7 +5,7 @@ import type { Color, Preset } from './types';
 import AllInOneSVG from './components/all-in-one-svg';
 import HeaderCaseSelector from './components/header-case-selector';
 import ColorPicker from './components/color-picker';
-import PanelList from './components/panel-list';
+import PanelSelector from './components/panel-selector';
 
 interface PanelColors {
   [key: string]: string;
@@ -15,10 +15,34 @@ function App() {
   const [selectedCase, setSelectedCase] = useState('zudo-block-40');
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
-  const [panelColors, setPanelColors] = useState<PanelColors>({});
+
+  // Initialize with default colors from the start
+  const getInitialColors = () => {
+    const initialCase = cases['zudo-block-40'];
+    const defaultColor = colors[initialCase.material][0];
+    const initialColors: PanelColors = {};
+    initialCase.panels.forEach((panel) => {
+      initialColors[panel.id] = defaultColor.value;
+    });
+    return initialColors;
+  };
+
+  const [panelColors, setPanelColors] = useState<PanelColors>(getInitialColors());
 
   const currentCase = cases[selectedCase];
   const material = currentCase.material;
+
+  // Initialize default colors for all panels (always use first color)
+  const getDefaultColors = (caseType: string) => {
+    const caseData = cases[caseType];
+    const availableColors = colors[caseData.material];
+    const defaultColor = availableColors[0]; // Always use first color
+    const defaultColors: PanelColors = {};
+    caseData.panels.forEach((panel) => {
+      defaultColors[panel.id] = defaultColor.value;
+    });
+    return defaultColors;
+  };
 
   // Load state from URL on mount
   useEffect(() => {
@@ -27,18 +51,22 @@ function App() {
     const colorsParam = params.get('colors');
 
     // Set case type
-    if (caseType && cases[caseType]) {
-      setSelectedCase(caseType);
-    }
+    const targetCase = caseType && cases[caseType] ? caseType : 'zudo-block-40';
+    setSelectedCase(targetCase);
 
-    // Load colors from URL
+    // Load colors from URL or set defaults
     if (colorsParam) {
       try {
         const parsedColors = JSON.parse(decodeURIComponent(colorsParam));
         setPanelColors(parsedColors);
       } catch (e) {
         console.error('Failed to parse colors from URL', e);
+        // Set default colors on error
+        setPanelColors(getDefaultColors(targetCase));
       }
+    } else {
+      // Set default colors if no URL params
+      setPanelColors(getDefaultColors(targetCase));
     }
   }, []);
 
@@ -70,7 +98,7 @@ function App() {
 
   const handleCaseSelect = (caseType: string) => {
     setSelectedCase(caseType);
-    setPanelColors({});
+    setPanelColors(getDefaultColors(caseType));
     setSelectedPanel(null);
     setSelectedColor(null);
   };
@@ -93,7 +121,7 @@ function App() {
   };
 
   const resetColors = () => {
-    setPanelColors({});
+    setPanelColors(getDefaultColors(selectedCase));
     setSelectedPanel(null);
     setSelectedColor(null);
   };
@@ -135,8 +163,8 @@ function App() {
         {/* Right Panel - Controls */}
         <div className="w-96 bg-gray-50 overflow-y-auto">
           <div className="p-6 space-y-6">
-            {/* Panel List */}
-            <PanelList
+            {/* Panel Selector */}
+            <PanelSelector
               panels={currentCase.panels}
               panelColors={panelColors}
               selectedPanel={selectedPanel}
