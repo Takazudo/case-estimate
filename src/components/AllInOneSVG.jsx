@@ -20,13 +20,15 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
   // Default black color for all panels
   const defaultPanelColor = '#1f2937'
   
+  // Timing constant for SVG rendering delay
+  const SVG_RENDER_DELAY_MS = 50
+  
   // Load and inject the SVG
   useEffect(() => {
     const loadSVG = async () => {
       try {
-        // For now, we'll use the static SVG path
-        // In production, you might want to dynamically select based on caseType
-        const svgPath = '/svg/zudo-block-40.svg'
+        // Dynamically select SVG path based on caseType
+        const svgPath = `/svg/zudo-block-${caseType}.svg`
         
         const response = await fetch(svgPath)
         const svgText = await response.text()
@@ -126,7 +128,7 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
         }
       })
     })
-    }, 50) // 50ms delay to ensure DOM is ready
+    }, SVG_RENDER_DELAY_MS) // Delay to ensure DOM is ready
     
     return () => clearTimeout(timeoutId)
   }, [svgLoaded, panelColors, selectedPanel, onPanelClick, defaultPanelColor])
