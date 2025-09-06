@@ -28,7 +28,7 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }) => 
     const loadSVG = async () => {
       try {
         // Dynamically select SVG path based on caseType
-        const svgPath = `/svg/zudo-block-${caseType}.svg`;
+        const svgPath = `/svg/${caseType}.svg`;
 
         const response = await fetch(svgPath);
         const svgText = await response.text();
