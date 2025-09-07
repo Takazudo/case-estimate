@@ -355,14 +355,14 @@ function App() {
                   </div>
 
                   {/* Info */}
-                  <div className="text-xs text-zd-gray space-y-1px">
+                  <div className="text-sm text-zd-gray space-y-1px">
                     <p>• Click on any panel to select it</p>
                     <p>• Choose a color to apply to the selected panel</p>
                     <p>• Your configuration is saved in the URL</p>
                   </div>
 
                   {/* Footer Info */}
-                  <div className="text-xs text-zd-gray pt-4 border-t border-zd-gray">
+                  <div className="text-sm text-zd-gray pt-4 border-t border-zd-gray">
                     <p>© 2025 Takazudo Modular</p>
                   </div>
                 </>

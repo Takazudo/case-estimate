@@ -43,7 +43,7 @@ const PanelList = ({
                     className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                     style={{ backgroundColor: colorValue || '#1f2937' }}
                   />
-                  <span className="text-xs text-zd-gray">{colorName}</span>
+                  <span className="text-zd-gray">{colorName}</span>
                 </div>
               </div>
             </button>

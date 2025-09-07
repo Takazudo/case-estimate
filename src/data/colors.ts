@@ -2,7 +2,7 @@ import type { Colors } from '../types';
 
 export const colors: Colors = {
   acrylic: [
-    { id: 'red', name: 'レッド', value: '#f44336', material: 'Red' },
+    { id: 'red', name: 'レッド', value: '#b71c1c', material: 'Red' },
     { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange' },
     { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow' },
     { id: 'clear', name: 'クリア', value: '#f8f9fa', material: 'Transparent' },

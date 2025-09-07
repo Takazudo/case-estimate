@@ -1,5 +1,11 @@
 import { Fragment } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOptions,
+  ListboxOption,
+  Transition,
+} from '@headlessui/react';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import type { Panel } from '../types';
 
@@ -27,7 +33,7 @@ const PanelSelector = ({
       <h3 className="font-semibold text-zd-white">Select Panel</h3>
       <Listbox value={selectedPanel} onChange={onPanelSelect}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-xs pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
+          <ListboxButton className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-xs pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
             <span className="block truncate">
               {selectedPanelObj ? (
                 <div className="flex items-center justify-between">
@@ -37,7 +43,7 @@ const PanelSelector = ({
                       className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                       style={{ backgroundColor: selectedColorValue || '#f3f4f6' }}
                     />
-                    <span className="text-xs text-zd-gray">{selectedColorName}</span>
+                    <span className="text-zd-gray">{selectedColorName}</span>
                   </div>
                 </div>
               ) : (
@@ -47,20 +53,20 @@ const PanelSelector = ({
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon className="h-5 w-5 text-zd-gray" aria-hidden="true" />
             </span>
-          </Listbox.Button>
+          </ListboxButton>
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-black border-2 border-zd-gray py-1px text-base shadow-2xl focus:outline-none">
+            <ListboxOptions className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-black border-2 border-zd-gray py-1px shadow-2xl focus:outline-none">
               {panels.map((panel) => {
                 const colorValue = panelColors[panel.id];
                 const colorName = colorMap[colorValue] || 'Default';
 
                 return (
-                  <Listbox.Option
+                  <ListboxOption
                     key={panel.id}
                     className={({ active }) =>
                       `relative cursor-default select-none py-vgap-xs pl-hgap-md pr-hgap-xs ${
@@ -82,7 +88,7 @@ const PanelSelector = ({
                               className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                               style={{ backgroundColor: colorValue || '#f3f4f6' }}
                             />
-                            <span className="text-xs text-zd-gray">{colorName}</span>
+                            <span className="text-zd-gray">{colorName}</span>
                           </div>
                         </div>
                         {selected ? (
@@ -92,10 +98,10 @@ const PanelSelector = ({
                         ) : null}
                       </>
                     )}
-                  </Listbox.Option>
+                  </ListboxOption>
                 );
               })}
-            </Listbox.Options>
+            </ListboxOptions>
           </Transition>
         </div>
       </Listbox>

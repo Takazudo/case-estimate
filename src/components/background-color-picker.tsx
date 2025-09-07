@@ -122,7 +122,7 @@ function BackgroundColorPicker({
                   className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: gridColor }}
                 />
-                <span className="text-xs text-zd-gray font-mono w-12">
+                <span className="text-sm text-zd-gray font-mono w-12">
                   {Math.round((gridGrayscale / 255) * 100)}%
                 </span>
               </div>
@@ -147,12 +147,12 @@ function BackgroundColorPicker({
           <div className="mb-vgap-2xs">
             <div className="flex items-center justify-between mb-vgap-2xs">
               <label className="text-zd-gray font-medium">Background</label>
-              <div className="flex items-center gap-hgap-2xs">
+              <div className="flex items-center gap-hgap-2xs border">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: bgColor }}
                 />
-                <span className="text-xs text-zd-gray font-mono w-12">
+                <span className="text-sm text-zd-gray font-mono w-12">
                   {Math.round((bgGrayscale / 255) * 100)}%
                 </span>
               </div>
