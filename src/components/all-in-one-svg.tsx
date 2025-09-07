@@ -128,31 +128,46 @@ const AllInOneSVG = ({
             pathElement.style.setProperty('fill-opacity', '1', 'important');
           }
 
-          // Add hover effect
-          pathElement.style.transition = 'opacity 0.2s, transform 0.2s';
+          // Add hover effect with better transitions
+          pathElement.style.transition = 'all 0.2s ease-out';
+          pathElement.style.cursor = 'pointer';
 
           // Add selected state visual feedback
           if (selectedPanel === panelId) {
-            pathElement.style.filter = 'drop-shadow(0 0 5px rgba(59, 130, 246, 1))';
-            pathElement.style.strokeWidth = '5';
-            pathElement.style.stroke = '#3B82F6';
+            pathElement.style.filter = 'drop-shadow(0 0 8px rgba(217, 119, 6, 0.6))';
+            pathElement.style.strokeWidth = '4';
+            pathElement.style.stroke = '#d97706'; // zd-link color
           } else {
             pathElement.style.filter = 'none';
             pathElement.style.strokeWidth = '0';
             pathElement.style.stroke = 'none';
           }
 
-          // Hover effects
+          // Hover effects - more visible for acrylic panels
           pathElement.onmouseenter = () => {
             if (selectedPanel !== panelId) {
-              // Slightly reduce opacity on hover
-              const hoverOpacity = material === 'acrylic' ? '0.7' : '0.9';
-              pathElement.style.setProperty('fill-opacity', hoverOpacity, 'important');
+              // Add drop shadow and border for better visibility
+              pathElement.style.filter = 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))';
+              pathElement.style.strokeWidth = '2';
+              pathElement.style.stroke = '#78716c'; // zd-gray color
+
+              // Subtle brightness adjustment instead of opacity
+              if (material === 'acrylic') {
+                pathElement.style.filter =
+                  'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3)) brightness(1.1)';
+              }
             }
           };
 
           pathElement.onmouseleave = () => {
-            // Restore base opacity
+            if (selectedPanel !== panelId) {
+              // Remove hover effects
+              pathElement.style.filter = 'none';
+              pathElement.style.strokeWidth = '0';
+              pathElement.style.stroke = 'none';
+            }
+
+            // Always restore base opacity
             const baseOpacity = material === 'acrylic' ? '0.8' : '1';
             pathElement.style.setProperty('fill-opacity', baseOpacity, 'important');
           };
