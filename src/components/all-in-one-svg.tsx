@@ -175,7 +175,7 @@ const AllInOneSVG = ({
       />
       {!svgLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-gray-500">Loading visualization...</div>
+          <div className="text-zd-gray">Loading visualization...</div>
         </div>
       )}
     </div>

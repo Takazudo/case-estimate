@@ -8,11 +8,11 @@ interface HeaderCaseSelectorProps {
 const HeaderCaseSelector = ({ selectedCase, onCaseSelect }: HeaderCaseSelectorProps) => {
   return (
     <div className="flex items-center gap-2">
-      <label className="text-sm font-medium text-gray-600">Model:</label>
+      <label className="text-sm font-medium text-zd-gray">Model:</label>
       <select
         value={selectedCase || ''}
         onChange={(e) => e.target.value && onCaseSelect(e.target.value)}
-        className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        className="px-3 py-1.5 text-sm border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
       >
         <option value="">Select a model</option>
         {Object.entries(cases).map(([key, caseData]) => (

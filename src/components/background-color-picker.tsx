@@ -81,7 +81,7 @@ function BackgroundColorPicker({
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex rounded overflow-hidden border-2 border-gray-400 hover:border-gray-600 transition-colors cursor-pointer"
+        className="flex rounded overflow-hidden border-2 border-zd-gray hover:border-zd-link transition-colors cursor-pointer"
         title="Adjust background colors"
       >
         <div className="w-8 h-8" style={{ backgroundColor: gridColor }} />
@@ -92,13 +92,13 @@ function BackgroundColorPicker({
       {isOpen && (
         <div
           ref={popupRef}
-          className="absolute top-12 left-0 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-20"
+          className="absolute top-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-4 z-20"
           style={{ minWidth: '280px' }}
         >
           {/* Close button */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="absolute top-2 right-2 text-zd-gray hover:text-zd-link transition-colors"
             aria-label="Close"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,18 +111,18 @@ function BackgroundColorPicker({
             </svg>
           </button>
 
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Background Settings</h3>
+          <h3 className="text-sm font-semibold text-zd-white mb-4">Background Settings</h3>
 
           {/* Grid/Line Color Slider */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm text-gray-600 font-medium">Line</label>
+              <label className="text-sm text-zd-gray font-medium">Line</label>
               <div className="flex items-center gap-2">
                 <div
-                  className="w-6 h-6 rounded border border-gray-300"
+                  className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: gridColor }}
                 />
-                <span className="text-xs text-gray-500 font-mono w-12">
+                <span className="text-xs text-zd-gray font-mono w-12">
                   {Math.round((gridGrayscale / 255) * 100)}%
                 </span>
               </div>
@@ -136,7 +136,7 @@ function BackgroundColorPicker({
                 const value = parseInt(e.target.value);
                 onGridColorChange(grayscaleToHex(value));
               }}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
               style={{
                 background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
               }}
@@ -146,13 +146,13 @@ function BackgroundColorPicker({
           {/* Background Color Slider */}
           <div className="mb-2">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm text-gray-600 font-medium">Background</label>
+              <label className="text-sm text-zd-gray font-medium">Background</label>
               <div className="flex items-center gap-2">
                 <div
-                  className="w-6 h-6 rounded border border-gray-300"
+                  className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: bgColor }}
                 />
-                <span className="text-xs text-gray-500 font-mono w-12">
+                <span className="text-xs text-zd-gray font-mono w-12">
                   {Math.round((bgGrayscale / 255) * 100)}%
                 </span>
               </div>
@@ -166,7 +166,7 @@ function BackgroundColorPicker({
                 const value = parseInt(e.target.value);
                 onBgColorChange(grayscaleToHex(value));
               }}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
               style={{
                 background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
               }}
