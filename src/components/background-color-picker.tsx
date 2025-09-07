@@ -81,7 +81,7 @@ function BackgroundColorPicker({
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex rounded overflow-hidden border-2 border-gray-400 hover:border-gray-600 transition-colors"
+        className="flex rounded overflow-hidden border-2 border-gray-400 hover:border-gray-600 transition-colors cursor-pointer"
         title="Adjust background colors"
       >
         <div className="w-8 h-8" style={{ backgroundColor: gridColor }} />
