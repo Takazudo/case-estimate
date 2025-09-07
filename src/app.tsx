@@ -190,8 +190,15 @@ function App() {
         const color = colors[material].find((c: Color) => c.id === preset.colors.all);
         if (color) newColors[panel.id] = color.value;
       } else {
-        // Apply primary/secondary pattern
-        const isPrimary = panel.id.includes('side') || panel.id.includes('center');
+        // Apply primary/secondary pattern based on actual preset images
+        // Primary (black): side1, side2, front1, bottom1, back1
+        // Secondary (colored): front2, bottom2, back2
+        const isPrimary =
+          panel.id === 'side1' ||
+          panel.id === 'side2' ||
+          panel.id === 'front1' ||
+          panel.id === 'bottom1' ||
+          panel.id === 'back1';
         const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
         const color = colors[material].find((c: Color) => c.id === colorId);
         if (color) newColors[panel.id] = color.value;
