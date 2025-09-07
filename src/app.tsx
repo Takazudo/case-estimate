@@ -243,9 +243,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zd-black flex flex-col overflow-x-hidden">
-      {/* Fixed Header */}
-      <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm fixed top-0 left-0 right-0 z-10">
+    <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
+      {/* Header */}
+      <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm flex-shrink-0">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-zd-white">Takazudo Modular Case Configurator</h1>
@@ -257,11 +257,11 @@ function App() {
       </header>
 
       {/* Main Content Area - 2 Column Grid */}
-      <main className="flex-1 pt-16 min-h-0 overflow-hidden">
+      <main className="flex-1 mt-16 overflow-hidden">
         <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
           {/* Left Column - Visualization */}
           <div
-            className="relative border-r border-zd-gray"
+            className="relative border-r border-zd-gray overflow-hidden"
             style={{
               backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
               backgroundSize: '60px 60px',
@@ -304,7 +304,7 @@ function App() {
           </div>
 
           {/* Right Column - Controls */}
-          <div className="bg-zd-black h-full overflow-y-auto min-w-0">
+          <div className="bg-zd-black h-full overflow-y-auto overflow-x-hidden min-w-0">
             <div className="p-4 lg:p-6 space-y-4 lg:space-y-6">
               {currentCase ? (
                 <>
@@ -360,6 +360,11 @@ function App() {
                     <p>• Choose a color to apply to the selected panel</p>
                     <p>• Your configuration is saved in the URL</p>
                   </div>
+
+                  {/* Footer Info */}
+                  <div className="text-xs text-zd-gray pt-4 border-t border-zd-gray">
+                    <p>© 2025 Takazudo Modular</p>
+                  </div>
                 </>
               ) : (
                 <div className="text-center text-zd-gray mt-8">
@@ -370,16 +375,6 @@ function App() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-zd-gray2 border-t border-zd-gray">
-        <div className="px-6 py-3">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-zd-gray">© 2025 Takazudo Modular</div>
-            <div className="text-sm text-zd-gray">Configuration saved in URL</div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
