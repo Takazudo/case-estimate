@@ -243,7 +243,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zd-black flex flex-col">
+    <div className="min-h-screen bg-zd-black flex flex-col overflow-x-hidden">
       {/* Fixed Header */}
       <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm fixed top-0 left-0 right-0 z-10">
         <div className="px-6 py-4">
@@ -257,8 +257,8 @@ function App() {
       </header>
 
       {/* Main Content Area - 2 Column Grid */}
-      <main className="flex-1 pt-16 min-h-0">
-        <div className="h-full grid grid-cols-1 xl:grid-cols-[1fr_400px]">
+      <main className="flex-1 pt-16 min-h-0 overflow-hidden">
+        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
           {/* Left Column - Visualization */}
           <div
             className="relative border-r border-zd-gray"
@@ -304,8 +304,8 @@ function App() {
           </div>
 
           {/* Right Column - Controls */}
-          <div className="bg-zd-black h-full overflow-y-auto">
-            <div className="p-6 space-y-6">
+          <div className="bg-zd-black h-full overflow-y-auto min-w-0">
+            <div className="p-4 lg:p-6 space-y-4 lg:space-y-6">
               {currentCase ? (
                 <>
                   {/* Panel Selector */}
