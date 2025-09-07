@@ -8,13 +8,13 @@ interface HeaderCaseSelectorProps {
 const HeaderCaseSelector = ({ selectedCase, onCaseSelect }: HeaderCaseSelectorProps) => {
   return (
     <div className="flex items-center gap-hgap-2xs">
-      <label className="font-medium text-zd-gray">Model:</label>
+      <label className="text-zd-gray text-sm lg:text-lg px-[3px]">Model:</label>
       <select
         value={selectedCase || ''}
         onChange={(e) => e.target.value && onCaseSelect(e.target.value)}
-        className="px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
+        className="px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white text-sm md:text-base"
       >
-        <option value="">Select a model</option>
+        <option value="">モデル選択</option>
         {Object.entries(cases).map(([key, caseData]) => (
           <option key={key} value={key}>
             {caseData.name}

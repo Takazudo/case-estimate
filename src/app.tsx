@@ -246,9 +246,16 @@ function App() {
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm flex-shrink-0">
-        <div className="px-hgap-sm py-vgap-xs">
+        <div className="px-hgap-sm py-vgap-sm">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-zd-white">Takazudo Modular Case Configurator</h1>
+            <h1 className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs">
+              <img
+                src="/takazudo-logo.svg"
+                alt="Takazudo Logo"
+                className="w-12 h-12 brightness-0 invert mr-[4px]"
+              />
+              Takazudo Modular Panels
+            </h1>
             <div className="flex items-center gap-hgap-xs">
               <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
             </div>

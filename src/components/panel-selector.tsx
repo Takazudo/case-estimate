@@ -60,7 +60,7 @@ const PanelSelector = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <ListboxOptions className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-black border-2 border-zd-gray py-1px shadow-2xl focus:outline-none">
+            <ListboxOptions className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-zd-black border-2 border-zd-gray py-1px shadow-2xl focus:outline-none">
               {panels.map((panel) => {
                 const colorValue = panelColors[panel.id];
                 const colorName = colorMap[colorValue] || 'Default';
