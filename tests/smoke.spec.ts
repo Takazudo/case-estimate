@@ -31,7 +31,13 @@ test.describe('Smoke Test', () => {
     // Check that case selector is present
     await expect(page.locator('select').first()).toBeVisible();
 
-    // Check that SVG container is present
+    // Initially, no SVG should be present (welcome message instead)
+    await expect(page.locator('text=Welcome to Takazudo Modular')).toBeVisible();
+
+    // Select a case to make SVG appear
+    await page.selectOption('select', 'zudo-block-40');
+
+    // Now check that SVG container is present after selecting a case
     await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
 
     // Verify no console errors
