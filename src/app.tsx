@@ -278,7 +278,7 @@ function App() {
               />
             </div>
 
-            <div className="h-full p-8 flex items-center justify-center">
+            <div className="h-full p-[10px] md:p-[15px] lg:p-[20px] xl:p-[30px] flex items-center justify-center">
               {selectedCase ? (
                 <AllInOneSVG
                   caseType={selectedCase}
