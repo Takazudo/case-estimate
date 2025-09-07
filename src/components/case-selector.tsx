@@ -7,12 +7,12 @@ interface CaseSelectorProps {
 
 const CaseSelector = ({ selectedCase, onCaseSelect }: CaseSelectorProps) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-vgap-xs">
       <h3 className="font-semibold text-zd-white">Case Model</h3>
       <select
         value={selectedCase}
         onChange={(e) => onCaseSelect(e.target.value)}
-        className="w-full px-3 py-2 border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
+        className="w-full px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
       >
         {Object.entries(cases).map(([key, caseData]) => (
           <option key={key} value={key}>

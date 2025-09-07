@@ -23,18 +23,18 @@ const PanelSelector = ({
   const selectedColorName = selectedColorValue ? colorMap[selectedColorValue] : 'Default';
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-vgap-xs">
       <h3 className="font-semibold text-zd-white">Select Panel</h3>
       <Listbox value={selectedPanel} onChange={onPanelSelect}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-3 pl-3 pr-10 text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-xs pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
             <span className="block truncate">
               {selectedPanelObj ? (
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{selectedPanelObj.name}</span>
-                  <div className="flex items-center mr-6">
+                  <div className="flex items-center mr-hgap-sm">
                     <div
-                      className="w-5 h-5 rounded border border-zd-gray mr-2"
+                      className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                       style={{ backgroundColor: selectedColorValue || '#f3f4f6' }}
                     />
                     <span className="text-xs text-zd-gray">{selectedColorName}</span>
@@ -54,7 +54,7 @@ const PanelSelector = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-lg bg-black border-2 border-zd-gray py-1 text-base shadow-2xl focus:outline-none">
+            <Listbox.Options className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-black border-2 border-zd-gray py-1px text-base shadow-2xl focus:outline-none">
               {panels.map((panel) => {
                 const colorValue = panelColors[panel.id];
                 const colorName = colorMap[colorValue] || 'Default';
@@ -63,7 +63,7 @@ const PanelSelector = ({
                   <Listbox.Option
                     key={panel.id}
                     className={({ active }) =>
-                      `relative cursor-default select-none py-3 pl-10 pr-4 ${
+                      `relative cursor-default select-none py-vgap-xs pl-hgap-md pr-hgap-xs ${
                         active ? 'bg-zd-active text-zd-white' : 'text-zd-white'
                       }`
                     }
@@ -79,14 +79,14 @@ const PanelSelector = ({
                           </span>
                           <div className="flex items-center">
                             <div
-                              className="w-5 h-5 rounded border border-zd-gray mr-2"
+                              className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                               style={{ backgroundColor: colorValue || '#f3f4f6' }}
                             />
                             <span className="text-xs text-zd-gray">{colorName}</span>
                           </div>
                         </div>
                         {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-zd-link">
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-hgap-xs text-zd-link">
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}

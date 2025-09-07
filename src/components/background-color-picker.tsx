@@ -92,7 +92,7 @@ function BackgroundColorPicker({
       {isOpen && (
         <div
           ref={popupRef}
-          className="absolute top-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-4 z-20"
+          className="absolute top-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-hgap-xs z-20"
           style={{ minWidth: '280px' }}
         >
           {/* Close button */}
@@ -111,13 +111,13 @@ function BackgroundColorPicker({
             </svg>
           </button>
 
-          <h3 className="font-semibold text-zd-white mb-4">Background Settings</h3>
+          <h3 className="font-semibold text-zd-white mb-vgap-xs">Background Settings</h3>
 
           {/* Grid/Line Color Slider */}
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-2">
+          <div className="mb-vgap-xs">
+            <div className="flex items-center justify-between mb-vgap-2xs">
               <label className="text-zd-gray font-medium">Line</label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-hgap-2xs">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: gridColor }}
@@ -144,10 +144,10 @@ function BackgroundColorPicker({
           </div>
 
           {/* Background Color Slider */}
-          <div className="mb-2">
-            <div className="flex items-center justify-between mb-2">
+          <div className="mb-vgap-2xs">
+            <div className="flex items-center justify-between mb-vgap-2xs">
               <label className="text-zd-gray font-medium">Background</label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-hgap-2xs">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: bgColor }}

@@ -8,15 +8,15 @@ interface RailSelectorProps {
 
 const RailSelector = ({ railOptions, selectedRail, onRailSelect }: RailSelectorProps) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-vgap-xs">
       <h3 className="font-semibold text-zd-white">Rail Type</h3>
-      <div className="space-y-2">
+      <div className="space-y-vgap-2xs">
         {railOptions.map((rail) => (
           <button
             key={rail.type}
             onClick={() => onRailSelect(rail)}
             className={`
-              w-full text-left p-3 rounded-lg border-2 transition-all
+              w-full text-left p-hgap-xs rounded-lg border-2 transition-all
               ${
                 selectedRail?.type === rail.type
                   ? 'border-zd-link bg-zd-active'

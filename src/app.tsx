@@ -246,10 +246,10 @@ function App() {
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm flex-shrink-0">
-        <div className="px-6 py-4">
+        <div className="px-hgap-sm py-vgap-xs">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-bold text-zd-white">Takazudo Modular Case Configurator</h1>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-hgap-xs">
               <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
             </div>
           </div>
@@ -305,7 +305,7 @@ function App() {
 
           {/* Right Column - Controls */}
           <div className="bg-zd-black h-full overflow-y-auto overflow-x-hidden min-w-0">
-            <div className="p-4 lg:p-6 space-y-4 lg:space-y-6">
+            <div className="p-hgap-xs lg:p-hgap-sm space-y-vgap-sm lg:space-y-vgap-md">
               {currentCase ? (
                 <>
                   {/* Panel Selector */}
@@ -328,14 +328,14 @@ function App() {
 
                   {/* Presets for 3DP */}
                   {material === '3dp' && colors.presets['3dp'] && (
-                    <div className="space-y-3">
+                    <div className="space-y-vgap-xs">
                       <h3 className="font-semibold text-zd-white">Presets</h3>
-                      <div className="space-y-2">
+                      <div className="space-y-vgap-2xs">
                         {colors.presets['3dp'].map((preset) => (
                           <button
                             key={preset.id}
                             onClick={() => handlePreset(preset)}
-                            className="w-full text-left p-3 rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
+                            className="w-full text-left p-hgap-xs rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
                           >
                             <span>{preset.name}</span>
                           </button>
@@ -348,14 +348,14 @@ function App() {
                   <div className="space-y-3">
                     <button
                       onClick={resetColors}
-                      className="w-full px-4 py-2 bg-zd-gray2 text-zd-white rounded-lg hover:bg-zd-gray transition-colors"
+                      className="w-full px-hgap-xs py-vgap-2xs bg-zd-gray2 text-zd-white rounded-lg hover:bg-zd-gray transition-colors"
                     >
                       Reset All Colors
                     </button>
                   </div>
 
                   {/* Info */}
-                  <div className="text-xs text-zd-gray space-y-1">
+                  <div className="text-xs text-zd-gray space-y-1px">
                     <p>• Click on any panel to select it</p>
                     <p>• Choose a color to apply to the selected panel</p>
                     <p>• Your configuration is saved in the URL</p>
