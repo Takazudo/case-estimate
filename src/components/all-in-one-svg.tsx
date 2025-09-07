@@ -164,16 +164,10 @@ const AllInOneSVG = ({
   }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center p-4">
+    <div className="w-full h-full flex items-center justify-center">
       <div
         ref={svgContainerRef}
-        className="flex items-center justify-center"
-        style={{
-          width: 'min(90vw, calc(90vh * 1.2))',
-          height: 'min(90vh, calc(90vw / 1.2))',
-          maxWidth: '1200px',
-          maxHeight: '1000px',
-        }}
+        className="w-full h-full max-w-[800px] max-h-[700px] flex items-center justify-center"
       />
       {!svgLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
