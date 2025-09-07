@@ -284,6 +284,7 @@ function App() {
                 panelColors={panelColors}
                 onPanelClick={handlePanelClick}
                 selectedPanel={selectedPanel}
+                material={material}
               />
             ) : (
               <div className="text-center max-w-md">
