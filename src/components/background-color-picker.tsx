@@ -111,12 +111,12 @@ function BackgroundColorPicker({
             </svg>
           </button>
 
-          <h3 className="text-sm font-semibold text-zd-white mb-4">Background Settings</h3>
+          <h3 className="font-semibold text-zd-white mb-4">Background Settings</h3>
 
           {/* Grid/Line Color Slider */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm text-zd-gray font-medium">Line</label>
+              <label className="text-zd-gray font-medium">Line</label>
               <div className="flex items-center gap-2">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"
@@ -146,7 +146,7 @@ function BackgroundColorPicker({
           {/* Background Color Slider */}
           <div className="mb-2">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm text-zd-gray font-medium">Background</label>
+              <label className="text-zd-gray font-medium">Background</label>
               <div className="flex items-center gap-2">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"

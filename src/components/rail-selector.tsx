@@ -9,7 +9,7 @@ interface RailSelectorProps {
 const RailSelector = ({ railOptions, selectedRail, onRailSelect }: RailSelectorProps) => {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-zd-white">Rail Type</h3>
+      <h3 className="font-semibold text-zd-white">Rail Type</h3>
       <div className="space-y-2">
         {railOptions.map((rail) => (
           <button
@@ -26,7 +26,7 @@ const RailSelector = ({ railOptions, selectedRail, onRailSelect }: RailSelectorP
           >
             <div className="flex justify-between items-center">
               <span className="font-medium">{rail.name}</span>
-              <span className="text-sm text-zd-gray">¥{rail.price.toLocaleString()}</span>
+              <span className="text-zd-gray">¥{rail.price.toLocaleString()}</span>
             </div>
           </button>
         ))}

@@ -12,7 +12,7 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-zd-white">Colors</h3>
+      <h3 className="font-semibold text-zd-white">Colors</h3>
       <div className="grid grid-cols-1 gap-2">
         {availableColors.map((color) => (
           <button
@@ -32,8 +32,8 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
               style={{ backgroundColor: color.value }}
             />
             <div className="flex-1">
-              <div className="text-sm font-medium text-zd-white">{color.name}</div>
-              <div className="text-xs text-zd-gray">{color.material}</div>
+              <div className="font-medium text-zd-white">{color.name}</div>
+              <div className="text-zd-gray">{color.material}</div>
             </div>
           </button>
         ))}

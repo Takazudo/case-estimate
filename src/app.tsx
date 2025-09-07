@@ -257,7 +257,7 @@ function App() {
       </header>
 
       {/* Main Content Area - 2 Column Grid */}
-      <main className="flex-1 mt-16 overflow-hidden">
+      <main className="flex-1 overflow-hidden">
         <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
           {/* Left Column - Visualization */}
           <div
@@ -329,7 +329,7 @@ function App() {
                   {/* Presets for 3DP */}
                   {material === '3dp' && colors.presets['3dp'] && (
                     <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-zd-white">Presets</h3>
+                      <h3 className="font-semibold text-zd-white">Presets</h3>
                       <div className="space-y-2">
                         {colors.presets['3dp'].map((preset) => (
                           <button
@@ -337,7 +337,7 @@ function App() {
                             onClick={() => handlePreset(preset)}
                             className="w-full text-left p-3 rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
                           >
-                            <span className="text-sm">{preset.name}</span>
+                            <span>{preset.name}</span>
                           </button>
                         ))}
                       </div>

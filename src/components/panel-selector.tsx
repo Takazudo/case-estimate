@@ -24,14 +24,14 @@ const PanelSelector = ({
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-zd-white">Select Panel</h3>
+      <h3 className="font-semibold text-zd-white">Select Panel</h3>
       <Listbox value={selectedPanel} onChange={onPanelSelect}>
         <div className="relative">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-3 pl-3 pr-10 text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
             <span className="block truncate">
               {selectedPanelObj ? (
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{selectedPanelObj.name}</span>
+                  <span className="font-medium">{selectedPanelObj.name}</span>
                   <div className="flex items-center mr-6">
                     <div
                       className="w-5 h-5 rounded border border-zd-gray mr-2"

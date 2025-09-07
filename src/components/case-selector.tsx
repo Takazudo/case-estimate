@@ -8,7 +8,7 @@ interface CaseSelectorProps {
 const CaseSelector = ({ selectedCase, onCaseSelect }: CaseSelectorProps) => {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-zd-white">Case Model</h3>
+      <h3 className="font-semibold text-zd-white">Case Model</h3>
       <select
         value={selectedCase}
         onChange={(e) => onCaseSelect(e.target.value)}

@@ -17,7 +17,7 @@ const PanelList = ({
 }: PanelListProps) => {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-zd-white">Panels</h3>
+      <h3 className="font-semibold text-zd-white">Panels</h3>
       <div className="space-y-2 max-h-[300px] overflow-y-auto">
         {panels.map((panel) => {
           const colorValue = panelColors[panel.id];
@@ -37,7 +37,7 @@ const PanelList = ({
               `}
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{panel.name}</span>
+                <span className="font-medium">{panel.name}</span>
                 <div className="flex items-center">
                   <div
                     className="w-5 h-5 rounded border border-zd-gray mr-2"
