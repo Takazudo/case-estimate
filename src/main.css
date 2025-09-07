@@ -1,1 +1,133 @@
 @import 'tailwindcss';
+
+/* CSS Variables - Zudo Design System */
+:root {
+  /* Colors */
+  --zd-color-black: #1c1917;
+  --zd-color-white: #d6d3d1;
+  --zd-color-link: #d97706;
+  --zd-color-active: #713f12;
+  --zd-color-gray: #78716c;
+  --zd-color-gray2: #201f1f;
+  --zd-color-notify: #22c55e;
+  --zd-color-error: #f43f5e;
+  --zd-color-price: #fbbf24;
+
+  /* Spacing - Horizontal gaps */
+  --zd-spacing-1px: 1px;
+  --zd-spacing-hgap-2xs: 5px;
+  --zd-spacing-hgap-xs: 12px;
+  --zd-spacing-hgap-sm: 20px;
+  --zd-spacing-hgap-md: 40px;
+  --zd-spacing-hgap-md-x2: 80px;
+  --zd-spacing-hgap-lg: 60px;
+  --zd-spacing-hgap-lg-x2: 120px;
+  --zd-spacing-hgap-xl: 100px;
+  --zd-spacing-hgap-2xl: 140px;
+
+  /* Spacing - Vertical gaps */
+  --zd-spacing-vgap-2xs: 4px;
+  --zd-spacing-vgap-xs: 8px;
+  --zd-spacing-vgap-sm: 20px;
+  --zd-spacing-vgap-md: 35px;
+  --zd-spacing-vgap-lg: 50px;
+  --zd-spacing-vgap-xl: 65px;
+  --zd-spacing-vgap-2xl: 80px;
+
+  /* Font sizes */
+  --zd-font-xs-size: 1rem;
+  --zd-font-sm-size: 1.1rem;
+  --zd-font-base-size: 1.4rem;
+  --zd-font-lg-size: 1.6rem;
+  --zd-font-xl-size: 1.9rem;
+  --zd-font-2xl-size: 2.8rem;
+  --zd-font-3xl-size: 3.2rem;
+  --zd-font-4xl-size: 4rem;
+  --zd-font-5xl-size: 4.8rem;
+
+  /* Font line heights */
+  --zd-font-xs-lineHeight: 1.4;
+  --zd-font-sm-lineHeight: 1.5;
+  --zd-font-base-lineHeight: 1.7;
+  --zd-font-lg-lineHeight: 1.5;
+  --zd-font-xl-lineHeight: 1.4;
+  --zd-font-2xl-lineHeight: 1.35;
+  --zd-font-3xl-lineHeight: 1.3;
+  --zd-font-4xl-lineHeight: 1.3;
+  --zd-font-5xl-lineHeight: 1.3;
+
+  /* Line heights (standalone) */
+  --zd-lineHeight-none: 1;
+  --zd-lineHeight-tight: 1.4;
+  --zd-lineHeight-snug: 1.6;
+  --zd-lineHeight-normal: 1.8;
+  --zd-lineHeight-relaxed: 1;
+  --zd-lineHeight-loose: 2.3;
+}
+
+/* Base styles */
+html {
+  font-size: 62.5%; /* Sets 1rem = 10px for easier calculations */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica', sans-serif;
+  font-size: var(--zd-font-base-size);
+  line-height: var(--zd-font-base-lineHeight);
+  color: var(--zd-color-white);
+  background-color: var(--zd-color-black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Links */
+a {
+  color: var(--zd-color-link);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--zd-color-active);
+}
+
+/* Focus styles */
+:focus {
+  outline: 2px solid var(--zd-color-link);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--zd-color-link);
+  color: var(--zd-color-black);
+}
+
+/* Scrollbar styles (webkit browsers) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--zd-color-gray2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--zd-color-gray);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--zd-color-link);
+}
