@@ -16,7 +16,6 @@ export const colors: Colors = {
   ],
   '3dp': [
     { id: 'carbon-black', name: 'カーボンブラック', value: '#212121', material: 'PLA-CF' },
-    { id: 'matte-black', name: 'マットブラック', value: '#424242', material: 'PLA' },
     { id: 'crimson-red', name: 'クリムゾンレッド', value: '#b71c1c', material: 'PLA' },
     { id: 'dark-orange', name: 'ダークオレンジ', value: '#e65100', material: 'PLA' },
     { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
@@ -28,21 +27,21 @@ export const colors: Colors = {
   ],
   presets: {
     '3dp': [
-      { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'matte-black' } },
+      { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'carbon-black' } },
       {
         id: 'kurobeni',
         name: 'KuroBeni (Black & Red)',
-        colors: { primary: 'matte-black', secondary: 'crimson-red' },
+        colors: { primary: 'carbon-black', secondary: 'crimson-red' },
       },
       {
         id: 'akatsuki',
         name: 'Akatsuki (Black & Dark Orange)',
-        colors: { primary: 'matte-black', secondary: 'dark-orange' },
+        colors: { primary: 'carbon-black', secondary: 'dark-orange' },
       },
       {
         id: 'shibugaki',
         name: 'ShibuGaki (Black & Light Orange)',
-        colors: { primary: 'matte-black', secondary: 'light-orange' },
+        colors: { primary: 'carbon-black', secondary: 'light-orange' },
       },
     ],
   },
