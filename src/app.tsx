@@ -6,6 +6,7 @@ import AllInOneSVG from './components/all-in-one-svg';
 import HeaderCaseSelector from './components/header-case-selector';
 import ColorPicker from './components/color-picker';
 import PanelSelector from './components/panel-selector';
+import BackgroundColorPicker from './components/background-color-picker';
 import {
   encodeCase,
   decodeCase,
@@ -19,11 +20,63 @@ interface PanelColors {
   [key: string]: string;
 }
 
+// localStorage keys
+const STORAGE_KEYS = {
+  BG_COLOR: 'takazudo_bg_color',
+  GRID_COLOR: 'takazudo_grid_color',
+} as const;
+
+// Default colors
+const DEFAULT_COLORS = {
+  BG_COLOR: '#2b2b31',
+  GRID_COLOR: '#454545',
+} as const;
+
+// Helper function to validate hex color format
+const isValidHexColor = (color: string): boolean => {
+  return /^#[0-9A-Fa-f]{6}$/.test(color);
+};
+
+// Helper function to safely get color from localStorage with validation
+const getStoredColor = (key: string, defaultValue: string): string => {
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored && isValidHexColor(stored)) {
+      return stored;
+    }
+  } catch (error) {
+    // localStorage might be unavailable or throw errors
+    console.warn(`Failed to read ${key} from localStorage:`, error);
+  }
+  return defaultValue;
+};
+
+// Helper function to safely save color to localStorage
+const saveColorToStorage = (key: string, value: string): void => {
+  try {
+    if (isValidHexColor(value)) {
+      localStorage.setItem(key, value);
+    } else {
+      console.warn(`Invalid color value for ${key}:`, value);
+    }
+  } catch (error) {
+    // localStorage might be unavailable or throw errors (e.g., in private browsing)
+    console.warn(`Failed to save ${key} to localStorage:`, error);
+  }
+};
+
 function App() {
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColors, setPanelColors] = useState<PanelColors>({});
+  // Initialize background colors from localStorage with fallback to defaults
+  const [bgColor, setBgColor] = useState<string>(() =>
+    getStoredColor(STORAGE_KEYS.BG_COLOR, DEFAULT_COLORS.BG_COLOR),
+  );
+  const [gridColor, setGridColor] = useState<string>(() =>
+    getStoredColor(STORAGE_KEYS.GRID_COLOR, DEFAULT_COLORS.GRID_COLOR),
+  );
 
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const material = currentCase?.material;
@@ -98,6 +151,16 @@ function App() {
     window.history.replaceState({}, '', newUrl);
   }, [selectedCase, panelColors]);
 
+  // Save bgColor to localStorage when it changes
+  useEffect(() => {
+    saveColorToStorage(STORAGE_KEYS.BG_COLOR, bgColor);
+  }, [bgColor]);
+
+  // Save gridColor to localStorage when it changes
+  useEffect(() => {
+    saveColorToStorage(STORAGE_KEYS.GRID_COLOR, gridColor);
+  }, [gridColor]);
+
   const handlePanelClick = (panelId: string) => {
     setSelectedPanel(panelId);
   };
@@ -120,16 +183,17 @@ function App() {
   };
 
   const handlePreset = (preset: Preset) => {
+    if (!currentCase || !material) return;
     const newColors: PanelColors = {};
     currentCase.panels.forEach((panel) => {
       if (preset.colors.all) {
-        const color = colors[material].find((c) => c.id === preset.colors.all);
+        const color = colors[material].find((c: Color) => c.id === preset.colors.all);
         if (color) newColors[panel.id] = color.value;
       } else {
         // Apply primary/secondary pattern
         const isPrimary = panel.id.includes('side') || panel.id.includes('center');
         const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
-        const color = colors[material].find((c) => c.id === colorId);
+        const color = colors[material].find((c: Color) => c.id === colorId);
         if (color) newColors[panel.id] = color.value;
       }
     });
@@ -137,7 +201,9 @@ function App() {
   };
 
   const resetColors = () => {
-    setPanelColors(getDefaultColors(selectedCase));
+    if (selectedCase) {
+      setPanelColors(getDefaultColors(selectedCase));
+    }
     setSelectedPanel(null);
     setSelectedColor(null);
   };
@@ -149,6 +215,25 @@ function App() {
       colorMap[color.value] = color.name;
     });
   }
+
+  // Generate dynamic SVG background pattern
+  const generateBackgroundPattern = (bgColor: string, gridColor: string): string => {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="20" height="20" patternTransform="scale(3)" patternUnits="userSpaceOnUse">
+            <rect width="100%" height="100%" fill="${bgColor}"/>
+            <path fill="none" stroke="${gridColor}" d="M10 0v20ZM0 10h20Z"/>
+          </pattern>
+        </defs>
+        <rect width="800%" height="800%" fill="url(#grid)"/>
+      </svg>
+    `.trim();
+
+    // Convert to data URL
+    const encoded = encodeURIComponent(svg);
+    return `data:image/svg+xml,${encoded}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -167,7 +252,24 @@ function App() {
       {/* Main Content Area */}
       <div className="flex-1 flex pt-16 pb-16 min-h-screen">
         {/* Left Panel - Visualization or Welcome */}
-        <div className="flex-1 bg-white border-r border-gray-200 mr-96">
+        <div
+          className="flex-1 border-r border-gray-200 mr-96 relative"
+          style={{
+            backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Background Color Picker */}
+          <div className="absolute top-4 left-4 z-10">
+            <BackgroundColorPicker
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onBgColorChange={setBgColor}
+              onGridColorChange={setGridColor}
+            />
+          </div>
+
           <div className="h-full p-8 flex items-center justify-center">
             {selectedCase ? (
               <AllInOneSVG
