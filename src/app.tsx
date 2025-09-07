@@ -256,121 +256,123 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex pt-16 pb-16 min-h-screen">
-        {/* Left Panel - Visualization or Welcome */}
-        <div
-          className="flex-1 border-r border-zd-gray mr-96 relative"
-          style={{
-            backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
-            backgroundSize: '60px 60px',
-            backgroundPosition: 'center',
-          }}
-        >
-          {/* Background Color Picker */}
-          <div className="absolute top-4 left-4 z-10">
-            <BackgroundColorPicker
-              bgColor={bgColor}
-              gridColor={gridColor}
-              onBgColorChange={setBgColor}
-              onGridColorChange={setGridColor}
-            />
-          </div>
-
-          <div className="h-full p-8 flex items-center justify-center">
-            {selectedCase ? (
-              <AllInOneSVG
-                caseType={selectedCase}
-                panelColors={panelColors}
-                onPanelClick={handlePanelClick}
-                selectedPanel={selectedPanel}
-                material={material}
+      {/* Main Content Area - 2 Column Grid */}
+      <main className="flex-1 pt-16 min-h-0">
+        <div className="h-full grid grid-cols-1 xl:grid-cols-[1fr_400px]">
+          {/* Left Column - Visualization */}
+          <div
+            className="relative border-r border-zd-gray"
+            style={{
+              backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
+              backgroundSize: '60px 60px',
+              backgroundPosition: 'center',
+            }}
+          >
+            {/* Background Color Picker */}
+            <div className="absolute top-4 left-4 z-10">
+              <BackgroundColorPicker
+                bgColor={bgColor}
+                gridColor={gridColor}
+                onBgColorChange={setBgColor}
+                onGridColorChange={setGridColor}
               />
-            ) : (
-              <div className="text-center max-w-md">
-                <h2 className="text-3xl font-bold text-zd-white mb-4">
-                  Welcome to Takazudo Modular
-                </h2>
-                <p className="text-lg text-zd-gray mb-8">
-                  Design your custom modular synthesizer case with our interactive configurator.
-                </p>
-                <p className="text-zd-gray">
-                  Select a case model from the dropdown above to get started.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Right Panel - Controls */}
-        <div className="w-96 bg-zd-black h-full overflow-y-auto fixed right-0 top-16 bottom-16">
-          <div className="p-6 space-y-6">
-            {currentCase ? (
-              <>
-                {/* Panel Selector */}
-                <PanelSelector
-                  panels={currentCase.panels}
+            <div className="h-full p-8 flex items-center justify-center">
+              {selectedCase ? (
+                <AllInOneSVG
+                  caseType={selectedCase}
                   panelColors={panelColors}
+                  onPanelClick={handlePanelClick}
                   selectedPanel={selectedPanel}
-                  onPanelSelect={setSelectedPanel}
-                  colorMap={colorMap}
+                  material={material}
                 />
+              ) : (
+                <div className="text-center max-w-md">
+                  <h2 className="text-3xl font-bold text-zd-white mb-4">
+                    Welcome to Takazudo Modular
+                  </h2>
+                  <p className="text-lg text-zd-gray mb-8">
+                    Design your custom modular synthesizer case with our interactive configurator.
+                  </p>
+                  <p className="text-zd-gray">
+                    Select a case model from the dropdown above to get started.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
 
-                {/* Color Picker */}
-                {selectedPanel && material && (
-                  <ColorPicker
-                    material={material}
-                    selectedColor={selectedColor}
-                    onColorSelect={handleColorSelect}
+          {/* Right Column - Controls */}
+          <div className="bg-zd-black h-full overflow-y-auto">
+            <div className="p-6 space-y-6">
+              {currentCase ? (
+                <>
+                  {/* Panel Selector */}
+                  <PanelSelector
+                    panels={currentCase.panels}
+                    panelColors={panelColors}
+                    selectedPanel={selectedPanel}
+                    onPanelSelect={setSelectedPanel}
+                    colorMap={colorMap}
                   />
-                )}
 
-                {/* Presets for 3DP */}
-                {material === '3dp' && colors.presets['3dp'] && (
-                  <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-zd-white">Presets</h3>
-                    <div className="space-y-2">
-                      {colors.presets['3dp'].map((preset) => (
-                        <button
-                          key={preset.id}
-                          onClick={() => handlePreset(preset)}
-                          className="w-full text-left p-3 rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
-                        >
-                          <span className="text-sm">{preset.name}</span>
-                        </button>
-                      ))}
+                  {/* Color Picker */}
+                  {selectedPanel && material && (
+                    <ColorPicker
+                      material={material}
+                      selectedColor={selectedColor}
+                      onColorSelect={handleColorSelect}
+                    />
+                  )}
+
+                  {/* Presets for 3DP */}
+                  {material === '3dp' && colors.presets['3dp'] && (
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold text-zd-white">Presets</h3>
+                      <div className="space-y-2">
+                        {colors.presets['3dp'].map((preset) => (
+                          <button
+                            key={preset.id}
+                            onClick={() => handlePreset(preset)}
+                            className="w-full text-left p-3 rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
+                          >
+                            <span className="text-sm">{preset.name}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="space-y-3">
+                    <button
+                      onClick={resetColors}
+                      className="w-full px-4 py-2 bg-zd-gray2 text-zd-white rounded-lg hover:bg-zd-gray transition-colors"
+                    >
+                      Reset All Colors
+                    </button>
                   </div>
-                )}
 
-                {/* Actions */}
-                <div className="space-y-3">
-                  <button
-                    onClick={resetColors}
-                    className="w-full px-4 py-2 bg-zd-gray2 text-zd-white rounded-lg hover:bg-zd-gray transition-colors"
-                  >
-                    Reset All Colors
-                  </button>
+                  {/* Info */}
+                  <div className="text-xs text-zd-gray space-y-1">
+                    <p>• Click on any panel to select it</p>
+                    <p>• Choose a color to apply to the selected panel</p>
+                    <p>• Your configuration is saved in the URL</p>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center text-zd-gray mt-8">
+                  <p>Select a case model to begin customization</p>
                 </div>
-
-                {/* Info */}
-                <div className="text-xs text-zd-gray space-y-1">
-                  <p>• Click on any panel to select it</p>
-                  <p>• Choose a color to apply to the selected panel</p>
-                  <p>• Your configuration is saved in the URL</p>
-                </div>
-              </>
-            ) : (
-              <div className="text-center text-zd-gray mt-8">
-                <p>Select a case model to begin customization</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </main>
 
-      {/* Fixed Footer */}
-      <footer className="bg-zd-gray2 border-t border-zd-gray fixed bottom-0 left-0 right-0 z-10">
+      {/* Footer */}
+      <footer className="bg-zd-gray2 border-t border-zd-gray">
         <div className="px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="text-sm text-zd-gray">© 2025 Takazudo Modular</div>
