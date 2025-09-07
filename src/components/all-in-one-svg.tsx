@@ -134,9 +134,9 @@ const AllInOneSVG = ({
 
           // Add selected state visual feedback
           if (selectedPanel === panelId) {
-            pathElement.style.filter = 'drop-shadow(0 0 8px rgba(217, 119, 6, 0.6))';
+            pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
             pathElement.style.strokeWidth = '4';
-            pathElement.style.stroke = '#d97706'; // zd-link color
+            pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
           } else {
             pathElement.style.filter = 'none';
             pathElement.style.strokeWidth = '0';
@@ -147,14 +147,14 @@ const AllInOneSVG = ({
           pathElement.onmouseenter = () => {
             if (selectedPanel !== panelId) {
               // Add drop shadow and border for better visibility
-              pathElement.style.filter = 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))';
+              pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
               pathElement.style.strokeWidth = '2';
-              pathElement.style.stroke = '#78716c'; // zd-gray color
+              pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
 
               // Subtle brightness adjustment instead of opacity
               if (material === 'acrylic') {
                 pathElement.style.filter =
-                  'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3)) brightness(1.1)';
+                  'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6)) brightness(1.1)';
               }
             }
           };
