@@ -26,10 +26,10 @@ const STORAGE_KEYS = {
   GRID_COLOR: 'takazudo_grid_color',
 } as const;
 
-// Default colors
+// Default colors (Line: 59%, Background: 66%)
 const DEFAULT_COLORS = {
-  BG_COLOR: '#2b2b31',
-  GRID_COLOR: '#454545',
+  BG_COLOR: '#a8a8a8', // 66% gray
+  GRID_COLOR: '#969696', // 59% gray
 } as const;
 
 // Helper function to validate hex color format
