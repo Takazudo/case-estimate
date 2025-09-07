@@ -84,7 +84,15 @@ function App() {
   // Initialize default colors for all panels (always use first color)
   const getDefaultColors = (caseType: string) => {
     const caseData = cases[caseType];
+    if (!caseData || !caseData.material) {
+      // Case or material not found, return empty object
+      return {};
+    }
     const availableColors = colors[caseData.material];
+    if (!Array.isArray(availableColors) || availableColors.length === 0) {
+      // No available colors, return empty object
+      return {};
+    }
     const defaultColor = availableColors[0]; // Always use first color
     const defaultColors: PanelColors = {};
     caseData.panels.forEach((panel) => {
@@ -352,7 +360,7 @@ function App() {
                   </div>
 
                   {/* Info */}
-                  <div className="text-sm text-zd-gray space-y-1px">
+                  <div className="text-sm text-zd-gray space-y-vgap-2xs">
                     <p>• Click on any panel to select it</p>
                     <p>• Choose a color to apply to the selected panel</p>
                     <p>• Your configuration is saved in the URL</p>

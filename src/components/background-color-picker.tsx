@@ -147,7 +147,7 @@ function BackgroundColorPicker({
           <div className="mb-vgap-2xs">
             <div className="flex items-center justify-between mb-vgap-2xs">
               <label className="text-zd-gray font-medium">Background</label>
-              <div className="flex items-center gap-hgap-2xs border">
+              <div className="flex items-center gap-hgap-2xs">
                 <div
                   className="w-6 h-6 rounded border border-zd-gray"
                   style={{ backgroundColor: bgColor }}
