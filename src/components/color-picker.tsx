@@ -2,7 +2,7 @@ import { colors } from '../data/colors';
 import type { Color } from '../types';
 
 interface ColorPickerProps {
-  material: 'acrylic' | '3d-printed';
+  material: 'acrylic' | '3dp';
   selectedColor: Color | null;
   onColorSelect: (color: Color) => void;
 }
@@ -11,27 +11,30 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
   const availableColors = colors[material] || [];
 
   return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-gray-700">Colors</h3>
-      <div className="grid grid-cols-2 gap-2">
+    <div className="space-y-vgap-xs">
+      <h3 className="font-semibold text-zd-white">Colors</h3>
+      <div className="grid grid-cols-1 gap-vgap-2xs">
         {availableColors.map((color) => (
           <button
             key={color.id}
             onClick={() => onColorSelect(color)}
             className={`
-              flex items-center justify-center p-3 rounded-lg border-2 transition-all
+              flex items-center p-hgap-xs rounded-lg border-2 transition-all text-left
               ${
                 selectedColor?.id === color.id
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-zd-link bg-zd-active'
+                  : 'border-zd-gray hover:border-zd-link'
               }
             `}
           >
             <div
-              className="w-6 h-6 rounded mr-2 border border-gray-300"
+              className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
               style={{ backgroundColor: color.value }}
             />
-            <span className="text-sm">{color.name}</span>
+            <div className="flex-1">
+              <div className="font-medium text-zd-white">{color.name}</div>
+              <div className="text-zd-gray">{color.material}</div>
+            </div>
           </button>
         ))}
       </div>

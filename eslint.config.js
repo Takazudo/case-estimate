@@ -20,6 +20,7 @@ export default [
       'coverage/**',
       'playwright.config.ts',
       'tests/**',
+      '__inbox/**',
     ],
     languageOptions: {
       ecmaVersion: 2020,

@@ -5,19 +5,20 @@ interface AllInOneSVGProps {
   panelColors: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
+  material?: string;
 }
 
 // Map SVG classes to panel IDs based on the SVG structure
-// These mappings are based on analyzing the SVG colors and positions
+// These mappings match the layout in the diagram:
 const CLASS_TO_PANEL: { [key: string]: string } = {
-  b: 'left-side', // Black panel (left side)
-  c: 'right-side', // Magenta panel (right side)
-  d: 'top-front', // Green panel (top section)
-  e: 'top-back', // Red panel (second top section)
-  f: 'bottom-front', // Yellow panel (bottom section)
-  g: 'bottom-back', // Green panel (second bottom section)
-  h: 'center-bottom', // Brown panel (lower center)
-  i: 'center-top', // Orange panel (upper center)
+  b: 'side1', // Panel 1: Left side (black)
+  c: 'side2', // Panel 2: Right side (magenta)
+  i: 'front1', // Panel 3: Top front (orange)
+  e: 'front2', // Panel 4: Second top (red - behind panel 3)
+  d: 'bottom1', // Panel 5: Center upper (green)
+  g: 'bottom2', // Panel 6: Center lower (green)
+  f: 'back1', // Panel 7: Bottom front (yellow)
+  h: 'back2', // Panel 8: Bottom back (brown)
 };
 
 // Default black color for all panels
@@ -26,7 +27,13 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
 
-const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }: AllInOneSVGProps) => {
+const AllInOneSVG = ({
+  caseType,
+  panelColors,
+  onPanelClick,
+  selectedPanel,
+  material,
+}: AllInOneSVGProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
 
@@ -114,52 +121,72 @@ const AllInOneSVG = ({ caseType, panelColors, onPanelClick, selectedPanel }: All
           // Add !important to override any CSS rules
           pathElement.style.setProperty('fill', color, 'important');
 
-          // Add hover effect
-          pathElement.style.transition = 'opacity 0.2s, transform 0.2s';
+          // Apply opacity for acrylic material to simulate transparency
+          if (material === 'acrylic') {
+            pathElement.style.setProperty('fill-opacity', '0.8', 'important');
+          } else {
+            pathElement.style.setProperty('fill-opacity', '1', 'important');
+          }
+
+          // Add hover effect with better transitions
+          pathElement.style.transition = 'all 0.2s ease-out';
+          pathElement.style.cursor = 'pointer';
 
           // Add selected state visual feedback
           if (selectedPanel === panelId) {
-            pathElement.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 1))';
-            pathElement.style.strokeWidth = '3';
-            pathElement.style.stroke = '#3B82F6';
-            pathElement.style.opacity = '1';
+            pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
+            pathElement.style.strokeWidth = '4';
+            pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
           } else {
             pathElement.style.filter = 'none';
             pathElement.style.strokeWidth = '0';
             pathElement.style.stroke = 'none';
-            pathElement.style.opacity = '1';
           }
 
-          // Hover effects
+          // Hover effects - more visible for acrylic panels
           pathElement.onmouseenter = () => {
             if (selectedPanel !== panelId) {
-              pathElement.style.opacity = '0.8';
+              // Add drop shadow and border for better visibility
+              pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
+              pathElement.style.strokeWidth = '2';
+              pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
+
+              // Subtle brightness adjustment instead of opacity
+              if (material === 'acrylic') {
+                pathElement.style.filter =
+                  'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6)) brightness(1.1)';
+              }
             }
           };
 
           pathElement.onmouseleave = () => {
-            pathElement.style.opacity = '1';
+            if (selectedPanel !== panelId) {
+              // Remove hover effects
+              pathElement.style.filter = 'none';
+              pathElement.style.strokeWidth = '0';
+              pathElement.style.stroke = 'none';
+            }
+
+            // Always restore base opacity
+            const baseOpacity = material === 'acrylic' ? '0.8' : '1';
+            pathElement.style.setProperty('fill-opacity', baseOpacity, 'important');
           };
         });
       });
     }, SVG_RENDER_DELAY_MS); // Delay to ensure DOM is ready
 
     return () => clearTimeout(timeoutId);
-  }, [svgLoaded, panelColors, selectedPanel, onPanelClick]);
+  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center p-4">
+    <div className="w-full h-full flex items-center justify-center">
       <div
         ref={svgContainerRef}
-        className="w-full h-full flex items-center justify-center"
-        style={{
-          maxWidth: '600px',
-          maxHeight: '500px',
-        }}
+        className="w-full h-full max-w-[800px] max-h-[700px] flex items-center justify-center"
       />
       {!svgLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-gray-500">Loading visualization...</div>
+          <div className="text-zd-gray">Loading visualization...</div>
         </div>
       )}
     </div>
