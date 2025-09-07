@@ -275,16 +275,6 @@ function App() {
               backgroundPosition: 'center',
             }}
           >
-            {/* Background Color Picker */}
-            <div className="absolute top-4 left-4 z-10">
-              <BackgroundColorPicker
-                bgColor={bgColor}
-                gridColor={gridColor}
-                onBgColorChange={setBgColor}
-                onGridColorChange={setGridColor}
-              />
-            </div>
-
             <div className="h-full p-[10px] md:p-[15px] lg:p-[20px] xl:p-[30px] flex items-center justify-center">
               {selectedCase ? (
                 <AllInOneSVG
@@ -382,6 +372,21 @@ function App() {
           </div>
         </div>
       </main>
+
+      {/* Fixed Footer */}
+      <footer className="bg-zd-gray2 border-t border-zd-gray fixed bottom-0 left-0 right-0 z-10">
+        <div className="px-hgap-sm py-vgap-xs">
+          <div className="flex items-center justify-between">
+            <BackgroundColorPicker
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onBgColorChange={setBgColor}
+              onGridColorChange={setGridColor}
+            />
+            <div className="text-xs md:text-sm text-zd-gray">© 2025 Takazudo Modular</div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

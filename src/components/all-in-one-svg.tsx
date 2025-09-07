@@ -133,8 +133,8 @@ const AllInOneSVG = ({
 
           // Add selected state visual feedback
           if (selectedPanel === panelId) {
-            pathElement.style.filter = 'drop-shadow(0 0 15px rgba(59, 130, 246, 1))';
-            pathElement.style.strokeWidth = '3';
+            pathElement.style.filter = 'drop-shadow(0 0 5px rgba(59, 130, 246, 1))';
+            pathElement.style.strokeWidth = '5';
             pathElement.style.stroke = '#3B82F6';
           } else {
             pathElement.style.filter = 'none';

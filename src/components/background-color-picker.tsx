@@ -92,7 +92,7 @@ function BackgroundColorPicker({
       {isOpen && (
         <div
           ref={popupRef}
-          className="absolute top-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-hgap-xs z-20"
+          className="absolute bottom-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-hgap-xs z-20"
           style={{ minWidth: '280px' }}
         >
           {/* Close button */}
