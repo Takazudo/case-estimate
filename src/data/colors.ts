@@ -25,7 +25,7 @@ export const colors: Colors = {
     { id: 'clear-red', name: 'クリアレッド', value: '#ff6b6b', material: 'PETG' },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#f8f4e6', material: 'PLA' },
   ],
-  presets: {
+  series: {
     '3dp': [
       { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'carbon-black' } },
       {

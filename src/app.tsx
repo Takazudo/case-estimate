@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { cases } from './data/cases';
 import { colors } from './data/colors';
-import type { Color, Preset } from './types';
+import type { Color, Series } from './types';
 import AllInOneSVG from './components/all-in-one-svg';
 import HeaderCaseSelector from './components/header-case-selector';
 import ColorPicker from './components/color-picker';
@@ -190,15 +190,15 @@ function App() {
     setSelectedColor(null);
   };
 
-  const handlePreset = (preset: Preset) => {
+  const handleSeries = (series: Series) => {
     if (!currentCase || !material) return;
     const newColors: PanelColors = {};
     currentCase.panels.forEach((panel) => {
-      if (preset.colors.all) {
-        const color = colors[material].find((c: Color) => c.id === preset.colors.all);
+      if (series.colors.all) {
+        const color = colors[material].find((c: Color) => c.id === series.colors.all);
         if (color) newColors[panel.id] = color.value;
       } else {
-        // Apply primary/secondary pattern based on actual preset images
+        // Apply primary/secondary pattern based on actual series images
         // Primary (black): side1, side2, front1, bottom1, back1
         // Secondary (colored): front2, bottom2, back2
         const isPrimary =
@@ -207,7 +207,7 @@ function App() {
           panel.id === 'front1' ||
           panel.id === 'bottom1' ||
           panel.id === 'back1';
-        const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
+        const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
         const color = colors[material].find((c: Color) => c.id === colorId);
         if (color) newColors[panel.id] = color.value;
       }
@@ -331,18 +331,18 @@ function App() {
                     />
                   )}
 
-                  {/* Presets for 3DP */}
-                  {material === '3dp' && colors.presets['3dp'] && (
+                  {/* Series for 3DP */}
+                  {material === '3dp' && colors.series['3dp'] && (
                     <div className="space-y-vgap-xs">
-                      <h3 className="font-semibold text-zd-white">Presets</h3>
+                      <h3 className="font-semibold text-zd-white pb-vgap-xs">Series</h3>
                       <div className="space-y-vgap-2xs">
-                        {colors.presets['3dp'].map((preset) => (
+                        {colors.series['3dp'].map((series) => (
                           <button
-                            key={preset.id}
-                            onClick={() => handlePreset(preset)}
+                            key={series.id}
+                            onClick={() => handleSeries(series)}
                             className="w-full text-left p-hgap-xs rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
                           >
-                            <span>{preset.name}</span>
+                            <span>{series.name}</span>
                           </button>
                         ))}
                       </div>
