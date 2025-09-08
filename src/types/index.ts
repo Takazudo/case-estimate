@@ -30,6 +30,7 @@ export interface Color {
 export interface Series {
   id: string;
   name: string;
+  description?: string;
   colors: {
     all?: string;
     primary?: string;

@@ -8,6 +8,7 @@ import ColorPicker from './components/color-picker';
 import PanelSelector from './components/panel-selector';
 import BackgroundColorPicker from './components/background-color-picker';
 import Tabs from './components/tabs';
+import SeriesCard from './components/series-card';
 import {
   encodeCase,
   decodeCase,
@@ -322,17 +323,17 @@ function App() {
                         id: 'series',
                         label: 'Series',
                         content: (
-                          <div className="space-y-vgap-2xs pt-vgap-md">
-                            {material && colors.series[material] && (
+                          <div className="space-y-vgap-sm pt-vgap-md">
+                            {material && colors.series[material] && selectedCase && (
                               <>
                                 {colors.series[material].map((series) => (
-                                  <button
+                                  <SeriesCard
                                     key={series.id}
-                                    onClick={() => handleSeries(series)}
-                                    className="w-full text-left px-hgap-sm py-vgap-xs rounded-lg border-2 border-zd-gray hover:border-zd-white hover:bg-zd-gray2 transition-all text-zd-white"
-                                  >
-                                    {series.name}
-                                  </button>
+                                    series={series}
+                                    material={material}
+                                    caseType={selectedCase}
+                                    onClick={handleSeries}
+                                  />
                                 ))}
                               </>
                             )}
