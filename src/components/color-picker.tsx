@@ -32,7 +32,7 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
               className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
               style={{ backgroundColor: color.value }}
             />
-            <span className="flex flex-1">
+            <span className="flex flex-1 flex-col lg:flex-row">
               <span className="font-medium text-zd-white flex-1">{color.name}</span>
               <span className="text-zd-gray nowrap">{color.material}</span>
             </span>
