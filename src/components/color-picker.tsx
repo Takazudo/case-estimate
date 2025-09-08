@@ -12,14 +12,15 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
 
   return (
     <div className="space-y-vgap-xs">
-      <h3 className="font-semibold text-zd-white">Colors</h3>
-      <div className="grid grid-cols-1 gap-vgap-2xs">
+      <h3 className="font-semibold text-zd-white pb-vgap-xs">Colors</h3>
+      <div className="grid grid-cols-1 gap-vgap-2xs text-sm">
         {availableColors.map((color) => (
           <button
             key={color.id}
             onClick={() => onColorSelect(color)}
             className={`
-              flex items-center p-hgap-xs rounded-lg border-2 transition-all text-left
+              flex items-center rounded-lg border-2 transition-all text-left
+              py-vgap-sm px-hgap-sm
               ${
                 selectedColor?.id === color.id
                   ? 'border-zd-link bg-zd-active'
@@ -27,14 +28,14 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
               }
             `}
           >
-            <div
+            <span
               className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
               style={{ backgroundColor: color.value }}
             />
-            <div className="flex-1">
-              <div className="font-medium text-zd-white">{color.name}</div>
-              <div className="text-zd-gray">{color.material}</div>
-            </div>
+            <span className="flex flex-1">
+              <span className="font-medium text-zd-white flex-1">{color.name}</span>
+              <span className="text-zd-gray nowrap">{color.material}</span>
+            </span>
           </button>
         ))}
       </div>

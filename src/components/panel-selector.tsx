@@ -30,10 +30,10 @@ const PanelSelector = ({
 
   return (
     <div className="space-y-vgap-xs">
-      <h3 className="font-semibold text-zd-white">Select Panel</h3>
+      <h3 className="font-semibold text-zd-white pb-vgap-xs">Select Panel</h3>
       <Listbox value={selectedPanel} onChange={onPanelSelect}>
-        <div className="relative">
-          <ListboxButton className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-xs pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
+        <div className="relative text-sm">
+          <ListboxButton className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
             <span className="block truncate">
               {selectedPanelObj ? (
                 <div className="flex items-center justify-between">
@@ -60,7 +60,7 @@ const PanelSelector = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <ListboxOptions className="absolute z-20 mt-1px max-h-60 w-full overflow-auto rounded-lg bg-zd-black border-2 border-zd-gray py-1px shadow-2xl focus:outline-none">
+            <ListboxOptions className="absolute z-20 mt-1px max-h-[400px] w-full overflow-auto rounded-lg bg-zd-black border-2 border-zd-gray shadow-2xl focus:outline-none">
               {panels.map((panel) => {
                 const colorValue = panelColors[panel.id];
                 const colorName = colorMap[colorValue] || 'Default';
@@ -69,7 +69,7 @@ const PanelSelector = ({
                   <ListboxOption
                     key={panel.id}
                     className={({ active }) =>
-                      `relative cursor-default select-none py-vgap-xs pl-hgap-md pr-hgap-xs ${
+                      `relative cursor-default select-none py-[.5em] first:pt-[1em] last:pb-[1em] pl-hgap-md pr-hgap-xs ${
                         active ? 'bg-zd-active text-zd-white' : 'text-zd-white'
                       }`
                     }

@@ -12,7 +12,7 @@ const HeaderCaseSelector = ({ selectedCase, onCaseSelect }: HeaderCaseSelectorPr
       <select
         value={selectedCase || ''}
         onChange={(e) => e.target.value && onCaseSelect(e.target.value)}
-        className="px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white text-sm md:text-base"
+        className="px-hgap-sm py-vgap-xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white text-sm md:text-base"
       >
         <option value="">モデル選択</option>
         {Object.entries(cases).map(([key, caseData]) => (

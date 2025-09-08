@@ -273,7 +273,7 @@ function App() {
 
       {/* Main Content Area - 2 Column Grid */}
       <main className="flex-1 overflow-hidden">
-        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
+        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
           {/* Left Column - Visualization */}
           <div
             className="relative border-r border-zd-gray overflow-hidden"
