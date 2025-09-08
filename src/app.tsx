@@ -310,7 +310,7 @@ function App() {
           </div>
 
           {/* Right Column - Controls */}
-          <div className="bg-zd-black h-full overflow-y-auto overflow-x-hidden min-w-0">
+          <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0">
             <div className="px-hgap-sm lg:px-hgap-md py-vgap-md space-y-vgap-sm lg:space-y-vgap-md">
               {currentCase ? (
                 <>

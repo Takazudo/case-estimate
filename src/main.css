@@ -193,7 +193,7 @@
 
   /* Focus styles */
   :focus {
-    outline: 2px solid var(--zd-color-link);
+    outline: 2px solid rgba(217, 119, 6, 0.8);
     outline-offset: 2px;
   }
 

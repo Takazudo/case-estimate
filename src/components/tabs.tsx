@@ -26,6 +26,8 @@ const Tabs = ({ tabs, defaultTab }: TabsProps) => {
             onClick={() => setActiveTab(tab.id)}
             className={`
               flex-1 transition-all grid
+              outline-offset-[-10px]
+              rounded-[14px]
               ${activeTab === tab.id ? 'bg-zd-black text-zd-white' : 'bg-zd-black text-zd-gray'}
             `}
           >
@@ -55,7 +57,7 @@ const Tabs = ({ tabs, defaultTab }: TabsProps) => {
       </div>
 
       {/* Tab content with connected border */}
-      <div className="border border-debug w-full">{activeTabContent}</div>
+      <div>{activeTabContent}</div>
     </div>
   );
 };
