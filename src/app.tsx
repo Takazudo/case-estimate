@@ -331,12 +331,12 @@ function App() {
                     />
                   )}
 
-                  {/* Series for 3DP */}
-                  {material === '3dp' && colors.series['3dp'] && (
+                  {/* Series */}
+                  {material && colors.series[material] && (
                     <div className="space-y-vgap-xs">
                       <h3 className="font-semibold text-zd-white pb-vgap-xs">Series</h3>
                       <div className="space-y-vgap-2xs">
-                        {colors.series['3dp'].map((series) => (
+                        {colors.series[material].map((series) => (
                           <button
                             key={series.id}
                             onClick={() => handleSeries(series)}

@@ -41,6 +41,7 @@ export interface Colors {
   acrylic: Color[];
   '3dp': Color[];
   series: {
+    acrylic: Series[];
     '3dp': Series[];
   };
 }

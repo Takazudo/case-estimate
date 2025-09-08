@@ -26,6 +26,19 @@ export const colors: Colors = {
     { id: 'bone-white', name: 'ボーンホワイト', value: '#f8f4e6', material: 'PLA' },
   ],
   series: {
+    acrylic: [
+      { id: 'red', name: 'レッド', colors: { all: 'red' } },
+      { id: 'orange', name: 'オレンジ', colors: { all: 'orange' } },
+      { id: 'yellow', name: 'イエロー', colors: { all: 'yellow' } },
+      { id: 'clear', name: 'クリア', colors: { all: 'clear' } },
+      { id: 'frost-clear', name: 'フロストクリア', colors: { all: 'frost-clear' } },
+      { id: 'ocean-blue', name: 'オーシャンブルー', colors: { all: 'ocean-blue' } },
+      { id: 'sky-blue', name: 'スカイブルー', colors: { all: 'sky-blue' } },
+      { id: 'forest', name: 'フォレスト', colors: { all: 'forest' } },
+      { id: 'lime', name: 'ライム', colors: { all: 'lime' } },
+      { id: 'shadow', name: 'シャドー', colors: { all: 'shadow' } },
+      { id: 'pink', name: 'ピンク', colors: { all: 'pink' } },
+    ],
     '3dp': [
       { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'carbon-black' } },
       {
