@@ -65,6 +65,9 @@ test.describe('Smoke Test', () => {
     // Select a case to reveal controls
     await page.selectOption('select', 'zudo-block-40');
 
+    // Click on Custom tab to see panel selector
+    await page.locator('button:has-text("Custom")').click();
+
     // Wait for the panel selector to appear
     await expect(page.locator('text=Select Panel')).toBeVisible();
 

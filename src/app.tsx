@@ -7,6 +7,7 @@ import HeaderCaseSelector from './components/header-case-selector';
 import ColorPicker from './components/color-picker';
 import PanelSelector from './components/panel-selector';
 import BackgroundColorPicker from './components/background-color-picker';
+import Tabs from './components/tabs';
 import {
   encodeCase,
   decodeCase,
@@ -313,41 +314,58 @@ function App() {
             <div className="px-hgap-sm lg:px-hgap-md py-vgap-md space-y-vgap-sm lg:space-y-vgap-md">
               {currentCase ? (
                 <>
-                  {/* Panel Selector */}
-                  <PanelSelector
-                    panels={currentCase.panels}
-                    panelColors={panelColors}
-                    selectedPanel={selectedPanel}
-                    onPanelSelect={setSelectedPanel}
-                    colorMap={colorMap}
+                  {/* Tabs for Series and Custom */}
+                  <Tabs
+                    defaultTab="series"
+                    tabs={[
+                      {
+                        id: 'series',
+                        label: 'Series',
+                        content: (
+                          <div className="space-y-vgap-2xs pt-vgap-md">
+                            {material && colors.series[material] && (
+                              <>
+                                {colors.series[material].map((series) => (
+                                  <button
+                                    key={series.id}
+                                    onClick={() => handleSeries(series)}
+                                    className="w-full text-left px-hgap-sm py-vgap-xs rounded-lg border-2 border-zd-gray hover:border-zd-white hover:bg-zd-gray2 transition-all text-zd-white"
+                                  >
+                                    {series.name}
+                                  </button>
+                                ))}
+                              </>
+                            )}
+                          </div>
+                        ),
+                      },
+                      {
+                        id: 'custom',
+                        label: 'Custom',
+                        content: (
+                          <div className="space-y-vgap-sm pt-vgap-md">
+                            {/* Panel Selector */}
+                            <PanelSelector
+                              panels={currentCase.panels}
+                              panelColors={panelColors}
+                              selectedPanel={selectedPanel}
+                              onPanelSelect={setSelectedPanel}
+                              colorMap={colorMap}
+                            />
+
+                            {/* Color Picker */}
+                            {selectedPanel && material && (
+                              <ColorPicker
+                                material={material}
+                                selectedColor={selectedColor}
+                                onColorSelect={handleColorSelect}
+                              />
+                            )}
+                          </div>
+                        ),
+                      },
+                    ]}
                   />
-
-                  {/* Color Picker */}
-                  {selectedPanel && material && (
-                    <ColorPicker
-                      material={material}
-                      selectedColor={selectedColor}
-                      onColorSelect={handleColorSelect}
-                    />
-                  )}
-
-                  {/* Series */}
-                  {material && colors.series[material] && (
-                    <div className="space-y-vgap-xs">
-                      <h3 className="font-semibold text-zd-white pb-vgap-xs">Series</h3>
-                      <div className="space-y-vgap-2xs">
-                        {colors.series[material].map((series) => (
-                          <button
-                            key={series.id}
-                            onClick={() => handleSeries(series)}
-                            className="w-full text-left p-hgap-xs rounded-lg border-2 border-zd-gray hover:border-zd-link transition-all"
-                          >
-                            <span>{series.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Actions */}
                   <div className="space-y-3">
