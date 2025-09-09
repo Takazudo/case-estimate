@@ -71,8 +71,8 @@ test.describe('Smoke Test', () => {
     // Wait for the panel selector to appear
     await expect(page.locator('text=Select Panel')).toBeVisible();
 
-    // Check that reset button is present
-    await expect(page.locator('button:has-text("Reset All Colors")')).toBeVisible();
+    // Check that panel selector dropdown is present
+    await expect(page.locator('button:has-text("Select a panel to customize")')).toBeVisible();
   });
 
   test('should switch between different case models', async ({ page }) => {

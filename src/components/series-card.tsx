@@ -7,9 +7,16 @@ interface SeriesCardProps {
   material: 'acrylic' | '3dp';
   caseType: string;
   onClick: (series: Series) => void;
+  isActive?: boolean;
 }
 
-export default function SeriesCard({ series, material, caseType, onClick }: SeriesCardProps) {
+export default function SeriesCard({
+  series,
+  material,
+  caseType,
+  onClick,
+  isActive = false,
+}: SeriesCardProps) {
   const currentCase = cases[caseType];
   const availableColors = colors[material];
 
@@ -33,7 +40,9 @@ export default function SeriesCard({ series, material, caseType, onClick }: Seri
   return (
     <button
       onClick={() => onClick(series)}
-      className="w-full border-2 border-zd-white hover:border-zd-white transition-all pointer"
+      className={`w-full border-3 transition-all ${
+        isActive ? 'border-zd-white bg-zd-gray2' : 'border-zd-gray hover:border-zd-white'
+      }`}
     >
       <div className="flex items-baseline justify-between px-hgap-sm py-vgap-sm border-b border-zd-gray flex-col lg:flex-row">
         <span className="text-zd-white text-lg">{series.name}</span>

@@ -72,6 +72,7 @@ function App() {
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColors, setPanelColors] = useState<PanelColors>({});
+  const [activeTab, setActiveTab] = useState<string>('series');
   // Initialize background colors from localStorage with fallback to defaults
   const [bgColor, setBgColor] = useState<string>(() =>
     getStoredColor(STORAGE_KEYS.BG_COLOR, DEFAULT_COLORS.BG_COLOR),
@@ -187,9 +188,46 @@ function App() {
 
   const handleCaseSelect = (caseType: string) => {
     setSelectedCase(caseType);
-    setPanelColors(getDefaultColors(caseType));
     setSelectedPanel(null);
     setSelectedColor(null);
+    setActiveTab('series');
+
+    // Auto-select first series
+    const caseData = cases[caseType];
+    if (caseData && caseData.material) {
+      const seriesList = colors.series[caseData.material];
+      if (seriesList && seriesList.length > 0) {
+        // Apply first series colors directly since handleSeries won't work yet
+        // (currentCase and material are still based on old state)
+        const firstSeries = seriesList[0];
+        const newColors: PanelColors = {};
+        const availableColors = colors[caseData.material];
+
+        caseData.panels.forEach((panel) => {
+          if (firstSeries.colors.all) {
+            const color = availableColors.find((c: Color) => c.id === firstSeries.colors.all);
+            if (color) newColors[panel.id] = color.value;
+          } else {
+            // Apply primary/secondary pattern
+            const isPrimary =
+              panel.id === 'side1' ||
+              panel.id === 'side2' ||
+              panel.id === 'front1' ||
+              panel.id === 'bottom1' ||
+              panel.id === 'back1';
+            const colorId = isPrimary ? firstSeries.colors.primary : firstSeries.colors.secondary;
+            const color = availableColors.find((c: Color) => c.id === colorId);
+            if (color) newColors[panel.id] = color.value;
+          }
+        });
+
+        setPanelColors(newColors);
+      } else {
+        setPanelColors(getDefaultColors(caseType));
+      }
+    } else {
+      setPanelColors(getDefaultColors(caseType));
+    }
   };
 
   const handleSeries = (series: Series) => {
@@ -217,12 +255,29 @@ function App() {
     setPanelColors(newColors);
   };
 
-  const resetColors = () => {
-    if (selectedCase) {
-      setPanelColors(getDefaultColors(selectedCase));
+  const isSeriesActive = (series: Series): boolean => {
+    if (!currentCase || !material) return false;
+
+    for (const panel of currentCase.panels) {
+      const expectedColor = series.colors.all
+        ? colors[material].find((c: Color) => c.id === series.colors.all)?.value
+        : (() => {
+            const isPrimary =
+              panel.id === 'side1' ||
+              panel.id === 'side2' ||
+              panel.id === 'front1' ||
+              panel.id === 'bottom1' ||
+              panel.id === 'back1';
+            const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
+            return colors[material].find((c: Color) => c.id === colorId)?.value;
+          })();
+
+      if (panelColors[panel.id] !== expectedColor) {
+        return false;
+      }
     }
-    setSelectedPanel(null);
-    setSelectedColor(null);
+
+    return true;
   };
 
   // Create color map for display
@@ -317,7 +372,8 @@ function App() {
                 <>
                   {/* Tabs for Series and Custom */}
                   <Tabs
-                    defaultTab="series"
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
                     tabs={[
                       {
                         id: 'series',
@@ -333,6 +389,7 @@ function App() {
                                     material={material}
                                     caseType={selectedCase}
                                     onClick={handleSeries}
+                                    isActive={isSeriesActive(series)}
                                   />
                                 ))}
                               </>
@@ -367,16 +424,6 @@ function App() {
                       },
                     ]}
                   />
-
-                  {/* Actions */}
-                  <div className="space-y-3">
-                    <button
-                      onClick={resetColors}
-                      className="w-full px-hgap-xs py-vgap-2xs bg-zd-gray2 text-zd-white rounded-lg hover:bg-zd-gray transition-colors"
-                    >
-                      Reset All Colors
-                    </button>
-                  </div>
 
                   {/* Info */}
                   <div className="text-sm text-zd-gray space-y-vgap-2xs">

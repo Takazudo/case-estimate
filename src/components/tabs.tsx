@@ -9,10 +9,13 @@ interface Tab {
 interface TabsProps {
   tabs: Tab[];
   defaultTab?: string;
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
 }
 
-const Tabs = ({ tabs, defaultTab }: TabsProps) => {
-  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.id || '');
+const Tabs = ({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange }: TabsProps) => {
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id || '');
+  const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
 
   const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content;
 
@@ -23,7 +26,12 @@ const Tabs = ({ tabs, defaultTab }: TabsProps) => {
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              if (controlledActiveTab === undefined) {
+                setInternalActiveTab(tab.id);
+              }
+              onTabChange?.(tab.id);
+            }}
             className={`
               flex-1 transition-all grid
               outline-offset-[-10px]
