@@ -34,17 +34,41 @@ export const applySeriesColors = (
   const availableColors = colors[material];
   const newColors: PanelColors = {};
 
+  const isX2Model = caseType.includes('x2');
+
   caseData.panels.forEach((panel) => {
     if (series.colors.all) {
       const color = availableColors.find((c: Color) => c.id === series.colors.all);
       if (color) newColors[panel.id] = color.value;
     } else {
-      const isPrimary =
-        panel.id === 'side1' ||
-        panel.id === 'side2' ||
-        panel.id === 'front1' ||
-        panel.id === 'bottom1' ||
-        panel.id === 'back1';
+      let isPrimary: boolean;
+
+      if (isX2Model) {
+        // For x2 models (12 panels):
+        // - All side panels (side1-4) are primary (e.g., black for Kurobeni)
+        // - Other panels alternate: back1, bottom1, bottom3, front1 are primary
+        if (panel.id.startsWith('side')) {
+          isPrimary = true;
+        } else if (
+          panel.id === 'back1' ||
+          panel.id === 'bottom1' ||
+          panel.id === 'bottom3' ||
+          panel.id === 'front1'
+        ) {
+          isPrimary = true;
+        } else {
+          isPrimary = false;
+        }
+      } else {
+        // For regular models (8 panels): existing logic
+        isPrimary =
+          panel.id === 'side1' ||
+          panel.id === 'side2' ||
+          panel.id === 'front1' ||
+          panel.id === 'bottom1' ||
+          panel.id === 'back1';
+      }
+
       const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) newColors[panel.id] = color.value;
@@ -66,16 +90,38 @@ export const isSeriesActive = (
   const caseData = cases[caseType];
   if (!caseData) return false;
 
+  const isX2Model = caseType.includes('x2');
+
   for (const panel of caseData.panels) {
     const expectedColor = series.colors.all
       ? colors[material].find((c: Color) => c.id === series.colors.all)?.value
       : (() => {
-          const isPrimary =
-            panel.id === 'side1' ||
-            panel.id === 'side2' ||
-            panel.id === 'front1' ||
-            panel.id === 'bottom1' ||
-            panel.id === 'back1';
+          let isPrimary: boolean;
+
+          if (isX2Model) {
+            // For x2 models (12 panels)
+            if (panel.id.startsWith('side')) {
+              isPrimary = true;
+            } else if (
+              panel.id === 'back1' ||
+              panel.id === 'bottom1' ||
+              panel.id === 'bottom3' ||
+              panel.id === 'front1'
+            ) {
+              isPrimary = true;
+            } else {
+              isPrimary = false;
+            }
+          } else {
+            // For regular models (8 panels)
+            isPrimary =
+              panel.id === 'side1' ||
+              panel.id === 'side2' ||
+              panel.id === 'front1' ||
+              panel.id === 'bottom1' ||
+              panel.id === 'back1';
+          }
+
           const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
           return colors[material].find((c: Color) => c.id === colorId)?.value;
         })();

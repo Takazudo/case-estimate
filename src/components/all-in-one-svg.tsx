@@ -10,7 +10,8 @@ interface AllInOneSVGProps {
 
 // Map SVG classes to panel IDs based on the SVG structure
 // These mappings match the layout in the diagram:
-const CLASS_TO_PANEL: { [key: string]: string } = {
+// For 8-panel models (regular models)
+const CLASS_TO_PANEL_8: { [key: string]: string } = {
   b: 'side1', // Panel 1: Left side (black)
   c: 'side2', // Panel 2: Right side (magenta)
   i: 'back1', // Panel 3: Top front (orange) - バック1
@@ -19,6 +20,22 @@ const CLASS_TO_PANEL: { [key: string]: string } = {
   g: 'bottom2', // Panel 6: Center lower (green)
   f: 'front1', // Panel 7: Bottom front (yellow) - フロント1
   h: 'front2', // Panel 8: Bottom back (brown) - フロント2
+};
+
+// For 12-panel models (x2 models) - based on the image provided
+const CLASS_TO_PANEL_12: { [key: string]: string } = {
+  a: 'side1', // A サイド1
+  b: 'side2', // B サイド2
+  c: 'side3', // C サイド3
+  d: 'side4', // D サイド4
+  e: 'back1', // E バック1
+  f: 'back2', // F バック2
+  g: 'bottom1', // G ボトム1
+  h: 'bottom2', // H ボトム2
+  i: 'bottom3', // I ボトム3
+  j: 'bottom4', // J ボトム4
+  k: 'front1', // K フロント1
+  l: 'front2', // L フロント2
 };
 
 // Default black color for all panels
@@ -36,6 +53,10 @@ const AllInOneSVG = ({
 }: AllInOneSVGProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
+
+  // Determine which class mapping to use based on model type
+  const isX2Model = caseType.includes('x2');
+  const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Load and inject the SVG
   useEffect(() => {
@@ -68,7 +89,9 @@ const AllInOneSVG = ({
             const styleElement = svg.querySelector('style');
             if (styleElement) {
               // Override the CSS rules to use black as default
-              const classes = ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+              const classes = isX2Model
+                ? ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
+                : ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
               const newStyles = classes
                 .map((cls) => `.${cls}{fill:${DEFAULT_PANEL_COLOR};}`)
                 .join('');
@@ -84,7 +107,7 @@ const AllInOneSVG = ({
     };
 
     loadSVG();
-  }, [caseType]);
+  }, [caseType, isX2Model]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -176,7 +199,7 @@ const AllInOneSVG = ({
     }, SVG_RENDER_DELAY_MS); // Delay to ensure DOM is ready
 
     return () => clearTimeout(timeoutId);
-  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material]);
+  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material, CLASS_TO_PANEL]);
 
   return (
     <div className="w-full h-full flex items-center justify-center">
