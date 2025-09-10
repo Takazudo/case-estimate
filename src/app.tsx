@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cases } from './data/cases';
 import { colors } from './data/colors';
 import type { Color, Series } from './types';
@@ -56,6 +56,16 @@ function App() {
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const material = currentCase?.material;
 
+  // Sync selectedColor when selectedPanel changes (e.g., from panel selector dropdown)
+  useEffect(() => {
+    if (selectedPanel && material && panelColors[selectedPanel]) {
+      const currentColorValue = panelColors[selectedPanel];
+      const availableColors = colors[material];
+      const matchingColor = availableColors?.find((c) => c.value === currentColorValue);
+      setSelectedColor(matchingColor || null);
+    }
+  }, [selectedPanel, material, panelColors]);
+
   // Handle URL persistence
   useUrlPersistence({
     selectedCase,
@@ -72,6 +82,19 @@ function App() {
 
   const handlePanelClick = (panelId: string) => {
     setSelectedPanel(panelId);
+
+    // Sync selectedColor with the panel's current color
+    if (material && panelColors[panelId]) {
+      const currentColorValue = panelColors[panelId];
+      const availableColors = colors[material];
+      const matchingColor = availableColors?.find((c) => c.value === currentColorValue);
+      if (matchingColor) {
+        setSelectedColor(matchingColor);
+      } else {
+        // If no matching color found (e.g., custom hex), clear selection
+        setSelectedColor(null);
+      }
+    }
   };
 
   const handleColorSelect = (color: Color) => {
