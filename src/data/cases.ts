@@ -31,8 +31,8 @@ export const cases: Cases = {
       { id: 'back2', name: 'バック2' },
     ],
   },
-  'zudo-block-40-lite': {
-    name: 'zudo-block-40 Lite',
+  'zudo-block-40-lite-type-a': {
+    name: 'zudo-block-40 Lite Aタイプ',
     hp: 40,
     material: '3dp',
     panels: [
@@ -46,8 +46,23 @@ export const cases: Cases = {
       { id: 'back2', name: 'バック2' },
     ],
   },
-  'zudo-block-60': {
-    name: 'zudo-block-60',
+  'zudo-block-40-lite-type-b': {
+    name: 'zudo-block-40 Lite Bタイプ',
+    hp: 40,
+    material: '3dp',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+      { id: 'front1', name: 'フロント1' },
+      { id: 'front2', name: 'フロント2' },
+      { id: 'bottom1', name: 'ボトム1' },
+      { id: 'bottom2', name: 'ボトム2' },
+      { id: 'back1', name: 'バック1' },
+      { id: 'back2', name: 'バック2' },
+    ],
+  },
+  'zudo-block-60-type-a': {
+    name: 'zudo-block-60 Aタイプ',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -61,8 +76,38 @@ export const cases: Cases = {
       { id: 'back2', name: 'バック2' },
     ],
   },
-  'zudo-block-60-lite': {
-    name: 'zudo-block-60 Lite',
+  'zudo-block-60-type-b': {
+    name: 'zudo-block-60 Bタイプ',
+    hp: 60,
+    material: 'acrylic',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+      { id: 'front1', name: 'フロント1' },
+      { id: 'front2', name: 'フロント2' },
+      { id: 'bottom1', name: 'ボトム1' },
+      { id: 'bottom2', name: 'ボトム2' },
+      { id: 'back1', name: 'バック1' },
+      { id: 'back2', name: 'バック2' },
+    ],
+  },
+  'zudo-block-60-lite-type-a': {
+    name: 'zudo-block-60 Lite Aタイプ',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+      { id: 'front1', name: 'フロント1' },
+      { id: 'front2', name: 'フロント2' },
+      { id: 'bottom1', name: 'ボトム1' },
+      { id: 'bottom2', name: 'ボトム2' },
+      { id: 'back1', name: 'バック1' },
+      { id: 'back2', name: 'バック2' },
+    ],
+  },
+  'zudo-block-60-lite-type-b': {
+    name: 'zudo-block-60 Lite Bタイプ',
     hp: 60,
     material: '3dp',
     panels: [
