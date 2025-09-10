@@ -13,12 +13,12 @@ interface AllInOneSVGProps {
 const CLASS_TO_PANEL: { [key: string]: string } = {
   b: 'side1', // Panel 1: Left side (black)
   c: 'side2', // Panel 2: Right side (magenta)
-  i: 'front1', // Panel 3: Top front (orange)
-  e: 'front2', // Panel 4: Second top (red - behind panel 3)
+  i: 'back1', // Panel 3: Top front (orange) - バック1
+  e: 'back2', // Panel 4: Second top (red - behind panel 3) - バック2
   d: 'bottom1', // Panel 5: Center upper (green)
   g: 'bottom2', // Panel 6: Center lower (green)
-  f: 'back1', // Panel 7: Bottom front (yellow)
-  h: 'back2', // Panel 8: Bottom back (brown)
+  f: 'front1', // Panel 7: Bottom front (yellow) - フロント1
+  h: 'front2', // Panel 8: Bottom back (brown) - フロント2
 };
 
 // Default black color for all panels
