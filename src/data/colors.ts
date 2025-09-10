@@ -21,13 +21,12 @@ export const colors: Colors = {
     { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
     { id: 'deep-yellow', name: 'ディープイエロー', value: '#d4a017', material: 'PLA' },
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA' },
-    { id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' },
+    //{ id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' }, // sold out
     { id: 'clear-red', name: 'クリアレッド', value: '#ff6b6b', material: 'PETG' },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#f8f4e6', material: 'PLA' },
   ],
   series: {
     acrylic: [
-      { id: 'yamikage', name: 'YamiKage', description: 'All Black', colors: { all: 'shadow' } },
       { id: 'red', name: 'レッド', description: 'All Red', colors: { all: 'red' } },
       { id: 'orange', name: 'オレンジ', description: 'All Orange', colors: { all: 'orange' } },
       { id: 'yellow', name: 'イエロー', description: 'All Yellow', colors: { all: 'yellow' } },
