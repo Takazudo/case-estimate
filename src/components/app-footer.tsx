@@ -14,7 +14,7 @@ export default function AppFooter({
   onGridColorChange,
 }: AppFooterProps) {
   return (
-    <footer className="bg-zd-gray2 border-t border-zd-gray fixed bottom-0 left-0 right-0 z-10">
+    <footer className="bg-zd-gray2 border-t border-zd-gray">
       <div className="px-hgap-sm py-vgap-xs">
         <div className="flex items-center justify-between">
           <BackgroundColorPicker

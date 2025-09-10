@@ -202,11 +202,8 @@ const AllInOneSVG = ({
   }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material, CLASS_TO_PANEL]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div
-        ref={svgContainerRef}
-        className="w-full h-full max-w-[800px] max-h-[700px] flex items-center justify-center"
-      />
+    <div className="w-full h-full flex items-center justify-center relative">
+      <div ref={svgContainerRef} className="w-full h-full flex items-center justify-center" />
       {!svgLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-zd-gray">Loading visualization...</div>
