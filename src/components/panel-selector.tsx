@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import {
   Listbox,
   ListboxButton,
@@ -24,9 +24,30 @@ const PanelSelector = ({
   onPanelSelect,
   colorMap,
 }: PanelSelectorProps) => {
+  const [panelAnimationKey, setPanelAnimationKey] = useState(0);
+  const [colorAnimationKey, setColorAnimationKey] = useState(0);
+  const [prevSelectedPanel, setPrevSelectedPanel] = useState<string | null>(null);
+  const [prevColorValue, setPrevColorValue] = useState<string | undefined>(undefined);
+
   const selectedPanelObj = panels.find((p) => p.id === selectedPanel);
   const selectedColorValue = selectedPanel ? panelColors[selectedPanel] : undefined;
   const selectedColorName = selectedColorValue ? colorMap[selectedColorValue] : 'Default';
+
+  // Track panel changes separately from color changes
+  useEffect(() => {
+    if (selectedPanel !== prevSelectedPanel) {
+      setPanelAnimationKey((prev) => prev + 1);
+      setPrevSelectedPanel(selectedPanel);
+    }
+  }, [selectedPanel, prevSelectedPanel]);
+
+  // Track color changes
+  useEffect(() => {
+    if (selectedColorValue !== prevColorValue) {
+      setColorAnimationKey((prev) => prev + 1);
+      setPrevColorValue(selectedColorValue);
+    }
+  }, [selectedColorValue, prevColorValue]);
 
   return (
     <div className="space-y-vgap-xs">
@@ -37,8 +58,22 @@ const PanelSelector = ({
             <span className="block truncate">
               {selectedPanelObj ? (
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">{selectedPanelObj.name}</span>
-                  <div className="flex items-center mr-hgap-sm">
+                  <span
+                    key={`panel-${panelAnimationKey}`}
+                    className="font-medium"
+                    style={{
+                      animation: 'quickFadeIn 200ms ease-out',
+                    }}
+                  >
+                    {selectedPanelObj.name}
+                  </span>
+                  <div
+                    key={`color-${colorAnimationKey}`}
+                    className="flex items-center mr-hgap-sm"
+                    style={{
+                      animation: 'quickFadeIn 200ms ease-out',
+                    }}
+                  >
                     <div
                       className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
                       style={{ backgroundColor: selectedColorValue || '#f3f4f6' }}

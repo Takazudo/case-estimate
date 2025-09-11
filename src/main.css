@@ -270,3 +270,13 @@
     transform: translateY(0);
   }
 }
+
+/* Quick fade animation for panel selector */
+@keyframes quickFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
