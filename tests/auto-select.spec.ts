@@ -24,7 +24,7 @@ test.describe('Auto-Select Feature', () => {
     await expect(page.locator('button:has-text("Series")')).not.toBeVisible();
 
     // Select a case model
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // Series tab should now be visible and active
     await expect(page.locator('button:has-text("Series")')).toBeVisible();
@@ -45,34 +45,34 @@ test.describe('Auto-Select Feature', () => {
   }) => {
     const caseSelector = page.locator('select').first();
 
-    // Select zudo-block-40 (acrylic case)
-    await caseSelector.selectOption('zudo-block-40');
+    // Select zudo-block-40-type-a (acrylic case)
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // Wait for series cards to be visible
-    await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
+    await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
     // First series card should be active (has active border)
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
     await expect(firstSeriesCard).toHaveClass(/bg-zd-gray2/);
 
-    // Check that the SVG panels have the colors from the first series (YamiKage - all shadow gray)
+    // Check that the SVG panels have the colors from the first series (Red - all red)
     // Wait for SVG to render
     await page.waitForTimeout(500);
 
     // Check SVG panel colors by looking at path elements with fill attribute
-    const svgPaths = page.locator('svg path[fill="#616161"]');
+    const svgPaths = page.locator('svg path[fill="#b71c1c"]');
     const pathCount = await svgPaths.count();
 
-    // Should have multiple panels with shadow color for YamiKage series
+    // Should have multiple panels with red color for Red series
     expect(pathCount).toBeGreaterThan(0);
   });
 
   test('should auto-select first series for 3D printed cases', async ({ page }) => {
     const caseSelector = page.locator('select').first();
 
-    // Select zudo-block-40-lite (3D printed case)
-    await caseSelector.selectOption('zudo-block-40-lite');
+    // Select zudo-block-40-lite-type-a (3D printed case)
+    await caseSelector.selectOption('zudo-block-40-lite-type-a');
 
     // Wait for series cards to be visible
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
@@ -100,24 +100,24 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // First select acrylic case
-    await caseSelector.selectOption('zudo-block-40');
-    await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
+    await caseSelector.selectOption('zudo-block-40-type-a');
+    await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
-    let firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    let firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
 
     // Switch to 3D printed case
-    await caseSelector.selectOption('zudo-block-40-lite');
+    await caseSelector.selectOption('zudo-block-40-lite-type-a');
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
 
     firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
 
     // Switch to another acrylic case
-    await caseSelector.selectOption('zudo-block-60');
-    await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
+    await caseSelector.selectOption('zudo-block-60-type-a');
+    await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
-    firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
   });
 
@@ -125,13 +125,13 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // Verify Series tab is active and first series is selected
     const seriesTabSpan = page.locator('button:has-text("Series") span').first();
     await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
 
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
 
     // Switch to Custom tab
@@ -151,23 +151,23 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // Wait for series to load
     await page.waitForTimeout(500);
 
-    // Select a different series (e.g., レッド - Red)
-    const redCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await redCard.click();
-    await expect(redCard).toHaveClass(/border-zd-white/);
+    // Select a different series (e.g., オレンジ - Orange)
+    const orangeCard = page.locator('button').filter({ hasText: 'オレンジ' }).first();
+    await orangeCard.click();
+    await expect(orangeCard).toHaveClass(/border-zd-white/);
 
     // Select the same case model again from dropdown
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
-    // Should auto-select the first series (YamiKage) again
-    const yamiKageCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
-    await expect(yamiKageCard).toHaveClass(/border-zd-white/);
-    await expect(redCard).not.toHaveClass(/bg-zd-gray2/);
+    // Should auto-select the first series (レッド) again
+    const redCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(redCard).toHaveClass(/border-zd-white/);
+    await expect(orangeCard).not.toHaveClass(/bg-zd-gray2/);
   });
 
   test('should handle case with no series gracefully', async ({ page }) => {
@@ -176,10 +176,10 @@ test.describe('Auto-Select Feature', () => {
     // If we add a case without series in the future, it should fall back to default colors
     // For now, test that all existing cases have series
     const caseOptions = [
-      'zudo-block-40',
-      'zudo-block-40-lite',
-      'zudo-block-60',
-      'zudo-block-60-lite',
+      'zudo-block-40-type-a',
+      'zudo-block-40-lite-type-a',
+      'zudo-block-60-type-a',
+      'zudo-block-60-lite-type-a',
     ];
 
     for (const caseOption of caseOptions) {
@@ -209,11 +209,11 @@ test.describe('Auto-Select Edge Cases', () => {
     const caseSelector = page.locator('select').first();
 
     // Rapidly switch between cases
-    await caseSelector.selectOption('zudo-block-40');
-    await caseSelector.selectOption('zudo-block-60');
-    await caseSelector.selectOption('zudo-block-40-lite');
-    await caseSelector.selectOption('zudo-block-60-lite');
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
+    await caseSelector.selectOption('zudo-block-60-type-a');
+    await caseSelector.selectOption('zudo-block-40-lite-type-a');
+    await caseSelector.selectOption('zudo-block-60-lite-type-a');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // No console errors should occur
     expect(consoleErrors).toHaveLength(0);
@@ -222,7 +222,7 @@ test.describe('Auto-Select Edge Cases', () => {
     const seriesTabSpan = page.locator('button:has-text("Series") span').first();
     await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
 
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
   });
 
@@ -231,7 +231,7 @@ test.describe('Auto-Select Edge Cases', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40');
+    await caseSelector.selectOption('zudo-block-40-type-a');
 
     // Switch to Custom tab and make a customization
     await page.locator('button:has-text("Custom")').click();
@@ -257,7 +257,7 @@ test.describe('Auto-Select Edge Cases', () => {
     }
 
     // Now select a different case
-    await caseSelector.selectOption('zudo-block-60');
+    await caseSelector.selectOption('zudo-block-60-type-a');
 
     // Should auto-select Series tab and first series
     const seriesTabSpan = page.locator('button:has-text("Series") span').first();
@@ -267,9 +267,9 @@ test.describe('Auto-Select Edge Cases', () => {
     // Wait for SVG to render
     await page.waitForTimeout(500);
 
-    // Check that panels have YamiKage colors (shadow gray)
-    const svgPaths = page.locator('svg path[fill="#616161"]');
+    // Check that panels have Red colors (red)
+    const svgPaths = page.locator('svg path[fill="#b71c1c"]');
     const pathCount = await svgPaths.count();
-    expect(pathCount).toBeGreaterThan(0); // YamiKage is all shadow gray
+    expect(pathCount).toBeGreaterThan(0); // Red is all red
   });
 });

@@ -35,7 +35,7 @@ test.describe('Smoke Test', () => {
     await expect(page.locator('text=Welcome to Takazudo Modular')).toBeVisible();
 
     // Select a case to make SVG appear
-    await page.selectOption('select', 'zudo-block-40');
+    await page.selectOption('select', 'zudo-block-40-type-a');
 
     // Now check that SVG container is present after selecting a case
     await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
@@ -63,7 +63,7 @@ test.describe('Smoke Test', () => {
     await expect(page.locator('text=Welcome to Takazudo Modular')).toBeVisible();
 
     // Select a case to reveal controls
-    await page.selectOption('select', 'zudo-block-40');
+    await page.selectOption('select', 'zudo-block-40-type-a');
 
     // Click on Custom tab to see panel selector
     await page.locator('button:has-text("Custom")').click();
@@ -87,12 +87,12 @@ test.describe('Smoke Test', () => {
     const initialValue = await caseSelector.inputValue();
 
     // Change to a different case
-    await caseSelector.selectOption('zudo-block-60');
+    await caseSelector.selectOption('zudo-block-60-type-a');
 
     // Verify the selection changed
     const newValue = await caseSelector.inputValue();
     expect(newValue).not.toBe(initialValue);
-    expect(newValue).toBe('zudo-block-60');
+    expect(newValue).toBe('zudo-block-60-type-a');
 
     // Verify SVG is still visible after change
     await expect(page.locator('svg').first()).toBeVisible();
