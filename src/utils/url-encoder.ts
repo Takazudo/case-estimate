@@ -3,6 +3,15 @@ import type { Colors, Color } from '../types';
 
 // Case model mappings (1-2 chars)
 const CASE_MAP: { [key: string]: string } = {
+  'zudo-block-40-type-a': '1a',
+  'zudo-block-40-type-b': '1b',
+  'zudo-block-40-lite-type-a': '2a',
+  'zudo-block-40-lite-type-b': '2b',
+  'zudo-block-60-type-a': '3a',
+  'zudo-block-60-type-b': '3b',
+  'zudo-block-60-lite-type-a': '4a',
+  'zudo-block-60-lite-type-b': '4b',
+  // Legacy mappings for backward compatibility
   'zudo-block-40': '1',
   'zudo-block-40-lite': '2',
   'zudo-block-60': '3',

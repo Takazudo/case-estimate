@@ -21,26 +21,61 @@ export const colors: Colors = {
     { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
     { id: 'deep-yellow', name: 'ディープイエロー', value: '#d4a017', material: 'PLA' },
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA' },
-    { id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' },
+    //{ id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' }, // sold out
     { id: 'clear-red', name: 'クリアレッド', value: '#ff6b6b', material: 'PETG' },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#f8f4e6', material: 'PLA' },
   ],
-  presets: {
+  series: {
+    acrylic: [
+      { id: 'red', name: 'レッド', description: 'All Red', colors: { all: 'red' } },
+      { id: 'orange', name: 'オレンジ', description: 'All Orange', colors: { all: 'orange' } },
+      { id: 'yellow', name: 'イエロー', description: 'All Yellow', colors: { all: 'yellow' } },
+      { id: 'clear', name: 'クリア', description: 'All Clear', colors: { all: 'clear' } },
+      {
+        id: 'frost-clear',
+        name: 'フロストクリア',
+        description: 'All Frost Clear',
+        colors: { all: 'frost-clear' },
+      },
+      {
+        id: 'ocean-blue',
+        name: 'オーシャンブルー',
+        description: 'All Ocean Blue',
+        colors: { all: 'ocean-blue' },
+      },
+      {
+        id: 'sky-blue',
+        name: 'スカイブルー',
+        description: 'All Sky Blue',
+        colors: { all: 'sky-blue' },
+      },
+      { id: 'forest', name: 'フォレスト', description: 'All Forest', colors: { all: 'forest' } },
+      { id: 'lime', name: 'ライム', description: 'All Lime', colors: { all: 'lime' } },
+      { id: 'pink', name: 'ピンク', description: 'All Pink', colors: { all: 'pink' } },
+    ],
     '3dp': [
-      { id: 'yamikage', name: 'YamiKage (All Black)', colors: { all: 'carbon-black' } },
+      {
+        id: 'yamikage',
+        name: 'YamiKage',
+        description: 'All Black',
+        colors: { all: 'carbon-black' },
+      },
       {
         id: 'kurobeni',
-        name: 'KuroBeni (Black & Red)',
+        name: 'KuroBeni',
+        description: 'Black & Red',
         colors: { primary: 'carbon-black', secondary: 'crimson-red' },
       },
       {
         id: 'akatsuki',
-        name: 'Akatsuki (Black & Dark Orange)',
+        name: 'Akatsuki',
+        description: 'Black & Dark Orange',
         colors: { primary: 'carbon-black', secondary: 'dark-orange' },
       },
       {
         id: 'shibugaki',
-        name: 'ShibuGaki (Black & Light Orange)',
+        name: 'ShibuGaki',
+        description: 'Black & Light Orange',
         colors: { primary: 'carbon-black', secondary: 'light-orange' },
       },
     ],

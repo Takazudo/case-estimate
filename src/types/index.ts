@@ -27,9 +27,10 @@ export interface Color {
   material: string;
 }
 
-export interface Preset {
+export interface Series {
   id: string;
   name: string;
+  description?: string;
   colors: {
     all?: string;
     primary?: string;
@@ -40,7 +41,8 @@ export interface Preset {
 export interface Colors {
   acrylic: Color[];
   '3dp': Color[];
-  presets: {
-    '3dp': Preset[];
+  series: {
+    acrylic: Series[];
+    '3dp': Series[];
   };
 }

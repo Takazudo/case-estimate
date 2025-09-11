@@ -172,6 +172,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  button {
+    cursor: pointer;
+  }
 
   /* Reset box-sizing */
   *,
@@ -193,7 +196,7 @@
 
   /* Focus styles */
   :focus {
-    outline: 2px solid var(--zd-color-link);
+    outline: 2px solid rgba(217, 119, 6, 0.8);
     outline-offset: 2px;
   }
 
@@ -207,18 +210,5 @@
   ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--zd-color-gray2);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--zd-color-gray);
-    border-radius: 6px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--zd-color-link);
   }
 }
