@@ -5,6 +5,7 @@ import Tabs from './tabs';
 import SeriesCard from './series-card';
 import PanelSelector from './panel-selector';
 import ColorPicker from './color-picker';
+import CustomColorPreview from './custom-color-preview';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -41,9 +42,9 @@ export default function ControlsSidebar({
 
   return (
     <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0">
-      <div className="px-hgap-sm lg:px-hgap-md py-vgap-md space-y-vgap-sm lg:space-y-vgap-md">
-        {currentCase ? (
-          <>
+      {currentCase ? (
+        <>
+          <div className="px-hgap-sm lg:px-hgap-md py-vgap-md">
             <Tabs
               activeTab={activeTab}
               onTabChange={onTabChange}
@@ -74,28 +75,44 @@ export default function ControlsSidebar({
                   id: 'custom',
                   label: 'Custom',
                   content: (
-                    <div className="space-y-vgap-sm pt-vgap-md">
-                      <PanelSelector
-                        panels={panels}
-                        panelColors={panelColors}
-                        selectedPanel={selectedPanel}
-                        onPanelSelect={onPanelSelect}
-                        colorMap={colorMap}
-                      />
-
-                      {selectedPanel && material && (
-                        <ColorPicker
-                          material={material}
-                          selectedColor={selectedColor}
-                          onColorSelect={onColorSelect}
-                        />
+                    <div>
+                      {/* Color preview bar at the top of custom tab */}
+                      {selectedCase && (
+                        <div className="-mx-hgap-sm lg:-mx-hgap-md border-b border-zd-gray mb-vgap-md">
+                          <CustomColorPreview
+                            caseType={selectedCase}
+                            panelColors={panelColors}
+                            selectedPanel={selectedPanel}
+                            onPanelSelect={onPanelSelect}
+                          />
+                        </div>
                       )}
+
+                      <div className="space-y-vgap-sm">
+                        <PanelSelector
+                          panels={panels}
+                          panelColors={panelColors}
+                          selectedPanel={selectedPanel}
+                          onPanelSelect={onPanelSelect}
+                          colorMap={colorMap}
+                        />
+
+                        {selectedPanel && material && (
+                          <ColorPicker
+                            material={material}
+                            selectedColor={selectedColor}
+                            onColorSelect={onColorSelect}
+                          />
+                        )}
+                      </div>
                     </div>
                   ),
                 },
               ]}
             />
+          </div>
 
+          <div className="px-hgap-sm lg:px-hgap-md py-vgap-md space-y-vgap-sm lg:space-y-vgap-md">
             <div className="text-sm text-zd-gray space-y-vgap-2xs">
               <p>• Click on any panel to select it</p>
               <p>• Choose a color to apply to the selected panel</p>
@@ -105,13 +122,15 @@ export default function ControlsSidebar({
             <div className="text-sm text-zd-gray pt-4 border-t border-zd-gray">
               <p>© 2025 Takazudo Modular</p>
             </div>
-          </>
-        ) : (
+          </div>
+        </>
+      ) : (
+        <div className="px-hgap-sm lg:px-hgap-md py-vgap-md">
           <div className="text-center text-zd-gray mt-8">
             <p>Select a case model to begin customization</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
