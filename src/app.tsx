@@ -82,6 +82,11 @@ function App() {
   });
 
   const handlePanelClick = (panelId: string) => {
+    // If in Series tab, switch to Custom tab when a panel is clicked
+    if (activeTab === 'series') {
+      setActiveTab('custom');
+    }
+
     setSelectedPanel(panelId);
 
     // Sync selectedColor with the panel's current color
