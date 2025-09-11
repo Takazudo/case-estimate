@@ -25,7 +25,7 @@ const CustomColorPreview = ({
             onClick={() => onPanelSelect(panel.id)}
             className={`
               flex-1 h-12 border transition-all
-              border-l-0 first:border-l-1
+              ml-[2px] first:ml-0
               relative active:z-10 focus:z-10
               ${
                 selectedPanel === panel.id
