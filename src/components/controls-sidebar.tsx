@@ -75,10 +75,10 @@ export default function ControlsSidebar({
                   id: 'custom',
                   label: 'Custom',
                   content: (
-                    <div>
+                    <div className="pt-vgap-md">
                       {/* Color preview bar at the top of custom tab */}
                       {selectedCase && (
-                        <div className="-mx-hgap-sm lg:-mx-hgap-md border-b border-zd-gray mb-vgap-md">
+                        <div className="-mx-hgap-sm lg:-mx-hgap-md mb-vgap-md">
                           <CustomColorPreview
                             caseType={selectedCase}
                             panelColors={panelColors}

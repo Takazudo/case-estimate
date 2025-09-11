@@ -18,13 +18,15 @@ const CustomColorPreview = ({
 
   return (
     <div className="px-hgap-sm lg:px-hgap-md py-vgap-xs bg-zd-black">
-      <div className="flex gap-[2px]">
+      <div className="flex">
         {currentCase.panels.map((panel) => (
           <button
             key={panel.id}
             onClick={() => onPanelSelect(panel.id)}
             className={`
               flex-1 h-12 border transition-all
+              border-l-0 first:border-l-1
+              relative active:z-10 focus:z-10
               ${
                 selectedPanel === panel.id
                   ? 'border-zd-link border-2 shadow-lg'
