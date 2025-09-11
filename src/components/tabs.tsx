@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 
 interface Tab {
   id: string;
@@ -15,9 +15,15 @@ interface TabsProps {
 
 const Tabs = ({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange }: TabsProps) => {
   const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id || '');
+  const [contentKey, setContentKey] = useState(0);
   const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
 
   const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content;
+
+  // Trigger animation when activeTab changes programmatically
+  useEffect(() => {
+    setContentKey((prev) => prev + 1);
+  }, [activeTab]);
 
   return (
     <div>
@@ -65,7 +71,15 @@ const Tabs = ({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange }:
       </div>
 
       {/* Tab content with connected border */}
-      <div>{activeTabContent}</div>
+      <div
+        key={contentKey}
+        className="transition-opacity duration-300 ease-in-out animate-fade-in"
+        style={{
+          animation: 'fadeIn 300ms ease-in-out',
+        }}
+      >
+        {activeTabContent}
+      </div>
     </div>
   );
 };
