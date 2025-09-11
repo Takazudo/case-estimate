@@ -42,6 +42,7 @@ function App() {
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColors, setPanelColors] = useState<PanelColors>({});
   const [activeTab, setActiveTab] = useState<string>('series');
+  const [isLoadingSvg, setIsLoadingSvg] = useState(false);
 
   // Use localStorage hooks for background colors
   const [bgColor, setBgColor] = useLocalStorageColor(
@@ -152,7 +153,15 @@ function App() {
       <AppHeader selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
 
       {/* Main Content Area - 2 Column Grid */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden relative">
+        {/* Loading overlay */}
+        {isLoadingSvg && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black opacity-50" />
+            <div className="loader relative z-10" />
+          </div>
+        )}
+
         <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
           {/* Left Column - Visualization */}
           <VisualizationPanel
@@ -163,6 +172,7 @@ function App() {
             material={material}
             bgColor={bgColor}
             gridColor={gridColor}
+            onLoadingChange={setIsLoadingSvg}
           />
 
           {/* Right Column - Controls */}

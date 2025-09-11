@@ -6,6 +6,7 @@ interface AllInOneSVGProps {
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
   material?: string;
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
 // Map SVG classes to panel IDs based on the SVG structure
@@ -50,6 +51,7 @@ const AllInOneSVG = ({
   onPanelClick,
   selectedPanel,
   material,
+  onLoadingChange,
 }: AllInOneSVGProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
@@ -60,6 +62,9 @@ const AllInOneSVG = ({
 
   // Load and inject the SVG
   useEffect(() => {
+    setSvgLoaded(false);
+    onLoadingChange?.(true);
+
     const loadSVG = async () => {
       try {
         // Dynamically select SVG path based on caseType
@@ -100,14 +105,16 @@ const AllInOneSVG = ({
           }
 
           setSvgLoaded(true);
+          onLoadingChange?.(false);
         }
       } catch (error) {
         console.error('Failed to load SVG:', error);
+        onLoadingChange?.(false);
       }
     };
 
     loadSVG();
-  }, [caseType, isX2Model]);
+  }, [caseType, isX2Model, onLoadingChange]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -204,11 +211,6 @@ const AllInOneSVG = ({
   return (
     <div className="w-full h-full flex items-center justify-center relative">
       <div ref={svgContainerRef} className="w-full h-full flex items-center justify-center" />
-      {!svgLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-zd-gray">Loading visualization...</div>
-        </div>
-      )}
     </div>
   );
 };

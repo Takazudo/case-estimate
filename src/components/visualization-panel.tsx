@@ -9,6 +9,7 @@ interface VisualizationPanelProps {
   material: 'acrylic' | '3dp' | undefined;
   bgColor: string;
   gridColor: string;
+  onLoadingChange?: (isLoading: boolean) => void;
 }
 
 export default function VisualizationPanel({
@@ -19,6 +20,7 @@ export default function VisualizationPanel({
   material,
   bgColor,
   gridColor,
+  onLoadingChange,
 }: VisualizationPanelProps) {
   return (
     <div
@@ -37,6 +39,7 @@ export default function VisualizationPanel({
             onPanelClick={onPanelClick}
             selectedPanel={selectedPanel}
             material={material}
+            onLoadingChange={onLoadingChange}
           />
         ) : (
           <div className="text-center max-w-md">
