@@ -235,16 +235,44 @@ const AllInOneSVG = ({
 
             // Update color if specified, otherwise use default black
             const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-            // Use both setAttribute and style to ensure the color is applied
-            pathElement.style.fill = color;
-            pathElement.style.setProperty('fill', color, 'important');
 
-            // Apply opacity for acrylic material to simulate transparency
-            if (material === 'acrylic') {
-              pathElement.style.setProperty('fill-opacity', '0.8', 'important');
-            } else {
+            // Handle transparent acrylic colors specially
+            const isTransparentAcrylic =
+              material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
+
+            if (isTransparentAcrylic) {
+              // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
+              pathElement.style.fill = 'transparent';
+              pathElement.style.setProperty('fill', 'transparent', 'important');
               pathElement.style.setProperty('fill-opacity', '1', 'important');
+            } else {
+              // Use both setAttribute and style to ensure the color is applied
+              pathElement.style.fill = color;
+              pathElement.style.setProperty('fill', color, 'important');
+
+              // Apply opacity for other acrylic materials to simulate transparency
+              if (material === 'acrylic') {
+                pathElement.style.setProperty('fill-opacity', '0.8', 'important');
+              } else {
+                pathElement.style.setProperty('fill-opacity', '1', 'important');
+              }
             }
+
+            // Set stroke color and width based on transparent acrylic type
+            let strokeColor = '#000000'; // default black
+            let strokeWidth = '1'; // default 1px for non-transparent
+
+            if (isTransparentAcrylic) {
+              strokeWidth = '4'; // 4px for transparent acrylics
+              if (color === '#4a9b9b') {
+                strokeColor = '#117269'; // ガラスシアン - glass-like edge
+              }
+              // クリア stays #000000 (default)
+            }
+
+            pathElement.style.stroke = strokeColor;
+            pathElement.style.strokeWidth = strokeWidth;
+            pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
 
             // Add hover effect with better transitions
             pathElement.style.transition = 'all 0.2s ease-out';
@@ -252,12 +280,15 @@ const AllInOneSVG = ({
             // Add selected state visual feedback
             if (selectedPanel === panelId) {
               pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
-              pathElement.style.strokeWidth = '4';
+              // Use thicker stroke for selected (4px for normal, 8px for transparent)
+              const selectedStrokeWidth = isTransparentAcrylic ? '8' : '4';
+              pathElement.style.strokeWidth = selectedStrokeWidth;
               pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
             } else {
               pathElement.style.filter = 'none';
-              pathElement.style.strokeWidth = '0';
-              pathElement.style.stroke = 'none';
+              // Keep the border with appropriate color and width
+              pathElement.style.strokeWidth = strokeWidth;
+              pathElement.style.stroke = strokeColor;
             }
 
             // Hover effects - more visible for acrylic panels
@@ -265,7 +296,9 @@ const AllInOneSVG = ({
               if (selectedPanel !== panelId) {
                 // Add drop shadow and border for better visibility
                 pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
-                pathElement.style.strokeWidth = '2';
+                // Use thicker stroke for hover (2px for normal, 6px for transparent)
+                const hoverStrokeWidth = isTransparentAcrylic ? '6' : '2';
+                pathElement.style.strokeWidth = hoverStrokeWidth;
                 pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
 
                 // Subtle brightness adjustment instead of opacity
@@ -278,10 +311,10 @@ const AllInOneSVG = ({
 
             pathElement.onmouseleave = () => {
               if (selectedPanel !== panelId) {
-                // Remove hover effects
+                // Remove hover effects but keep border with appropriate color and width
                 pathElement.style.filter = 'none';
-                pathElement.style.strokeWidth = '0';
-                pathElement.style.stroke = 'none';
+                pathElement.style.strokeWidth = strokeWidth;
+                pathElement.style.stroke = strokeColor;
               }
 
               // Always restore base opacity
@@ -312,18 +345,46 @@ const AllInOneSVG = ({
 
             // Update color if specified, otherwise use default black
             const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-            // Use both setAttribute and style to ensure the color is applied
-            pathElement.setAttribute('fill', color);
-            pathElement.style.fill = color;
-            // Add !important to override any CSS rules
-            pathElement.style.setProperty('fill', color, 'important');
 
-            // Apply opacity for acrylic material to simulate transparency
-            if (material === 'acrylic') {
-              pathElement.style.setProperty('fill-opacity', '0.8', 'important');
-            } else {
+            // Handle transparent acrylic colors specially
+            const isTransparentAcrylic =
+              material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
+
+            if (isTransparentAcrylic) {
+              // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
+              pathElement.style.fill = 'transparent';
+              pathElement.setAttribute('fill', 'transparent');
+              pathElement.style.setProperty('fill', 'transparent', 'important');
               pathElement.style.setProperty('fill-opacity', '1', 'important');
+            } else {
+              // Use both setAttribute and style to ensure the color is applied
+              pathElement.setAttribute('fill', color);
+              pathElement.style.fill = color;
+              pathElement.style.setProperty('fill', color, 'important');
+
+              // Apply opacity for other acrylic materials to simulate transparency
+              if (material === 'acrylic') {
+                pathElement.style.setProperty('fill-opacity', '0.8', 'important');
+              } else {
+                pathElement.style.setProperty('fill-opacity', '1', 'important');
+              }
             }
+
+            // Set stroke color and width based on transparent acrylic type
+            let strokeColor = '#000000'; // default black
+            let strokeWidth = '1'; // default 1px for non-transparent
+
+            if (isTransparentAcrylic) {
+              strokeWidth = '4'; // 4px for transparent acrylics
+              if (color === '#4a9b9b') {
+                strokeColor = '#117269'; // ガラスシアン - glass-like edge
+              }
+              // クリア stays #000000 (default)
+            }
+
+            pathElement.style.stroke = strokeColor;
+            pathElement.style.strokeWidth = strokeWidth;
+            pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
 
             // Add hover effect with better transitions
             pathElement.style.transition = 'all 0.2s ease-out';
@@ -332,12 +393,15 @@ const AllInOneSVG = ({
             // Add selected state visual feedback
             if (selectedPanel === panelId) {
               pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
-              pathElement.style.strokeWidth = '4';
+              // Use thicker stroke for selected (4px for normal, 8px for transparent)
+              const selectedStrokeWidth = isTransparentAcrylic ? '8' : '4';
+              pathElement.style.strokeWidth = selectedStrokeWidth;
               pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
             } else {
               pathElement.style.filter = 'none';
-              pathElement.style.strokeWidth = '0';
-              pathElement.style.stroke = 'none';
+              // Keep the border with appropriate color and width
+              pathElement.style.strokeWidth = strokeWidth;
+              pathElement.style.stroke = strokeColor;
             }
 
             // Hover effects - more visible for acrylic panels
@@ -345,7 +409,9 @@ const AllInOneSVG = ({
               if (selectedPanel !== panelId) {
                 // Add drop shadow and border for better visibility
                 pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
-                pathElement.style.strokeWidth = '2';
+                // Use thicker stroke for hover (2px for normal, 6px for transparent)
+                const hoverStrokeWidth = isTransparentAcrylic ? '6' : '2';
+                pathElement.style.strokeWidth = hoverStrokeWidth;
                 pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
 
                 // Subtle brightness adjustment instead of opacity
@@ -358,10 +424,10 @@ const AllInOneSVG = ({
 
             pathElement.onmouseleave = () => {
               if (selectedPanel !== panelId) {
-                // Remove hover effects
+                // Remove hover effects but keep border with appropriate color and width
                 pathElement.style.filter = 'none';
-                pathElement.style.strokeWidth = '0';
-                pathElement.style.stroke = 'none';
+                pathElement.style.strokeWidth = strokeWidth;
+                pathElement.style.stroke = strokeColor;
               }
 
               // Always restore base opacity
