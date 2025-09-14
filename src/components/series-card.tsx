@@ -25,6 +25,12 @@ export default function SeriesCard({
       const color = availableColors.find((c: Color) => c.id === series.colors.all);
       return color?.value || '#000000';
     } else {
+      // For 10BOX, all panels should use the same color for YamiKage
+      if (caseType === '10box-lite') {
+        const color = availableColors.find((c: Color) => c.id === series.colors.all);
+        return color?.value || '#000000';
+      }
+
       const isPrimary =
         panelId === 'side1' ||
         panelId === 'side2' ||

@@ -56,16 +56,24 @@ export default function ControlsSidebar({
                     <div className="space-y-vgap-sm pt-vgap-md">
                       {material && colors.series[material] && selectedCase && (
                         <>
-                          {colors.series[material].map((series) => (
-                            <SeriesCard
-                              key={series.id}
-                              series={series}
-                              material={material}
-                              caseType={selectedCase}
-                              onClick={onSeriesSelect}
-                              isActive={isSeriesActive(series)}
-                            />
-                          ))}
+                          {colors.series[material]
+                            .filter((series) => {
+                              // For 10BOX Lite, only show YamiKage series
+                              if (selectedCase === '10box-lite') {
+                                return series.id === 'yamikage';
+                              }
+                              return true;
+                            })
+                            .map((series) => (
+                              <SeriesCard
+                                key={series.id}
+                                series={series}
+                                material={material}
+                                caseType={selectedCase}
+                                onClick={onSeriesSelect}
+                                isActive={isSeriesActive(series)}
+                              />
+                            ))}
                         </>
                       )}
                     </div>

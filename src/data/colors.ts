@@ -6,7 +6,7 @@ export const colors: Colors = {
     { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange' },
     { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow' },
     { id: 'clear', name: 'クリア', value: '#f8f9fa', material: 'Transparent' },
-    { id: 'frost-clear', name: 'フロストクリア', value: '#e3f2fd', material: 'Glass Cyan' },
+    { id: 'frost-clear', name: 'ガラスシアン', value: '#4a9b9b', material: 'Glass Cyan' },
     { id: 'ocean-blue', name: 'オーシャンブルー', value: '#0d47a1', material: 'Deep Blue' },
     { id: 'sky-blue', name: 'スカイブルー', value: '#42a5f5', material: 'Light Blue' },
     { id: 'forest', name: 'フォレスト', value: '#1b5e20', material: 'Deep Green' },
@@ -23,7 +23,7 @@ export const colors: Colors = {
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA' },
     //{ id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' }, // sold out
     { id: 'clear-red', name: 'クリアレッド', value: '#ff6b6b', material: 'PETG' },
-    { id: 'bone-white', name: 'ボーンホワイト', value: '#f8f4e6', material: 'PLA' },
+    { id: 'bone-white', name: 'ボーンホワイト', value: '#a59d88', material: 'PLA' },
   ],
   series: {
     acrylic: [
@@ -33,8 +33,8 @@ export const colors: Colors = {
       { id: 'clear', name: 'クリア', description: 'All Clear', colors: { all: 'clear' } },
       {
         id: 'frost-clear',
-        name: 'フロストクリア',
-        description: 'All Frost Clear',
+        name: 'ガラスシアン',
+        description: 'All Glass Cyan',
         colors: { all: 'frost-clear' },
       },
       {

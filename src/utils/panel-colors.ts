@@ -35,12 +35,22 @@ export const applySeriesColors = (
   const newColors: PanelColors = {};
 
   const isX2Model = caseType.includes('x2');
+  const is10BoxModel = caseType === '10box-lite';
 
   caseData.panels.forEach((panel) => {
     if (series.colors.all) {
       const color = availableColors.find((c: Color) => c.id === series.colors.all);
       if (color) newColors[panel.id] = color.value;
     } else {
+      // 10BOX only supports YamiKage (all black), so skip primary/secondary logic
+      if (is10BoxModel) {
+        // This shouldn't happen since 10BOX only has YamiKage which has colors.all
+        // But as a fallback, use carbon-black for all panels
+        const color = availableColors.find((c: Color) => c.id === 'carbon-black');
+        if (color) newColors[panel.id] = color.value;
+        return;
+      }
+
       let isPrimary: boolean;
 
       if (isX2Model) {
@@ -91,11 +101,17 @@ export const isSeriesActive = (
   if (!caseData) return false;
 
   const isX2Model = caseType.includes('x2');
+  const is10BoxModel = caseType === '10box-lite';
 
   for (const panel of caseData.panels) {
     const expectedColor = series.colors.all
       ? colors[material].find((c: Color) => c.id === series.colors.all)?.value
       : (() => {
+          // 10BOX only supports YamiKage (all black)
+          if (is10BoxModel) {
+            return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
+          }
+
           let isPrimary: boolean;
 
           if (isX2Model) {

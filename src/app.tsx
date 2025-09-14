@@ -73,11 +73,10 @@ function App() {
     panelColors,
     onCaseLoad: (caseType, colors) => {
       setSelectedCase(caseType);
-      if (Object.keys(colors).length > 0) {
-        setPanelColors(colors);
-      } else {
-        setPanelColors(getDefaultColors(caseType));
-      }
+      // Always start with default colors, then merge any loaded colors on top
+      const defaultColors = getDefaultColors(caseType);
+      const mergedColors = { ...defaultColors, ...colors };
+      setPanelColors(mergedColors);
     },
   });
 
