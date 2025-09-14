@@ -1,4 +1,4 @@
-import AllInOneSVG from './all-in-one-svg';
+import CaseVisualizer from './case-visualizer';
 import { generateBackgroundPattern } from '../utils/panel-colors';
 
 interface VisualizationPanelProps {
@@ -33,7 +33,7 @@ export default function VisualizationPanel({
     >
       <div className="h-full p-[10px] md:p-[15px] lg:p-[20px] xl:p-[30px] flex items-center justify-center">
         {selectedCase ? (
-          <AllInOneSVG
+          <CaseVisualizer
             caseType={selectedCase}
             panelColors={panelColors}
             onPanelClick={onPanelClick}

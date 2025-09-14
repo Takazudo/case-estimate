@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface AllInOneSVGProps {
+interface CaseVisualizerProps {
   caseType: string;
   panelColors: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
@@ -74,14 +74,14 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
 
-const AllInOneSVG = ({
+const CaseVisualizer = ({
   caseType,
   panelColors,
   onPanelClick,
   selectedPanel,
   material,
   onLoadingChange,
-}: AllInOneSVGProps) => {
+}: CaseVisualizerProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
 
@@ -434,4 +434,4 @@ const AllInOneSVG = ({
   );
 };
 
-export default AllInOneSVG;
+export default CaseVisualizer;
