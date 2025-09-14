@@ -39,21 +39,19 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
   l: 'front2', // L フロント2
 };
 
-// For 10BOX Lite model - maps fill colors to panel IDs (confirmed from image)
-// Based on the SVG order and visual confirmation:
-// Position 1: #2e3192 (dark blue) -> Panel 7 (main-side3)
-// Position 2: #00aeef (cyan) -> Panel 8 (main-side4)
-// Position 3: #754c29 (brown) -> Panel 11 (main-exchange-side1)
-// Position 4: no fill/black -> Panel 2 (main-side2)
-// Position 5: #00a99d (teal) -> Panel 1 (main-side1)
-// Position 6: #c49a6c (tan) -> Panel 12 (main-exchange-side2)
-// Position 7: #ef4136 (red) -> Panel 3 (main-back1)
-// Position 8: #00a651 (green) -> Panel 6 (main-front)
-// Position 9: #fff200 (yellow) -> Panel 5 (main-bottom2)
-// Position 10: #ed1c24 (darker red) -> Panel 4 (main-bottom1)
+// For 10BOX Lite model - maps fill colors to panel IDs
+// SVG path positions (after v2 update):
+// Position 1: #2e3192 (dark blue) -> Panel 8 (main-side4)
+// Position 2: #00aeef (cyan) -> Panel 7 (main-side3)
+// Position 3: No fill style -> Panel 2 (main-side2)
+// Position 4: #00a99d (teal) -> Panel 1 (main-side1)
+// Position 5: #ef4136 (red) -> Panel 3 (main-back1)
+// Position 6: #00a651 (green) -> Panel 6 (main-front)
+// Position 7: #fff200 (yellow) -> Panel 5 (main-bottom2)
+// Position 8: #ed1c24 (darker red) -> Panel 4 (main-bottom1)
 const COLOR_TO_PANEL_10BOX: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal - left main side)
-  // Panel 2 (main-side2) has no fill style, will be handled as position 4
+  '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal)
+  // Panel 2 (main-side2) has no fill style, handled by position
   '#ef4136': 'main-back1', // Panel 3: メイン: バック1 (red - top)
   '#ed1c24': 'main-bottom1', // Panel 4: メイン: ボトム1 (darker red - center upper)
   '#fff200': 'main-bottom2', // Panel 5: メイン: ボトム2 (yellow - center middle)
@@ -124,25 +122,21 @@ const AllInOneSVG = ({
 
             // For 10BOX model, immediately set all panels to black to prevent color flash
             if (is10BoxModel) {
-              // Get all paths, including those without fill styles
+              // Get all paths (including the one without fill style for Panel 2)
               const allPaths = svg.querySelectorAll('path');
-              const paths = Array.from(allPaths).filter((path) => {
-                const style = path.getAttribute('style') || '';
-                // Include paths with fill styles OR path at position 4 (panel 2)
-                return style.includes('fill:') || Array.from(allPaths).indexOf(path) === 3; // index 3 = position 4
-              });
+              // Include both paths with fill styles AND the path at position 3 (Panel 2 with no fill)
+              const paths = Array.from(allPaths);
 
-              paths.forEach((path: Element) => {
+              paths.forEach((path: Element, index: number) => {
                 const pathElement = path as HTMLElement;
                 const styleAttr = pathElement.getAttribute('style') || '';
                 const fillMatch = styleAttr.match(/fill:\s*([^;]+)/i);
 
                 let panelId: string | undefined;
 
-                // Check if this is the path at position 4 (panel 2 - main-side2)
-                if (Array.from(allPaths).indexOf(path as SVGPathElement) === 3) {
-                  // index 3 = position 4
-                  panelId = 'main-side2'; // Panel 2: メイン: サイド2 (black panel)
+                // Check if this is Panel 2 (position 3, index 2) - has no fill style
+                if (index === 2 && !fillMatch) {
+                  panelId = 'main-side2'; // Panel 2: メイン: サイド2
                 } else if (fillMatch) {
                   const originalColor = fillMatch[1].trim();
                   panelId = COLOR_TO_PANEL_10BOX[originalColor];
@@ -154,6 +148,13 @@ const AllInOneSVG = ({
                   // Immediately set to black to prevent color flash
                   pathElement.style.fill = DEFAULT_PANEL_COLOR;
                   pathElement.style.setProperty('fill', DEFAULT_PANEL_COLOR, 'important');
+
+                  // For Panel 2, also ensure it has proper stroke for visibility
+                  if (panelId === 'main-side2') {
+                    pathElement.style.stroke = '#000000';
+                    pathElement.style.strokeWidth = '1';
+                    pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
+                  }
                 }
               });
             } else {
@@ -201,24 +202,8 @@ const AllInOneSVG = ({
         paths.forEach((path: Element) => {
           const pathElement = path as HTMLElement;
 
-          // Check if we've already identified this panel
-          let panelId = pathElement.getAttribute('data-panel-id');
-
-          // Panel ID should already be set during SVG load
-          // This is just a fallback in case it's not set
-          if (!panelId) {
-            const styleAttr = pathElement.getAttribute('style') || '';
-            const fillMatch = styleAttr.match(/fill:\s*([^;]+)/i);
-
-            if (fillMatch) {
-              const originalColor = fillMatch[1].trim();
-              panelId = COLOR_TO_PANEL_10BOX[originalColor];
-
-              if (panelId) {
-                pathElement.setAttribute('data-panel-id', panelId);
-              }
-            }
-          }
+          // Get the panel ID that was set during SVG load
+          const panelId = pathElement.getAttribute('data-panel-id');
 
           if (panelId) {
             // Set cursor style
