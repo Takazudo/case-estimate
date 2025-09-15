@@ -273,8 +273,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  '10box-lite': {
-    name: '10BOX Lite',
+  '10box-3dp': {
+    name: '10BOX-3DP',
     hp: 104,
     material: '3dp',
     panels: [

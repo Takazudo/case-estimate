@@ -58,8 +58,8 @@ export default function ControlsSidebar({
                         <>
                           {colors.series[material]
                             .filter((series) => {
-                              // For 10BOX Lite, only show YamiKage series
-                              if (selectedCase === '10box-lite') {
+                              // For 10BOX-3DP, only show YamiKage series
+                              if (selectedCase === '10box-3dp') {
                                 return series.id === 'yamikage';
                               }
                               return true;

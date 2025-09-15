@@ -35,7 +35,7 @@ export const applySeriesColors = (
   const newColors: PanelColors = {};
 
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-lite';
+  const is10BoxModel = caseType === '10box-3dp';
 
   caseData.panels.forEach((panel) => {
     if (series.colors.all) {
@@ -101,7 +101,7 @@ export const isSeriesActive = (
   if (!caseData) return false;
 
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-lite';
+  const is10BoxModel = caseType === '10box-3dp';
 
   for (const panel of caseData.panels) {
     const expectedColor = series.colors.all

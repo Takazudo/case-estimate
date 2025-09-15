@@ -1,5 +1,5 @@
 import ArticleH2 from './article/article-h2';
-import ArticleParagraph from './article/article-paragraph';
+import ArticleText from './article/article-text';
 import GridImages from './article/grid-images';
 
 interface TopPageProps {
@@ -37,25 +37,25 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
   ];
 
   // 10BOX models
-  const tenBoxItems = [{ id: '17', caseId: '10box-lite', caption: '10BOX Lite' }];
+  const tenBoxItems = [{ id: '17', caseId: '10box-3dp', caption: '10BOX-3DP' }];
 
   return (
     <div className="h-full overflow-y-auto">
       <div className="container mx-auto px-hgap-md py-vgap-lg max-w-5xl">
-        <ArticleParagraph className="mb-vgap-lg">
+        <ArticleText className="mb-vgap-lg">
           <p>
             Takazudo Modular Panelsは、Takazudo
             Modularのケースオーダー用Webアプリです。ケースのモデルをまず選び、パネル毎に好きな色んで、オリジナルのケースをデザインできます。
           </p>
-        </ArticleParagraph>
+        </ArticleText>
 
         <ArticleH2>zudo-block-40</ArticleH2>
 
-        <ArticleParagraph className="mb-vgap-lg">
+        <ArticleText className="mb-vgap-lg">
           <p>
             zudo-block-40は、40HPのコンパクトなユーロラックモジュラーシンセ向けケース。レールのフレーム部分を好きに傾けて固定することで、自分好みのセットアップを実現可能。二つ繋げて3U+3U+1Uレールを備えたミニタワー型、40x2タイプも選択可能です。
           </p>
-        </ArticleParagraph>
+        </ArticleText>
 
         <GridImages
           items={zudoBlock40Items}
@@ -65,11 +65,11 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
         <ArticleH2>zudo-block-60</ArticleH2>
 
-        <ArticleParagraph className="mb-vgap-lg">
+        <ArticleText className="mb-vgap-lg">
           <p>
             zudo-block-60は、60HPの丁度良いサイズのケース。基本的な機能は40HPタイプと同じで、2つ繋げた60x2タイプは、中規模のシステムに丁度良いサイズのケースです。
           </p>
-        </ArticleParagraph>
+        </ArticleText>
 
         <GridImages
           items={zudoBlock60Items}
@@ -79,12 +79,12 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
         <ArticleH2>10BOX Ju-Bako</ArticleH2>
 
-        <ArticleParagraph className="mb-vgap-lg">
+        <ArticleText className="mb-vgap-lg">
           <p>
             10BOX
             Ju-Bakoは、幅60HP、浅い前側、深い奥側の2レール構成の、固定レイアウトタイプのケース。深さの違いを利用したスタンドや、ホコリ避け用のケースも付属した、卓上に丁度良いサイズのケースです。
           </p>
-        </ArticleParagraph>
+        </ArticleText>
 
         <GridImages items={tenBoxItems} onItemClick={handleModelClick} className="mb-vgap-xl" />
       </div>

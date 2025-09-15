@@ -19,7 +19,8 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60x2-ACR-B': '7b',
   'zudo-block-60x2-3DP-A': '8a',
   'zudo-block-60x2-3DP-B': '8b',
-  '10box-lite': '9',
+  '10box-3dp': '9',
+  '10box-lite': '9', // Legacy mapping for backward compatibility
   // Legacy mappings for backward compatibility
   'zudo-block-40-type-a': '1a',
   'zudo-block-40-type-b': '1b',

@@ -87,7 +87,7 @@ const CaseVisualizer = ({
 
   // Determine which class mapping to use based on model type
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-lite';
+  const is10BoxModel = caseType === '10box-3dp';
   const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Load and inject the SVG
