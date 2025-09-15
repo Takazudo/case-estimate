@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from 'react-router-dom';
 import HeaderCaseSelector from './header-case-selector';
 
 interface AppHeaderProps {
@@ -6,11 +7,19 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isOnPanelPage = location.pathname === '/panel';
+
   const handleLogoClick = () => {
-    // Clear the case selection and go to initial page
-    onCaseSelect('');
-    // Also clear URL parameters
-    window.history.replaceState({}, '', window.location.pathname);
+    if (isOnPanelPage) {
+      navigate('/');
+    } else {
+      // Clear the case selection and go to initial page
+      onCaseSelect('');
+      // Also clear URL parameters
+      window.history.replaceState({}, '', window.location.pathname);
+    }
   };
 
   return (
@@ -30,7 +39,17 @@ export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps
             Takazudo Modular Panels
           </button>
           <div className="flex items-center gap-hgap-xs">
-            <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
+            {!isOnPanelPage && (
+              <button
+                onClick={() => navigate('/panel')}
+                className="px-4 py-2 text-sm text-zd-white hover:bg-zd-gray hover:bg-opacity-20 rounded transition-colors"
+              >
+                Panel Materials
+              </button>
+            )}
+            {!isOnPanelPage && (
+              <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
+            )}
           </div>
         </div>
       </div>

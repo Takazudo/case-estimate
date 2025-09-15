@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app';
+import AppWithRouting from './app-with-routing';
 import './main.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <AppWithRouting />
   </React.StrictMode>,
 );

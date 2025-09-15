@@ -40,8 +40,8 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
   const tenBoxItems = [{ id: '17', caseId: '10box-3dp', caption: '10BOX-3DP' }];
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="container mx-auto px-hgap-md py-vgap-lg max-w-5xl">
+    <div className="h-full overflow-y-auto bg-zd-black">
+      <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
         <ArticleText className="mb-vgap-lg">
           <p>
             Takazudo Modular Panelsは、Takazudo

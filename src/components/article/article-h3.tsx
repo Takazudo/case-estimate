@@ -1,0 +1,34 @@
+import * as React from 'react';
+
+interface ArticleH3Props {
+  children: React.ReactNode;
+  id?: string;
+}
+
+const ArticleH3: React.FC<ArticleH3Props> = ({ children, id }) => {
+  return (
+    <h3
+      id={id}
+      className="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm"
+    >
+      <span className="flow-root">
+        <span className="block relative group">
+          {children}
+          {id && (
+            <span className="inline-block w-0 h-0 relative align-bottom">
+              <a
+                href={`#${id}`}
+                aria-hidden="true"
+                className="font-bold hidden no-underline text-blue-500 absolute left-0 bottom-0 px-[0.4em] group-hover:block"
+              >
+                #
+              </a>
+            </span>
+          )}
+        </span>
+      </span>
+    </h3>
+  );
+};
+
+export { ArticleH3 };
