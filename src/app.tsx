@@ -8,6 +8,7 @@ import AppHeader from './components/app-header';
 import AppFooter from './components/app-footer';
 import VisualizationPanel from './components/visualization-panel';
 import ControlsSidebar from './components/controls-sidebar';
+import TopPage from './components/top-page';
 
 // Hooks
 import { useLocalStorageColor } from './hooks/use-local-storage-color';
@@ -152,11 +153,12 @@ function App() {
     });
   }
 
+  // Big layout divide: header + main area
   return (
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
       <AppHeader selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
 
-      {/* Main Content Area - 2 Column Grid */}
+      {/* Main area contains different layouts based on case selection */}
       <main className="flex-1 overflow-hidden relative">
         {/* Loading overlay */}
         {isLoadingSvg && (
@@ -166,44 +168,56 @@ function App() {
           </div>
         )}
 
-        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
-          {/* Left Column - Visualization */}
-          <VisualizationPanel
-            selectedCase={selectedCase}
-            panelColors={panelColors}
-            onPanelClick={handlePanelClick}
-            selectedPanel={selectedPanel}
-            material={material}
-            bgColor={bgColor}
-            gridColor={gridColor}
-            onLoadingChange={setIsLoadingSvg}
-          />
+        {!selectedCase ? (
+          // Main layout: single column body area in main area
+          <TopPage onCaseSelect={handleCaseSelect} />
+        ) : (
+          // Panel preview layout: body area + footer divide in main area
+          <div className="h-full flex flex-col">
+            {/* Body area: main col + side col */}
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
+                {/* Left Column - Visualization */}
+                <VisualizationPanel
+                  selectedCase={selectedCase}
+                  panelColors={panelColors}
+                  onPanelClick={handlePanelClick}
+                  selectedPanel={selectedPanel}
+                  material={material}
+                  bgColor={bgColor}
+                  gridColor={gridColor}
+                  onLoadingChange={setIsLoadingSvg}
+                />
 
-          {/* Right Column - Controls */}
-          <ControlsSidebar
-            selectedCase={selectedCase}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            material={material}
-            onSeriesSelect={handleSeriesSelect}
-            isSeriesActive={isSeriesActive}
-            panels={currentCase?.panels || []}
-            panelColors={panelColors}
-            selectedPanel={selectedPanel}
-            onPanelSelect={setSelectedPanel}
-            colorMap={colorMap}
-            selectedColor={selectedColor}
-            onColorSelect={handleColorSelect}
-          />
-        </div>
+                {/* Right Column - Controls */}
+                <ControlsSidebar
+                  selectedCase={selectedCase}
+                  activeTab={activeTab}
+                  onTabChange={setActiveTab}
+                  material={material}
+                  onSeriesSelect={handleSeriesSelect}
+                  isSeriesActive={isSeriesActive}
+                  panels={currentCase?.panels || []}
+                  panelColors={panelColors}
+                  selectedPanel={selectedPanel}
+                  onPanelSelect={setSelectedPanel}
+                  colorMap={colorMap}
+                  selectedColor={selectedColor}
+                  onColorSelect={handleColorSelect}
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <AppFooter
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onBgColorChange={setBgColor}
+              onGridColorChange={setGridColor}
+            />
+          </div>
+        )}
       </main>
-
-      <AppFooter
-        bgColor={bgColor}
-        gridColor={gridColor}
-        onBgColorChange={setBgColor}
-        onGridColorChange={setGridColor}
-      />
     </div>
   );
 }
