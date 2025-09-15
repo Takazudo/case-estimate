@@ -22,11 +22,18 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
         <div key={index} className="overflow-hidden">
           <ArticleH3>{item.heading}</ArticleH3>
           <div className="text-sm md:text-base">
-            <img
-              src={item.imageUrl}
-              alt={item.imageAlt}
-              className="w-[200px] h-[200px] object-contain bg-white float-right ml-hgap-sm mb-vgap-sm"
-            />
+            <div className="relative w-[200px] h-[200px] float-right ml-hgap-sm mb-vgap-sm">
+              <img
+                src={item.imageUrl}
+                alt={item.imageAlt}
+                className="w-full h-full object-contain bg-white"
+              />
+              <img
+                src="/enlarge.svg"
+                alt="Enlarge"
+                className="absolute top-2 right-2 w-5 h-5 opacity-60 pointer-events-none"
+              />
+            </div>
             <div>{item.content}</div>
           </div>
         </div>
