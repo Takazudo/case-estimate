@@ -8,7 +8,7 @@ interface ArticleTextProps {
 const ArticleText: React.FC<ArticleTextProps> = ({ children, className = '' }) => {
   return (
     <div
-      className={`article-text text-sm lg:text-base ${className}
+      className={`article-text text-sm md:text-base ${className}
         [&_p]:pb-vgap-md [&_p]:-mt-[0.3em]
         [&_ul]:text-sm [&_ul]:lg:text-base [&_ul]:list-disc [&_ul]:pl-hgap-md [&_ul]:pb-vgap-md [&_ul]:-mt-[0.3em]
         [&_ul>*+*]:mt-vgap-xs
