@@ -64,6 +64,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
   return (
     <div
       ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
       className={`
         fixed inset-0 z-50 flex items-center justify-center
         transition-opacity duration-300
@@ -98,6 +102,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
 
         {imageUrl && (
           <img
+            id="modal-description"
             src={imageUrl}
             alt={imageAlt}
             className={`
@@ -111,6 +116,11 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
             style={{ display: isLoading ? 'none' : 'block' }}
           />
         )}
+
+        {/* Hidden title for screen readers */}
+        <h2 id="modal-title" className="sr-only">
+          {imageAlt} - Enlarged Image
+        </h2>
       </div>
     </div>
   );
