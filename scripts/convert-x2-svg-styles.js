@@ -47,14 +47,14 @@ function convertSvg(filePath) {
 // Process all x2 SVG files
 const svgDir = path.join(__dirname, '..', 'public', 'svg');
 const x2Files = [
-  'zudo-block-40x2-type-a.svg',
-  'zudo-block-40x2-type-b.svg',
-  'zudo-block-40x2-lite-type-a.svg',
-  'zudo-block-40x2-lite-type-b.svg',
-  'zudo-block-60x2-type-a.svg',
-  'zudo-block-60x2-type-b.svg',
-  'zudo-block-60x2-lite-type-a.svg',
-  'zudo-block-60x2-lite-type-b.svg',
+  'zudo-block-40x2-ACR-A.svg',
+  'zudo-block-40x2-ACR-B.svg',
+  'zudo-block-40x2-3DP-A.svg',
+  'zudo-block-40x2-3DP-B.svg',
+  'zudo-block-60x2-ACR-A.svg',
+  'zudo-block-60x2-ACR-B.svg',
+  'zudo-block-60x2-3DP-A.svg',
+  'zudo-block-60x2-3DP-B.svg',
 ];
 
 x2Files.forEach((file) => {

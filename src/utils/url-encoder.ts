@@ -3,6 +3,24 @@ import type { Colors, Color } from '../types';
 
 // Case model mappings (1-2 chars)
 const CASE_MAP: { [key: string]: string } = {
+  'zudo-block-40-ACR-A': '1a',
+  'zudo-block-40-ACR-B': '1b',
+  'zudo-block-40-3DP-A': '2a',
+  'zudo-block-40-3DP-B': '2b',
+  'zudo-block-60-ACR-A': '3a',
+  'zudo-block-60-ACR-B': '3b',
+  'zudo-block-60-3DP-A': '4a',
+  'zudo-block-60-3DP-B': '4b',
+  'zudo-block-40x2-ACR-A': '5a',
+  'zudo-block-40x2-ACR-B': '5b',
+  'zudo-block-40x2-3DP-A': '6a',
+  'zudo-block-40x2-3DP-B': '6b',
+  'zudo-block-60x2-ACR-A': '7a',
+  'zudo-block-60x2-ACR-B': '7b',
+  'zudo-block-60x2-3DP-A': '8a',
+  'zudo-block-60x2-3DP-B': '8b',
+  '10box-lite': '9',
+  // Legacy mappings for backward compatibility
   'zudo-block-40-type-a': '1a',
   'zudo-block-40-type-b': '1b',
   'zudo-block-40-lite-type-a': '2a',
@@ -19,8 +37,6 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60x2-type-b': '7b',
   'zudo-block-60x2-lite-type-a': '8a',
   'zudo-block-60x2-lite-type-b': '8b',
-  '10box-lite': '9',
-  // Legacy mappings for backward compatibility
   'zudo-block-40': '1',
   'zudo-block-40-lite': '2',
   'zudo-block-60': '3',

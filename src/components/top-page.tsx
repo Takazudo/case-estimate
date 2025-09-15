@@ -7,19 +7,37 @@ interface TopPageProps {
 }
 
 export default function TopPage({ onCaseSelect }: TopPageProps) {
-  // Temporarily unused - will be used when model links become functional
-  void onCaseSelect;
-  // Sample data for model grid
-  const modelItems = [
-    { id: '1', href: '#40-acr-a', caption: '40-ACR-A' },
-    { id: '2', href: '#40-acr-b', caption: '40-ACR-B' },
-    { id: '3', href: '#40-3dp-a', caption: '40-3DP-A' },
-    { id: '4', href: '#40-3dp-b', caption: '40-3DP-B' },
-    { id: '5', href: '#40x2-acr-a', caption: '40x2-ACR-A' },
-    { id: '6', href: '#40x2-acr-b', caption: '40x2-ACR-B' },
-    { id: '7', href: '#40x2-3dp-a', caption: '40x2-3DP-A' },
-    { id: '8', href: '#40x2-3dp-b', caption: '40x2-3DP-B' },
+  // Handle model link clicks
+  const handleModelClick = (caseId: string) => {
+    onCaseSelect(caseId);
+  };
+
+  // zudo-block-40 models
+  const zudoBlock40Items = [
+    { id: '1', caseId: 'zudo-block-40-ACR-A', caption: 'zudo-block-40-ACR-A' },
+    { id: '2', caseId: 'zudo-block-40-ACR-B', caption: 'zudo-block-40-ACR-B' },
+    { id: '3', caseId: 'zudo-block-40-3DP-A', caption: 'zudo-block-40-3DP-A' },
+    { id: '4', caseId: 'zudo-block-40-3DP-B', caption: 'zudo-block-40-3DP-B' },
+    { id: '5', caseId: 'zudo-block-40x2-ACR-A', caption: 'zudo-block-40x2-ACR-A' },
+    { id: '6', caseId: 'zudo-block-40x2-ACR-B', caption: 'zudo-block-40x2-ACR-B' },
+    { id: '7', caseId: 'zudo-block-40x2-3DP-A', caption: 'zudo-block-40x2-3DP-A' },
+    { id: '8', caseId: 'zudo-block-40x2-3DP-B', caption: 'zudo-block-40x2-3DP-B' },
   ];
+
+  // zudo-block-60 models
+  const zudoBlock60Items = [
+    { id: '9', caseId: 'zudo-block-60-ACR-A', caption: 'zudo-block-60-ACR-A' },
+    { id: '10', caseId: 'zudo-block-60-ACR-B', caption: 'zudo-block-60-ACR-B' },
+    { id: '11', caseId: 'zudo-block-60-3DP-A', caption: 'zudo-block-60-3DP-A' },
+    { id: '12', caseId: 'zudo-block-60-3DP-B', caption: 'zudo-block-60-3DP-B' },
+    { id: '13', caseId: 'zudo-block-60x2-ACR-A', caption: 'zudo-block-60x2-ACR-A' },
+    { id: '14', caseId: 'zudo-block-60x2-ACR-B', caption: 'zudo-block-60x2-ACR-B' },
+    { id: '15', caseId: 'zudo-block-60x2-3DP-A', caption: 'zudo-block-60x2-3DP-A' },
+    { id: '16', caseId: 'zudo-block-60x2-3DP-B', caption: 'zudo-block-60x2-3DP-B' },
+  ];
+
+  // 10BOX models
+  const tenBoxItems = [{ id: '17', caseId: '10box-lite', caption: '10BOX Lite' }];
 
   return (
     <div className="h-full overflow-y-auto">
@@ -39,7 +57,11 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
           </p>
         </ArticleParagraph>
 
-        <GridImages items={modelItems} className="mb-vgap-xl" />
+        <GridImages
+          items={zudoBlock40Items}
+          onItemClick={handleModelClick}
+          className="mb-vgap-xl"
+        />
 
         <ArticleH2>zudo-block-60</ArticleH2>
 
@@ -49,6 +71,12 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
           </p>
         </ArticleParagraph>
 
+        <GridImages
+          items={zudoBlock60Items}
+          onItemClick={handleModelClick}
+          className="mb-vgap-xl"
+        />
+
         <ArticleH2>10BOX Ju-Bako</ArticleH2>
 
         <ArticleParagraph className="mb-vgap-lg">
@@ -57,6 +85,8 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
             Ju-Bakoは、幅60HP、浅い前側、深い奥側の2レール構成の、固定レイアウトタイプのケース。深さの違いを利用したスタンドや、ホコリ避け用のケースも付属した、卓上に丁度良いサイズのケースです。
           </p>
         </ArticleParagraph>
+
+        <GridImages items={tenBoxItems} onItemClick={handleModelClick} className="mb-vgap-xl" />
       </div>
     </div>
   );

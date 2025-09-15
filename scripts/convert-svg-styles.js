@@ -48,10 +48,10 @@ function convertSvg(filePath) {
 // Process all type B SVG files
 const svgDir = path.join(__dirname, '..', 'public', 'svg');
 const typeBFiles = [
-  'zudo-block-40-type-b.svg',
-  'zudo-block-40-lite-type-b.svg',
-  'zudo-block-60-type-b.svg',
-  'zudo-block-60-lite-type-b.svg',
+  'zudo-block-40-ACR-B.svg',
+  'zudo-block-40-3DP-B.svg',
+  'zudo-block-60-ACR-B.svg',
+  'zudo-block-60-3DP-B.svg',
 ];
 
 typeBFiles.forEach((file) => {
