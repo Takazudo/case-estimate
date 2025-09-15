@@ -16,8 +16,9 @@ const GridImages: React.FC<GridImagesProps> = ({ items, className = '' }) => {
   return (
     <div
       className={`
+        -mx-hgap-md
         grid grid-cols-2 md:grid-cols-4 
-        gap-hgap-sm md:gap-hgap-md
+        gap-hgap-xs md:gap-hgap-xs
         ${className}
       `}
     >

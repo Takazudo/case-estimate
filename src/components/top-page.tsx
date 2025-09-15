@@ -24,29 +24,39 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
   return (
     <div className="h-full overflow-y-auto">
       <div className="container mx-auto px-hgap-md py-vgap-lg max-w-5xl">
-        {/* First paragraph section */}
         <ArticleParagraph className="mb-vgap-lg">
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-            quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-            consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie
-            consequat, vel illum dolore
+            Takazudo Modular Panelsは、Takazudo
+            Modularのケースオーダー用Webアプリです。ケースのモデルをまず選び、パネル毎に好きな色んで、オリジナルのケースをデザインできます。
           </p>
         </ArticleParagraph>
 
-        {/* Section with heading */}
         <ArticleH2>zudo-block-40</ArticleH2>
 
         <ArticleParagraph className="mb-vgap-lg">
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore vip ex ea commodo consequat. Duis
+            zudo-block-40は、40HPのコンパクトなユーロラックモジュラーシンセ向けケース。レールのフレーム部分を好きに傾けて固定することで、自分好みのセットアップを実現可能。二つ繋げて3U+3U+1Uレールを備えたミニタワー型、40x2タイプも選択可能です。
           </p>
         </ArticleParagraph>
 
-        {/* Model grid */}
         <GridImages items={modelItems} className="mb-vgap-xl" />
+
+        <ArticleH2>zudo-block-60</ArticleH2>
+
+        <ArticleParagraph className="mb-vgap-lg">
+          <p>
+            zudo-block-60は、60HPの丁度良いサイズのケース。基本的な機能は40HPタイプと同じで、2つ繋げた60x2タイプは、中規模のシステムに丁度良いサイズのケースです。
+          </p>
+        </ArticleParagraph>
+
+        <ArticleH2>10BOX Ju-Bako</ArticleH2>
+
+        <ArticleParagraph className="mb-vgap-lg">
+          <p>
+            10BOX
+            Ju-Bakoは、幅60HP、浅い前側、深い奥側の2レール構成の、固定レイアウトタイプのケース。深さの違いを利用したスタンドや、ホコリ避け用のケースも付属した、卓上に丁度良いサイズのケースです。
+          </p>
+        </ArticleParagraph>
       </div>
     </div>
   );
