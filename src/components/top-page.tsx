@@ -14,26 +14,106 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
   // zudo-block-40 models
   const zudoBlock40Items = [
-    { id: '1', caseId: 'zudo-block-40-ACR-A', caption: 'zudo-block-40-ACR-A' },
-    { id: '2', caseId: 'zudo-block-40-ACR-B', caption: 'zudo-block-40-ACR-B' },
-    { id: '3', caseId: 'zudo-block-40-3DP-A', caption: 'zudo-block-40-3DP-A' },
-    { id: '4', caseId: 'zudo-block-40-3DP-B', caption: 'zudo-block-40-3DP-B' },
-    { id: '5', caseId: 'zudo-block-40x2-ACR-A', caption: 'zudo-block-40x2-ACR-A' },
-    { id: '6', caseId: 'zudo-block-40x2-ACR-B', caption: 'zudo-block-40x2-ACR-B' },
-    { id: '7', caseId: 'zudo-block-40x2-3DP-A', caption: 'zudo-block-40x2-3DP-A' },
-    { id: '8', caseId: 'zudo-block-40x2-3DP-B', caption: 'zudo-block-40x2-3DP-B' },
+    {
+      id: '1',
+      caseId: 'zudo-block-40-ACR-A',
+      caption: 'zudo-block-40-ACR-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40-a/900w.webp',
+    },
+    {
+      id: '2',
+      caseId: 'zudo-block-40-ACR-B',
+      caption: 'zudo-block-40-ACR-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40-b/900w.webp',
+    },
+    {
+      id: '3',
+      caseId: 'zudo-block-40-3DP-A',
+      caption: 'zudo-block-40-3DP-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40-a/900w.webp',
+    },
+    {
+      id: '4',
+      caseId: 'zudo-block-40-3DP-B',
+      caption: 'zudo-block-40-3DP-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40-b/900w.webp',
+    },
+    {
+      id: '5',
+      caseId: 'zudo-block-40x2-ACR-A',
+      caption: 'zudo-block-40x2-ACR-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40x2-a/900w.webp',
+    },
+    {
+      id: '6',
+      caseId: 'zudo-block-40x2-ACR-B',
+      caption: 'zudo-block-40x2-ACR-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40x2-b/900w.webp',
+    },
+    {
+      id: '7',
+      caseId: 'zudo-block-40x2-3DP-A',
+      caption: 'zudo-block-40x2-3DP-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40x2-a/900w.webp',
+    },
+    {
+      id: '8',
+      caseId: 'zudo-block-40x2-3DP-B',
+      caption: 'zudo-block-40x2-3DP-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40x2-b/900w.webp',
+    },
   ];
 
   // zudo-block-60 models
   const zudoBlock60Items = [
-    { id: '9', caseId: 'zudo-block-60-ACR-A', caption: 'zudo-block-60-ACR-A' },
-    { id: '10', caseId: 'zudo-block-60-ACR-B', caption: 'zudo-block-60-ACR-B' },
-    { id: '11', caseId: 'zudo-block-60-3DP-A', caption: 'zudo-block-60-3DP-A' },
-    { id: '12', caseId: 'zudo-block-60-3DP-B', caption: 'zudo-block-60-3DP-B' },
-    { id: '13', caseId: 'zudo-block-60x2-ACR-A', caption: 'zudo-block-60x2-ACR-A' },
-    { id: '14', caseId: 'zudo-block-60x2-ACR-B', caption: 'zudo-block-60x2-ACR-B' },
-    { id: '15', caseId: 'zudo-block-60x2-3DP-A', caption: 'zudo-block-60x2-3DP-A' },
-    { id: '16', caseId: 'zudo-block-60x2-3DP-B', caption: 'zudo-block-60x2-3DP-B' },
+    {
+      id: '9',
+      caseId: 'zudo-block-60-ACR-A',
+      caption: 'zudo-block-60-ACR-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60-a/900w.webp',
+    },
+    {
+      id: '10',
+      caseId: 'zudo-block-60-ACR-B',
+      caption: 'zudo-block-60-ACR-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60-b/900w.webp',
+    },
+    {
+      id: '11',
+      caseId: 'zudo-block-60-3DP-A',
+      caption: 'zudo-block-60-3DP-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60-a/900w.webp',
+    },
+    {
+      id: '12',
+      caseId: 'zudo-block-60-3DP-B',
+      caption: 'zudo-block-60-3DP-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60-b/900w.webp',
+    },
+    {
+      id: '13',
+      caseId: 'zudo-block-60x2-ACR-A',
+      caption: 'zudo-block-60x2-ACR-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60x2-a/900w.webp',
+    },
+    {
+      id: '14',
+      caseId: 'zudo-block-60x2-ACR-B',
+      caption: 'zudo-block-60x2-ACR-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60x2-b/900w.webp',
+    },
+    {
+      id: '15',
+      caseId: 'zudo-block-60x2-3DP-A',
+      caption: 'zudo-block-60x2-3DP-A',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60x2-a/900w.webp',
+    },
+    {
+      id: '16',
+      caseId: 'zudo-block-60x2-3DP-B',
+      caption: 'zudo-block-60x2-3DP-B',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60x2-b/900w.webp',
+    },
   ];
 
   // 10BOX models
