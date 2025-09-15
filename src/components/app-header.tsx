@@ -6,18 +6,29 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps) {
+  const handleLogoClick = () => {
+    // Clear the case selection and go to initial page
+    onCaseSelect('');
+    // Also clear URL parameters
+    window.history.replaceState({}, '', window.location.pathname);
+  };
+
   return (
     <header className="bg-zd-gray2 border-b border-zd-gray shadow-sm flex-shrink-0">
       <div className="px-hgap-sm py-vgap-sm">
         <div className="flex items-center justify-between">
-          <h1 className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs">
+          <button
+            onClick={handleLogoClick}
+            className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity"
+            aria-label="Go to home"
+          >
             <img
               src="/takazudo-logo.svg"
               alt="Takazudo Logo"
               className="w-12 h-12 brightness-0 invert mr-[4px]"
             />
             Takazudo Modular Panels
-          </h1>
+          </button>
           <div className="flex items-center gap-hgap-xs">
             <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
           </div>
