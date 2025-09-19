@@ -1,23 +1,21 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { ArticleH3 } from './article-h3';
 import { ImageModal } from '../modal/image-modal';
 
-interface GridItem {
+interface GridImageItem {
   thumbUrl: string;
   enlargeUrl: string;
   imageAlt: string;
   heading: string;
   subHeading?: string;
-  content: React.ReactNode;
 }
 
-interface GridImagesAndNotesProps {
-  items: GridItem[];
+interface ArticleGridImageListProps {
+  items: GridImageItem[];
   className?: string;
 }
 
-const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, className = '' }) => {
+const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, className = '' }) => {
   const [modalImage, setModalImage] = useState<{ url: string; alt: string } | null>(null);
 
   const handleEnlargeClick = (enlargeUrl: string, alt: string) => {
@@ -31,29 +29,35 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
   return (
     <>
       <div
-        className={`grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-x-hgap-md gap-y-vgap-lg ${className}`}
+        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-hgap-sm gap-y-vgap-md ${className}`}
       >
         {items.map((item, index) => (
-          <div key={index} className="overflow-hidden">
-            <ArticleH3 subText={item.subHeading}>{item.heading}</ArticleH3>
-            <div className="text-sm md:text-base">
+          <dl key={index}>
+            <dt className="text-sm lg:text-base font-bold text-zd-white border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm">
+              <span className="flex justify-between items-center">
+                <span>{item.heading}</span>
+                {item.subHeading && (
+                  <span className="text-sm font-normal text-zd-gray">{item.subHeading}</span>
+                )}
+              </span>
+            </dt>
+            <dd className="mt-0">
               <button
                 onClick={() => handleEnlargeClick(item.enlargeUrl, item.imageAlt)}
-                className="relative w-[200px] h-[200px] float-right ml-hgap-sm mb-vgap-sm group cursor-pointer"
+                className="relative w-full aspect-square group cursor-pointer"
                 aria-label={`Enlarge ${item.imageAlt} image`}
               >
                 <img
                   src={item.thumbUrl}
                   alt={item.imageAlt}
-                  className="w-full h-full object-contain bg-white group-hover:opacity-90 transition-opacity"
+                  className="w-full h-full object-cover bg-white group-hover:opacity-90 transition-opacity"
                 />
                 <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-60 group-hover:opacity-80 transition-opacity">
                   <img src="/enlarge.svg" alt="Enlarge" className="w-5 h-5 brightness-0 invert" />
                 </div>
               </button>
-              <div>{item.content}</div>
-            </div>
-          </div>
+            </dd>
+          </dl>
         ))}
       </div>
 
@@ -67,5 +71,5 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
   );
 };
 
-export { GridImagesAndNotes };
-export type { GridItem };
+export { ArticleGridImageList };
+export type { GridImageItem };

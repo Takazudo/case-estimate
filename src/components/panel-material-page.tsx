@@ -1,298 +1,168 @@
 import ArticleH2 from './article/article-h2';
 import ArticleText from './article/article-text';
-import { GridImagesAndNotes } from './article/grid-images-and-notes';
-import type { GridItem } from './article/grid-images-and-notes';
+import { ArticleGridImageList } from './article/article-grid-image-list';
+import type { GridImageItem } from './article/article-grid-image-list';
 
 export default function PanelMaterialPage() {
   // Acrylic Panels data
-  const acrylicPanels: GridItem[] = [
+  const acrylicPanels: GridImageItem[] = [
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-clear/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-clear/2000w.webp',
       imageAlt: 'クリア（透明）',
-      heading: 'クリア（透明）',
-      content: (
-        <>
-          <p>
-            透明度の高いアクリル素材。モジュールのLEDや内部構造を美しく見せることができる、最もスタンダードな選択肢です。
-          </p>
-        </>
-      ),
+      heading: 'クリア',
+      subHeading: 'Transparent',
+    },
+    {
+      thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-glass/900w.webp',
+      enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-glass/2000w.webp',
+      imageAlt: 'グラス',
+      heading: 'ガラスシアン',
+      subHeading: 'Glass Cyan',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-forest/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-forest/2000w.webp',
       imageAlt: 'フォレスト',
       heading: 'フォレスト',
-      content: (
-        <>
-          <p>
-            深みのある緑色のアクリル。自然を思わせる落ち着いた色合いで、モジュラーシステムにオーガニックな印象を与えます。
-          </p>
-        </>
-      ),
-    },
-    {
-      thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-glass/900w.webp',
-      enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-glass/2000w.webp',
-      imageAlt: 'グラス',
-      heading: 'グラス',
-      content: (
-        <>
-          <p>
-            スモーキーなグレー系の透明アクリル。クリアよりも控えめな印象で、モジュールを程よく隠しながらも透明感を保ちます。
-          </p>
-        </>
-      ),
+      subHeading: 'Deep Green',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-lime/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-lime/2000w.webp',
       imageAlt: 'ライム',
       heading: 'ライム',
-      content: (
-        <>
-          <p>
-            鮮やかな黄緑色のアクリル。エネルギッシュで明るい印象を与え、モジュラーシステムに活力をもたらします。
-          </p>
-        </>
-      ),
+      subHeading: 'Light Green',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-ocean-blue/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-ocean-blue/2000w.webp',
       imageAlt: 'オーシャンブルー',
       heading: 'オーシャンブルー',
-      content: (
-        <>
-          <p>
-            深い海の色をイメージした青いアクリル。クールで洗練された印象で、テクノロジカルな雰囲気を演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'Deep Blue',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-orange/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-orange/2000w.webp',
       imageAlt: 'オレンジ',
       heading: 'オレンジ',
-      content: (
-        <>
-          <p>
-            温かみのあるオレンジ色のアクリル。エネルギッシュで親しみやすい色合いで、創造性を刺激する色彩です。
-          </p>
-        </>
-      ),
+      subHeading: 'Orange',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-pink/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-pink/2000w.webp',
       imageAlt: 'ピンク',
       heading: 'ピンク',
-      content: (
-        <>
-          <p>
-            優しく華やかなピンク色のアクリル。個性的でありながら上品な印象を与え、ユニークなシステムを演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'Pink',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-red/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-red/2000w.webp',
       imageAlt: 'レッド',
       heading: 'レッド',
-      content: (
-        <>
-          <p>
-            力強い赤色のアクリル。情熱的でダイナミックな印象を与え、モジュラーシステムに強い個性をもたらします。
-          </p>
-        </>
-      ),
+      subHeading: 'Red',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-shadow/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-shadow/2000w.webp',
       imageAlt: 'シャドウ',
-      heading: 'シャドウ',
-      content: (
-        <>
-          <p>
-            深いグレー系の半透明アクリル。モダンで洗練された印象を与え、プロフェッショナルな環境に最適です。
-          </p>
-        </>
-      ),
+      heading: 'シャドー',
+      subHeading: 'Gray',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-sky-blue/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-sky-blue/2000w.webp',
       imageAlt: 'スカイブルー',
       heading: 'スカイブルー',
-      content: (
-        <>
-          <p>
-            爽やかな空色のアクリル。清々しく開放的な印象で、リラックスした音楽制作環境を演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'Light Blue',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-yellow/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-ac-yellow/2000w.webp',
       imageAlt: 'イエロー',
       heading: 'イエロー',
-      content: (
-        <>
-          <p>
-            明るく鮮やかな黄色のアクリル。ポジティブで創造的な雰囲気を演出し、音楽制作への意欲を高めます。
-          </p>
-        </>
-      ),
+      subHeading: 'Yellow',
     },
   ];
 
   // 3D Printed Panels data
-  const printedPanels: GridItem[] = [
+  const printedPanels: GridImageItem[] = [
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-black/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-black/2000w.webp',
       imageAlt: 'ブラック',
-      heading: 'ブラック',
-      content: (
-        <>
-          <p>
-            マットなブラック仕上げの3Dプリントパネル。クラシックで洗練された外観で、どんなモジュールとも相性抜群です。
-          </p>
-        </>
-      ),
+      heading: 'カーボンブラック',
+      subHeading: 'PLA-CF',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-bone-white/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-bone-white/2000w.webp',
       imageAlt: 'ボーンホワイト',
       heading: 'ボーンホワイト',
-      content: (
-        <>
-          <p>
-            温かみのある白色の3Dプリントパネル。純白よりも柔らかい印象で、親しみやすく上品な仕上がりです。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-chameleon/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-chameleon/2000w.webp',
       imageAlt: 'カメレオン',
       heading: 'カメレオン',
-      content: (
-        <>
-          <p>
-            光の角度により色が変化する特殊な3Dプリントパネル。個性的で未来的な外観が、ユニークなシステムを演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'Special',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-clear-blue/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-clear-blue/2000w.webp',
       imageAlt: 'クリアブルー',
       heading: 'クリアブルー',
-      content: (
-        <>
-          <p>半透明の青い3Dプリントパネル。LEDの光を美しく拡散し、幻想的な雰囲気を演出します。</p>
-        </>
-      ),
+      subHeading: 'PETG',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-clear-red/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-clear-red/2000w.webp',
       imageAlt: 'クリアレッド',
       heading: 'クリアレッド',
-      content: (
-        <>
-          <p>
-            半透明の赤い3Dプリントパネル。情熱的で温かみのある光を放ち、ダイナミックな印象を与えます。
-          </p>
-        </>
-      ),
+      subHeading: 'PETG',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-crymson-red/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-crymson-red/2000w.webp',
       imageAlt: 'クリムゾンレッド',
       heading: 'クリムゾンレッド',
-      content: (
-        <>
-          <p>
-            深い赤色の3Dプリントパネル。力強く洗練された色合いで、プロフェッショナルな印象を演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-dark-orange/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-dark-orange/2000w.webp',
       imageAlt: 'ダークオレンジ',
       heading: 'ダークオレンジ',
-      content: (
-        <>
-          <p>
-            落ち着いたオレンジ色の3Dプリントパネル。温かみがありながら上品で、創造的な音楽制作をサポートします。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-deep-yellow/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-deep-yellow/2000w.webp',
       imageAlt: 'ディープイエロー',
       heading: 'ディープイエロー',
-      content: (
-        <>
-          <p>
-            深みのある黄色の3Dプリントパネル。明るすぎず落ち着いた印象で、長時間の使用でも目に優しい色合いです。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-gold-yellow/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-gold-yellow/2000w.webp',
       imageAlt: 'ゴールドイエロー',
       heading: 'ゴールドイエロー',
-      content: (
-        <>
-          <p>
-            金色を思わせる黄色の3Dプリントパネル。高級感のある輝きで、特別なモジュラーシステムを演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-light-orange/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-light-orange/2000w.webp',
       imageAlt: 'ライトオレンジ',
       heading: 'ライトオレンジ',
-      content: (
-        <>
-          <p>
-            明るく親しみやすいオレンジ色の3Dプリントパネル。ポップで楽しい印象を与え、創造性を刺激します。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
     {
       thumbUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-wood-white/900w.webp',
       enlargeUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-wood-white/2000w.webp',
       imageAlt: 'ウッドホワイト',
       heading: 'ウッドホワイト',
-      content: (
-        <>
-          <p>
-            木目調の白い3Dプリントパネル。自然な質感と温かみのある色合いで、オーガニックな音楽制作環境を演出します。
-          </p>
-        </>
-      ),
+      subHeading: 'PLA',
     },
   ];
 
@@ -315,26 +185,60 @@ export default function PanelMaterialPage() {
         {/* Acrylic Panels Section */}
         <ArticleH2>アクリル / Acrylic Panels</ArticleH2>
 
-        <ArticleText className="mb-vgap-lg">
+        <ArticleText>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore vip ex ea commodo consequat. Duis
+            透明度のあるアクリルは、他のケースには無い質感をモジュラーシステムにもたらしてくれます。質感や色が限定されてしまう一般的なケースと比較すると、アクリルはその軽量性と多彩なカラーリングが魅力と言えるでしょう。
+          </p>
+          <p>
+            システム全体を軽やかに見せつつ、選んだカラーによって印象を自在にコントロールできます。強い衝撃を受けると割れやすい素材ではあるため、持ち運び時にはやや注意が必要ですが、モジュラー背面の基盤やLEDを反射して美しく見せる特徴は唯一無二で、使っていて楽しく、写真や動画にも映えること請け合いです。
           </p>
         </ArticleText>
 
-        <GridImagesAndNotes items={acrylicPanels} className="mb-vgap-xl" />
+        <ArticleGridImageList items={acrylicPanels} className="mb-vgap-xl" />
 
         {/* 3D Printed Panels Section */}
         <ArticleH2>3Dプリント / 3D Printed Panels</ArticleH2>
 
-        <ArticleText className="mb-vgap-lg">
+        <ArticleText>
           <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-            tincidunt ut laoreet dolore vip ex ea commodo consequat. Duis
+            樹脂を積み重ねて成形する3Dプリントパネルは、積層造形による独特のテクスチャが特徴的です。素材や色も豊富で、マットな風合いからポップで明るい色、半透明の素材まで、多彩な選択肢を自由に組み合わせて楽しむことが出来ます。
+          </p>
+          <p>
+            元々このケースシリーズは、アクリルケースを作るのが当初の目標であり、その設計に3Dプリンタを使っていました。しかしながら、3Dプリントを繰り返していくとその素材感が割と良く、組み合わせの楽しさから、製品ラインナップに加えることとしました。
           </p>
         </ArticleText>
 
-        <GridImagesAndNotes items={printedPanels} className="mb-vgap-xl" />
+        <ArticleGridImageList items={printedPanels} className="mb-vgap-xl" />
+
+        <ArticleH2>素材に関するうんちく</ArticleH2>
+
+        <ArticleText>
+          <p>
+            パネルを選ぶ際、それぞれの質感や特徴について理解して頂けると、より楽しくケースが作れるかと思いますので、素材についてのうんちくをここにまとめさせた頂きます。
+          </p>
+          <p>
+            まずアクリルですが、これは硬く、強い衝撃で割れやすい素材です。モジュラーシンセのケースであるという特徴上、中にモジュラーを詰め込むことになります。そうすると、それなりの重さになりますかr、この状態で例えば50cmぐらいの高さから落としてしまうと、1箇所に加重がかかり、端が欠けます。ほか、例えばリュックなどに入れて、コンクリートの道路の上でガンと置くと、おそらくこれでも割れます。金属や木材製のケースと比較した場合、これはまず一つデメリットです。長くお使いいただくために、まずこの点をご認識のうえ、ご利用頂けますと幸いです。
+          </p>
+          <p>
+            しかし、中が透けて見えたり、LEDがアクリルボードの断面で反射する様子は、他には無い特徴です。これは作った後に気付いたのですが、例えばライムのパネルは、青色の光を反射しやすい特徴があるようで、暗めの環境では蛍光色のような発色をします。ほか、グラスシアンというのは、ガラスの質感を模して作られた色合いであるようです。昨今はモジュラー演奏のショート動画を撮ってSNSでアップしたりすることが多いかと思いますが、ケース自体がアクリルだと結構映える感じします。取り立てて特に持ち運んだりする予定もそこまで無い場合、インテリア的にも楽しいケースになるのでオススメしたいですね。
+          </p>
+          <p>
+            次に3Dプリントのパネルですが、これはつまりプラスチック製です。この3Dプリンター製のパネルですが、FDM（溶融堆積造形）といって、例えば0.3mmぐらいの高さでプラスチックを溶かしながら層を作り、それを造形物の高さまで積み重ねるという方式で作られています。このため、モノによって多少のバラツキがあることについてご留意ください。このプリントにも色々コツがあり、プリント品質の低いものは破棄しているので、何か曲がったり、あからさまに崩れている様なものは届きませんので、その点はご安心ください。
+          </p>
+          <p>
+            そして3Dプリントのパネルについて、プラスチックだと結構安っぽくなるかと感じられる人もいらっしゃるのではと思いますが、買って頂いた方からは、思ったよりもずっとしっかりしているという感想をよく頂いています。ただ、安っぽい感じにならないよう、以下の素材の特徴をご理解頂いた上、パネルを選んで頂けると良いでしょう。
+          </p>
+          <p>
+            まず一つ、オススメしたいのがPLA-CFのカーボンブラックです。PLAというのは3Dプリンタで広く使われている、プリントしやすい素材。そこにカーボンファイバーを混ぜたのがPLA-CFです。前述しましたが、元々3Dプリントしたケースを販売する予定はありませんでした。安っぽい気がするし、プラスチックだしなと思っていたのです。ですが、このPLA-CFの質感はかなり良いです。マットで落ち着いた感じの素材で、なおかつ強度があります。こういうカーボンファイバー入り素材が使われるのは、主に強度のためです。検証したわけではありませんが、落としてもアクリルボードよりもずっと割れづらい素材です。色としても黒がベースだと締まるので、カーボンブラックを主にして、アクセントカラーを混ぜる構成をオススメしたいです。
+          </p>
+          <p>
+            その他の素材として、バリエーションに多く使用しているのがPLA。これはとてもプリントしやすい素材です。仕上がりとしては、前述PLA-CFと比較すると、マットさは減り、プラスチック感はまぁまぁする素材であると言えます。ただ、3Dプリントの素材の中ではダントツにカラーバリエーションがある素材で、色々プリントしているだけでも割と楽しいものです。カスタムのケースは自分の好きなカラーや素材を組み合わせられることであると考えており、お好きな色を選んで構成して頂けると良いと考えています。
+          </p>
+          <p>
+            PETGは、ペットボトルをまず想像してください。そこに別の素材を混ぜて改質した素材になっています。なので、ある程度の弾性があり、そして半透明に出来るという特徴があります。素材としてはラメが混ざっているものもあり、質感を楽しめる素材です。
+          </p>
+          <p>WIP</p>
+        </ArticleText>
       </div>
     </div>
   );

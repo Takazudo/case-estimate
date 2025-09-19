@@ -13,7 +13,7 @@ const ArticleH2: React.FC<ArticleH2Props> = ({ children, id, noTopPad = false })
       className={`
         group
         ${!noTopPad ? 'md:pt-vgap-sm lg:pt-vgap-md' : ''}
-        text-base md:text-lg sm:text-xl pb-vgap-sm lg:pb-vgap-md font-bold ml-[-1.5em] pl-[1.5em]
+        text-base md:text-lg sm:text-xl pb-vgap-md font-bold ml-[-1.5em] pl-[1.5em]
         clear-both
       `}
     >
