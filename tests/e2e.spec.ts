@@ -25,14 +25,15 @@ test.describe('Smoke Test', () => {
     // Wait for the main app container to be visible
     await expect(page.locator('#root')).toBeVisible();
 
-    // Check that the main title is visible
-    await expect(page.locator('h1:has-text("Takazudo Modular Panels")')).toBeVisible();
+    // Check that the main title is visible (in header button)
+    await expect(page.locator('header button:has-text("Takazudo Modular Panels")')).toBeVisible();
 
-    // Check that case selector is present
+    // Check that case selector is present in header
     await expect(page.locator('select').first()).toBeVisible();
 
-    // Initially, no SVG should be present (welcome message instead)
-    await expect(page.locator('text=Welcome to Takazudo Modular')).toBeVisible();
+    // Initially, we should see the top page with model selection
+    // Check for the zudo-block-40 heading
+    await expect(page.locator('h2:has-text("zudo-block-40")')).toBeVisible();
 
     // Select a case to make SVG appear
     await page.selectOption('select', 'zudo-block-40-ACR-A');
@@ -59,20 +60,18 @@ test.describe('Smoke Test', () => {
     const options = await caseSelector.locator('option').count();
     expect(options).toBeGreaterThan(0);
 
-    // Check that the welcome message is visible when no case is selected
-    await expect(page.locator('text=Welcome to Takazudo Modular')).toBeVisible();
+    // Check that we're on the home page with model selection
+    await expect(page.locator('h2:has-text("zudo-block-40")')).toBeVisible();
 
     // Select a case to reveal controls
     await page.selectOption('select', 'zudo-block-40-ACR-A');
 
-    // Click on Custom tab to see panel selector
-    await page.locator('button:has-text("Custom")').click();
+    // After selecting a case, check that visualization panel appears
+    await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
 
-    // Wait for the panel selector to appear
-    await expect(page.locator('text=Select Panel')).toBeVisible();
-
-    // Check that panel selector dropdown is present
-    await expect(page.locator('button:has-text("Select a panel to customize")')).toBeVisible();
+    // Check that tab buttons are visible
+    await expect(page.locator('button:has-text("Series")')).toBeVisible();
+    await expect(page.locator('button:has-text("Custom")')).toBeVisible();
   });
 
   test('should switch between different case models', async ({ page }) => {
