@@ -1,14 +1,6 @@
 import { useEffect } from 'react';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { cases } from '@/data/cases';
-import {
-  encodeCase,
-  decodeCase,
-  encodePanelColors,
-  decodePanelColors,
-  createColorIdMap,
-  createColorValueMap,
-} from '@/utils/url-encoder';
+import { useRouter, usePathname } from 'next/navigation';
+import { encodeCase, encodePanelColors, createColorIdMap } from '@/utils/url-encoder';
 import { colors } from '@/data/colors';
 
 interface PanelColors {
@@ -18,58 +10,17 @@ interface PanelColors {
 interface UseUrlPersistenceProps {
   selectedCase: string | null;
   panelColors: PanelColors;
-  onCaseLoad: (caseType: string, colors: PanelColors) => void;
-  skipInitialLoad?: boolean;
 }
 
-export function useUrlPersistence({
-  selectedCase,
-  panelColors,
-  onCaseLoad,
-  skipInitialLoad = false,
-}: UseUrlPersistenceProps) {
+export function useUrlPersistence({ selectedCase, panelColors }: UseUrlPersistenceProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Load state from URL on mount
-  useEffect(() => {
-    // Skip initial load if requested (e.g., when using server-side props)
-    if (skipInitialLoad) return;
-
-    if (!searchParams) return; // Wait for searchParams to be available
-
-    const caseParam = searchParams.get('c');
-    const colorsParam = searchParams.get('p');
-
-    const decodedCase = caseParam ? decodeCase(caseParam) : null;
-
-    if (decodedCase && cases[decodedCase]) {
-      let loadedColors: PanelColors = {};
-
-      if (colorsParam) {
-        try {
-          const colorValueMap = createColorValueMap(colors);
-          const decodedColors = decodePanelColors(colorsParam, colorValueMap);
-
-          if (Object.keys(decodedColors).length > 0) {
-            loadedColors = decodedColors;
-          }
-        } catch (e) {
-          console.error('Failed to decode colors from URL', e);
-        }
-      }
-
-      onCaseLoad(decodedCase, loadedColors);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, skipInitialLoad]); // Re-run when searchParams becomes available
+  // We no longer load from URL here since the component handles initial state itself
+  // This hook now only handles URL updates when state changes
 
   // Update URL when state changes
   useEffect(() => {
-    // Don't update URL if we're skipping initial load and haven't loaded yet
-    if (skipInitialLoad && !selectedCase) return;
-
     const params = new URLSearchParams();
     if (selectedCase) {
       params.set('c', encodeCase(selectedCase));
@@ -85,5 +36,5 @@ export function useUrlPersistence({
 
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
     router.replace(newUrl, { scroll: false });
-  }, [selectedCase, panelColors, router, pathname, skipInitialLoad]);
+  }, [selectedCase, panelColors, router, pathname]);
 }

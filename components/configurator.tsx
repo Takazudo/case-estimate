@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Series } from '@/types';
+import { decodeCase, decodePanelColors, createColorValueMap } from '@/utils/url-encoder';
 
 // Components
 import AppHeader from '@/components/app-header';
@@ -22,7 +23,6 @@ import {
   applySeriesColorsWithIds,
   isSeriesActive as checkSeriesActive,
 } from '@/utils/panel-colors';
-import { decodeCase, decodePanelColors, createColorValueMap } from '@/utils/url-encoder';
 
 interface PanelColors {
   [key: string]: string;
@@ -44,57 +44,46 @@ const DEFAULT_COLORS = {
   GRID_COLOR: '#969696',
 } as const;
 
-interface ConfiguratorProps {
-  initialCase?: string;
-  initialPanels?: string;
-}
-
-// Helper function to decode initial state
-function getInitialState(initialCase?: string, initialPanels?: string) {
-  if (!initialCase) {
-    return {
-      selectedCase: null,
-      panelColors: {},
-    };
+// Helper to get initial state from URL
+function getInitialStateFromUrl(): { selectedCase: string | null; panelColors: PanelColors } {
+  if (typeof window === 'undefined') {
+    return { selectedCase: null, panelColors: {} };
   }
 
-  const decodedCase = decodeCase(initialCase);
+  const params = new URLSearchParams(window.location.search);
+  const caseParam = params.get('c');
+  const colorsParam = params.get('p');
 
+  if (!caseParam) {
+    return { selectedCase: null, panelColors: {} };
+  }
+
+  const decodedCase = decodeCase(caseParam);
   if (!decodedCase || !cases[decodedCase]) {
-    return {
-      selectedCase: null,
-      panelColors: {},
-    };
+    return { selectedCase: null, panelColors: {} };
   }
 
   // Load default colors for the case
   const defaultColors = getDefaultColors(decodedCase);
+  let panelColors = defaultColors;
 
-  // If we have initial panels, decode and apply them
-  if (initialPanels) {
+  // If we have panel colors in URL, decode and apply them
+  if (colorsParam) {
     try {
       const colorValueMap = createColorValueMap(colors);
-      const decodedColors = decodePanelColors(initialPanels, colorValueMap);
-      const mergedColors = { ...defaultColors, ...decodedColors };
-      return {
-        selectedCase: decodedCase,
-        panelColors: mergedColors,
-      };
+      const decodedColors = decodePanelColors(colorsParam, colorValueMap);
+      panelColors = { ...defaultColors, ...decodedColors };
     } catch (e) {
-      console.error('Failed to decode initial panel colors', e);
+      console.error('Failed to decode panel colors from URL', e);
     }
   }
 
-  return {
-    selectedCase: decodedCase,
-    panelColors: defaultColors,
-  };
+  return { selectedCase: decodedCase, panelColors };
 }
 
-function Configurator({ initialCase, initialPanels }: ConfiguratorProps) {
-  // Initialize state from server props
-  const initialState = getInitialState(initialCase, initialPanels);
-
+function Configurator() {
+  // Initialize state from URL if available
+  const initialState = getInitialStateFromUrl();
   const [selectedCase, setSelectedCase] = useState<string | null>(initialState.selectedCase);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
@@ -126,18 +115,10 @@ function Configurator({ initialCase, initialPanels }: ConfiguratorProps) {
     }
   }, [selectedPanel, material, panelColors]);
 
-  // Handle URL persistence (only for client-side navigation after initial load)
+  // Handle URL persistence for client-side state (only updates URL when state changes)
   useUrlPersistence({
     selectedCase,
     panelColors,
-    onCaseLoad: (caseType, colors) => {
-      setSelectedCase(caseType);
-      // Always start with default colors, then merge any loaded colors on top
-      const defaultColors = getDefaultColors(caseType);
-      const mergedColors = { ...defaultColors, ...colors };
-      setPanelColors(mergedColors);
-    },
-    skipInitialLoad: !!initialCase, // Skip initial load if we have server props
   });
 
   const handlePanelClick = (panelId: string) => {

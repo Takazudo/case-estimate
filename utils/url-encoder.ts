@@ -44,10 +44,40 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60-lite': '4',
 };
 
-const CASE_REVERSE_MAP: { [key: string]: string } = Object.entries(CASE_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
-);
+// Build reverse map, prioritizing non-legacy entries
+const CASE_REVERSE_MAP: { [key: string]: string } = (() => {
+  const reverseMap: { [key: string]: string } = {};
+
+  // First add legacy entries (will be overwritten by current names)
+  Object.entries(CASE_MAP).forEach(([key, value]) => {
+    if (
+      key.includes('type-') ||
+      key === '10box-lite' ||
+      key === 'zudo-block-40' ||
+      key === 'zudo-block-40-lite' ||
+      key === 'zudo-block-60' ||
+      key === 'zudo-block-60-lite'
+    ) {
+      reverseMap[value] = key;
+    }
+  });
+
+  // Then add current entries (will override legacy)
+  Object.entries(CASE_MAP).forEach(([key, value]) => {
+    if (
+      !key.includes('type-') &&
+      key !== '10box-lite' &&
+      key !== 'zudo-block-40' &&
+      key !== 'zudo-block-40-lite' &&
+      key !== 'zudo-block-60' &&
+      key !== 'zudo-block-60-lite'
+    ) {
+      reverseMap[value] = key;
+    }
+  });
+
+  return reverseMap;
+})();
 
 // Panel ID mappings (1-2 chars for compactness)
 const PANEL_MAP: { [key: string]: string } = {
