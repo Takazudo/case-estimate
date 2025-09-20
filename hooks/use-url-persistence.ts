@@ -19,12 +19,14 @@ interface UseUrlPersistenceProps {
   selectedCase: string | null;
   panelColors: PanelColors;
   onCaseLoad: (caseType: string, colors: PanelColors) => void;
+  skipInitialLoad?: boolean;
 }
 
 export function useUrlPersistence({
   selectedCase,
   panelColors,
   onCaseLoad,
+  skipInitialLoad = false,
 }: UseUrlPersistenceProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -32,6 +34,9 @@ export function useUrlPersistence({
 
   // Load state from URL on mount
   useEffect(() => {
+    // Skip initial load if requested (e.g., when using server-side props)
+    if (skipInitialLoad) return;
+
     if (!searchParams) return; // Wait for searchParams to be available
 
     const caseParam = searchParams.get('c');
@@ -58,10 +63,13 @@ export function useUrlPersistence({
       onCaseLoad(decodedCase, loadedColors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]); // Re-run when searchParams becomes available
+  }, [searchParams, skipInitialLoad]); // Re-run when searchParams becomes available
 
   // Update URL when state changes
   useEffect(() => {
+    // Don't update URL if we're skipping initial load and haven't loaded yet
+    if (skipInitialLoad && !selectedCase) return;
+
     const params = new URLSearchParams();
     if (selectedCase) {
       params.set('c', encodeCase(selectedCase));
@@ -77,5 +85,5 @@ export function useUrlPersistence({
 
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
     router.replace(newUrl, { scroll: false });
-  }, [selectedCase, panelColors, router, pathname]);
+  }, [selectedCase, panelColors, router, pathname, skipInitialLoad]);
 }

@@ -22,6 +22,7 @@ import {
   applySeriesColorsWithIds,
   isSeriesActive as checkSeriesActive,
 } from '@/utils/panel-colors';
+import { decodeCase, decodePanelColors, createColorValueMap } from '@/utils/url-encoder';
 
 interface PanelColors {
   [key: string]: string;
@@ -43,11 +44,61 @@ const DEFAULT_COLORS = {
   GRID_COLOR: '#969696',
 } as const;
 
-function Configurator() {
-  const [selectedCase, setSelectedCase] = useState<string | null>(null);
+interface ConfiguratorProps {
+  initialCase?: string;
+  initialPanels?: string;
+}
+
+// Helper function to decode initial state
+function getInitialState(initialCase?: string, initialPanels?: string) {
+  if (!initialCase) {
+    return {
+      selectedCase: null,
+      panelColors: {},
+    };
+  }
+
+  const decodedCase = decodeCase(initialCase);
+
+  if (!decodedCase || !cases[decodedCase]) {
+    return {
+      selectedCase: null,
+      panelColors: {},
+    };
+  }
+
+  // Load default colors for the case
+  const defaultColors = getDefaultColors(decodedCase);
+
+  // If we have initial panels, decode and apply them
+  if (initialPanels) {
+    try {
+      const colorValueMap = createColorValueMap(colors);
+      const decodedColors = decodePanelColors(initialPanels, colorValueMap);
+      const mergedColors = { ...defaultColors, ...decodedColors };
+      return {
+        selectedCase: decodedCase,
+        panelColors: mergedColors,
+      };
+    } catch (e) {
+      console.error('Failed to decode initial panel colors', e);
+    }
+  }
+
+  return {
+    selectedCase: decodedCase,
+    panelColors: defaultColors,
+  };
+}
+
+function Configurator({ initialCase, initialPanels }: ConfiguratorProps) {
+  // Initialize state from server props
+  const initialState = getInitialState(initialCase, initialPanels);
+
+  const [selectedCase, setSelectedCase] = useState<string | null>(initialState.selectedCase);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
-  const [panelColors, setPanelColors] = useState<PanelColors>({});
+  const [panelColors, setPanelColors] = useState<PanelColors>(initialState.panelColors);
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Track color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
@@ -75,7 +126,7 @@ function Configurator() {
     }
   }, [selectedPanel, material, panelColors]);
 
-  // Handle URL persistence
+  // Handle URL persistence (only for client-side navigation after initial load)
   useUrlPersistence({
     selectedCase,
     panelColors,
@@ -86,6 +137,7 @@ function Configurator() {
       const mergedColors = { ...defaultColors, ...colors };
       setPanelColors(mergedColors);
     },
+    skipInitialLoad: !!initialCase, // Skip initial load if we have server props
   });
 
   const handlePanelClick = (panelId: string) => {

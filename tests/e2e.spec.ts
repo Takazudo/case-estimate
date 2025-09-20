@@ -142,8 +142,9 @@ test.describe('Smoke Test', () => {
     // Check that the case selector shows the correct case
     const caseSelector = page.getByRole('combobox').first();
 
-    // Wait for the selector to be populated with the value from URL
-    await page.waitForTimeout(1000); // Allow time for URL params to be processed
+    // Wait for the selector to have the correct value
+    // This ensures hydration is complete and URL params are processed
+    await expect(caseSelector).toHaveValue('zudo-block-60-ACR-A', { timeout: 5000 });
 
     const selectedValue = await caseSelector.inputValue();
 
