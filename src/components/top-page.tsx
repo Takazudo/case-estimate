@@ -117,7 +117,14 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
   ];
 
   // 10BOX models
-  const tenBoxItems = [{ id: '17', caseId: '10box-3dp', caption: '10BOX-3DP' }];
+  const tenBoxItems = [
+    {
+      id: '17',
+      caseId: '10box-3dp',
+      caption: '10BOX-3DP',
+      imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-10box-lite/900w.webp',
+    },
+  ];
 
   return (
     <div className="h-full overflow-y-auto bg-zd-black">
