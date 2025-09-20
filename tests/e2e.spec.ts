@@ -134,7 +134,7 @@ test.describe('Smoke Test', () => {
 
   test('should persist URL parameters at /m route', async ({ page }) => {
     // Navigate directly with URL parameters
-    await page.goto('/m?c=2a&p=1cb.2cb');
+    await page.goto('/m?c=3a&p=1cb.2cb');
 
     // Wait for the page to load
     await page.waitForLoadState('networkidle');
@@ -147,7 +147,7 @@ test.describe('Smoke Test', () => {
 
     const selectedValue = await caseSelector.inputValue();
 
-    // c=2a corresponds to zudo-block-60-ACR-A
+    // c=3a corresponds to zudo-block-60-ACR-A
     expect(selectedValue).toBe('zudo-block-60-ACR-A');
 
     // Verify SVG is visible
