@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Smoke Test', () => {
-  test('should load the page without errors', async ({ page }) => {
+  test('should load the landing page without errors', async ({ page }) => {
     // Track console errors
     const consoleErrors: string[] = [];
     page.on('console', (msg) => {
@@ -22,6 +22,36 @@ test.describe('Smoke Test', () => {
     // Check that the page loads successfully (not 404 or 500)
     expect(response?.status()).toBeLessThan(400);
 
+    // Check landing page content
+    await expect(page.getByRole('heading', { name: 'Takazudo Modular' })).toBeVisible();
+
+    // Check the three main links are present
+    await expect(page.getByRole('link', { name: /Configure Your Case/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Panel Materials/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Module Library/ })).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load the configurator at /m route', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Navigate to the configurator
+    const response = await page.goto('/m');
+
+    // Check that the page loads successfully
+    expect(response?.status()).toBeLessThan(400);
+
     // Wait for the main app region to be visible
     await expect(page.getByRole('main')).toBeVisible();
 
@@ -35,21 +65,26 @@ test.describe('Smoke Test', () => {
     // Check for the zudo-block-40 heading
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
 
-    // Select a case to make SVG appear
-    await page.getByRole('combobox').first().selectOption('zudo-block-40-ACR-A');
-
-    // Now check that SVG container is present after selecting a case
-    await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
-
     // Verify no console errors
     expect(consoleErrors).toHaveLength(0);
-
-    // Verify no page errors
-    expect(pageErrors).toHaveLength(0);
   });
 
-  test('should have interactive elements working', async ({ page }) => {
+  test('should navigate from landing to configurator', async ({ page }) => {
     await page.goto('/');
+
+    // Click on Configure Your Case link
+    await page.getByRole('link', { name: /Configure Your Case/ }).click();
+
+    // Wait for navigation to complete
+    await page.waitForURL('**/m');
+
+    // Check we're on the configurator page
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
+    await expect(page.getByRole('combobox').first()).toBeVisible();
+  });
+
+  test('should have interactive elements working in configurator', async ({ page }) => {
+    await page.goto('/m');
 
     // Wait for the page to be fully loaded
     await page.waitForLoadState('networkidle');
@@ -75,7 +110,7 @@ test.describe('Smoke Test', () => {
   });
 
   test('should switch between different case models', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/m');
 
     // Wait for initial load
     await page.waitForLoadState('networkidle');
@@ -95,5 +130,41 @@ test.describe('Smoke Test', () => {
 
     // Verify SVG is still visible after change
     await expect(page.locator('svg').first()).toBeVisible();
+  });
+
+  test('should persist URL parameters at /m route', async ({ page }) => {
+    // Navigate directly with URL parameters
+    await page.goto('/m?c=2a&p=1cb.2cb');
+
+    // Wait for the page to load
+    await page.waitForLoadState('networkidle');
+
+    // Check that the case selector shows the correct case
+    const caseSelector = page.getByRole('combobox').first();
+
+    // Wait for the selector to be populated with the value from URL
+    await page.waitForTimeout(1000); // Allow time for URL params to be processed
+
+    const selectedValue = await caseSelector.inputValue();
+
+    // c=2a corresponds to zudo-block-60-ACR-A
+    expect(selectedValue).toBe('zudo-block-60-ACR-A');
+
+    // Verify SVG is visible
+    await expect(page.locator('svg').first()).toBeVisible();
+  });
+
+  test('header logo should navigate to landing page', async ({ page }) => {
+    // Start at the configurator
+    await page.goto('/m');
+
+    // Click the logo
+    await page.getByRole('button', { name: 'Go to home' }).click();
+
+    // Should navigate to landing page
+    await page.waitForURL('**/');
+
+    // Verify we're on the landing page
+    await expect(page.getByRole('heading', { name: 'Takazudo Modular' })).toBeVisible();
   });
 });
