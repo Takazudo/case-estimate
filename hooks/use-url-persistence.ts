@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { cases } from '@/data/cases';
 import {
   encodeCase,
@@ -25,11 +26,16 @@ export function useUrlPersistence({
   panelColors,
   onCaseLoad,
 }: UseUrlPersistenceProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   // Load state from URL on mount
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const caseParam = params.get('c');
-    const colorsParam = params.get('p');
+    if (!searchParams) return; // Wait for searchParams to be available
+
+    const caseParam = searchParams.get('c');
+    const colorsParam = searchParams.get('p');
 
     const decodedCase = caseParam ? decodeCase(caseParam) : null;
 
@@ -52,7 +58,7 @@ export function useUrlPersistence({
       onCaseLoad(decodedCase, loadedColors);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount - onCaseLoad should be stable
+  }, [searchParams]); // Re-run when searchParams becomes available
 
   // Update URL when state changes
   useEffect(() => {
@@ -69,9 +75,7 @@ export function useUrlPersistence({
       }
     }
 
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
-  }, [selectedCase, panelColors]);
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  }, [selectedCase, panelColors, router, pathname]);
 }
