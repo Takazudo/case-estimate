@@ -48,7 +48,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
               )}
             </div>
             {/* Caption */}
-            <p className="text-sm text-center text-zd-white group-hover:text-zd-link transition-colors">
+            <p className="py-vgap-xs text-center text-zd-white group-hover:text-zd-link transition-colors">
               {item.caption}
             </p>
           </div>

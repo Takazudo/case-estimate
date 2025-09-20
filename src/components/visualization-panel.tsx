@@ -4,6 +4,7 @@ import { generateBackgroundPattern } from '../utils/panel-colors';
 interface VisualizationPanelProps {
   selectedCase: string | null;
   panelColors: { [key: string]: string };
+  panelColorIds?: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
   material: 'acrylic' | '3dp' | undefined;
@@ -15,6 +16,7 @@ interface VisualizationPanelProps {
 export default function VisualizationPanel({
   selectedCase,
   panelColors,
+  panelColorIds,
   onPanelClick,
   selectedPanel,
   material,
@@ -36,6 +38,7 @@ export default function VisualizationPanel({
           <CaseVisualizer
             caseType={selectedCase}
             panelColors={panelColors}
+            panelColorIds={panelColorIds}
             onPanelClick={onPanelClick}
             selectedPanel={selectedPanel}
             material={material}

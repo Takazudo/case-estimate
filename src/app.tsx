@@ -17,12 +17,16 @@ import { useUrlPersistence } from './hooks/use-url-persistence';
 // Utils
 import {
   getDefaultColors,
-  applySeriesColors,
+  applySeriesColorsWithIds,
   isSeriesActive as checkSeriesActive,
 } from './utils/panel-colors';
 
 interface PanelColors {
   [key: string]: string;
+}
+
+interface PanelColorIds {
+  [key: string]: string; // Maps panel ID to color ID
 }
 
 // localStorage keys
@@ -42,6 +46,7 @@ function App() {
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColors, setPanelColors] = useState<PanelColors>({});
+  const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Track color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
 
@@ -110,6 +115,10 @@ function App() {
         ...prev,
         [selectedPanel]: color.value,
       }));
+      setPanelColorIds((prev) => ({
+        ...prev,
+        [selectedPanel]: color.id,
+      }));
     }
   };
 
@@ -125,20 +134,24 @@ function App() {
       const seriesList = colors.series[caseData.material];
       if (seriesList && seriesList.length > 0) {
         const firstSeries = seriesList[0];
-        const newColors = applySeriesColors(firstSeries, caseType, caseData.material);
-        setPanelColors(newColors);
+        const result = applySeriesColorsWithIds(firstSeries, caseType, caseData.material);
+        setPanelColors(result.colors);
+        setPanelColorIds(result.colorIds);
       } else {
         setPanelColors(getDefaultColors(caseType));
+        setPanelColorIds({});
       }
     } else {
       setPanelColors(getDefaultColors(caseType));
+      setPanelColorIds({});
     }
   };
 
   const handleSeriesSelect = (series: Series) => {
     if (!selectedCase || !material) return;
-    const newColors = applySeriesColors(series, selectedCase, material);
-    setPanelColors(newColors);
+    const result = applySeriesColorsWithIds(series, selectedCase, material);
+    setPanelColors(result.colors);
+    setPanelColorIds(result.colorIds);
   };
 
   const isSeriesActive = (series: Series): boolean => {
@@ -181,6 +194,7 @@ function App() {
                 <VisualizationPanel
                   selectedCase={selectedCase}
                   panelColors={panelColors}
+                  panelColorIds={panelColorIds}
                   onPanelClick={handlePanelClick}
                   selectedPanel={selectedPanel}
                   material={material}

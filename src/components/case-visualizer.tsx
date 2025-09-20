@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { getColorOpacityByValue, getColorOpacityById } from '../data/colors';
 
 interface CaseVisualizerProps {
   caseType: string;
   panelColors: { [key: string]: string };
+  panelColorIds?: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
   material?: string;
@@ -77,6 +79,7 @@ const SVG_RENDER_DELAY_MS = 50;
 const CaseVisualizer = ({
   caseType,
   panelColors,
+  panelColorIds,
   onPanelClick,
   selectedPanel,
   material,
@@ -235,12 +238,22 @@ const CaseVisualizer = ({
               pathElement.style.fill = color;
               pathElement.style.setProperty('fill', color, 'important');
 
-              // Apply opacity for other acrylic materials to simulate transparency
-              if (material === 'acrylic') {
-                pathElement.style.setProperty('fill-opacity', '0.8', 'important');
+              // Get color-specific opacity from the color definition
+              let opacity: number;
+              if (material === 'acrylic' || material === '3dp') {
+                // Use color ID if available, otherwise fall back to hex value
+                const colorId = panelColorIds?.[panelId];
+                if (colorId) {
+                  opacity = getColorOpacityById(colorId, material);
+                } else {
+                  opacity = getColorOpacityByValue(color, material);
+                }
               } else {
-                pathElement.style.setProperty('fill-opacity', '1', 'important');
+                // Default opacity for acrylic if material is undefined
+                opacity = 0.8;
               }
+
+              pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
             }
 
             // Set stroke color and width based on transparent acrylic type
@@ -302,9 +315,20 @@ const CaseVisualizer = ({
                 pathElement.style.stroke = strokeColor;
               }
 
-              // Always restore base opacity
-              const baseOpacity = material === 'acrylic' ? '0.8' : '1';
-              pathElement.style.setProperty('fill-opacity', baseOpacity, 'important');
+              // Restore color-specific opacity
+              let baseOpacity: number;
+              if (material === 'acrylic' || material === '3dp') {
+                const colorId = panelColorIds?.[panelId];
+                if (colorId) {
+                  baseOpacity = getColorOpacityById(colorId, material);
+                } else {
+                  const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+                  baseOpacity = getColorOpacityByValue(color, material);
+                }
+              } else {
+                baseOpacity = 0.8; // Default for acrylic if material is undefined
+              }
+              pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
             };
           }
         });
@@ -347,12 +371,22 @@ const CaseVisualizer = ({
               pathElement.style.fill = color;
               pathElement.style.setProperty('fill', color, 'important');
 
-              // Apply opacity for other acrylic materials to simulate transparency
-              if (material === 'acrylic') {
-                pathElement.style.setProperty('fill-opacity', '0.8', 'important');
+              // Get color-specific opacity from the color definition
+              let opacity: number;
+              if (material === 'acrylic' || material === '3dp') {
+                // Use color ID if available, otherwise fall back to hex value
+                const colorId = panelColorIds?.[panelId];
+                if (colorId) {
+                  opacity = getColorOpacityById(colorId, material);
+                } else {
+                  opacity = getColorOpacityByValue(color, material);
+                }
               } else {
-                pathElement.style.setProperty('fill-opacity', '1', 'important');
+                // Default opacity for acrylic if material is undefined
+                opacity = 0.8;
               }
+
+              pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
             }
 
             // Set stroke color and width based on transparent acrylic type
@@ -415,9 +449,20 @@ const CaseVisualizer = ({
                 pathElement.style.stroke = strokeColor;
               }
 
-              // Always restore base opacity
-              const baseOpacity = material === 'acrylic' ? '0.8' : '1';
-              pathElement.style.setProperty('fill-opacity', baseOpacity, 'important');
+              // Restore color-specific opacity
+              let baseOpacity: number;
+              if (material === 'acrylic' || material === '3dp') {
+                const colorId = panelColorIds?.[panelId];
+                if (colorId) {
+                  baseOpacity = getColorOpacityById(colorId, material);
+                } else {
+                  const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+                  baseOpacity = getColorOpacityByValue(color, material);
+                }
+              } else {
+                baseOpacity = 0.8; // Default for acrylic if material is undefined
+              }
+              pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
             };
           });
         });
@@ -425,7 +470,16 @@ const CaseVisualizer = ({
     }, SVG_RENDER_DELAY_MS); // Delay to ensure DOM is ready
 
     return () => clearTimeout(timeoutId);
-  }, [svgLoaded, panelColors, selectedPanel, onPanelClick, material, CLASS_TO_PANEL, is10BoxModel]);
+  }, [
+    svgLoaded,
+    panelColors,
+    panelColorIds,
+    selectedPanel,
+    onPanelClick,
+    material,
+    CLASS_TO_PANEL,
+    is10BoxModel,
+  ]);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">

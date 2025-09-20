@@ -24,7 +24,83 @@ export const getDefaultColors = (caseType: string): PanelColors => {
   return defaultColors;
 };
 
-// Apply series colors to panels
+// Helper type for returning both colors and IDs
+export interface PanelColorsWithIds {
+  colors: PanelColors;
+  colorIds: { [key: string]: string };
+}
+
+// Apply series colors to panels (with IDs)
+export const applySeriesColorsWithIds = (
+  series: Series,
+  caseType: string,
+  material: 'acrylic' | '3dp',
+): PanelColorsWithIds => {
+  const caseData = cases[caseType];
+  const availableColors = colors[material];
+  const newColors: PanelColors = {};
+  const newColorIds: { [key: string]: string } = {};
+
+  const isX2Model = caseType.includes('x2');
+  const is10BoxModel = caseType === '10box-3dp';
+
+  caseData.panels.forEach((panel) => {
+    if (series.colors.all) {
+      const color = availableColors.find((c: Color) => c.id === series.colors.all);
+      if (color) {
+        newColors[panel.id] = color.value;
+        newColorIds[panel.id] = color.id;
+      }
+    } else {
+      // 10BOX only supports YamiKage (all black), so skip primary/secondary logic
+      if (is10BoxModel) {
+        const color = availableColors.find((c: Color) => c.id === 'carbon-black');
+        if (color) {
+          newColors[panel.id] = color.value;
+          newColorIds[panel.id] = color.id;
+        }
+        return;
+      }
+
+      let isPrimary: boolean;
+
+      if (isX2Model) {
+        // For x2 models (12 panels):
+        if (panel.id.startsWith('side')) {
+          isPrimary = true;
+        } else if (
+          panel.id === 'back1' ||
+          panel.id === 'bottom1' ||
+          panel.id === 'bottom3' ||
+          panel.id === 'front1'
+        ) {
+          isPrimary = true;
+        } else {
+          isPrimary = false;
+        }
+      } else {
+        // For regular models (8 panels)
+        isPrimary =
+          panel.id === 'side1' ||
+          panel.id === 'side2' ||
+          panel.id === 'front1' ||
+          panel.id === 'bottom1' ||
+          panel.id === 'back1';
+      }
+
+      const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
+      const color = availableColors.find((c: Color) => c.id === colorId);
+      if (color) {
+        newColors[panel.id] = color.value;
+        newColorIds[panel.id] = color.id;
+      }
+    }
+  });
+
+  return { colors: newColors, colorIds: newColorIds };
+};
+
+// Apply series colors to panels (legacy - returns only colors)
 export const applySeriesColors = (
   series: Series,
   caseType: string,

@@ -25,6 +25,7 @@ export interface Color {
   name: string;
   value: string;
   material: string;
+  opacity?: number;
 }
 
 export interface Series {
