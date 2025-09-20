@@ -22,13 +22,17 @@ test.describe('Smoke Test', () => {
     // Check that the page loads successfully (not 404 or 500)
     expect(response?.status()).toBeLessThan(400);
 
-    // Check landing page content
-    await expect(page.getByRole('heading', { name: 'Takazudo Modular' })).toBeVisible();
+    // Check that we're showing the TopPage component within Configurator
+    // The header should have 'Takazudo Modular Panels'
+    await expect(page.getByRole('button', { name: 'Go to home' })).toBeVisible();
 
-    // Check the three main links are present
-    await expect(page.getByRole('link', { name: /Configure Your Case/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Panel Materials/ })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Module Library/ })).toBeVisible();
+    // Check that the model sections are visible
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /10BOX/i })).toBeVisible();
+
+    // Check that the case selector dropdown is visible
+    await expect(page.getByRole('combobox').first()).toBeVisible();
 
     // Verify no console errors
     expect(consoleErrors).toHaveLength(0);
@@ -69,18 +73,19 @@ test.describe('Smoke Test', () => {
     expect(consoleErrors).toHaveLength(0);
   });
 
-  test('should navigate from landing to configurator', async ({ page }) => {
+  test('should navigate from case model grid to case configurator', async ({ page }) => {
     await page.goto('/');
 
-    // Click on Configure Your Case link
-    await page.getByRole('link', { name: /Configure Your Case/ }).click();
+    // Click on a case model from the grid (e.g., zudo-block-40-ACR-A)
+    // The grid items are links with case model captions
+    await page.getByRole('link', { name: 'zudo-block-40-ACR-A' }).first().click();
 
-    // Wait for navigation to complete
-    await page.waitForURL('**/m');
+    // Should select the case in the dropdown
+    const caseSelector = page.getByRole('combobox').first();
+    await expect(caseSelector).toHaveValue('zudo-block-40-ACR-A', { timeout: 5000 });
 
-    // Check we're on the configurator page
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
-    await expect(page.getByRole('combobox').first()).toBeVisible();
+    // Should show the visualization panel with SVG
+    await expect(page.locator('svg').first()).toBeVisible();
   });
 
   test('should have interactive elements working in configurator', async ({ page }) => {
@@ -155,17 +160,22 @@ test.describe('Smoke Test', () => {
     await expect(page.locator('svg').first()).toBeVisible();
   });
 
-  test('header logo should navigate to landing page', async ({ page }) => {
-    // Start at the configurator
-    await page.goto('/m');
+  test('header logo should navigate to home view', async ({ page }) => {
+    // Start with a case selected
+    await page.goto('/?c=1a');
+
+    // Wait for case to load
+    await expect(page.locator('svg').first()).toBeVisible();
 
     // Click the logo
     await page.getByRole('button', { name: 'Go to home' }).click();
 
-    // Should navigate to landing page
-    await page.waitForURL('**/');
+    // Should clear the case selection and show TopPage
+    const caseSelector = page.getByRole('combobox').first();
+    await expect(caseSelector).toHaveValue('', { timeout: 5000 });
 
-    // Verify we're on the landing page
-    await expect(page.getByRole('heading', { name: 'Takazudo Modular' })).toBeVisible();
+    // Verify we're showing the TopPage with model sections
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
   });
 });

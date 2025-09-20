@@ -158,7 +158,8 @@ function Configurator() {
   };
 
   const handleCaseSelect = (caseType: string) => {
-    setSelectedCase(caseType);
+    // Handle empty string as clearing the selection
+    setSelectedCase(caseType || null);
     setSelectedPanel(null);
     setSelectedColor(null);
     setActiveTab('series');
