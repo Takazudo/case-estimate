@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3200",
     "build": "next build",
     "start": "next start",
     "lint": "eslint app components hooks utils data types --ext .ts,.tsx",
