@@ -21,7 +21,7 @@ export const colors: Colors = {
     { id: 'light-orange', name: 'ライトオレンジ', value: '#ff8a50', material: 'PLA' },
     { id: 'deep-yellow', name: 'ディープイエロー', value: '#d4a017', material: 'PLA' },
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA' },
-    //{ id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' }, // sold out
+    { id: 'clear-blue', name: 'クリアブルー', value: '#87ceeb', material: 'PETG' },
     { id: 'clear-red', name: 'クリアレッド', value: '#ff6b6b', material: 'PETG' },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#a59d88', material: 'PLA' },
   ],
