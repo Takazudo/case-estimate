@@ -131,7 +131,7 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
         <ArticleH2>zudo-block-40</ArticleH2>
 
-        <ArticleText className="mb-vgap-lg">
+        <ArticleText>
           <p>
             zudo-block-40は、40HPのコンパクトなユーロラックモジュラーシンセ向けケース。レールのフレーム部分を好きに傾けて固定することで、自分好みのセットアップを実現可能。二つ繋げて3U+3U+1Uレールを備えたミニタワー型、40x2タイプも選択可能です。
           </p>
@@ -145,7 +145,7 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
         <ArticleH2>zudo-block-60</ArticleH2>
 
-        <ArticleText className="mb-vgap-lg">
+        <ArticleText>
           <p>
             zudo-block-60は、60HPの丁度良いサイズのケース。基本的な機能は40HPタイプと同じで、2つ繋げた60x2タイプは、中規模のシステムに丁度良いサイズのケースです。
           </p>
@@ -159,7 +159,7 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
 
         <ArticleH2>10BOX Ju-Bako</ArticleH2>
 
-        <ArticleText className="mb-vgap-lg">
+        <ArticleText>
           <p>
             10BOX
             Ju-Bakoは、幅60HP、浅い前側、深い奥側の2レール構成の、固定レイアウトタイプのケース。深さの違いを利用したスタンドや、ホコリ避け用のケースも付属した、卓上に丁度良いサイズのケースです。

@@ -26,8 +26,8 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
     <div
       className={`
         2xl:-mx-hgap-md
-        grid grid-cols-2 md:grid-cols-4 
-        gap-hgap-xs md:gap-hgap-xs
+        grid grid-cols-2 md:grid-cols-4
+        gap-hgap-sm md:gap-hgap-sm
         ${className}
       `}
     >
@@ -36,7 +36,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
           key={item.id}
           href={item.href || '#'}
           onClick={(e) => handleClick(e, item)}
-          className="group block cursor-pointer"
+          className="group block cursor-pointer border-[3px] border-zd-link rounded-md p-[3px]"
         >
           <div className="space-y-vgap-xs">
             {/* Image placeholder - white square */}
