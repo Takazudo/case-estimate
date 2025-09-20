@@ -4,11 +4,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import HeaderCaseSelector from './header-case-selector';
 
 interface AppHeaderProps {
-  selectedCase: string | null;
-  onCaseSelect: (caseType: string) => void;
+  selectedCase?: string | null;
+  onCaseSelect?: (caseType: string) => void;
 }
 
-export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps) {
+export default function AppHeader({ selectedCase = null, onCaseSelect }: AppHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const isOnPanelPage = pathname === '/panel';
@@ -17,8 +17,8 @@ export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps
     if (isOnPanelPage) {
       router.push('/');
     } else {
-      // Clear the case selection and go to initial page
-      onCaseSelect('');
+      // Clear the case selection and go to initial page when a handler is provided
+      onCaseSelect?.('');
       // Also clear URL parameters
       window.history.replaceState({}, '', window.location.pathname);
     }
@@ -49,7 +49,7 @@ export default function AppHeader({ selectedCase, onCaseSelect }: AppHeaderProps
                 Panel Materials
               </button>
             )}
-            {!isOnPanelPage && (
+            {!isOnPanelPage && onCaseSelect && (
               <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
             )}
           </div>

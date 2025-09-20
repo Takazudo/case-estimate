@@ -22,21 +22,21 @@ test.describe('Smoke Test', () => {
     // Check that the page loads successfully (not 404 or 500)
     expect(response?.status()).toBeLessThan(400);
 
-    // Wait for the main app container to be visible
-    await expect(page.locator('#root')).toBeVisible();
+    // Wait for the main app region to be visible
+    await expect(page.getByRole('main')).toBeVisible();
 
-    // Check that the main title is visible (in header button)
-    await expect(page.locator('header button:has-text("Takazudo Modular Panels")')).toBeVisible();
+    // Check that the main title is visible (in header button with aria-label)
+    await expect(page.getByRole('button', { name: 'Go to home' })).toBeVisible();
 
     // Check that case selector is present in header
-    await expect(page.locator('select').first()).toBeVisible();
+    await expect(page.getByRole('combobox').first()).toBeVisible();
 
     // Initially, we should see the top page with model selection
     // Check for the zudo-block-40 heading
-    await expect(page.locator('h2:has-text("zudo-block-40")')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
 
     // Select a case to make SVG appear
-    await page.selectOption('select', 'zudo-block-40-ACR-A');
+    await page.getByRole('combobox').first().selectOption('zudo-block-40-ACR-A');
 
     // Now check that SVG container is present after selecting a case
     await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
@@ -55,23 +55,23 @@ test.describe('Smoke Test', () => {
     await page.waitForLoadState('networkidle');
 
     // Check case selector dropdown has options
-    const caseSelector = page.locator('select').first();
+    const caseSelector = page.getByRole('combobox').first();
     await expect(caseSelector).toBeVisible();
     const options = await caseSelector.locator('option').count();
     expect(options).toBeGreaterThan(0);
 
     // Check that we're on the home page with model selection
-    await expect(page.locator('h2:has-text("zudo-block-40")')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
 
     // Select a case to reveal controls
-    await page.selectOption('select', 'zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-ACR-A');
 
     // After selecting a case, check that visualization panel appears
     await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
 
     // Check that tab buttons are visible
-    await expect(page.locator('button:has-text("Series")')).toBeVisible();
-    await expect(page.locator('button:has-text("Custom")')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Series' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Custom' })).toBeVisible();
   });
 
   test('should switch between different case models', async ({ page }) => {
@@ -80,7 +80,7 @@ test.describe('Smoke Test', () => {
     // Wait for initial load
     await page.waitForLoadState('networkidle');
 
-    const caseSelector = page.locator('select').first();
+    const caseSelector = page.getByRole('combobox').first();
 
     // Get initial case value
     const initialValue = await caseSelector.inputValue();
