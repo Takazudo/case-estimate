@@ -17,6 +17,8 @@ export default [
       'dist/**',
       'node_modules/**',
       '.git/**',
+      '.next/**',
+      'next-env.d.ts',
       'coverage/**',
       'playwright.config.ts',
       'tests/**',
