@@ -14,14 +14,7 @@ export default function AppHeader({ selectedCase = null, onCaseSelect }: AppHead
   const isOnPanelPage = pathname === '/panel';
 
   const handleLogoClick = () => {
-    if (isOnPanelPage) {
-      router.push('/');
-    } else {
-      // Clear the case selection and go to initial page when a handler is provided
-      onCaseSelect?.('');
-      // Also clear URL parameters
-      window.history.replaceState({}, '', window.location.pathname);
-    }
+    router.push('/');
   };
 
   return (
