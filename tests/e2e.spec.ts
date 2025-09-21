@@ -22,7 +22,7 @@ test.describe('Smoke Test', () => {
     // Check that the page loads successfully (not 404 or 500)
     expect(response?.status()).toBeLessThan(400);
 
-    // Check that we're showing the TopPage component within Configurator
+    // Check that we're showing the TopPage component
     // The header should have 'Takazudo Modular Panels'
     await expect(page.getByRole('button', { name: 'Go to home' })).toBeVisible();
 
@@ -31,8 +31,8 @@ test.describe('Smoke Test', () => {
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: /10BOX/i })).toBeVisible();
 
-    // Check that the case selector dropdown is visible
-    await expect(page.getByRole('combobox').first()).toBeVisible();
+    // The case selector dropdown should NOT be visible on the landing page
+    await expect(page.getByRole('combobox').first()).not.toBeVisible();
 
     // Verify no console errors
     expect(consoleErrors).toHaveLength(0);
@@ -50,8 +50,8 @@ test.describe('Smoke Test', () => {
       }
     });
 
-    // Navigate to the configurator
-    const response = await page.goto('/m');
+    // Navigate to the configurator with a case parameter
+    const response = await page.goto('/m?c=1a');
 
     // Check that the page loads successfully
     expect(response?.status()).toBeLessThan(400);
@@ -65,9 +65,8 @@ test.describe('Smoke Test', () => {
     // Check that case selector is present in header
     await expect(page.getByRole('combobox').first()).toBeVisible();
 
-    // Initially, we should see the top page with model selection
-    // Check for the zudo-block-40 heading
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
+    // Should show the visualization panel with SVG
+    await expect(page.locator('svg').first()).toBeVisible();
 
     // Verify no console errors
     expect(consoleErrors).toHaveLength(0);
@@ -80,8 +79,16 @@ test.describe('Smoke Test', () => {
     // The grid items are links with case model captions
     await page.getByRole('link', { name: 'zudo-block-40-ACR-A' }).first().click();
 
-    // Should select the case in the dropdown
+    // Wait for navigation to /m route
+    await page.waitForURL(/\/m\?/);
+
+    // Should be on /m route with case parameter
+    const url = page.url();
+    expect(url).toContain('/m?c=');
+
+    // Should show the case selector with the selected case
     const caseSelector = page.getByRole('combobox').first();
+    await expect(caseSelector).toBeVisible();
     await expect(caseSelector).toHaveValue('zudo-block-40-ACR-A', { timeout: 5000 });
 
     // Should show the visualization panel with SVG
@@ -89,7 +96,8 @@ test.describe('Smoke Test', () => {
   });
 
   test('should have interactive elements working in configurator', async ({ page }) => {
-    await page.goto('/m');
+    // Navigate directly to configurator with a case
+    await page.goto('/m?c=1a');
 
     // Wait for the page to be fully loaded
     await page.waitForLoadState('networkidle');
@@ -100,14 +108,8 @@ test.describe('Smoke Test', () => {
     const options = await caseSelector.locator('option').count();
     expect(options).toBeGreaterThan(0);
 
-    // Check that we're on the home page with model selection
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
-
-    // Select a case to reveal controls
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
-
-    // After selecting a case, check that visualization panel appears
-    await expect(page.locator('svg').first()).toBeVisible({ timeout: 5000 });
+    // Check that visualization panel is visible
+    await expect(page.locator('svg').first()).toBeVisible();
 
     // Check that tab buttons are visible
     await expect(page.getByRole('button', { name: 'Series' })).toBeVisible();
@@ -115,7 +117,8 @@ test.describe('Smoke Test', () => {
   });
 
   test('should switch between different case models', async ({ page }) => {
-    await page.goto('/m');
+    // Start with a specific case
+    await page.goto('/m?c=1a');
 
     // Wait for initial load
     await page.waitForLoadState('networkidle');
@@ -124,6 +127,7 @@ test.describe('Smoke Test', () => {
 
     // Get initial case value
     const initialValue = await caseSelector.inputValue();
+    expect(initialValue).toBe('zudo-block-40-ACR-A');
 
     // Change to a different case
     await caseSelector.selectOption('zudo-block-60-ACR-A');
@@ -135,6 +139,13 @@ test.describe('Smoke Test', () => {
 
     // Verify SVG is still visible after change
     await expect(page.locator('svg').first()).toBeVisible();
+
+    // Wait for URL to update
+    await page.waitForFunction(() => window.location.href.includes('c=3a'), { timeout: 5000 });
+
+    // URL should be updated
+    const url = page.url();
+    expect(url).toContain('c=3a'); // zudo-block-60-ACR-A encoded
   });
 
   test('should persist URL parameters at /m route', async ({ page }) => {
@@ -161,8 +172,8 @@ test.describe('Smoke Test', () => {
   });
 
   test('header logo should navigate to home view', async ({ page }) => {
-    // Start with a case selected
-    await page.goto('/?c=1a');
+    // Start with the configurator with a case selected
+    await page.goto('/m?c=1a');
 
     // Wait for case to load
     await expect(page.locator('svg').first()).toBeVisible();
@@ -170,12 +181,14 @@ test.describe('Smoke Test', () => {
     // Click the logo
     await page.getByRole('button', { name: 'Go to home' }).click();
 
-    // Should clear the case selection and show TopPage
-    const caseSelector = page.getByRole('combobox').first();
-    await expect(caseSelector).toHaveValue('', { timeout: 5000 });
+    // Should navigate to home page
+    await page.waitForURL('/');
 
     // Verify we're showing the TopPage with model sections
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
+
+    // Case selector should not be visible on home page
+    await expect(page.getByRole('combobox').first()).not.toBeVisible();
   });
 });

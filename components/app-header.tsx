@@ -14,13 +14,7 @@ export default function AppHeader({ selectedCase = null, onCaseSelect }: AppHead
   const isOnPanelPage = pathname === '/panel';
 
   const handleLogoClick = () => {
-    // If we have an onCaseSelect handler, use it to clear the selection
-    // This will handle the state properly in the Configurator
-    if (onCaseSelect) {
-      // Clear the case selection by passing empty string
-      onCaseSelect('');
-    }
-    // Navigate to root without parameters
+    // Navigate to root for the top page
     router.push('/');
   };
 
@@ -49,7 +43,7 @@ export default function AppHeader({ selectedCase = null, onCaseSelect }: AppHead
                 Panel Materials
               </button>
             )}
-            {!isOnPanelPage && onCaseSelect && (
+            {!isOnPanelPage && selectedCase && onCaseSelect && (
               <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
             )}
           </div>

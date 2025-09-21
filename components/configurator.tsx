@@ -11,7 +11,6 @@ import AppHeader from '@/components/app-header';
 import AppFooter from '@/components/app-footer';
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
-import TopPage from '@/components/top-page';
 
 // Hooks
 import { useLocalStorageColor } from '@/hooks/use-local-storage-color';
@@ -54,13 +53,18 @@ function getInitialStateFromUrl(): { selectedCase: string | null; panelColors: P
   const caseParam = params.get('c');
   const colorsParam = params.get('p');
 
+  // Default to first available case if no case param
   if (!caseParam) {
-    return { selectedCase: null, panelColors: {} };
+    // Get the first case from the cases object
+    const firstCaseKey = Object.keys(cases)[0];
+    return { selectedCase: firstCaseKey || null, panelColors: getDefaultColors(firstCaseKey) };
   }
 
   const decodedCase = decodeCase(caseParam);
   if (!decodedCase || !cases[decodedCase]) {
-    return { selectedCase: null, panelColors: {} };
+    // Fall back to first case if invalid case param
+    const firstCaseKey = Object.keys(cases)[0];
+    return { selectedCase: firstCaseKey || null, panelColors: getDefaultColors(firstCaseKey) };
   }
 
   // Load default colors for the case
@@ -158,8 +162,9 @@ function Configurator() {
   };
 
   const handleCaseSelect = (caseType: string) => {
-    // Handle empty string as clearing the selection
-    setSelectedCase(caseType || null);
+    // Always require a case to be selected
+    if (!caseType) return;
+    setSelectedCase(caseType);
     setSelectedPanel(null);
     setSelectedColor(null);
     setActiveTab('series');
@@ -207,7 +212,7 @@ function Configurator() {
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
       <AppHeader selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
 
-      {/* Main area contains different layouts based on case selection */}
+      {/* Main area contains configuration interface */}
       <main className="flex-1 overflow-hidden relative">
         {/* Loading overlay */}
         {isLoadingSvg && (
@@ -217,11 +222,7 @@ function Configurator() {
           </div>
         )}
 
-        {!selectedCase ? (
-          // Main layout: single column body area in main area
-          <TopPage onCaseSelect={handleCaseSelect} />
-        ) : (
-          // Panel preview layout: body area + footer divide in main area
+        {selectedCase && (
           <div className="h-full flex flex-col">
             {/* Body area: main col + side col */}
             <div className="flex-1 overflow-hidden">

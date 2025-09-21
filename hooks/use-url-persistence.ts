@@ -19,8 +19,11 @@ export function useUrlPersistence({ selectedCase, panelColors }: UseUrlPersisten
   // We no longer load from URL here since the component handles initial state itself
   // This hook now only handles URL updates when state changes
 
-  // Update URL when state changes
+  // Update URL when state changes (only on /m/ route)
   useEffect(() => {
+    // Only update URL if we're on the /m route
+    if (!pathname.startsWith('/m')) return;
+
     const params = new URLSearchParams();
     if (selectedCase) {
       params.set('c', encodeCase(selectedCase));
