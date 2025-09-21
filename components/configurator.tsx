@@ -86,12 +86,11 @@ function getInitialStateFromUrl(): { selectedCase: string | null; panelColors: P
 }
 
 function Configurator() {
-  // Initialize state from URL if available
-  const initialState = getInitialStateFromUrl();
-  const [selectedCase, setSelectedCase] = useState<string | null>(initialState.selectedCase);
+  // Initialize with null/empty state for consistent SSR
+  const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<Color | null>(null);
-  const [panelColors, setPanelColors] = useState<PanelColors>(initialState.panelColors);
+  const [panelColors, setPanelColors] = useState<PanelColors>({});
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Track color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
@@ -105,6 +104,13 @@ function Configurator() {
     STORAGE_KEYS.GRID_COLOR,
     DEFAULT_COLORS.GRID_COLOR,
   );
+
+  // Hydrate state from URL after mount to avoid SSR mismatches
+  useEffect(() => {
+    const initialState = getInitialStateFromUrl();
+    setSelectedCase(initialState.selectedCase);
+    setPanelColors(initialState.panelColors);
+  }, []);
 
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const material = currentCase?.material;

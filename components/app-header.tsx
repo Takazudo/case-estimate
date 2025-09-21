@@ -43,7 +43,7 @@ export default function AppHeader({ selectedCase = null, onCaseSelect }: AppHead
                 Panel Materials
               </button>
             )}
-            {!isOnPanelPage && selectedCase && onCaseSelect && (
+            {!isOnPanelPage && onCaseSelect && (
               <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
             )}
           </div>
