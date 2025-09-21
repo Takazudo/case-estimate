@@ -1,233 +1,259 @@
 /**
- * Case Estimate Documentation Custom Styles
- * Orange theme using oklch(55.5% 0.163 48.998)
- * Dark mode only with Japanese-optimized typography
+ * Custom CSS for Case Estimate Documentation
+ * Base color: oklch(55.5% 0.163 48.998) - vibrant orange
  */
 
+/* Light mode color palette based on oklch(55.5% 0.163 48.998) */
 :root {
-  /* Orange theme color palette using oklch */
   --ifm-color-primary: oklch(55.5% 0.163 48.998);
-  --ifm-color-primary-dark: oklch(50.5% 0.163 48.998);
-  --ifm-color-primary-darker: oklch(48% 0.163 48.998);
+  --ifm-color-primary-dark: oklch(50% 0.163 48.998);
+  --ifm-color-primary-darker: oklch(47% 0.163 48.998);
   --ifm-color-primary-darkest: oklch(40% 0.163 48.998);
-  --ifm-color-primary-light: oklch(60.5% 0.163 48.998);
+  --ifm-color-primary-light: oklch(60% 0.163 48.998);
   --ifm-color-primary-lighter: oklch(63% 0.163 48.998);
   --ifm-color-primary-lightest: oklch(70% 0.163 48.998);
 
-  /* Dark mode colors */
-  --ifm-background-color: #1a1a1a;
-  --ifm-background-surface-color: #242424;
-  --ifm-color-emphasis-0: #000000;
-  --ifm-color-emphasis-100: #1a1a1a;
-  --ifm-color-emphasis-200: #242424;
-  --ifm-color-emphasis-300: #3a3a3a;
-  --ifm-color-emphasis-400: #525252;
-  --ifm-color-emphasis-500: #6b6b6b;
-  --ifm-color-emphasis-600: #858585;
-  --ifm-color-emphasis-700: #a0a0a0;
-  --ifm-color-emphasis-800: #bdbdbd;
-  --ifm-color-emphasis-900: #dbdbdb;
-  --ifm-color-emphasis-1000: #fafafa;
-
-  /* Typography for Japanese */
-  --ifm-font-family-base:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
-    'Noto Sans CJK JP', 'Source Han Sans', 'Meiryo', sans-serif;
-  --ifm-font-family-monospace:
-    'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  --ifm-line-height-base: 1.8;
-  --ifm-font-size-base: 16px;
-
-  /* Spacing adjustments for Japanese */
-  --ifm-paragraph-margin-bottom: 1.5rem;
-  --ifm-heading-margin-top: 2rem;
-  --ifm-heading-margin-bottom: 1rem;
-
-  /* Code block styling */
+  /* Additional settings */
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(255, 153, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-container-width-xl: 1800px;
+
+  /* Japanese-optimized typography */
+  --ifm-line-height-base: 1.7;
+  --ifm-font-size-base: 16px;
 }
 
-/* Dark mode specific overrides */
+/* Dark mode color palette - brighter and less saturated for readability */
 [data-theme='dark'] {
-  --ifm-navbar-background-color: #1a1a1a;
-  --ifm-footer-background-color: #0d0d0d;
-  --ifm-toc-border-color: #3a3a3a;
-  --ifm-color-content: #e0e0e0;
-  --ifm-color-content-secondary: #b0b0b0;
-  --ifm-heading-color: #fafafa;
-  --ifm-link-color: var(--ifm-color-primary-light);
-  --ifm-link-hover-color: var(--ifm-color-primary-lightest);
-  --ifm-menu-color-active: var(--ifm-color-primary);
-  --ifm-menu-color-background-active: rgba(255, 153, 0, 0.1);
-  --ifm-code-background: #2a2a2a;
+  --ifm-color-primary: oklch(65% 0.14 48.998);
+  --ifm-color-primary-dark: oklch(60% 0.14 48.998);
+  --ifm-color-primary-darker: oklch(57% 0.14 48.998);
+  --ifm-color-primary-darkest: oklch(50% 0.14 48.998);
+  --ifm-color-primary-light: oklch(70% 0.14 48.998);
+  --ifm-color-primary-lighter: oklch(73% 0.14 48.998);
+  --ifm-color-primary-lightest: oklch(80% 0.14 48.998);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* Japanese-specific text adjustments */
-body {
-  font-feature-settings: 'palt' 1;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  word-break: break-word;
-  overflow-wrap: break-word;
+/* Japanese text optimization */
+.markdown {
+  line-height: 1.7;
+  font-size: 16px;
 }
 
-/* Headings with better Japanese spacing */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-feature-settings: 'palt' 1;
-  letter-spacing: 0.02em;
-  line-height: 1.4;
+/* Main content column width adjustment */
+.theme-doc-version-banner + .docItemContainer_src-theme-DocItem-Layout-index-module,
+.docItemContainer_src-theme-DocItem-Layout-index-module,
+[class*='docItemContainer'] {
+  padding: 0 2rem;
 }
 
-/* Paragraph spacing for Japanese */
-p {
-  line-height: 1.9;
-  letter-spacing: 0.03em;
+/* Target the main content area */
+main[class*='docMainContainer'] .container .row .col {
+  max-width: 100%;
+  padding: 0;
 }
 
-/* Lists with Japanese punctuation in mind */
-ul,
-ol {
-  line-height: 1.8;
-  padding-left: 1.5em;
+/* Article container with optimal reading width */
+article.theme-doc-markdown {
+  max-width: 860px;
+  margin: 0 auto;
 }
 
-li {
-  margin-bottom: 0.5rem;
+/* Container structure */
+.container > .row > .col > article {
+  padding: 0 2rem;
 }
 
-/* Code blocks */
-pre {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-/* Inline code */
-code {
+/* Image styling */
+.markdown img {
+  border: 1px solid #cccccc;
   border-radius: 4px;
-  padding: 2px 6px;
-  font-size: 0.9em;
+  margin: 1rem 0;
 }
 
-/* Tables */
-table {
-  display: table;
-  width: 100%;
+/* Code block spacing adjustments */
+.markdown pre {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+}
+
+/* Heading spacing */
+.markdown h1 {
+  padding-top: 1rem;
+  font-size: 2.5rem;
+}
+
+.markdown h2 {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.markdown h3 {
   margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 }
 
-th {
-  background-color: var(--ifm-color-emphasis-200);
+.markdown h2 + pre,
+.markdown h3 + pre {
+  margin-top: 1rem;
 }
 
-/* Blockquotes */
-blockquote {
-  border-left: 4px solid var(--ifm-color-primary);
-  background-color: rgba(255, 153, 0, 0.05);
-  padding: 1rem 1.5rem;
+.markdown pre + h2,
+.markdown pre + h3 {
+  margin-top: 2.5rem;
+}
+
+.markdown pre + p {
+  margin-top: 1.5rem;
+}
+
+/* Code blocks container */
+.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-styles-module {
   margin: 1.5rem 0;
 }
 
-/* Search bar styling */
-.navbar__search-input {
-  background-color: var(--ifm-color-emphasis-200);
-  border: 1px solid var(--ifm-color-emphasis-300);
+/* Sidebar menu optimization for Japanese text */
+.menu__list * {
+  line-height: 1.8;
 }
 
-.navbar__search-input:focus {
-  border-color: var(--ifm-color-primary);
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+/* Sidebar spacing adjustments */
+.theme-doc-sidebar-container nav {
+  padding: 0.5rem;
 }
 
-/* Sidebar */
+.menu__list-item {
+  margin: 0.25rem 0;
+}
+
 .menu__link {
-  border-radius: 4px;
-  transition: all 0.2s ease;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.25rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
-.menu__link:hover {
-  background-color: var(--ifm-menu-color-background-active);
-  color: var(--ifm-menu-color-active);
+.menu__link--sublist-caret {
+  padding-right: 1.5rem;
 }
 
-.menu__link--active {
-  background-color: var(--ifm-menu-color-background-active);
-  color: var(--ifm-menu-color-active);
-  font-weight: 600;
+/* Increase spacing between main category items */
+.theme-doc-sidebar-item-category {
+  margin-top: 1rem;
 }
 
-/* TOC (Table of Contents) */
-.table-of-contents__link {
-  border-radius: 4px;
-  padding: 4px 8px;
-  transition: all 0.2s ease;
+.theme-doc-sidebar-item-category:first-child {
+  margin-top: 0;
 }
 
-.table-of-contents__link:hover,
-.table-of-contents__link--active {
-  background-color: rgba(255, 153, 0, 0.1);
-  color: var(--ifm-color-primary-light);
-}
-
-/* Admonitions */
+/* Admonition (note, tip, warning) styling */
 .admonition {
-  border-radius: 8px;
   margin: 1.5rem 0;
+  border-radius: 8px;
 }
 
-/* Footer */
-.footer {
-  border-top: 1px solid var(--ifm-color-emphasis-300);
+/* Table styling */
+.markdown table {
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
 }
 
-/* Mermaid diagrams */
-.docusaurus-mermaid-container {
-  text-align: center;
-  margin: 2rem 0;
+.markdown th {
+  background-color: oklch(55.5% 0.163 48.998 / 0.1);
 }
 
-/* Custom scrollbar for dark mode */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+[data-theme='dark'] .markdown th {
+  background-color: oklch(65% 0.14 48.998 / 0.2);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--ifm-color-emphasis-100);
+/* Blockquote styling */
+.markdown blockquote {
+  border-left-color: oklch(55.5% 0.163 48.998);
+  background-color: oklch(55.5% 0.163 48.998 / 0.05);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--ifm-color-emphasis-400);
-  border-radius: 6px;
+[data-theme='dark'] .markdown blockquote {
+  border-left-color: oklch(65% 0.14 48.998);
+  background-color: oklch(65% 0.14 48.998 / 0.1);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--ifm-color-emphasis-500);
-}
+/* Responsive breakpoints */
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  :root {
-    --ifm-font-size-base: 15px;
+/* Mobile - up to 576px */
+@media (max-width: 576px) {
+  .markdown {
+    font-size: 15px;
   }
 
-  h1 {
-    font-size: 1.8rem;
+  .markdown h1 {
+    font-size: 2rem;
   }
 
-  h2 {
+  .markdown h2 {
     font-size: 1.5rem;
   }
 
-  h3 {
+  .markdown h3 {
     font-size: 1.25rem;
   }
+}
+
+/* Tablet - 577px to 996px */
+@media (min-width: 577px) and (max-width: 996px) {
+  article.theme-doc-markdown {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+/* Desktop - 997px and up */
+@media (min-width: 997px) {
+  :root {
+    --doc-sidebar-width: 240px !important;
+  }
+}
+
+/* Large Desktop - 1440px and up */
+@media (min-width: 1440px) {
+  :root {
+    --doc-sidebar-width: 320px !important;
+  }
+
+  article.theme-doc-markdown {
+    max-width: 960px;
+  }
+}
+
+/* Search plugin styling */
+.navbar__search-input {
+  background-color: oklch(55.5% 0.163 48.998 / 0.1);
+}
+
+[data-theme='dark'] .navbar__search-input {
+  background-color: oklch(65% 0.14 48.998 / 0.15);
+}
+
+/* Navbar brand color */
+.navbar__brand {
+  color: oklch(55.5% 0.163 48.998);
+}
+
+[data-theme='dark'] .navbar__brand {
+  color: oklch(65% 0.14 48.998);
+}
+
+/* Logo styling - make it white */
+.navbar__logo {
+  color: white !important;
+  filter: brightness(0) invert(1);
+}
+
+/* Footer styling */
+.footer {
+  background-color: oklch(30% 0.163 48.998);
+}
+
+[data-theme='dark'] .footer {
+  background-color: oklch(20% 0.14 48.998);
 }

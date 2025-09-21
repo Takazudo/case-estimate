@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Case Estimate Documentation',
-  tagline: 'Takazudo Modular Case Estimate App Documentation',
+  tagline: 'Technical documentation and development notes',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -12,43 +12,26 @@ const config: Config = {
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/doc/',
 
-  // GitHub pages deployment config.
-  organizationName: 'takazudo',
-  projectName: 'case-estimate',
+  // Don't add trailing slash
+  trailingSlash: false,
 
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Japanese,
-  // you may want to replace "en" with "ja".
+  // useful metadata like html lang.
   i18n: {
     defaultLocale: 'ja',
     locales: ['ja'],
   },
 
+  // Add noindex meta tag to prevent search engine indexing
+  noIndex: true,
+
   markdown: {
     mermaid: true,
   },
-
-  themes: [
-    '@docusaurus/theme-mermaid',
-    [
-      // eslint-disable-next-line no-undef
-      require.resolve('@easyops-cn/docusaurus-search-local'),
-      {
-        hashed: true,
-        language: ['ja', 'en'],
-        removeDefaultStopWordFilter: true,
-        removeDefaultStemmer: true,
-        highlightSearchTermsOnTargetPage: true,
-        explicitSearchResultPath: true,
-        docsRouteBasePath: '/',
-        indexBlog: false,
-        indexPages: false,
-      },
-    ],
-  ],
+  themes: ['@docusaurus/theme-mermaid'],
 
   presets: [
     [
@@ -57,11 +40,11 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
-          editUrl: undefined, // Disable edit links
-          showLastUpdateAuthor: false,
-          showLastUpdateTime: false,
+          // Disable edit links since this is private documentation
+          editUrl: undefined,
         },
-        blog: false, // Disable blog
+        // Disable blog feature
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -69,41 +52,69 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      // eslint-disable-next-line no-undef
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        language: ['ja'],
+        hashed: true,
+        highlightSearchTermsOnTargetPage: true,
+        docsRouteBasePath: '/',
+        // Disable indexing for search engines
+        indexDocs: true,
+        indexBlog: false,
+        indexPages: true,
+      },
+    ],
+  ],
+
   themeConfig: {
-    // Add noindex meta tag
-    metadata: [{ name: 'robots', content: 'noindex, nofollow' }],
-    // Dark mode only
+    // Force dark mode and disable theme switching
     colorMode: {
       defaultMode: 'dark',
       disableSwitch: true,
       respectPrefersColorScheme: false,
     },
+    // Add meta tags for SEO protection
+    metadata: [
+      { name: 'robots', content: 'noindex, nofollow' },
+      { name: 'googlebot', content: 'noindex, nofollow' },
+    ],
     navbar: {
-      title: 'Case Estimate Documentation',
+      title: 'Case Estimate Docs',
       logo: {
         alt: 'Case Estimate Logo',
         src: 'img/logo.svg',
+        width: 32,
+        height: 32,
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'inboxSidebar',
           position: 'left',
-          label: 'Docs',
+          label: 'INBOX',
+          docsPluginId: 'default',
+        },
+        {
+          href: 'https://case-estimate.netlify.app',
+          label: 'Main Site',
+          position: 'right',
         },
       ],
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} Case Estimate. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Case Estimate. Documentation built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-      additionalLanguages: ['bash', 'json', 'yaml'],
+      darkTheme: prismThemes.oneDark,
     },
-    mermaid: {
-      theme: { light: 'dark', dark: 'dark' },
+    // Code block settings
+    codeblock: {
+      showLineNumbers: true,
     },
   } satisfies Preset.ThemeConfig,
 };
