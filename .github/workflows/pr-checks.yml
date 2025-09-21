@@ -160,13 +160,14 @@ jobs:
           NODE_ENV: production
 
       - name: Deploy PR Preview to Netlify
+        id: netlify
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: ./out
           production-deploy: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: 'Deploy PR #${{ github.event.pull_request.number }} preview'
-          enable-pull-request-comment: true
+          enable-pull-request-comment: false
           enable-commit-comment: false
           overwrites-pull-request-comment: true
           alias: pr-${{ github.event.pull_request.number }}
@@ -174,3 +175,52 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         timeout-minutes: 5
+
+      - name: Comment PR with preview URLs
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = ${{ github.event.pull_request.number }};
+            const deployUrl = '${{ steps.netlify.outputs.deploy-url }}';
+
+            const comment = `### 🚀 Netlify Preview Deployment
+
+            | Status | Preview | Documentation |
+            |--------|---------|---------------|
+            | ✅ Ready | [Visit Site](${deployUrl}) | [View Docs](${deployUrl}/doc/) |
+
+            **Preview URLs:**
+            - 🌐 Main Site: ${deployUrl}
+            - 📚 Documentation: ${deployUrl}/doc/
+
+            ---
+            <sub>🤖 This preview will update automatically when you push new commits.</sub>`;
+
+            // Find and update existing comment or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Netlify Preview Deployment')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: comment
+              });
+            }
