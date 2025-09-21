@@ -10,8 +10,23 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./test/setup.ts'],
     css: true,
-    include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
-    exclude: ['node_modules', '.next', 'dist', '.idea', '.git', '.cache'],
+    include: [
+      'utils/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'hooks/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'components/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'app/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    ],
+    exclude: [
+      'node_modules',
+      '.next',
+      'dist',
+      '.idea',
+      '.git',
+      '.cache',
+      'doc/**',
+      'out/**',
+      'tests/**', // Playwright tests
+    ],
   },
   resolve: {
     alias: {
