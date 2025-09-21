@@ -19,6 +19,7 @@ permissions:
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -70,6 +71,7 @@ jobs:
 
   smoke-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: quality-checks
     steps:
       - name: Checkout repository
@@ -122,6 +124,7 @@ jobs:
 
   pr-preview:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: quality-checks
     if: github.event_name == 'pull_request'
     steps:
