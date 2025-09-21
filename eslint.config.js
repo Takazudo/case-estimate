@@ -17,10 +17,14 @@ export default [
       'dist/**',
       'node_modules/**',
       '.git/**',
+      '.next/**',
+      'next-env.d.ts',
       'coverage/**',
       'playwright.config.ts',
       'tests/**',
       '__inbox/**',
+      'doc/**',
+      'out/**',
     ],
     languageOptions: {
       ecmaVersion: 2020,
@@ -53,6 +57,32 @@ export default [
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+      ...eslintConfigPrettier.rules,
+    },
+  },
+  // Configuration for Node.js config files
+  {
+    files: ['*.config.js', '*.config.ts', 'next.config.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: { ...globals.node },
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+      prettier: prettierPlugin,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...typescript.configs.recommended.rules,
+      'prettier/prettier': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-undef': 'off', // Node.js globals
       ...eslintConfigPrettier.rules,
     },
   },
