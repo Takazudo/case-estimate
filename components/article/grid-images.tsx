@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+import { encodeCase } from '@/utils/url-encoder';
 
 interface GridImageItem {
   id: string;
@@ -17,11 +19,10 @@ interface GridImagesProps {
 }
 
 const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className = '' }) => {
-  const handleClick = (e: React.MouseEvent, item: GridImageItem) => {
-    if (onItemClick && item.caseId) {
-      e.preventDefault();
-      onItemClick(item.caseId);
-    }
+  const getHref = (item: GridImageItem): string => {
+    if (item.href) return item.href;
+    if (item.caseId) return `/m?c=${encodeCase(item.caseId)}`;
+    return '#';
   };
 
   return (
@@ -33,17 +34,22 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
       `}
     >
       {items.map((item) => (
-        <a
+        <Link
           key={item.id}
-          href={item.href || '#'}
-          onClick={(e) => handleClick(e, item)}
+          href={getHref(item)}
+          onClick={() => onItemClick?.(item.caseId || '')}
           className="group block cursor-pointer border-[3px] border-zd-link rounded-md p-[3px]"
         >
           <div className="space-y-vgap-xs">
             {/* Image placeholder - white square */}
             <div className="aspect-square bg-white rounded-sm overflow-hidden">
               {item.imgSrc ? (
-                <img src={item.imgSrc} alt={item.caption} className="w-full h-full object-cover" />
+                <img
+                  src={item.imgSrc}
+                  alt={item.caption}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
               ) : (
                 <div className="w-full h-full" />
               )}
@@ -53,7 +59,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
               {item.caption}
             </p>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );
