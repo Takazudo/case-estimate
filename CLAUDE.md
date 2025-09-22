@@ -1,5 +1,17 @@
 # Takazudo Modular Case Estimate App
 
+## Reference Project
+
+When implementing features or following patterns, refer to:
+
+- **Path**: `/Users/takazudo/repos/personal/takazudomodular`
+- Use this project as reference for:
+  - Component structure and naming conventions
+  - MDX configuration and usage patterns
+  - Styling approaches with Tailwind CSS
+  - Next.js app router patterns
+  - TypeScript patterns and types
+
 ## Project Overview
 
 An interactive web application for customizing Takazudo Modular synthesizer cases. Users can select different case models, customize panel colors, choose rail types, and see real-time price estimates.
