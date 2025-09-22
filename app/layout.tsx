@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import PersistentHeader from '@/components/persistent-header';
+import { NavigationProvider } from '@/components/navigation-context';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -13,10 +14,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-          <PersistentHeader />
-          <main className="flex-1 overflow-hidden">{children}</main>
-        </div>
+        <NavigationProvider>
+          <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
+            <PersistentHeader />
+            <main className="flex-1 overflow-hidden">{children}</main>
+          </div>
+        </NavigationProvider>
       </body>
     </html>
   );
