@@ -15,12 +15,14 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
   };
 
   const containerClass =
-    layout === 'fixed' ? 'container mx-auto px-hgap-sm py-vgap-sm' : 'px-hgap-sm py-vgap-sm';
+    layout === 'fixed'
+      ? 'container mx-auto px-hgap-sm py-vgap-sm header-container-transition'
+      : 'w-full px-hgap-sm py-vgap-sm header-container-transition';
 
   return (
-    <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
+    <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0 overflow-hidden">
       <div className={containerClass}>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between transition-opacity duration-300">
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
             {/* Logo */}
