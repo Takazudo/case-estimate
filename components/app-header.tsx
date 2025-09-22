@@ -16,7 +16,7 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
 
   // Use inline styles for better transition control
   const containerStyle = {
-    maxWidth: layout === 'fixed' ? '1280px' : 'none',
+    maxWidth: layout === 'fixed' ? '1280px' : '9999px', // Use large value instead of 'none'
     marginLeft: layout === 'fixed' ? 'auto' : '0',
     marginRight: layout === 'fixed' ? 'auto' : '0',
     backgroundColor: layout === 'fixed' ? 'rgba(127, 29, 29, 0.2)' : 'rgba(20, 83, 45, 0.2)', // Debug colors
