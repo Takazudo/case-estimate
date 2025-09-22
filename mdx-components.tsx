@@ -1,0 +1,43 @@
+import type { MDXComponents } from 'mdx/types';
+
+// Import all article components
+import { H1 } from './components/article/h1';
+import { H2 } from './components/article/h2';
+import { H3 } from './components/article/h3';
+import { P } from './components/article/p';
+import { A } from './components/article/a';
+import { UL } from './components/article/ul';
+import { OL } from './components/article/ol';
+import { LI } from './components/article/li';
+import { Table, TH, TD } from './components/article/table';
+import { Blockquote } from './components/article/blockquote';
+import { Code, Pre } from './components/article/code';
+import { HR } from './components/article/hr';
+
+// This file is required for MDX support in Next.js App Router
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // Headings
+    h1: H1,
+    h2: H2,
+    h3: H3,
+    // Text
+    p: P,
+    a: A,
+    // Lists
+    ul: UL,
+    ol: OL,
+    li: LI,
+    // Table
+    table: Table,
+    th: TH,
+    td: TD,
+    // Other elements
+    blockquote: Blockquote,
+    code: Code,
+    pre: Pre,
+    hr: HR,
+    // Pass through any additional components
+    ...components,
+  };
+}
