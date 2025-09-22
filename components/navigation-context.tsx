@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface NavigationContextType {
   currentLayout: 'fixed' | 'auto';
@@ -14,11 +14,12 @@ const NavigationContext = createContext<NavigationContextType | null>(null);
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [currentLayout, setCurrentLayout] = useState<'fixed' | 'auto'>('fixed');
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [pageAnimationClass, setPageAnimationClass] = useState('page-fade-in');
 
-  // Update layout based on current pathname on mount
+  // Update layout and reset loading state when URL changes (pathname or search params)
   useEffect(() => {
     const newLayout = pathname === '/m' ? 'auto' : 'fixed';
     setCurrentLayout(newLayout);
@@ -32,7 +33,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }, 400); // Match animation duration
 
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   const triggerLayoutChange = (path: string) => {
     const newLayout = path === '/m' ? 'auto' : 'fixed';
@@ -40,6 +41,17 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     setIsPageLoading(true);
     // Set loading state for page content
     setPageAnimationClass('page-loading');
+
+    // Failsafe: reset loading state after maximum expected navigation time
+    // This prevents getting stuck if useEffect doesn't fire for any reason
+    setTimeout(() => {
+      setIsPageLoading(false);
+      setPageAnimationClass('page-fade-in');
+      // Clear animation class after fade-in completes
+      setTimeout(() => {
+        setPageAnimationClass('');
+      }, 400);
+    }, 2000); // 2 second maximum loading time
   };
 
   return (
