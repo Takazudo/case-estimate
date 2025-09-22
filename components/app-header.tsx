@@ -16,13 +16,13 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
 
   const containerClass =
     layout === 'fixed'
-      ? 'container mx-auto px-hgap-sm py-vgap-sm header-container-transition'
-      : 'w-full px-hgap-sm py-vgap-sm header-container-transition';
+      ? 'max-w-[1280px] mx-auto px-hgap-sm py-vgap-sm header-container-transition bg-red-900/20'
+      : 'max-w-none w-full px-hgap-sm py-vgap-sm header-container-transition bg-green-900/20';
 
   return (
-    <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0 overflow-hidden">
+    <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
       <div className={containerClass}>
-        <div className="flex items-center justify-between transition-opacity duration-300">
+        <div className="flex items-center justify-between">
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
             {/* Logo */}
