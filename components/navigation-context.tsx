@@ -3,6 +3,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
+// Animation timing constants for consistency and maintainability
+const ANIMATION_DURATIONS = {
+  FADE_IN: 400, // ms - matches CSS animation duration in globals.css
+  NAVIGATION_TIMEOUT: 2000, // ms - maximum expected navigation time
+} as const;
+
 interface NavigationContextType {
   isPageLoading: boolean;
   pageAnimationClass: string;
@@ -43,7 +49,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     // Reset animation class after animation completes
     const timer = setTimeout(() => {
       setPageAnimationClass('');
-    }, 400); // Match animation duration
+    }, ANIMATION_DURATIONS.FADE_IN);
 
     return () => clearTimeout(timer);
   }, [pathname, searchParams]);
@@ -67,6 +73,13 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     // Set loading state for page content
     setPageAnimationClass('page-loading');
 
+    // Helper function to handle fade-in animation cleanup
+    const scheduleFadeInCleanup = () => {
+      setTimeout(() => {
+        setPageAnimationClass('');
+      }, ANIMATION_DURATIONS.FADE_IN);
+    };
+
     // Failsafe: reset loading state after maximum expected navigation time
     // This prevents getting stuck if useEffect doesn't fire for any reason
     failsafeTimeoutRef.current = setTimeout(() => {
@@ -74,17 +87,14 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
       // path is the destination we're navigating to
       if (path !== '/m') {
         setPageAnimationClass('page-fade-in');
-        // Clear animation class after fade-in completes
-        setTimeout(() => {
-          setPageAnimationClass('');
-        }, 400);
+        scheduleFadeInCleanup();
       } else {
         // If navigating to /m, ensure no animation class
         setPageAnimationClass('');
       }
       setIsPageLoading(false);
       failsafeTimeoutRef.current = null;
-    }, 2000); // 2 second maximum loading time
+    }, ANIMATION_DURATIONS.NAVIGATION_TIMEOUT);
   };
 
   // Cleanup on unmount
