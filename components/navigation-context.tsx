@@ -15,9 +15,13 @@ const NavigationContext = createContext<NavigationContextType | null>(null);
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [currentLayout, setCurrentLayout] = useState<'fixed' | 'auto'>('fixed');
+  const [currentLayout, setCurrentLayout] = useState<'fixed' | 'auto'>(() =>
+    pathname === '/m' ? 'auto' : 'fixed',
+  );
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [pageAnimationClass, setPageAnimationClass] = useState('page-fade-in');
+  const [pageAnimationClass, setPageAnimationClass] = useState(() =>
+    pathname === '/m' ? '' : 'page-fade-in',
+  );
 
   // Update layout and reset loading state when URL changes (pathname or search params)
   useEffect(() => {
