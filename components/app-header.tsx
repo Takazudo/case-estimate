@@ -19,8 +19,7 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
     maxWidth: layout === 'fixed' ? '1280px' : '9999px', // Use large value instead of 'none'
     marginLeft: layout === 'fixed' ? 'auto' : '0',
     marginRight: layout === 'fixed' ? 'auto' : '0',
-    backgroundColor: layout === 'fixed' ? 'rgba(127, 29, 29, 0.2)' : 'rgba(20, 83, 45, 0.2)', // Debug colors
-    transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+    transition: 'all 0.6s ease-in-out',
   };
 
   return (
