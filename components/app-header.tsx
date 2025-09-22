@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
 
@@ -9,12 +8,6 @@ interface AppHeaderProps {
 }
 
 export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
-  const router = useRouter();
-
-  const handleLogoClick = () => {
-    router.push('/');
-  };
-
   // Use inline styles for better transition control
   const containerStyle = {
     maxWidth: layout === 'fixed' ? '1280px' : '9999px', // Use large value instead of 'none'
@@ -30,10 +23,9 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
             {/* Logo */}
-            <button
-              onClick={handleLogoClick}
+            <NavigationLink
+              href="/"
               className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity"
-              aria-label="Go to home"
             >
               <img
                 src="/takazudo-logo.svg"
@@ -41,7 +33,7 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
                 className="w-12 h-12 brightness-0 invert"
               />
               <span className="whitespace-nowrap">Takazudo Modular Panels</span>
-            </button>
+            </NavigationLink>
 
             {/* Navigation Links */}
             <nav className="hidden md:flex items-center gap-hgap-sm">
