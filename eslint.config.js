@@ -52,7 +52,18 @@ export default [
       ...eslintReactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+          allowExportNames: [
+            'metadata',
+            'generateMetadata',
+            'generateStaticParams',
+            'useNavigation',
+          ],
+        },
+      ],
       'prettier/prettier': 'error',
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': 'error',
@@ -88,7 +99,11 @@ export default [
   },
   // Configuration for Playwright config and test files
   {
-    files: ['playwright.config.ts', 'tests/**/*.{ts,tsx,js,jsx}'],
+    files: [
+      'playwright.config.ts',
+      'playwright.config.production.ts',
+      'tests/**/*.{ts,tsx,js,jsx}',
+    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: { ...globals.browser, ...globals.node },

@@ -57,9 +57,9 @@ fi
 echo "✅ Production server ready"
 echo
 
-# Run smoke tests
+# Run smoke tests with production config
 echo "🎭 Running smoke tests..."
-PORT=3000 npx playwright test tests/e2e.spec.ts
+PORT=3000 npm run test:smoke:production
 
 TEST_EXIT=$?
 

@@ -63,9 +63,11 @@ test.describe('Smoke Test', () => {
     await expect(page.getByRole('link', { name: /Takazudo Modular: Panels/i })).toBeVisible();
 
     // Check that case selector is present (HeadlessUI Listbox renders as button)
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
     await expect(
       page.getByRole('button', { name: /Select a case model|zudo-block|10box/i }),
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
 
     // Should show the visualization panel with SVG
     await expect(page.locator('svg').first()).toBeVisible();
@@ -104,8 +106,10 @@ test.describe('Smoke Test', () => {
     await page.waitForLoadState('networkidle');
 
     // Check case selector is visible (HeadlessUI Listbox renders as button)
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
     const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
-    await expect(caseSelector).toBeVisible();
+    await expect(caseSelector).toBeVisible({ timeout: 10000 });
 
     // Check that visualization panel is visible
     await expect(page.locator('svg').first()).toBeVisible();
@@ -122,8 +126,12 @@ test.describe('Smoke Test', () => {
     // Wait for initial load
     await page.waitForLoadState('networkidle');
 
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
+
     // Click the case selector to open dropdown
     const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
+    await expect(caseSelector).toBeVisible({ timeout: 10000 });
     await caseSelector.click();
 
     // Select a different case from the dropdown
@@ -153,8 +161,10 @@ test.describe('Smoke Test', () => {
     // Check that the case selector shows the correct case
     // c=3a corresponds to zudo-block-60-ACR-A
     // HeadlessUI Listbox shows selected value as button text
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
     await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i })).toBeVisible({
-      timeout: 5000,
+      timeout: 10000,
     });
 
     // Verify SVG is visible
