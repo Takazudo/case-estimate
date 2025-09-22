@@ -24,7 +24,15 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     const newLayout = pathname === '/m' ? 'auto' : 'fixed';
     setCurrentLayout(newLayout);
     setIsPageLoading(false);
-    // Trigger fade-in animation when page loads
+
+    // Skip page transition animations for /m route (case selection mini app)
+    // Users interacting with colors/models/panels shouldn't see fade animations
+    if (pathname === '/m') {
+      setPageAnimationClass('');
+      return;
+    }
+
+    // Trigger fade-in animation for other page loads
     setPageAnimationClass('page-fade-in');
 
     // Reset animation class after animation completes
@@ -38,6 +46,15 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
   const triggerLayoutChange = (path: string) => {
     const newLayout = path === '/m' ? 'auto' : 'fixed';
     setCurrentLayout(newLayout);
+
+    // Skip loading animations when navigating to /m route
+    // The case selection mini app should feel instant and responsive
+    if (path === '/m') {
+      setIsPageLoading(false);
+      setPageAnimationClass('');
+      return;
+    }
+
     setIsPageLoading(true);
     // Set loading state for page content
     setPageAnimationClass('page-loading');
