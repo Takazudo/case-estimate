@@ -216,7 +216,7 @@ function Configurator() {
   // Big layout divide: header + main area
   return (
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-      <AppHeader />
+      <AppHeader layout="auto" />
 
       {/* Main area contains configuration interface */}
       <main className="flex-1 overflow-hidden relative">

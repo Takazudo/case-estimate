@@ -3,16 +3,23 @@
 import { useRouter } from 'next/navigation';
 import ArrowRight from './icons/arrow-right';
 
-export default function AppHeader() {
+interface AppHeaderProps {
+  layout?: 'fixed' | 'auto';
+}
+
+export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
   const router = useRouter();
 
   const handleLogoClick = () => {
     router.push('/');
   };
 
+  const containerClass =
+    layout === 'fixed' ? 'container mx-auto px-hgap-sm py-vgap-sm' : 'px-hgap-sm py-vgap-sm';
+
   return (
     <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
-      <div className="container mx-auto px-hgap-sm py-vgap-sm">
+      <div className={containerClass}>
         <div className="flex items-center justify-between">
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
