@@ -14,14 +14,18 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
     router.push('/');
   };
 
-  const containerClass =
-    layout === 'fixed'
-      ? 'max-w-[1280px] mx-auto px-hgap-sm py-vgap-sm header-container-transition bg-red-900/20'
-      : 'max-w-none w-full px-hgap-sm py-vgap-sm header-container-transition bg-green-900/20';
+  // Use inline styles for better transition control
+  const containerStyle = {
+    maxWidth: layout === 'fixed' ? '1280px' : 'none',
+    marginLeft: layout === 'fixed' ? 'auto' : '0',
+    marginRight: layout === 'fixed' ? 'auto' : '0',
+    backgroundColor: layout === 'fixed' ? 'rgba(127, 29, 29, 0.2)' : 'rgba(20, 83, 45, 0.2)', // Debug colors
+    transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+  };
 
   return (
     <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
-      <div className={containerClass}>
+      <div style={containerStyle} className="px-hgap-sm py-vgap-sm">
         <div className="flex items-center justify-between">
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
