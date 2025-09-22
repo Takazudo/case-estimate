@@ -8,7 +8,7 @@ import SeriesCard from './series-card';
 import PanelSelector from './panel-selector';
 import ColorPicker from './color-picker';
 import CustomColorPreview from './custom-color-preview';
-import HeaderCaseSelector from './header-case-selector';
+import ModelSelector from './model-selector';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -47,9 +47,9 @@ export default function ControlsSidebar({
 
   return (
     <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0">
-      {/* Model selector at the top (green area) */}
-      <div className="bg-zd-notify px-hgap-sm lg:px-hgap-md py-vgap-sm">
-        <HeaderCaseSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
+      {/* Model selector at the top */}
+      <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
+        <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
       </div>
 
       {currentCase ? (
