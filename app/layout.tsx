@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Suspense } from 'react';
 import PersistentHeader from '@/components/persistent-header';
 import PageLoadingIndicator from '@/components/page-loading-indicator';
 import PageContent from '@/components/page-content';
@@ -16,13 +17,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <NavigationProvider>
-          <PageLoadingIndicator />
-          <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-            <PersistentHeader />
-            <PageContent>{children}</PageContent>
-          </div>
-        </NavigationProvider>
+        <Suspense fallback={null}>
+          <NavigationProvider>
+            <PageLoadingIndicator />
+            <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
+              <PersistentHeader />
+              <PageContent>{children}</PageContent>
+            </div>
+          </NavigationProvider>
+        </Suspense>
       </body>
     </html>
   );
