@@ -4,21 +4,13 @@ import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
 
 interface AppHeaderProps {
-  layout?: 'fixed' | 'auto';
+  fullWidth?: boolean;
 }
 
-export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
-  // Use inline styles for better transition control
-  const containerStyle = {
-    maxWidth: layout === 'fixed' ? '1280px' : '9999px', // Use large value instead of 'none'
-    marginLeft: layout === 'fixed' ? 'auto' : '0',
-    marginRight: layout === 'fixed' ? 'auto' : '0',
-    transition: 'all 2s ease-in-out',
-  };
-
+export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   return (
     <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
-      <div style={containerStyle} className="px-hgap-sm py-vgap-sm">
+      <div className={`px-hgap-sm py-vgap-sm ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}`}>
         <div className="flex items-center justify-between">
           {/* Logo and Navigation Links */}
           <div className="flex items-center gap-hgap-md">
@@ -32,7 +24,7 @@ export default function AppHeader({ layout = 'fixed' }: AppHeaderProps = {}) {
                 alt="Takazudo Logo"
                 className="w-12 h-12 brightness-0 invert"
               />
-              <span className="whitespace-nowrap">Takazudo Modular Panels</span>
+              <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
             </NavigationLink>
 
             {/* Navigation Links */}

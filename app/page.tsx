@@ -8,11 +8,11 @@ import { useNavigation } from '@/components/navigation-context';
 
 export default function HomePage() {
   const router = useRouter();
-  const { triggerLayoutChange } = useNavigation();
+  const { triggerNavigation } = useNavigation();
 
   const handleCaseSelect = (caseId: string) => {
-    // Trigger layout change immediately
-    triggerLayoutChange('/m');
+    // Trigger navigation immediately
+    triggerNavigation('/m');
 
     // Navigate to /m/ with the selected case
     const encodedCase = encodeCase(caseId);

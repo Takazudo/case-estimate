@@ -17,14 +17,14 @@ export default function NavigationLink({
   children,
   onClick,
 }: NavigationLinkProps) {
-  const { triggerLayoutChange } = useNavigation();
+  const { triggerNavigation } = useNavigation();
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Don't trigger if it's a cmd/ctrl+click (opens in new tab)
     if (e.metaKey || e.ctrlKey) return;
 
-    // Trigger layout change immediately
-    triggerLayoutChange(href);
+    // Trigger navigation immediately
+    triggerNavigation(href);
 
     // Call any additional onClick handler
     onClick?.();

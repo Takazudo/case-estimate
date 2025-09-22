@@ -1,10 +1,11 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import AppHeader from './app-header';
-import { useNavigation } from './navigation-context';
 
 export default function PersistentHeader() {
-  const { currentLayout } = useNavigation();
+  const pathname = usePathname();
+  const isFullWidth = pathname === '/m';
 
-  return <AppHeader layout={currentLayout} />;
+  return <AppHeader fullWidth={isFullWidth} />;
 }

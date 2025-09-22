@@ -4,10 +4,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 interface NavigationContextType {
-  currentLayout: 'fixed' | 'auto';
   isPageLoading: boolean;
   pageAnimationClass: string;
-  triggerLayoutChange: (path: string) => void;
+  triggerNavigation: (path: string) => void;
 }
 
 const NavigationContext = createContext<NavigationContextType | null>(null);
@@ -15,19 +14,21 @@ const NavigationContext = createContext<NavigationContextType | null>(null);
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [currentLayout, setCurrentLayout] = useState<'fixed' | 'auto'>(() =>
-    pathname === '/m' ? 'auto' : 'fixed',
-  );
   const [isPageLoading, setIsPageLoading] = useState(false);
   const [pageAnimationClass, setPageAnimationClass] = useState(() =>
     pathname === '/m' ? '' : 'page-fade-in',
   );
+  const failsafeTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Update layout and reset loading state when URL changes (pathname or search params)
+  // Reset loading state when URL changes (pathname or search params)
   useEffect(() => {
-    const newLayout = pathname === '/m' ? 'auto' : 'fixed';
-    setCurrentLayout(newLayout);
     setIsPageLoading(false);
+
+    // Clear any pending failsafe timeout to prevent race conditions
+    if (failsafeTimeoutRef.current) {
+      clearTimeout(failsafeTimeoutRef.current);
+      failsafeTimeoutRef.current = null;
+    }
 
     // Skip page transition animations for /m route (case selection mini app)
     // Users interacting with colors/models/panels shouldn't see fade animations
@@ -47,9 +48,12 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     return () => clearTimeout(timer);
   }, [pathname, searchParams]);
 
-  const triggerLayoutChange = (path: string) => {
-    const newLayout = path === '/m' ? 'auto' : 'fixed';
-    setCurrentLayout(newLayout);
+  const triggerNavigation = (path: string) => {
+    // Clear any existing failsafe timeout before starting new navigation
+    if (failsafeTimeoutRef.current) {
+      clearTimeout(failsafeTimeoutRef.current);
+      failsafeTimeoutRef.current = null;
+    }
 
     // Skip loading animations when navigating to /m route
     // The case selection mini app should feel instant and responsive
@@ -65,20 +69,35 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
 
     // Failsafe: reset loading state after maximum expected navigation time
     // This prevents getting stuck if useEffect doesn't fire for any reason
-    setTimeout(() => {
-      setIsPageLoading(false);
-      setPageAnimationClass('page-fade-in');
-      // Clear animation class after fade-in completes
-      setTimeout(() => {
+    failsafeTimeoutRef.current = setTimeout(() => {
+      // Check the target path (not current pathname) to determine animations
+      // path is the destination we're navigating to
+      if (path !== '/m') {
+        setPageAnimationClass('page-fade-in');
+        // Clear animation class after fade-in completes
+        setTimeout(() => {
+          setPageAnimationClass('');
+        }, 400);
+      } else {
+        // If navigating to /m, ensure no animation class
         setPageAnimationClass('');
-      }, 400);
+      }
+      setIsPageLoading(false);
+      failsafeTimeoutRef.current = null;
     }, 2000); // 2 second maximum loading time
   };
 
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      if (failsafeTimeoutRef.current) {
+        clearTimeout(failsafeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <NavigationContext.Provider
-      value={{ currentLayout, isPageLoading, pageAnimationClass, triggerLayoutChange }}
-    >
+    <NavigationContext.Provider value={{ isPageLoading, pageAnimationClass, triggerNavigation }}>
       {children}
     </NavigationContext.Provider>
   );
