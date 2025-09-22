@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 export default function SelectionLayout({ children }: { children: ReactNode }) {
   return (
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-      <AppHeader selectedCase={null} />
+      <AppHeader />
       <main className="flex-1 overflow-hidden">
         <ErrorBoundary>
           <div className="h-full overflow-y-auto bg-zd-black">

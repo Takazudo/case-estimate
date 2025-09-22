@@ -216,7 +216,7 @@ function Configurator() {
   // Big layout divide: header + main area
   return (
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-      <AppHeader selectedCase={selectedCase} onCaseSelect={handleCaseSelect} />
+      <AppHeader />
 
       {/* Main area contains configuration interface */}
       <main className="flex-1 overflow-hidden relative">
@@ -261,6 +261,7 @@ function Configurator() {
                   colorMap={colorMap}
                   selectedColor={selectedColor}
                   onColorSelect={handleColorSelect}
+                  onCaseSelect={handleCaseSelect}
                 />
               </div>
             </div>

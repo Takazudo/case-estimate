@@ -149,10 +149,67 @@
   --border-width-4: 4px;
   --border-width-5: 5px;
   --border-width-10: 10px;
+
+  /* Custom shadows */
+  --shadow-text-md: 0.05em 0.05em 0 #000;
 }
 
 /* Custom utilities */
 @layer utilities {
+  /* Text shadow utilities */
+  .text-shadow-md {
+    text-shadow: var(--shadow-text-md);
+  }
+  .text-shadow-none {
+    text-shadow: none;
+  }
+
+  /* Inverted color link style */
+  .zd-invert-color-link {
+    @apply text-shadow-md outline-offset-4;
+    &:hover {
+      @apply text-zd-black bg-zd-white text-shadow-none no-underline;
+      @apply outline-2 rounded-sm outline-orange-600;
+    }
+    &:focus {
+      @apply text-zd-black bg-zd-white text-shadow-none no-underline;
+      @apply outline-2 rounded-sm outline-orange-600;
+    }
+    &:active {
+      @apply text-zd-black;
+      @apply bg-zd-active;
+    }
+  }
+
+  /* Gradient utilities */
+  .zd-gradient-black-to-transparent {
+    background: linear-gradient(to bottom, rgb(28 25 23) 30%, transparent);
+    background-repeat: repeat-x;
+  }
+
+  /* Red gradient button */
+  .zd-button-gradient {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+    font-weight: 500;
+    border: 1px solid rgba(153, 27, 27, 0.5);
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1),
+      0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+  }
+  .zd-button-gradient:hover {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+  .zd-button-gradient:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
   .clearfix::after {
     content: '';
     clear: both;
