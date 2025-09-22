@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function ModulesDevPage() {
   return (
     <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-      <AppHeader selectedCase={null} />
+      <AppHeader />
       <main className="flex-1 overflow-hidden">
         <ErrorBoundary>
           <ModulesPage />
