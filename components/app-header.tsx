@@ -8,6 +8,24 @@ interface AppHeaderProps {
   fullWidth?: boolean;
 }
 
+interface NavItemProps {
+  href: string;
+  label: string;
+}
+
+function NavItem({ href, label }: NavItemProps) {
+  return (
+    <NavigationLink
+      href={href}
+      className="flex items-center text-sm transition-colors px-[5px] py-[3px] rounded-sm group zd-invert-color-link"
+      activeClassName="pointer-events-none hover:text-zd-white hover:bg-transparent no-underline"
+    >
+      <ArrowRight className="w-[18px] mr-[7px] group-hover:text-zd-black relative bottom-[-2px]" />
+      <span>{label}</span>
+    </NavigationLink>
+  );
+}
+
 export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   return (
     <header
@@ -26,6 +44,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
           <NavigationLink
             href="/"
             className="text-base md:text-xl flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
+            activeClassName="pointer-events-none opacity-100 hover:opacity-100"
           >
             <TakazudoLogo className="w-[50px] h-[50px]" />
             <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
@@ -34,26 +53,15 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
           {/* Right side actions */}
           <div className="flex items-center gap-hgap-xs">
             {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-hgap-sm">
-              <NavigationLink
-                href="/panel"
-                className="flex items-center text-sm text-zd-white hover:text-zd-black hover:bg-zd-white transition-colors px-[5px] py-[3px] rounded-sm group"
-              >
-                <ArrowRight className="w-[18px] mr-[7px] group-hover:text-zd-black" />
-                <span>パネル素材</span>
-              </NavigationLink>
-              <NavigationLink
-                href="/selection"
-                className="flex items-center text-sm text-zd-white hover:text-zd-black hover:bg-zd-white transition-colors px-[5px] py-[3px] rounded-sm group"
-              >
-                <ArrowRight className="w-[18px] mr-[7px] group-hover:text-zd-black" />
-                <span>パネル選択</span>
-              </NavigationLink>
+            <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
+              <NavItem href="/panel" label="パネル素材" />
+              <NavItem href="/selection" label="パネル選択" />
             </nav>
             {/* CTA Button */}
             <NavigationLink
               href="/m"
-              className="zd-button-gradient px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap"
+              className="px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient"
+              activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white no-underline"
             >
               ケースを作る
             </NavigationLink>
