@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-// Configurator has its own layout without the ContentLayout wrapper
+// Configurator layout should fill the viewport (minus the header) without scrolling
 export default function ConfiguratorLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return <div className="h-full overflow-hidden">{children}</div>;
 }

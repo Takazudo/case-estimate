@@ -7,7 +7,6 @@ import type { Color, Series } from '@/types';
 import { decodeCase, decodePanelColors, createColorValueMap } from '@/utils/url-encoder';
 
 // Components
-import AppFooter from '@/components/app-footer';
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
 
@@ -223,45 +222,36 @@ function Configurator() {
       )}
 
       {selectedCase && (
-        <div className="h-full flex flex-col">
-          {/* Body area: main col + side col */}
-          <div className="flex-1 overflow-hidden">
-            <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
-              {/* Left Column - Visualization */}
-              <VisualizationPanel
-                selectedCase={selectedCase}
-                panelColors={panelColors}
-                panelColorIds={panelColorIds}
-                onPanelClick={handlePanelClick}
-                selectedPanel={selectedPanel}
-                material={material}
-                bgColor={bgColor}
-                gridColor={gridColor}
-                onLoadingChange={setIsLoadingSvg}
-              />
+        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
+          {/* Left Column - Visualization */}
+          <VisualizationPanel
+            selectedCase={selectedCase}
+            panelColors={panelColors}
+            panelColorIds={panelColorIds}
+            onPanelClick={handlePanelClick}
+            selectedPanel={selectedPanel}
+            material={material}
+            bgColor={bgColor}
+            gridColor={gridColor}
+            onLoadingChange={setIsLoadingSvg}
+          />
 
-              {/* Right Column - Controls */}
-              <ControlsSidebar
-                selectedCase={selectedCase}
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-                material={material}
-                onSeriesSelect={handleSeriesSelect}
-                isSeriesActive={isSeriesActive}
-                panels={currentCase?.panels || []}
-                panelColors={panelColors}
-                selectedPanel={selectedPanel}
-                onPanelSelect={setSelectedPanel}
-                colorMap={colorMap}
-                selectedColor={selectedColor}
-                onColorSelect={handleColorSelect}
-                onCaseSelect={handleCaseSelect}
-              />
-            </div>
-          </div>
-
-          {/* Footer */}
-          <AppFooter
+          {/* Right Column - Controls */}
+          <ControlsSidebar
+            selectedCase={selectedCase}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            material={material}
+            onSeriesSelect={handleSeriesSelect}
+            isSeriesActive={isSeriesActive}
+            panels={currentCase?.panels || []}
+            panelColors={panelColors}
+            selectedPanel={selectedPanel}
+            onPanelSelect={setSelectedPanel}
+            colorMap={colorMap}
+            selectedColor={selectedColor}
+            onColorSelect={handleColorSelect}
+            onCaseSelect={handleCaseSelect}
             bgColor={bgColor}
             gridColor={gridColor}
             onBgColorChange={setBgColor}

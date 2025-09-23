@@ -3,23 +3,20 @@
 import ErrorBoundary from '@/components/error-boundary';
 import Footer from '@/components/footer';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 export default function ContentGroupLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Reset scroll position when pathname changes
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
     <ErrorBoundary>
-      <div ref={scrollContainerRef} className="bg-zd-black pt-[96px]" data-scroll-container>
+      <div className="bg-zd-black pt-[96px]">
         <div
           className={`
             box-content mx-auto max-w-[1280px]
