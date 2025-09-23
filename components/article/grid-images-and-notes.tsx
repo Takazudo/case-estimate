@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { H3 } from './h3';
 import { ImageModal } from '../modal/image-modal';
+import { BlurhashLoader } from '@/components/blurhash-loader';
 
 interface GridItem {
   thumbUrl: string;
@@ -11,6 +12,7 @@ interface GridItem {
   imageAlt: string;
   heading: string;
   subHeading?: string;
+  blurhash?: string;
   content: React.ReactNode;
 }
 
@@ -44,12 +46,21 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
                 className="relative w-[200px] h-[200px] float-right ml-hgap-sm mb-vgap-sm group cursor-pointer"
                 aria-label={`Enlarge ${item.imageAlt} image`}
               >
-                <img
-                  src={item.thumbUrl}
-                  alt={item.imageAlt}
-                  className="w-full h-full object-contain bg-white group-hover:opacity-90 transition-opacity"
-                  loading="lazy"
-                />
+                {item.blurhash ? (
+                  <BlurhashLoader
+                    blurHash={item.blurhash}
+                    imgUrl={item.thumbUrl}
+                    alt={item.imageAlt}
+                    className="w-full h-full bg-white group-hover:opacity-90 transition-opacity"
+                  />
+                ) : (
+                  <img
+                    src={item.thumbUrl}
+                    alt={item.imageAlt}
+                    className="w-full h-full object-contain bg-white group-hover:opacity-90 transition-opacity"
+                    loading="lazy"
+                  />
+                )}
                 <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-60 group-hover:opacity-80 transition-opacity">
                   <img src="/enlarge.svg" alt="Enlarge" className="w-5 h-5 brightness-0 invert" />
                 </div>

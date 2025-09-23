@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev --port 3200",
+    "dev2": "next dev --port 3201",
     "build": "next build",
     "build:with-docs": "npm run build && (cd doc && npm run build) && mkdir -p out && cp -r doc/build out/doc || (echo 'Build failed' && exit 1)",
     "start": "next start",
@@ -41,6 +42,7 @@
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^15.5.3",
     "@next/third-parties": "^15.5.3",
+    "blurhash": "^2.0.5",
     "next": "^15.5.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
