@@ -11,6 +11,8 @@ interface BlurhashLoaderProps {
   loading?: 'lazy' | 'eager';
 }
 
+// Fallback BlurHash representing a solid gray color.
+// Chosen for its neutral appearance as a generic placeholder when no blurHash is provided.
 const FALLBACK_HASH = 'L00000fQfQfQfQfQfQfQfQfQfQfQ';
 
 const BlurhashLoaderComponent: React.FC<BlurhashLoaderProps> = ({
@@ -27,7 +29,7 @@ const BlurhashLoaderComponent: React.FC<BlurhashLoaderProps> = ({
 
   useEffect(() => {
     if (!blurHash) {
-      console.error('blurHash was undefined. using fallback');
+      console.error('BlurHash was undefined, using fallback hash');
     }
   }, [blurHash]);
 
