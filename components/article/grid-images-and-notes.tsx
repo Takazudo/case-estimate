@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import { ArticleH3 } from './article-h3';
+import { H3 } from './h3';
 import { ImageModal } from '../modal/image-modal';
 
 interface GridItem {
@@ -37,7 +37,7 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
       >
         {items.map((item, index) => (
           <div key={index} className="overflow-hidden">
-            <ArticleH3 subText={item.subHeading}>{item.heading}</ArticleH3>
+            <H3 subText={item.subHeading}>{item.heading}</H3>
             <div className="text-sm md:text-base">
               <button
                 onClick={() => handleEnlargeClick(item.enlargeUrl, item.imageAlt)}

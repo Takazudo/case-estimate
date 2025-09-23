@@ -1,7 +1,11 @@
 import ErrorBoundary from '@/components/error-boundary';
 import type { ReactNode } from 'react';
 
-export default function SelectionLayout({ children }: { children: ReactNode }) {
+interface ContentLayoutProps {
+  children: ReactNode;
+}
+
+export default function ContentLayout({ children }: ContentLayoutProps) {
   return (
     <ErrorBoundary>
       <div className="h-full overflow-y-auto bg-zd-black">

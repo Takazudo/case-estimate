@@ -1,7 +1,6 @@
 'use client';
 
-import ArticleH2 from './article/article-h2';
-import ArticleText from './article/article-text';
+import { H2 } from './article/h2';
 import { GridImagesAndNotes } from './article/grid-images-and-notes';
 import type { GridItem } from './article/grid-images-and-notes';
 
@@ -63,23 +62,19 @@ export default function ModulesPage() {
           Module List / コンポーネントリスト
         </h1>
 
-        <ArticleText className="mb-vgap-lg">
-          <p>
-            This page is a component list for development purposes. Below you can see various UI
-            components used throughout the application.
-          </p>
-        </ArticleText>
+        <p className="mb-vgap-lg text-white">
+          This page is a component list for development purposes. Below you can see various UI
+          components used throughout the application.
+        </p>
 
         {/* GridImagesAndNotes Component Demo */}
-        <ArticleH2>GridImagesAndNotes Component</ArticleH2>
+        <H2>GridImagesAndNotes Component</H2>
 
-        <ArticleText className="mb-vgap-lg">
-          <p>
-            This component displays a grid of items with images, headings, subheadings, and content.
-            Each image is enlargeable when clicked. This component is currently preserved for
-            potential future use.
-          </p>
-        </ArticleText>
+        <p className="mb-vgap-lg text-white">
+          This component displays a grid of items with images, headings, subheadings, and content.
+          Each image is enlargeable when clicked. This component is currently preserved for
+          potential future use.
+        </p>
 
         <GridImagesAndNotes items={sampleItems} className="mb-vgap-xl" />
       </div>
