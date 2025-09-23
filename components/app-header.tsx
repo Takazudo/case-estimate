@@ -35,7 +35,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
     >
       <div
         className={`
-          px-hgap-sm py-vgap-sm
+          px-hgap-sm py-vgap-sm box-content
           ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}
         `}
       >
