@@ -10,5 +10,5 @@ interface PageContentProps {
 export default function PageContent({ children }: PageContentProps) {
   const { pageAnimationClass } = useNavigation();
 
-  return <main className={`flex-1 overflow-hidden ${pageAnimationClass}`}>{children}</main>;
+  return <main className={`${pageAnimationClass}`}>{children}</main>;
 }

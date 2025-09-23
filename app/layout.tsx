@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Suspense fallback={null}>
           <NavigationProvider>
             <PageLoadingIndicator />
-            <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
+            <div className="h-screen bg-zd-black flex flex-col">
               <PersistentHeader />
               <PageContent>{children}</PageContent>
             </div>

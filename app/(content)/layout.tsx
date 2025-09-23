@@ -19,12 +19,14 @@ export default function ContentGroupLayout({ children }: { children: ReactNode }
 
   return (
     <ErrorBoundary>
-      <div
-        ref={scrollContainerRef}
-        className="h-full overflow-y-auto bg-zd-black pt-[96px]"
-        data-scroll-container
-      >
-        <div className="box-content container mx-auto px-hgap-md py-vgap-lg max-w-[1280px]">
+      <div ref={scrollContainerRef} className="bg-zd-black pt-[96px]" data-scroll-container>
+        <div
+          className={`
+            box-content mx-auto max-w-[1280px]
+            px-hgap-sm md:px-hgap-md
+            py-vgap-lg
+          `}
+        >
           {children}
         </div>
         <Footer />
