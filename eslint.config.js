@@ -26,6 +26,7 @@ export default [
       'doc/**',
       'out/**',
       'worktrees/**',
+      'sub-packages/**',
     ],
     languageOptions: {
       ecmaVersion: 2020,

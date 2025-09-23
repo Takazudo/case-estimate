@@ -1,5 +1,14 @@
 # Takazudo Modular Case Estimate App
 
+## GitHub Integration
+
+When given a GitHub URL, use the `gh` command to fetch information:
+
+- For issues: `gh issue view <URL>`
+- For pull requests: `gh pr view <URL>`
+- For PR comments: `gh api repos/{owner}/{repo}/pulls/{number}/comments`
+- For general API access: `gh api <endpoint>`
+
 ## Reference Project
 
 When implementing features or following patterns, refer to:

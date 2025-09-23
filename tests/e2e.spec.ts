@@ -27,8 +27,8 @@ test.describe('Smoke Test', () => {
     await expect(page.getByRole('link', { name: /Takazudo Modular: Panels/i })).toBeVisible();
 
     // Check that the model sections are visible
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /^zudo-block-40$/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /^zudo-block-60$/i })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: /10BOX/i })).toBeVisible();
 
     // The case selector dropdown should NOT be visible on the landing page
@@ -185,8 +185,8 @@ test.describe('Smoke Test', () => {
     await page.waitForURL('/');
 
     // Verify we're showing the TopPage with model sections
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /^zudo-block-40$/i })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /^zudo-block-60$/i })).toBeVisible();
 
     // Case selector should not be visible on home page
     // HeadlessUI Listbox would render as button

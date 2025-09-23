@@ -5,5 +5,5 @@ interface PProps {
 }
 
 export function P({ children }: PProps) {
-  return <p className="mb-vgap-sm text-white leading-relaxed">{children}</p>;
+  return <p className="mb-vgap-sm text-white">{children}</p>;
 }

@@ -9,6 +9,7 @@ import PanelSelector from './panel-selector';
 import ColorPicker from './color-picker';
 import CustomColorPreview from './custom-color-preview';
 import ModelSelector from './model-selector';
+import BackgroundColorPicker from './background-color-picker';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -25,6 +26,10 @@ interface ControlsSidebarProps {
   selectedColor: Color | null;
   onColorSelect: (color: Color) => void;
   onCaseSelect: (caseType: string) => void;
+  bgColor?: string;
+  gridColor?: string;
+  onBgColorChange?: (color: string) => void;
+  onGridColorChange?: (color: string) => void;
 }
 
 export default function ControlsSidebar({
@@ -42,11 +47,15 @@ export default function ControlsSidebar({
   selectedColor,
   onColorSelect,
   onCaseSelect,
+  bgColor,
+  gridColor,
+  onBgColorChange,
+  onGridColorChange,
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
 
   return (
-    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0">
+    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px]">
       {/* Model selector at the top */}
       <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
         <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
@@ -137,9 +146,16 @@ export default function ControlsSidebar({
               <p>• Your configuration is saved in the URL</p>
             </div>
 
-            <div className="text-sm text-zd-gray pt-4 border-t border-zd-gray">
-              <p>© 2025 Takazudo Modular</p>
-            </div>
+            {bgColor && gridColor && onBgColorChange && onGridColorChange && (
+              <div className="pt-4 border-t border-zd-gray">
+                <BackgroundColorPicker
+                  bgColor={bgColor}
+                  gridColor={gridColor}
+                  onBgColorChange={onBgColorChange}
+                  onGridColorChange={onGridColorChange}
+                />
+              </div>
+            )}
           </div>
         </>
       ) : (

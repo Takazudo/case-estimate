@@ -203,7 +203,6 @@
     background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
     color: white;
     font-weight: 500;
-    border: 1px solid rgba(153, 27, 27, 0.5);
     box-shadow:
       0 1px 3px 0 rgba(0, 0, 0, 0.1),
       0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -241,12 +240,10 @@
 @layer base {
   /* Base styles */
   html {
-    @apply font-sans underline-offset-4 bg-zd-black;
+    @apply font-futura underline-offset-4 bg-zd-black;
   }
   body {
-    @apply text-base font-futura;
-    color: var(--zd-color-white);
-    background-color: var(--zd-color-black);
+    @apply text-base text-zd-white;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -263,25 +260,14 @@
 
   /* Links */
   a {
-    color: var(--zd-color-link);
-    text-decoration: none;
-    transition: color 0.2s ease;
+    @apply underline;
   }
-
-  a:hover {
-    color: var(--zd-color-active);
+  a:focus,
+  a:active {
+    @apply outline-2 outline-orange-600 rounded-xs;
   }
-
-  /* Focus styles */
-  :focus {
-    outline: 2px solid rgba(217, 119, 6, 0.8);
-    outline-offset: 2px;
-  }
-
-  /* Selection */
-  ::selection {
-    background-color: var(--zd-color-link);
-    color: var(--zd-color-black);
+  a:active {
+    @apply text-zd-black bg-zd-active;
   }
 
   /* Scrollbar styles (webkit browsers) */

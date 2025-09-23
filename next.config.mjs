@@ -1,5 +1,6 @@
 /* eslint-env node */
 import createMDX from '@next/mdx';
+import path from 'node:path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,6 +8,7 @@ const nextConfig = {
   output: 'export',
   distDir: 'out',
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  outputFileTracingRoot: path.join(process.cwd()),
 };
 
 const withMDX = createMDX({
