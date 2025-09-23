@@ -52,6 +52,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
                     imgUrl={item.imgSrc}
                     alt={item.caption}
                     className="w-full h-full"
+                    loading="lazy"
                   />
                 ) : (
                   <img

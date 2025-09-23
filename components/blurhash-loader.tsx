@@ -8,6 +8,7 @@ interface BlurhashLoaderProps {
   imgUrl: string;
   className?: string;
   alt?: string;
+  loading?: 'lazy' | 'eager';
 }
 
 const FALLBACK_HASH = 'L00000fQfQfQfQfQfQfQfQfQfQfQ';
@@ -17,6 +18,7 @@ const BlurhashLoaderComponent: React.FC<BlurhashLoaderProps> = ({
   imgUrl,
   className = '',
   alt = '',
+  loading = 'eager',
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -60,6 +62,7 @@ const BlurhashLoaderComponent: React.FC<BlurhashLoaderProps> = ({
           imageLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         alt={alt}
+        loading={loading}
         onLoad={() => {
           setImageLoaded(true);
         }}
