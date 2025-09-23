@@ -1,6 +1,34 @@
-import ContentLayout from '@/components/content-layout';
+'use client';
+
+import ErrorBoundary from '@/components/error-boundary';
+import Footer from '@/components/footer';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
 
 export default function ContentGroupLayout({ children }: { children: ReactNode }) {
-  return <ContentLayout>{children}</ContentLayout>;
+  const pathname = usePathname();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Reset scroll position when pathname changes
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [pathname]);
+
+  return (
+    <ErrorBoundary>
+      <div
+        ref={scrollContainerRef}
+        className="h-full overflow-y-auto bg-zd-black pt-[96px]"
+        data-scroll-container
+      >
+        <div className="box-content container mx-auto px-hgap-md py-vgap-lg max-w-[1280px]">
+          {children}
+        </div>
+        <Footer />
+      </div>
+    </ErrorBoundary>
+  );
 }
