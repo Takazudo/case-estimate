@@ -1,26 +1,36 @@
-import type { ReactNode } from 'react';
+import * as React from 'react';
 
 interface H3Props {
-  children: ReactNode;
+  children: React.ReactNode;
+  subText?: string;
   id?: string;
 }
 
-export function H3({ children, id }: H3Props) {
+export const H3: React.FC<H3Props> = ({ children, subText, id }) => {
   return (
-    <h3 id={id} className="group text-xl font-semibold text-white mb-vgap-sm mt-vgap-md pt-vgap-xs">
-      <span className="relative">
-        <span className="block mb-vgap-xs h-px bg-gradient-to-r from-white/40 to-transparent" />
-        {children}
-        {id && (
-          <a
-            href={`#${id}`}
-            aria-hidden="true"
-            className="absolute -left-6 text-white/40 hover:text-white/60 opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            #
-          </a>
-        )}
+    <h3
+      id={id}
+      className="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm"
+    >
+      <span className="flow-root">
+        <span className="flex justify-between items-center relative group">
+          <span>
+            {children}
+            {id && (
+              <span className="inline-block w-0 h-0 relative align-bottom">
+                <a
+                  href={`#${id}`}
+                  aria-hidden="true"
+                  className="font-bold hidden no-underline text-zd-gray absolute left-0 bottom-0 px-[0.4em] group-hover:block"
+                >
+                  #
+                </a>
+              </span>
+            )}
+          </span>
+          {subText && <span className="text-base font-normal text-zd-gray">{subText}</span>}
+        </span>
       </span>
     </h3>
   );
-}
+};
