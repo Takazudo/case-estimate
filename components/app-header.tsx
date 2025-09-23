@@ -1,8 +1,12 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
 import TakazudoLogo from './icons/takazudo-logo';
+import MobileMenuToggle from './mobile-menu-toggle';
+import MobileMenuDrawer from './mobile-menu-drawer';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -27,47 +31,78 @@ function NavItem({ href, label }: NavItemProps) {
 }
 
 export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const navigationItems = [
+    { href: '/panel', label: 'パネル素材' },
+    { href: '/selection', label: 'パネル選択' },
+    { href: '/m', label: 'ケースを作る' },
+  ];
+
+  useEffect(() => {
+    closeMenu();
+  }, [pathname]);
+
   return (
-    <header
-      className={`
-        backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0 fixed top-0 left-0 right-0 z-50 bg-zd-black/70
-      `}
-    >
-      <div
+    <>
+      <header
         className={`
-          px-hgap-sm py-vgap-sm box-content
-          ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}
+          backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0 fixed top-0 left-0 right-0 z-50 bg-zd-black/70
         `}
       >
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <NavigationLink
-            href="/"
-            className="text-base md:text-xl flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
-            activeClassName="pointer-events-none opacity-100 hover:opacity-100"
-          >
-            <TakazudoLogo className="w-[50px] h-[50px]" />
-            <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
-          </NavigationLink>
-
-          {/* Right side actions */}
-          <div className="flex items-center gap-hgap-xs">
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
-              <NavItem href="/panel" label="パネル素材" />
-              <NavItem href="/selection" label="パネル選択" />
-            </nav>
-            {/* CTA Button */}
+        <div
+          className={`
+            px-hgap-sm py-vgap-sm box-content
+            ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}
+          `}
+        >
+          <div className="flex items-center justify-between">
+            {/* Logo */}
             <NavigationLink
-              href="/m"
-              className="px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient no-underline"
-              activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
+              href="/"
+              className="text-base md:text-xl flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
+              activeClassName="pointer-events-none opacity-100 hover:opacity-100"
             >
-              ケースを作る
+              <TakazudoLogo className="w-[50px] h-[50px]" />
+              <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
             </NavigationLink>
+
+            {/* Right side actions */}
+            <div className="flex items-center gap-hgap-xs">
+              {/* Navigation Links - Desktop */}
+              <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
+                <NavItem href="/panel" label="パネル素材" />
+                <NavItem href="/selection" label="パネル選択" />
+              </nav>
+              {/* CTA Button - Desktop */}
+              <NavigationLink
+                href="/m"
+                className="hidden md:inline-block px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient no-underline"
+                activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
+              >
+                ケースを作る
+              </NavigationLink>
+
+              {/* Hamburger menu - Mobile only */}
+              <div className="flex items-center justify-center md:hidden">
+                <MobileMenuToggle isOpen={isMenuOpen} onToggle={toggleMenu} className="" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Menu Drawer */}
+      <MobileMenuDrawer
+        isOpen={isMenuOpen}
+        onClose={closeMenu}
+        navigationItems={navigationItems}
+        currentPath={pathname}
+      />
+    </>
   );
 }
