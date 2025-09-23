@@ -103,17 +103,8 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Start production server
-        run: npx serve out -p 3000 -s &
-
-      - name: Wait for server
-        run: |
-          echo "Waiting for production server..."
-          sleep 5
-          curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:3000
-
-      - name: Run smoke tests on production build
-        run: PORT=3000 npm run test:smoke:production
+      - name: Run smoke tests
+        run: npm run test:smoke
 
       - name: Upload test results
         if: failure()
