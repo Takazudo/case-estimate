@@ -2,14 +2,18 @@
 
 import { useRouter } from 'next/navigation';
 import TopPage from '@/components/top-page';
-import AppHeader from '@/components/app-header';
 import ErrorBoundary from '@/components/error-boundary';
 import { encodeCase } from '@/utils/url-encoder';
+import { useNavigation } from '@/components/navigation-context';
 
 export default function HomePage() {
   const router = useRouter();
+  const { triggerNavigation } = useNavigation();
 
   const handleCaseSelect = (caseId: string) => {
+    // Trigger navigation immediately
+    triggerNavigation('/m');
+
     // Navigate to /m/ with the selected case
     const encodedCase = encodeCase(caseId);
     router.push(`/m/?c=${encodedCase}`);
@@ -17,12 +21,7 @@ export default function HomePage() {
 
   return (
     <ErrorBoundary>
-      <div className="h-screen bg-zd-black flex flex-col overflow-hidden">
-        <AppHeader />
-        <main className="flex-1 overflow-hidden">
-          <TopPage onCaseSelect={handleCaseSelect} />
-        </main>
-      </div>
+      <TopPage onCaseSelect={handleCaseSelect} />
     </ErrorBoundary>
   );
 }

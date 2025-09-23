@@ -8,6 +8,7 @@ import SeriesCard from './series-card';
 import PanelSelector from './panel-selector';
 import ColorPicker from './color-picker';
 import CustomColorPreview from './custom-color-preview';
+import ModelSelector from './model-selector';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -23,6 +24,7 @@ interface ControlsSidebarProps {
   colorMap: { [key: string]: string };
   selectedColor: Color | null;
   onColorSelect: (color: Color) => void;
+  onCaseSelect: (caseType: string) => void;
 }
 
 export default function ControlsSidebar({
@@ -39,11 +41,17 @@ export default function ControlsSidebar({
   colorMap,
   selectedColor,
   onColorSelect,
+  onCaseSelect,
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
 
   return (
     <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0">
+      {/* Model selector at the top */}
+      <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
+        <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
+      </div>
+
       {currentCase ? (
         <>
           <div className="px-hgap-sm lg:px-hgap-md py-vgap-md">

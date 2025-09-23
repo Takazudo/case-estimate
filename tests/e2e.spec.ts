@@ -23,8 +23,8 @@ test.describe('Smoke Test', () => {
     expect(response?.status()).toBeLessThan(400);
 
     // Check that we're showing the TopPage component
-    // The header should have 'Takazudo Modular Panels'
-    await expect(page.getByRole('button', { name: 'Go to home' })).toBeVisible();
+    // The header should have 'Takazudo Modular: Panels' logo link
+    await expect(page.getByRole('link', { name: /Takazudo Modular: Panels/i })).toBeVisible();
 
     // Check that the model sections are visible
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-40/i })).toBeVisible();
@@ -59,11 +59,15 @@ test.describe('Smoke Test', () => {
     // Wait for the main app region to be visible
     await expect(page.getByRole('main')).toBeVisible();
 
-    // Check that the main title is visible (in header button with aria-label)
-    await expect(page.getByRole('button', { name: 'Go to home' })).toBeVisible();
+    // Check that the main title is visible (in header link)
+    await expect(page.getByRole('link', { name: /Takazudo Modular: Panels/i })).toBeVisible();
 
-    // Check that case selector is present in header
-    await expect(page.getByRole('combobox').first()).toBeVisible();
+    // Check that case selector is present (HeadlessUI Listbox renders as button)
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
+    await expect(
+      page.getByRole('button', { name: /Select a case model|zudo-block|10box/i }),
+    ).toBeVisible({ timeout: 10000 });
 
     // Should show the visualization panel with SVG
     await expect(page.locator('svg').first()).toBeVisible();
@@ -86,10 +90,9 @@ test.describe('Smoke Test', () => {
     const url = page.url();
     expect(url).toContain('/m?c=');
 
-    // Should show the case selector with the selected case
-    const caseSelector = page.getByRole('combobox').first();
-    await expect(caseSelector).toBeVisible();
-    await expect(caseSelector).toHaveValue('zudo-block-40-ACR-A', { timeout: 5000 });
+    // Should show the case selector with the selected case (HeadlessUI Listbox)
+    const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
+    await expect(caseSelector).toBeVisible({ timeout: 5000 });
 
     // Should show the visualization panel with SVG
     await expect(page.locator('svg').first()).toBeVisible();
@@ -102,11 +105,11 @@ test.describe('Smoke Test', () => {
     // Wait for the page to be fully loaded
     await page.waitForLoadState('networkidle');
 
-    // Check case selector dropdown has options
-    const caseSelector = page.getByRole('combobox').first();
-    await expect(caseSelector).toBeVisible();
-    const options = await caseSelector.locator('option').count();
-    expect(options).toBeGreaterThan(0);
+    // Check case selector is visible (HeadlessUI Listbox renders as button)
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
+    const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
+    await expect(caseSelector).toBeVisible({ timeout: 10000 });
 
     // Check that visualization panel is visible
     await expect(page.locator('svg').first()).toBeVisible();
@@ -123,19 +126,19 @@ test.describe('Smoke Test', () => {
     // Wait for initial load
     await page.waitForLoadState('networkidle');
 
-    const caseSelector = page.getByRole('combobox').first();
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
 
-    // Get initial case value
-    const initialValue = await caseSelector.inputValue();
-    expect(initialValue).toBe('zudo-block-40-ACR-A');
+    // Click the case selector to open dropdown
+    const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
+    await expect(caseSelector).toBeVisible({ timeout: 10000 });
+    await caseSelector.click();
 
-    // Change to a different case
-    await caseSelector.selectOption('zudo-block-60-ACR-A');
+    // Select a different case from the dropdown
+    await page.getByRole('option', { name: /zudo-block-60-ACR-A/i }).click();
 
     // Verify the selection changed
-    const newValue = await caseSelector.inputValue();
-    expect(newValue).not.toBe(initialValue);
-    expect(newValue).toBe('zudo-block-60-ACR-A');
+    await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i })).toBeVisible();
 
     // Verify SVG is still visible after change
     await expect(page.locator('svg').first()).toBeVisible();
@@ -156,16 +159,13 @@ test.describe('Smoke Test', () => {
     await page.waitForLoadState('networkidle');
 
     // Check that the case selector shows the correct case
-    const caseSelector = page.getByRole('combobox').first();
-
-    // Wait for the selector to have the correct value
-    // This ensures hydration is complete and URL params are processed
-    await expect(caseSelector).toHaveValue('zudo-block-60-ACR-A', { timeout: 5000 });
-
-    const selectedValue = await caseSelector.inputValue();
-
     // c=3a corresponds to zudo-block-60-ACR-A
-    expect(selectedValue).toBe('zudo-block-60-ACR-A');
+    // HeadlessUI Listbox shows selected value as button text
+    // Wait for hydration to complete
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i })).toBeVisible({
+      timeout: 10000,
+    });
 
     // Verify SVG is visible
     await expect(page.locator('svg').first()).toBeVisible();
@@ -179,7 +179,7 @@ test.describe('Smoke Test', () => {
     await expect(page.locator('svg').first()).toBeVisible();
 
     // Click the logo
-    await page.getByRole('button', { name: 'Go to home' }).click();
+    await page.getByRole('link', { name: /Takazudo Modular: Panels/i }).click();
 
     // Should navigate to home page
     await page.waitForURL('/');
@@ -189,6 +189,7 @@ test.describe('Smoke Test', () => {
     await expect(page.getByRole('heading', { level: 2, name: /zudo-block-60/i })).toBeVisible();
 
     // Case selector should not be visible on home page
-    await expect(page.getByRole('combobox').first()).not.toBeVisible();
+    // HeadlessUI Listbox would render as button
+    await expect(page.getByRole('button', { name: /Select a case model/i })).not.toBeVisible();
   });
 });

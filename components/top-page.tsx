@@ -134,7 +134,7 @@ export default function TopPage({ onCaseSelect }: TopPageProps) {
         <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
           <ArticleText className="mb-vgap-lg">
             <p>
-              Takazudo Modular Panelsは、Takazudo
+              Takazudo Modular: Panelsは、Takazudo
               Modularのケースオーダー用Webアプリです。ケースのモデルをまず選び、パネル毎に好きな色んで、オリジナルのケースをデザインできます。
             </p>
           </ArticleText>

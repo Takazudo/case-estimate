@@ -54,8 +54,7 @@ const config: Config = {
 
   plugins: [
     [
-      // eslint-disable-next-line no-undef
-      require.resolve('@easyops-cn/docusaurus-search-local'),
+      '@easyops-cn/docusaurus-search-local',
       {
         language: ['ja'],
         hashed: true,
