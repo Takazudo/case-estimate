@@ -23,7 +23,11 @@ export default function ContentLayout({ children }: ContentLayoutProps) {
 
   return (
     <ErrorBoundary>
-      <div ref={scrollContainerRef} className="h-full overflow-y-auto bg-zd-black">
+      <div
+        ref={scrollContainerRef}
+        className="h-full overflow-y-auto bg-zd-black"
+        data-scroll-container
+      >
         <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
           {children}
           <Footer />

@@ -2,28 +2,13 @@
 
 import { usePathname } from 'next/navigation';
 import NavigationLink from '@/components/navigation-link';
-
-const goUp = () => {
-  // Find the scrollable container in ContentLayout
-  const scrollContainer = document.querySelector('.overflow-y-auto');
-  if (scrollContainer) {
-    scrollContainer.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  } else {
-    // Fallback to window scroll
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }
-};
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 
 export default function Footer() {
   const pathname = usePathname();
   const isActiveTop = pathname === '/';
   const isActiveModules = pathname === '/modules';
+  const scrollToTop = useScrollToTop();
 
   return (
     <footer className="w-full max-w-[1800px] mx-auto pb-8 px-4">
@@ -70,7 +55,7 @@ export default function Footer() {
         </nav>
         <button
           className="flex items-center text-zd-white hover:text-zd-gray transition-colors group"
-          onClick={goUp}
+          onClick={scrollToTop}
           aria-label="ページの先頭へ"
         >
           <span className="underline mr-2 hidden sm:block">ページの先頭へ</span>
