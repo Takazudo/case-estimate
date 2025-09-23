@@ -77,6 +77,7 @@ export const colors: Colors = {
     { id: 'gold-yellow', name: 'ゴールドイエロー', value: '#f1c40f', material: 'PLA', opacity: 1 },
     { id: 'clear-blue', name: 'クリアブルー', value: '#0d47a1', material: 'PETG', opacity: 0.6 },
     { id: 'clear-red', name: 'クリアレッド', value: '#b71c1c', material: 'PETG', opacity: 0.6 },
+    { id: 'indigo-blue', name: 'インディゴブルー', value: '#172854', material: 'PLA', opacity: 1 },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#a59d88', material: 'PLA', opacity: 1 },
   ],
   series: {
