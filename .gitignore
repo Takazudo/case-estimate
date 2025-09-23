@@ -151,3 +151,4 @@ playwright/.cache/
 # Next.js
 .next/
 out/
+next-env.d.ts
