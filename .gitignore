@@ -152,3 +152,6 @@ playwright/.cache/
 .next/
 out/
 next-env.d.ts
+
+# git worktree
+worktrees/
