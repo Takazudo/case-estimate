@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import NavigationLink from '@/components/navigation-link';
 
 const goUp = () => {
   // Find the scrollable container in ContentLayout
@@ -31,27 +31,29 @@ export default function Footer() {
         <nav>
           <ul className="flex flex-col md:flex-row gap-x-4 gap-y-2">
             <li className="whitespace-nowrap">
-              <Link
-                href="/"
-                className={`text-zd-white hover:text-zd-gray transition-colors ${
-                  isActiveTop ? 'pointer-events-none opacity-50' : ''
-                }`}
-                tabIndex={isActiveTop ? -1 : 0}
-              >
-                takazudomodular.com
-              </Link>
+              {isActiveTop ? (
+                <span className="text-zd-white opacity-50 cursor-default">takazudomodular.com</span>
+              ) : (
+                <NavigationLink
+                  href="/"
+                  className="text-zd-white hover:text-zd-gray transition-colors"
+                >
+                  takazudomodular.com
+                </NavigationLink>
+              )}
             </li>
             <li className="whitespace-nowrap flex items-center">
               <span className="mr-2 hidden md:block text-zd-gray">/</span>
-              <Link
-                href="/modules"
-                className={`text-zd-white hover:text-zd-gray transition-colors ${
-                  isActiveModules ? 'pointer-events-none opacity-50' : ''
-                }`}
-                tabIndex={isActiveModules ? -1 : 0}
-              >
-                モジュール一覧
-              </Link>
+              {isActiveModules ? (
+                <span className="text-zd-white opacity-50 cursor-default">モジュール一覧</span>
+              ) : (
+                <NavigationLink
+                  href="/modules"
+                  className="text-zd-white hover:text-zd-gray transition-colors"
+                >
+                  モジュール一覧
+                </NavigationLink>
+              )}
             </li>
             <li className="whitespace-nowrap flex items-center">
               <span className="mr-2 hidden md:block text-zd-gray">/</span>
