@@ -13,6 +13,7 @@ export default function ModulesPage() {
       imageAlt: 'サンプル1',
       heading: 'カーボンブラック',
       subHeading: 'PLA-CF',
+      blurhash: 'UIHed*RiM|oe~qkCayofofxuWBfP%LV@ofWB',
       content: (
         <>
           <p>
@@ -28,6 +29,7 @@ export default function ModulesPage() {
       imageAlt: 'サンプル2',
       heading: 'クリムゾンレッド',
       subHeading: 'PLA',
+      blurhash: 'UcFsbssW-qt7~XR%WCof-XxuNFagW.jcRja_',
       content: (
         <>
           <p>
@@ -43,6 +45,7 @@ export default function ModulesPage() {
       imageAlt: 'サンプル3',
       heading: 'ダークオレンジ',
       subHeading: 'PLA',
+      blurhash: 'UfF?3IxY--t7~oRnWCa}-mxtM}fOR.axRkj[',
       content: (
         <>
           <p>
