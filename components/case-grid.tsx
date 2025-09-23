@@ -11,6 +11,7 @@ interface CaseGridProps {
     caseId: string;
     caption: string;
     imgSrc: string;
+    blurhash?: string;
   }>;
   className?: string;
 }

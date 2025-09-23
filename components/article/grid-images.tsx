@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { encodeCase } from '@/utils/url-encoder';
+import { BlurhashLoader } from '@/components/blurhash-loader';
 
 interface GridImageItem {
   id: string;
@@ -10,6 +11,7 @@ interface GridImageItem {
   caseId?: string;
   caption: string;
   imgSrc?: string; // Optional for future real images
+  blurhash?: string;
 }
 
 interface GridImagesProps {
@@ -44,12 +46,21 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
             {/* Image placeholder - white square */}
             <div className="aspect-square bg-white rounded-sm overflow-hidden">
               {item.imgSrc ? (
-                <img
-                  src={item.imgSrc}
-                  alt={item.caption}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                item.blurhash ? (
+                  <BlurhashLoader
+                    blurHash={item.blurhash}
+                    imgUrl={item.imgSrc}
+                    alt={item.caption}
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <img
+                    src={item.imgSrc}
+                    alt={item.caption}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )
               ) : (
                 <div className="w-full h-full" />
               )}
