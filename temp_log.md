@@ -35,20 +35,20 @@ The problem was a hydration mismatch between server and client rendering. The `u
 Implemented proper Next.js 15 server-side parameter handling:
 
 1. **Updated `/app/m/page.tsx`**:
-   - Made the page component async
-   - Added proper TypeScript types for `searchParams` as a Promise
-   - Awaited `searchParams` before passing to client component
-   - Passed URL parameters as props to the Configurator component
+- Made the page component async
+- Added proper TypeScript types for `searchParams` as a Promise
+- Awaited `searchParams` before passing to client component
+- Passed URL parameters as props to the Configurator component
 
 2. **Modified `Configurator` component**:
-   - Added `initialCase` and `initialPanels` props
-   - Created `getInitialState` helper function to decode URL parameters on initialization
-   - Used decoded values to initialize state directly (avoiding useEffect delay)
-   - Modified `useUrlPersistence` to skip initial load when server props are provided
+- Added `initialCase` and `initialPanels` props
+- Created `getInitialState` helper function to decode URL parameters on initialization
+- Used decoded values to initialize state directly (avoiding useEffect delay)
+- Modified `useUrlPersistence` to skip initial load when server props are provided
 
 3. **Updated `useUrlPersistence` hook**:
-   - Added `skipInitialLoad` option to prevent duplicate initialization
-   - Prevents URL updates when state is not yet initialized
+- Added `skipInitialLoad` option to prevent duplicate initialization
+- Prevents URL updates when state is not yet initialized
 
 ### Step 4: Current Status
 

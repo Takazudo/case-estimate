@@ -144,6 +144,9 @@ vite.config.ts.timestamp-*
 # misc
 __inbox/
 
+# Sub-packages have their own node_modules
+sub-packages/*/node_modules/
+
 # Playwright
 test-results/
 playwright-report/
