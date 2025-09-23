@@ -60,8 +60,8 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* CTA Button */}
             <NavigationLink
               href="/m"
-              className="px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient"
-              activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white no-underline"
+              className="px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient no-underline"
+              activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
             >
               ケースを作る
             </NavigationLink>
