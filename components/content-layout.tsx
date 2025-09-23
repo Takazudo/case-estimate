@@ -28,7 +28,7 @@ export default function ContentLayout({ children }: ContentLayoutProps) {
         className="h-full overflow-y-auto bg-zd-black"
         data-scroll-container
       >
-        <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
+        <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1280px]">
           {children}
           <Footer />
         </div>

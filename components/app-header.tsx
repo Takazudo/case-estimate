@@ -9,24 +9,33 @@ interface AppHeaderProps {
 
 export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   return (
-    <header className="bg-zd-gray2 border-b border-dashed border-zd-gray flex-shrink-0">
-      <div className={`px-hgap-sm py-vgap-sm ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}`}>
+    <header
+      className={`
+        backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0 fixed top-0 left-0 right-0 z-50 bg-zd-black/70
+      `}
+    >
+      <div
+        className={`
+          px-hgap-sm py-vgap-sm
+          ${!fullWidth ? 'max-w-[1280px] mx-auto' : ''}
+        `}
+      >
         <div className="flex items-center justify-between">
-          {/* Logo and Navigation Links */}
-          <div className="flex items-center gap-hgap-md">
-            {/* Logo */}
-            <NavigationLink
-              href="/"
-              className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity"
-            >
-              <img
-                src="/takazudo-logo.svg"
-                alt="Takazudo Logo"
-                className="w-12 h-12 brightness-0 invert"
-              />
-              <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
-            </NavigationLink>
+          {/* Logo */}
+          <NavigationLink
+            href="/"
+            className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline"
+          >
+            <img
+              src="/takazudo-logo.svg"
+              alt="Takazudo Logo"
+              className="w-12 h-12 brightness-0 invert"
+            />
+            <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
+          </NavigationLink>
 
+          {/* Right side actions */}
+          <div className="flex items-center gap-hgap-xs">
             {/* Navigation Links */}
             <nav className="hidden md:flex items-center gap-hgap-sm">
               <NavigationLink
@@ -44,10 +53,6 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
                 <span>パネル選択</span>
               </NavigationLink>
             </nav>
-          </div>
-
-          {/* Right side actions */}
-          <div className="flex items-center gap-hgap-xs">
             {/* CTA Button */}
             <NavigationLink
               href="/m"
