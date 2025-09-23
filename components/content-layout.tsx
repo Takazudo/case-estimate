@@ -25,7 +25,7 @@ export default function ContentLayout({ children }: ContentLayoutProps) {
     <ErrorBoundary>
       <div
         ref={scrollContainerRef}
-        className="h-full overflow-y-auto bg-zd-black"
+        className="h-full overflow-y-auto bg-zd-black pt-[96px]"
         data-scroll-container
       >
         <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1280px]">

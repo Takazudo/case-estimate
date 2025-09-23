@@ -2,6 +2,7 @@
 
 import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
+import TakazudoLogo from './icons/takazudo-logo';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -24,13 +25,9 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
           {/* Logo */}
           <NavigationLink
             href="/"
-            className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline"
+            className="text-base md:text-xl flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
           >
-            <img
-              src="/takazudo-logo.svg"
-              alt="Takazudo Logo"
-              className="w-12 h-12 brightness-0 invert"
-            />
+            <TakazudoLogo className="w-[50px] h-[50px]" />
             <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
           </NavigationLink>
 
