@@ -25,6 +25,7 @@ export default [
       '__inbox/**',
       'doc/**',
       'out/**',
+      'worktrees/**',
     ],
     languageOptions: {
       ecmaVersion: 2020,
