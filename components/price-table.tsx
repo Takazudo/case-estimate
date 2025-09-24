@@ -20,28 +20,28 @@ export function PriceTable() {
           <tr>
             <th
               rowSpan={2}
-              className="bg-[#a8c8e1] text-black py-2 px-4 border border-gray-400 text-center"
+              className="bg-zd-gray2 text-zd-white py-2 px-4 border border-zd-gray text-center whitespace-nowrap"
             >
               ケースのモデル
             </th>
             <th
               colSpan={4}
-              className="bg-[#a8c8e1] text-black text-center py-2 px-4 border border-gray-400"
+              className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap"
             >
               レールの種類
             </th>
           </tr>
           <tr>
-            <th className="bg-[#a8c8e1] text-black text-center py-2 px-4 border border-gray-400">
+            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
               Lite
             </th>
-            <th className="bg-[#a8c8e1] text-black text-center py-2 px-4 border border-gray-400">
+            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
               Nuts
             </th>
-            <th className="bg-[#a8c8e1] text-black text-center py-2 px-4 border border-gray-400">
+            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
               Dual
             </th>
-            <th className="bg-[#a8c8e1] text-black text-center py-2 px-4 border border-gray-400">
+            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
               Metal
             </th>
           </tr>
@@ -51,36 +51,36 @@ export function PriceTable() {
             <tr key={row.model}>
               <td
                 className={`${
-                  index % 2 === 0 ? 'bg-[#a8c8e1]' : 'bg-[#d4e4f1]'
-                } text-black text-left py-2 px-4 border border-gray-400 font-medium`}
+                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
+                } text-zd-white text-left py-2 px-4 border border-zd-gray font-medium whitespace-nowrap`}
               >
                 {row.model}
               </td>
               <td
                 className={`${
-                  index % 2 === 0 ? 'bg-[#a8c8e1]' : 'bg-[#d4e4f1]'
-                } text-black text-right py-2 px-4 border border-gray-400`}
+                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
+                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
               >
                 {row.lite}
               </td>
               <td
                 className={`${
-                  index % 2 === 0 ? 'bg-[#a8c8e1]' : 'bg-[#d4e4f1]'
-                } text-black text-right py-2 px-4 border border-gray-400`}
+                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
+                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
               >
                 {row.nuts}
               </td>
               <td
                 className={`${
-                  index % 2 === 0 ? 'bg-[#a8c8e1]' : 'bg-[#d4e4f1]'
-                } text-black text-right py-2 px-4 border border-gray-400`}
+                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
+                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
               >
                 {row.dual}
               </td>
               <td
                 className={`${
-                  index % 2 === 0 ? 'bg-[#a8c8e1]' : 'bg-[#d4e4f1]'
-                } text-black text-right py-2 px-4 border border-gray-400`}
+                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
+                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
               >
                 {row.metal}
               </td>
