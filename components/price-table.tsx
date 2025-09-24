@@ -13,79 +13,49 @@ const priceData = [
 ];
 
 export function PriceTable() {
+  // Define className variables for background colors
+  const bgHeader = 'bg-zd-gray2';
+  const bgEvenRow = 'bg-zd-gray2';
+  const bgOddRow = 'bg-zd-black';
+
+  // Common cell styles
+  const baseCellStyle = 'text-zd-white py-2 px-4 border border-zd-gray whitespace-nowrap';
+  const headerCellStyle = `${bgHeader} ${baseCellStyle}`;
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th
-              rowSpan={2}
-              className="bg-zd-gray2 text-zd-white py-2 px-4 border border-zd-gray text-center whitespace-nowrap"
-            >
+            <th rowSpan={2} className={`${headerCellStyle} text-center`}>
               ケースのモデル
             </th>
-            <th
-              colSpan={4}
-              className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap"
-            >
+            <th colSpan={4} className={`${headerCellStyle} text-center`}>
               レールの種類
             </th>
           </tr>
           <tr>
-            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
-              Lite
-            </th>
-            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
-              Nuts
-            </th>
-            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
-              Dual
-            </th>
-            <th className="bg-zd-gray2 text-zd-white text-center py-2 px-4 border border-zd-gray whitespace-nowrap">
-              Metal
-            </th>
+            <th className={`${headerCellStyle} text-center`}>Lite</th>
+            <th className={`${headerCellStyle} text-center`}>Nuts</th>
+            <th className={`${headerCellStyle} text-center`}>Dual</th>
+            <th className={`${headerCellStyle} text-center`}>Metal</th>
           </tr>
         </thead>
         <tbody>
-          {priceData.map((row, index) => (
-            <tr key={row.model}>
-              <td
-                className={`${
-                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
-                } text-zd-white text-left py-2 px-4 border border-zd-gray font-medium whitespace-nowrap`}
-              >
-                {row.model}
-              </td>
-              <td
-                className={`${
-                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
-                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
-              >
-                {row.lite}
-              </td>
-              <td
-                className={`${
-                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
-                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
-              >
-                {row.nuts}
-              </td>
-              <td
-                className={`${
-                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
-                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
-              >
-                {row.dual}
-              </td>
-              <td
-                className={`${
-                  index % 2 === 0 ? 'bg-zd-gray2' : 'bg-zd-black'
-                } text-zd-white text-right py-2 px-4 border border-zd-gray whitespace-nowrap`}
-              >
-                {row.metal}
-              </td>
-            </tr>
-          ))}
+          {priceData.map((row, index) => {
+            const rowBg = index % 2 === 0 ? bgEvenRow : bgOddRow;
+            const bodyCellStyle = `${rowBg} ${baseCellStyle}`;
+
+            return (
+              <tr key={row.model}>
+                <td className={`${bodyCellStyle} text-left font-medium`}>{row.model}</td>
+                <td className={`${bodyCellStyle} text-right`}>{row.lite}</td>
+                <td className={`${bodyCellStyle} text-right`}>{row.nuts}</td>
+                <td className={`${bodyCellStyle} text-right`}>{row.dual}</td>
+                <td className={`${bodyCellStyle} text-right`}>{row.metal}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
