@@ -5,5 +5,14 @@ interface OLProps {
 }
 
 export function OL({ children }: OLProps) {
-  return <ol className="mb-vgap-sm ml-hgap-sm list-decimal space-y-2 text-white">{children}</ol>;
+  return (
+    <ol
+      className={`
+        list-decimal ml-[1.9em] pb-vgap-md
+        [&_li]:pt-vgap-xs
+      `}
+    >
+      {children}
+    </ol>
+  );
 }
