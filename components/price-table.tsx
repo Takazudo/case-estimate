@@ -19,7 +19,8 @@ export function PriceTable() {
   const bgOddRow = 'bg-zd-black';
 
   // Common cell styles
-  const baseCellStyle = 'text-zd-white py-2 px-4 border border-zd-gray whitespace-nowrap';
+  const baseCellStyle =
+    'text-zd-white py-vgap-xs px-hgap-sm border border-zd-gray whitespace-nowrap';
   const headerCellStyle = `${bgHeader} ${baseCellStyle}`;
 
   return (
