@@ -12,6 +12,7 @@ import { Table, TH, TD } from './components/article/table';
 import { Blockquote } from './components/article/blockquote';
 import { Code, Pre } from './components/article/code';
 import { HR } from './components/article/hr';
+import { Strong } from './components/article/strong';
 
 // This file is required for MDX support in Next.js App Router
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -23,6 +24,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Text
     p: P,
     a: A,
+    strong: Strong,
     // Lists
     ul: UL,
     ol: OL,
