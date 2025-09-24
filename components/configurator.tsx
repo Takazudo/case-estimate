@@ -108,6 +108,26 @@ function Configurator() {
     const initialState = getInitialStateFromUrl();
     setSelectedCase(initialState.selectedCase);
     setPanelColors(initialState.panelColors);
+
+    // Reconstruct color IDs from the panel colors
+    if (initialState.selectedCase && initialState.panelColors) {
+      const caseData = cases[initialState.selectedCase];
+      if (caseData && caseData.material) {
+        const availableColors = colors[caseData.material];
+        const colorIds: PanelColorIds = {};
+
+        Object.entries(initialState.panelColors).forEach(([panelId, colorValue]) => {
+          // Find the color ID that matches this value
+          // Note: If multiple colors have the same value, this will pick the first one
+          const matchingColor = availableColors?.find((c) => c.value === colorValue);
+          if (matchingColor) {
+            colorIds[panelId] = matchingColor.id;
+          }
+        });
+
+        setPanelColorIds(colorIds);
+      }
+    }
   }, []);
 
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -200,7 +220,7 @@ function Configurator() {
   };
 
   const isSeriesActive = (series: Series): boolean => {
-    return checkSeriesActive(series, panelColors, selectedCase, material);
+    return checkSeriesActive(series, panelColors, selectedCase, material, panelColorIds);
   };
 
   // Create color map for display
