@@ -5,5 +5,14 @@ interface ULProps {
 }
 
 export function UL({ children }: ULProps) {
-  return <ul className="mb-vgap-sm ml-hgap-sm list-disc space-y-2 text-white">{children}</ul>;
+  return (
+    <ul
+      className={`
+        list-disc ml-[1.5em] pb-vgap-md
+        [&_li]:pt-vgap-xs
+      `}
+    >
+      {children}
+    </ul>
+  );
 }

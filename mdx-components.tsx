@@ -8,7 +8,6 @@ import { P } from './components/article/p';
 import { A } from './components/article/a';
 import { UL } from './components/article/ul';
 import { OL } from './components/article/ol';
-import { LI } from './components/article/li';
 import { Table, TH, TD } from './components/article/table';
 import { Blockquote } from './components/article/blockquote';
 import { Code, Pre } from './components/article/code';
@@ -27,7 +26,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Lists
     ul: UL,
     ol: OL,
-    li: LI,
     // Table
     table: Table,
     th: TH,
