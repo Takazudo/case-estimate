@@ -3,7 +3,7 @@ import ModulesPage from '@/components/modules-page';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Module Library | Takazudo Modular Case Estimate',
+  title: 'Module Library | Takazudo Modular: Panels',
   description:
     'Browse Takazudo Modular UI modules and component patterns preserved for future reference.',
 };

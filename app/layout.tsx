@@ -8,7 +8,7 @@ import { NavigationProvider } from '@/components/navigation-context';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Takazudo Modular Case Estimate',
+  title: 'Takazudo Modular: Panels',
   description:
     'Interactive tool for customizing Takazudo Modular synthesizer cases with real-time price estimates',
 };

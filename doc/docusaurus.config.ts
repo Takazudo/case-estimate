@@ -3,12 +3,12 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Case Estimate Documentation',
+  title: 'Takazudo Modular: Panels Documentation',
   tagline: 'Technical documentation and development notes',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://case-estimate.netlify.app',
+  url: 'https://panels.takazudomodular.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/doc/',
 
