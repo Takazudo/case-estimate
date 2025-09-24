@@ -33,10 +33,7 @@ export default function CaseGrid({ items, className }: CaseGridProps) {
     <GridImages
       items={items}
       onItemClick={handleCaseSelect}
-      className={`
-        pt-vgap-sm pb-vgap-lg
-        ${className}
-      `}
+      className={`pt-vgap-sm pb-vgap-lg${className ? ` ${className}` : ''}`}
     />
   );
 }
