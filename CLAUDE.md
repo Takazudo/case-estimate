@@ -1,4 +1,4 @@
-# Takazudo Modular Case Estimate App
+# Takazudo Modular: Panels
 
 ## GitHub Integration
 
