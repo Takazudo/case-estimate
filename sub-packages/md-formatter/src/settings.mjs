@@ -32,7 +32,7 @@ export const formatterSettings = {
 
   // Rule 4: Convert single-line JSX with multiple props to multi-line format
   expandSingleLineJsx: {
-    enabled: false, // disabled until inline JSX content-loss bug is fixed
+    enabled: true, // disabled until inline JSX content-loss bug is fixed
     description: 'Expand single-line JSX components with multiple props to multi-line',
     propsThreshold: 2, // Expand if this many props or more
     // Also respects ignoreComponents from formatMultiLineJsx
