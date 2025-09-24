@@ -12,7 +12,7 @@ export function A({ href, children }: AProps) {
   // Internal links
   if (href.startsWith('/') || href.startsWith('#')) {
     return (
-      <Link href={href} className="text-blue-400 hover:text-blue-300 underline">
+      <Link href={href} className="zd-invert-color-link">
         {children}
       </Link>
     );
@@ -20,12 +20,7 @@ export function A({ href, children }: AProps) {
 
   // External links
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-400 hover:text-blue-300 underline"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className="zd-invert-color-link">
       {children}
     </a>
   );

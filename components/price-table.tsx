@@ -15,69 +15,68 @@ const priceData = [
 export function PriceTable() {
   // Define className variables for background colors
   const bgHeader = 'bg-zd-gray2';
-  const bgEvenRow = 'bg-zd-gray2';
-  const bgOddRow = 'bg-zd-black';
+  const bgEvenRow = 'bg-zd-black';
+  const bgOddRow = 'bg-zd-gray2';
 
   // Base styles
   const baseCellStyle = 'border border-zd-gray whitespace-nowrap';
+  const basePadding = 'py-vgap-sm px-hgap-sm';
 
   // Header cell style group
   const headerCellStyle = {
-    base: `${bgHeader} ${baseCellStyle} py-vgap-sm px-hgap-sm text-lg`,
-    center: `${bgHeader} ${baseCellStyle} text-center py-vgap-md px-hgap-sm text-xl`,
+    center: `${bgHeader} ${baseCellStyle} py-vgap-md px-hgap-sm text-center text-xl`,
   };
 
-  // Body cell style group
+  // Body cell style group helper
+  const createBodyStyles = (bg: string) => ({
+    base: `${bg} ${baseCellStyle} ${basePadding}`,
+    left: `${bg} ${baseCellStyle} ${basePadding} text-left`,
+    right: `${bg} ${baseCellStyle} ${basePadding} text-right`,
+    modelCell: `${bg} ${baseCellStyle} ${basePadding} text-left font-medium`,
+  });
+
   const bodyCellStyle = {
-    even: {
-      base: `${bgEvenRow} ${baseCellStyle} py-vgap-sm px-hgap-sm`,
-      left: `${bgEvenRow} ${baseCellStyle} text-left py-vgap-sm px-hgap-sm`,
-      right: `${bgEvenRow} ${baseCellStyle} text-right py-vgap-sm px-hgap-sm`,
-      modelCell: `${bgEvenRow} ${baseCellStyle} text-left font-medium py-vgap-sm px-hgap-sm`,
-    },
-    odd: {
-      base: `${bgOddRow} ${baseCellStyle} py-vgap-sm px-hgap-sm`,
-      left: `${bgOddRow} ${baseCellStyle} text-left py-vgap-sm px-hgap-sm`,
-      right: `${bgOddRow} ${baseCellStyle} text-right py-vgap-sm px-hgap-sm`,
-      modelCell: `${bgOddRow} ${baseCellStyle} text-left font-medium py-vgap-sm px-hgap-sm`,
-    },
+    even: createBodyStyles(bgEvenRow),
+    odd: createBodyStyles(bgOddRow),
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse">
-        <thead>
-          <tr>
-            <th rowSpan={2} className={headerCellStyle.center}>
-              ケースのモデル
-            </th>
-            <th colSpan={4} className={`${headerCellStyle.center} border-b-0`}>
-              レールの種類
-            </th>
-          </tr>
-          <tr>
-            <th className={headerCellStyle.center}>Lite</th>
-            <th className={headerCellStyle.center}>Nuts</th>
-            <th className={headerCellStyle.center}>Dual</th>
-            <th className={headerCellStyle.center}>Metal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {priceData.map((row, index) => {
-            const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
+    <div className="pb-vgap-lg">
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr>
+              <th rowSpan={2} className={headerCellStyle.center}>
+                ケースのモデル
+              </th>
+              <th colSpan={4} className={`${headerCellStyle.center} border-b-0`}>
+                レールの種類
+              </th>
+            </tr>
+            <tr>
+              <th className={headerCellStyle.center}>Lite</th>
+              <th className={headerCellStyle.center}>Nuts</th>
+              <th className={headerCellStyle.center}>Dual</th>
+              <th className={headerCellStyle.center}>Metal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {priceData.map((row, index) => {
+              const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
 
-            return (
-              <tr key={row.model}>
-                <td className={styles.modelCell}>{row.model}</td>
-                <td className={styles.right}>{row.lite}</td>
-                <td className={styles.right}>{row.nuts}</td>
-                <td className={styles.right}>{row.dual}</td>
-                <td className={styles.right}>{row.metal}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr key={row.model}>
+                  <td className={styles.modelCell}>{row.model}</td>
+                  <td className={styles.right}>{row.lite}</td>
+                  <td className={styles.right}>{row.nuts}</td>
+                  <td className={styles.right}>{row.dual}</td>
+                  <td className={styles.right}>{row.metal}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
