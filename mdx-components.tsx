@@ -13,6 +13,7 @@ import { Blockquote } from './components/article/blockquote';
 import { Code, Pre } from './components/article/code';
 import { HR } from './components/article/hr';
 import { Strong } from './components/article/strong';
+import { ImgFloatRight } from './components/article/img-float-right';
 
 // This file is required for MDX support in Next.js App Router
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -37,6 +38,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     code: Code,
     pre: Pre,
     hr: HR,
+    // Custom components
+    ImgFloatRight,
     // Pass through any additional components
     ...components,
   };
