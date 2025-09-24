@@ -33,7 +33,7 @@ const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, clas
   return (
     <>
       <div
-        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-hgap-sm gap-y-vgap-md ${className}`}
+        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-hgap-sm gap-y-vgap-md pt-vgap-sm pb-vgap-lg ${className}`}
       >
         {items.map((item, index) => (
           <dl key={index}>

@@ -7,7 +7,13 @@ interface H1Props {
 
 export function H1({ children, id }: H1Props) {
   return (
-    <h1 id={id} className="text-3xl font-bold text-white text-center mb-vgap-md">
+    <h1
+      id={id}
+      className={`
+        text-3xl font-bold text-white text-center
+        mb-vgap-xl
+      `}
+    >
       {children}
     </h1>
   );

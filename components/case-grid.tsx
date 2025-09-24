@@ -29,5 +29,14 @@ export default function CaseGrid({ items, className }: CaseGridProps) {
     router.push(`/m/?c=${encodedCase}`);
   };
 
-  return <GridImages items={items} onItemClick={handleCaseSelect} className={className} />;
+  return (
+    <GridImages
+      items={items}
+      onItemClick={handleCaseSelect}
+      className={`
+        pt-vgap-sm pb-vgap-lg
+        ${className}
+      `}
+    />
+  );
 }
