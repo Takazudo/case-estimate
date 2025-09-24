@@ -21,7 +21,7 @@ function NavItem({ href, label }: NavItemProps) {
   return (
     <NavigationLink
       href={href}
-      className="flex items-center text-sm transition-colors px-[5px] py-[3px] rounded-sm group zd-invert-color-link"
+      className="flex items-center text-sm text-zd-white transition-colors px-[5px] py-[3px] rounded-sm group zd-invert-color-link"
       activeClassName="pointer-events-none hover:text-zd-white hover:bg-transparent no-underline"
     >
       <ArrowRight className="w-[18px] mr-[7px] group-hover:text-zd-black relative bottom-[-2px]" />
@@ -65,7 +65,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* Logo */}
             <NavigationLink
               href="/"
-              className="text-base md:text-xl flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
+              className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
               activeClassName="pointer-events-none opacity-100 hover:opacity-100"
             >
               <TakazudoLogo className="w-[50px] h-[50px]" />
@@ -83,7 +83,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
               {/* CTA Button - Desktop */}
               <NavigationLink
                 href="/m"
-                className="hidden md:inline-block px-hgap-sm py-vgap-xs rounded text-sm md:text-base whitespace-nowrap zd-button-gradient no-underline"
+                className="hidden md:inline-block px-hgap-sm py-vgap-xs rounded text-sm md:text-base text-zd-white whitespace-nowrap zd-button-gradient no-underline"
                 activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
               >
                 ケースを作る
