@@ -18,42 +18,61 @@ export function PriceTable() {
   const bgEvenRow = 'bg-zd-gray2';
   const bgOddRow = 'bg-zd-black';
 
-  // Common cell styles
-  const baseCellStyle =
-    'text-zd-white py-vgap-xs px-hgap-sm border border-zd-gray whitespace-nowrap';
-  const headerCellStyle = `${bgHeader} ${baseCellStyle}`;
+  // Base styles
+  const baseCellStyle = 'border border-zd-gray whitespace-nowrap';
+
+  // Header cell style group
+  const headerCellStyle = {
+    base: `${bgHeader} ${baseCellStyle} py-vgap-sm px-hgap-sm text-lg`,
+    center: `${bgHeader} ${baseCellStyle} text-center py-vgap-md px-hgap-sm text-xl`,
+  };
+
+  // Body cell style group
+  const bodyCellStyle = {
+    even: {
+      base: `${bgEvenRow} ${baseCellStyle} py-vgap-sm px-hgap-sm`,
+      left: `${bgEvenRow} ${baseCellStyle} text-left py-vgap-sm px-hgap-sm`,
+      right: `${bgEvenRow} ${baseCellStyle} text-right py-vgap-sm px-hgap-sm`,
+      modelCell: `${bgEvenRow} ${baseCellStyle} text-left font-medium py-vgap-sm px-hgap-sm`,
+    },
+    odd: {
+      base: `${bgOddRow} ${baseCellStyle} py-vgap-sm px-hgap-sm`,
+      left: `${bgOddRow} ${baseCellStyle} text-left py-vgap-sm px-hgap-sm`,
+      right: `${bgOddRow} ${baseCellStyle} text-right py-vgap-sm px-hgap-sm`,
+      modelCell: `${bgOddRow} ${baseCellStyle} text-left font-medium py-vgap-sm px-hgap-sm`,
+    },
+  };
 
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th rowSpan={2} className={`${headerCellStyle} text-center`}>
+            <th rowSpan={2} className={headerCellStyle.center}>
               ケースのモデル
             </th>
-            <th colSpan={4} className={`${headerCellStyle} text-center`}>
+            <th colSpan={4} className={`${headerCellStyle.center} border-b-0`}>
               レールの種類
             </th>
           </tr>
           <tr>
-            <th className={`${headerCellStyle} text-center`}>Lite</th>
-            <th className={`${headerCellStyle} text-center`}>Nuts</th>
-            <th className={`${headerCellStyle} text-center`}>Dual</th>
-            <th className={`${headerCellStyle} text-center`}>Metal</th>
+            <th className={headerCellStyle.center}>Lite</th>
+            <th className={headerCellStyle.center}>Nuts</th>
+            <th className={headerCellStyle.center}>Dual</th>
+            <th className={headerCellStyle.center}>Metal</th>
           </tr>
         </thead>
         <tbody>
           {priceData.map((row, index) => {
-            const rowBg = index % 2 === 0 ? bgEvenRow : bgOddRow;
-            const bodyCellStyle = `${rowBg} ${baseCellStyle}`;
+            const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
 
             return (
               <tr key={row.model}>
-                <td className={`${bodyCellStyle} text-left font-medium`}>{row.model}</td>
-                <td className={`${bodyCellStyle} text-right`}>{row.lite}</td>
-                <td className={`${bodyCellStyle} text-right`}>{row.nuts}</td>
-                <td className={`${bodyCellStyle} text-right`}>{row.dual}</td>
-                <td className={`${bodyCellStyle} text-right`}>{row.metal}</td>
+                <td className={styles.modelCell}>{row.model}</td>
+                <td className={styles.right}>{row.lite}</td>
+                <td className={styles.right}>{row.nuts}</td>
+                <td className={styles.right}>{row.dual}</td>
+                <td className={styles.right}>{row.metal}</td>
               </tr>
             );
           })}
