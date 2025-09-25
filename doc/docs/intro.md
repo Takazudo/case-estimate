@@ -3,9 +3,9 @@ slug: /
 title: Documentation Home
 ---
 
-# Case Estimate Documentation
+# Takazudo Modular: Panels Documentation
 
-Welcome to the Case Estimate documentation site.
+Welcome to the Takazudo Modular: Panels documentation site.
 
 ## Quick Links
 
@@ -13,6 +13,6 @@ Welcome to the Case Estimate documentation site.
 
 ## About
 
-This documentation site contains technical documentation for the Case Estimate application - an interactive web tool for customizing Takazudo Modular synthesizer cases.
+This documentation site contains technical documentation for Takazudo Modular: Panels - an interactive web tool for customizing Takazudo Modular synthesizer cases.
 
 For more information, explore the documentation in the sidebar.

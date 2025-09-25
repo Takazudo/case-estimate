@@ -1,15 +1,15 @@
 ---
 title: Welcome
-description: Case Estimate Documentation
+description: "Takazudo Modular: Panels Documentation"
 ---
 
-# Welcome to Case Estimate Documentation
+# Welcome to Takazudo Modular: Panels Documentation
 
-This is the documentation site for the **Case Estimate** application - an interactive web tool for customizing Takazudo Modular synthesizer cases.
+This is the documentation site for **Takazudo Modular: Panels** - an interactive web tool for customizing Takazudo Modular synthesizer cases.
 
-## About Case Estimate
+## About Takazudo Modular: Panels
 
-Case Estimate is an interactive web application that allows users to:
+Takazudo Modular: Panels is an interactive web application that allows users to:
 
 - Select different case models (Zudo Block 40/60)
 - Customize panel colors

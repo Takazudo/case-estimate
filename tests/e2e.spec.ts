@@ -115,8 +115,8 @@ test.describe('Smoke Test', () => {
     await expect(page.locator('svg').first()).toBeVisible();
 
     // Check that tab buttons are visible
-    await expect(page.getByRole('button', { name: 'Series' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Custom' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'シリーズ' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'カスタム' })).toBeVisible();
   });
 
   test('should switch between different case models', async ({ page }) => {

@@ -170,6 +170,7 @@ export const isSeriesActive = (
   panelColors: PanelColors,
   caseType: string | null,
   material: 'acrylic' | '3dp' | undefined,
+  panelColorIds?: { [key: string]: string },
 ): boolean => {
   if (!caseType || !material) return false;
 
@@ -180,50 +181,118 @@ export const isSeriesActive = (
   const is10BoxModel = caseType === '10box-3dp';
 
   for (const panel of caseData.panels) {
-    const expectedColor = series.colors.all
-      ? colors[material].find((c: Color) => c.id === series.colors.all)?.value
-      : (() => {
-          // 10BOX only supports YamiKage (all black)
-          if (is10BoxModel) {
-            return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
-          }
-
-          let isPrimary: boolean;
-
-          if (isX2Model) {
-            // For x2 models (12 panels)
-            if (panel.id.startsWith('side')) {
-              isPrimary = true;
-            } else if (
-              panel.id === 'back1' ||
-              panel.id === 'bottom1' ||
-              panel.id === 'bottom3' ||
-              panel.id === 'front1'
-            ) {
-              isPrimary = true;
-            } else {
-              isPrimary = false;
+    // If we have color IDs, use those for comparison (more accurate)
+    if (panelColorIds && panelColorIds[panel.id]) {
+      const actualColorId = panelColorIds[panel.id];
+      const expectedColorId = series.colors.all
+        ? series.colors.all
+        : (() => {
+            // 10BOX only supports YamiKage (all black)
+            if (is10BoxModel) {
+              return 'carbon-black';
             }
-          } else {
-            // For regular models (8 panels)
-            isPrimary =
-              panel.id === 'side1' ||
-              panel.id === 'side2' ||
-              panel.id === 'front1' ||
-              panel.id === 'bottom1' ||
-              panel.id === 'back1';
-          }
 
-          const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
-          return colors[material].find((c: Color) => c.id === colorId)?.value;
-        })();
+            let isPrimary: boolean;
 
-    if (panelColors[panel.id] !== expectedColor) {
-      return false;
+            if (isX2Model) {
+              // For x2 models (12 panels)
+              if (panel.id.startsWith('side')) {
+                isPrimary = true;
+              } else if (
+                panel.id === 'back1' ||
+                panel.id === 'bottom1' ||
+                panel.id === 'bottom3' ||
+                panel.id === 'front1'
+              ) {
+                isPrimary = true;
+              } else {
+                isPrimary = false;
+              }
+            } else {
+              // For regular models (8 panels)
+              isPrimary =
+                panel.id === 'side1' ||
+                panel.id === 'side2' ||
+                panel.id === 'front1' ||
+                panel.id === 'bottom1' ||
+                panel.id === 'back1';
+            }
+
+            return isPrimary ? series.colors.primary : series.colors.secondary;
+          })();
+
+      if (actualColorId !== expectedColorId) {
+        return false;
+      }
+    } else {
+      // Fallback to value comparison if no color IDs available
+      const expectedColor = series.colors.all
+        ? colors[material].find((c: Color) => c.id === series.colors.all)?.value
+        : (() => {
+            // 10BOX only supports YamiKage (all black)
+            if (is10BoxModel) {
+              return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
+            }
+
+            let isPrimary: boolean;
+
+            if (isX2Model) {
+              // For x2 models (12 panels)
+              if (panel.id.startsWith('side')) {
+                isPrimary = true;
+              } else if (
+                panel.id === 'back1' ||
+                panel.id === 'bottom1' ||
+                panel.id === 'bottom3' ||
+                panel.id === 'front1'
+              ) {
+                isPrimary = true;
+              } else {
+                isPrimary = false;
+              }
+            } else {
+              // For regular models (8 panels)
+              isPrimary =
+                panel.id === 'side1' ||
+                panel.id === 'side2' ||
+                panel.id === 'front1' ||
+                panel.id === 'bottom1' ||
+                panel.id === 'back1';
+            }
+
+            const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
+            return colors[material].find((c: Color) => c.id === colorId)?.value;
+          })();
+
+      if (panelColors[panel.id] !== expectedColor) {
+        return false;
+      }
     }
   }
 
   return true;
+};
+
+// Derive panel colors (hex values) from color IDs for rendering
+export const derivePanelColors = (
+  panelColorIds: { [key: string]: string },
+  material: 'acrylic' | '3dp' | undefined,
+): PanelColors => {
+  if (!material) return {};
+
+  const panelColors: PanelColors = {};
+  const availableColors = colors[material];
+
+  if (!availableColors) return {};
+
+  Object.entries(panelColorIds).forEach(([panelId, colorId]) => {
+    const color = availableColors.find((c: Color) => c.id === colorId);
+    if (color) {
+      panelColors[panelId] = color.value;
+    }
+  });
+
+  return panelColors;
 };
 
 // Generate background pattern SVG

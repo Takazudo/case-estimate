@@ -70,7 +70,7 @@ export default function ControlsSidebar({
               tabs={[
                 {
                   id: 'series',
-                  label: 'Series',
+                  label: 'シリーズ',
                   content: (
                     <div className="space-y-vgap-sm pt-vgap-md">
                       {material && colors.series[material] && selectedCase && (
@@ -100,7 +100,7 @@ export default function ControlsSidebar({
                 },
                 {
                   id: 'custom',
-                  label: 'Custom',
+                  label: 'カスタム',
                   content: (
                     <div className="pt-vgap-md">
                       {/* Color preview bar at the top of custom tab */}

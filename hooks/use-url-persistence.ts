@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { encodeCase, encodePanelColors, createColorIdMap } from '@/utils/url-encoder';
-import { colors } from '@/data/colors';
+import { encodeCase, encodePanelColors } from '@/utils/url-encoder';
 
-interface PanelColors {
-  [key: string]: string;
+interface PanelColorIds {
+  [key: string]: string; // Maps panel ID to color ID
 }
 
 interface UseUrlPersistenceProps {
   selectedCase: string | null;
-  panelColors: PanelColors;
+  panelColorIds: PanelColorIds; // Now accepts color IDs instead of hex values
 }
 
-export function useUrlPersistence({ selectedCase, panelColors }: UseUrlPersistenceProps) {
+export function useUrlPersistence({ selectedCase, panelColorIds }: UseUrlPersistenceProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,9 +27,9 @@ export function useUrlPersistence({ selectedCase, panelColors }: UseUrlPersisten
     if (selectedCase) {
       params.set('c', encodeCase(selectedCase));
 
-      if (Object.keys(panelColors).length > 0) {
-        const colorIdMap = createColorIdMap(colors);
-        const encoded = encodePanelColors(panelColors, colorIdMap);
+      if (Object.keys(panelColorIds).length > 0) {
+        // Now directly encode color IDs, no need for conversion
+        const encoded = encodePanelColors(panelColorIds);
         if (encoded) {
           params.set('p', encoded);
         }
@@ -39,5 +38,5 @@ export function useUrlPersistence({ selectedCase, panelColors }: UseUrlPersisten
 
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
     router.replace(newUrl, { scroll: false });
-  }, [selectedCase, panelColors, router, pathname]);
+  }, [selectedCase, panelColorIds, router, pathname]);
 }

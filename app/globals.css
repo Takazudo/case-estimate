@@ -9,6 +9,7 @@
   --zd-color-active: #713f12;
   --zd-color-gray: #78716c;
   --zd-color-gray2: #201f1f;
+  --zd-color-strong: #d97706;
   --zd-color-notify: #22c55e;
   --zd-color-error: #f43f5e;
   --zd-color-price: #fbbf24;
@@ -96,6 +97,7 @@
   --color-zd-active: var(--zd-color-active);
   --color-zd-gray: var(--zd-color-gray);
   --color-zd-gray2: var(--zd-color-gray2);
+  --color-zd-strong: var(--zd-color-strong);
   --color-zd-notify: var(--zd-color-notify);
   --color-zd-error: var(--zd-color-error);
   --color-zd-price: var(--zd-color-price);
@@ -260,11 +262,11 @@
 
   /* Links */
   a {
-    @apply underline;
+    @apply underline text-zd-link;
   }
   a:focus,
   a:active {
-    @apply outline-2 outline-orange-600 rounded-xs;
+    @apply outline-2 outline-orange-600 rounded-xs text-zd-active;
   }
   a:active {
     @apply text-zd-black bg-zd-active;

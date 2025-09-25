@@ -61,7 +61,7 @@ const GridImagesAndNotes: React.FC<GridImagesAndNotesProps> = ({ items, classNam
                     loading="lazy"
                   />
                 )}
-                <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-60 group-hover:opacity-80 transition-opacity">
+                <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-100 z-20">
                   <img src="/enlarge.svg" alt="Enlarge" className="w-5 h-5 brightness-0 invert" />
                 </div>
               </button>

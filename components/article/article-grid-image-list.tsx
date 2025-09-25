@@ -33,7 +33,7 @@ const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, clas
   return (
     <>
       <div
-        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-hgap-sm gap-y-vgap-md ${className}`}
+        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-hgap-sm gap-y-vgap-md pt-vgap-sm pb-vgap-lg ${className}`}
       >
         {items.map((item, index) => (
           <dl key={index}>
@@ -66,7 +66,7 @@ const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, clas
                     loading="lazy"
                   />
                 )}
-                <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-60 group-hover:opacity-80 transition-opacity">
+                <div className="absolute top-2 right-2 p-1 bg-black bg-opacity-20 rounded opacity-100 z-20">
                   <img src="/enlarge.svg" alt="Enlarge" className="w-5 h-5 brightness-0 invert" />
                 </div>
               </button>
