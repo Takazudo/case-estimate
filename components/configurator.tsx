@@ -155,6 +155,22 @@ function Configurator() {
     }
   }, [selectedPanel, material, panelColorIds]);
 
+  // Ensure the Custom tab is active when the current colors don't match any preset series
+  useEffect(() => {
+    if (!selectedCase || !material) return;
+    if (activeTab !== 'series') return;
+    if (Object.keys(panelColorIds).length === 0) return;
+
+    const seriesList = colors.series[material] ?? [];
+    const matchesPreset = seriesList.some((series) =>
+      checkSeriesActive(series, panelColors, selectedCase, material, panelColorIds),
+    );
+
+    if (!matchesPreset) {
+      setActiveTab('custom');
+    }
+  }, [selectedCase, material, panelColors, panelColorIds, activeTab]);
+
   // Handle URL persistence for client-side state (only updates URL when state changes)
   useUrlPersistence({
     selectedCase,
