@@ -144,8 +144,10 @@ const COLOR_MAP: { [key: string]: string } = {
   'deep-yellow': 'dy',
   'gold-yellow': 'gy',
   'clear-blue': 'bl',
-  'clear-red': 'rd',
+  'clear-red': 'rd', // Distinct from crimson-red (cr)
   'bone-white': 'bw',
+  'wood-white': 'ww', // Added wood-white
+  'indigo-blue': 'ib', // Added indigo-blue
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
@@ -153,16 +155,14 @@ const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).r
   {},
 );
 
-// Encode panel colors to a compact string
+// Encode panel colors to a compact string (now accepts color IDs directly)
 export function encodePanelColors(
-  panelColors: { [key: string]: string },
-  colorIdMap: { [colorValue: string]: string },
+  panelColorIds: { [key: string]: string }, // Now accepts color IDs instead of hex values
 ): string {
   const encoded: string[] = [];
 
-  Object.entries(panelColors).forEach(([panelId, colorValue]) => {
+  Object.entries(panelColorIds).forEach(([panelId, colorId]) => {
     const panelCode = PANEL_MAP[panelId];
-    const colorId = colorIdMap[colorValue];
     const colorCode = COLOR_MAP[colorId];
 
     if (panelCode && colorCode) {
@@ -173,14 +173,12 @@ export function encodePanelColors(
   return encoded.join('.');
 }
 
-// Decode panel colors from compact string
-export function decodePanelColors(
-  encoded: string,
-  colorValueMap: { [colorId: string]: string },
-): { [key: string]: string } {
+// Decode panel colors from compact string (now returns color IDs directly)
+export function decodePanelColors(encoded: string): { [key: string]: string } {
+  // Returns color IDs instead of hex values
   if (!encoded) return {};
 
-  const panelColors: { [key: string]: string } = {};
+  const panelColorIds: { [key: string]: string } = {};
   const parts = encoded.split('.');
 
   parts.forEach((part) => {
@@ -200,15 +198,14 @@ export function decodePanelColors(
       // Extract color code (remaining chars after panel code)
       const colorCode = part.slice(panelCodeLength);
       const colorId = COLOR_REVERSE_MAP[colorCode];
-      const colorValue = colorValueMap[colorId];
 
-      if (colorValue) {
-        panelColors[panelId] = colorValue;
+      if (colorId) {
+        panelColorIds[panelId] = colorId;
       }
     }
   });
 
-  return panelColors;
+  return panelColorIds;
 }
 
 // Encode case type

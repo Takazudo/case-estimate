@@ -273,6 +273,28 @@ export const isSeriesActive = (
   return true;
 };
 
+// Derive panel colors (hex values) from color IDs for rendering
+export const derivePanelColors = (
+  panelColorIds: { [key: string]: string },
+  material: 'acrylic' | '3dp' | undefined,
+): PanelColors => {
+  if (!material) return {};
+
+  const panelColors: PanelColors = {};
+  const availableColors = colors[material];
+
+  if (!availableColors) return {};
+
+  Object.entries(panelColorIds).forEach(([panelId, colorId]) => {
+    const color = availableColors.find((c: Color) => c.id === colorId);
+    if (color) {
+      panelColors[panelId] = color.value;
+    }
+  });
+
+  return panelColors;
+};
+
 // Generate background pattern SVG
 export const generateBackgroundPattern = (bgColor: string, gridColor: string): string => {
   const svg = `
