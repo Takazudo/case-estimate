@@ -144,10 +144,10 @@ const COLOR_MAP: { [key: string]: string } = {
   'deep-yellow': 'dy',
   'gold-yellow': 'gy',
   'clear-blue': 'bl',
-  'clear-red': 'rd', // Distinct from crimson-red (cr)
+  'clear-red': 'rd',
   'bone-white': 'bw',
-  'wood-white': 'ww', // Added wood-white
-  'indigo-blue': 'ib', // Added indigo-blue
+  'wood-white': 'ww',
+  'indigo-blue': 'ib',
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
@@ -175,7 +175,6 @@ export function encodePanelColors(
 
 // Decode panel colors from compact string (now returns color IDs directly)
 export function decodePanelColors(encoded: string): { [key: string]: string } {
-  // Returns color IDs instead of hex values
   if (!encoded) return {};
 
   const panelColorIds: { [key: string]: string } = {};

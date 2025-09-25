@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Series } from '@/types';
@@ -123,7 +123,10 @@ function Configurator() {
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const material = currentCase?.material;
-  const panelColors = derivePanelColors(panelColorIds, material);
+  const panelColors = useMemo(
+    () => derivePanelColors(panelColorIds, material),
+    [panelColorIds, material],
+  );
 
   // Use localStorage hooks for background colors
   const [bgColor, setBgColor] = useLocalStorageColor(
