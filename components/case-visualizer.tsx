@@ -218,7 +218,9 @@ const CaseVisualizer = ({
           }
 
           // Add pattern definitions
-          addPatternsToSvg(svg);
+          if (svg) {
+            addPatternsToSvg(svg);
+          }
 
           setSvgLoaded(true);
           onLoadingChange?.(false);
