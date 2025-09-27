@@ -35,6 +35,41 @@ const PanelSelector = ({
   const selectedColorValue = selectedPanel ? panelColors[selectedPanel] : undefined;
   const selectedColorName = selectedColorValue ? colorMap[selectedColorValue] : 'Default';
 
+  // Helper to render color swatch (handle patterns)
+  const renderColorSwatch = (colorValue: string | undefined, panelId: string) => {
+    const color = colorValue || '#f3f4f6';
+    const isPattern = color.startsWith('pattern-');
+
+    if (isPattern && color === 'pattern-red-green-stripe') {
+      return (
+        <div className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs overflow-hidden relative">
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 20 20">
+            <defs>
+              <pattern
+                id={`selector-stripe-${panelId}`}
+                patternUnits="userSpaceOnUse"
+                width="6"
+                height="6"
+                patternTransform="rotate(45)"
+              >
+                <rect width="6" height="6" fill="#a4534a" />
+                <rect x="0" y="0" width="3" height="6" fill="#7bc97d" />
+              </pattern>
+            </defs>
+            <rect width="20" height="20" fill={`url(#selector-stripe-${panelId})`} />
+          </svg>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+        style={{ backgroundColor: color }}
+      />
+    );
+  };
+
   // Track panel changes separately from color changes
   useEffect(() => {
     if (selectedPanel !== prevSelectedPanel) {
@@ -76,10 +111,7 @@ const PanelSelector = ({
                       animation: 'quickFadeIn 200ms ease-out',
                     }}
                   >
-                    <div
-                      className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-                      style={{ backgroundColor: selectedColorValue || '#f3f4f6' }}
-                    />
+                    {renderColorSwatch(selectedColorValue, selectedPanel || 'selected')}
                     <span className="text-zd-gray">{selectedColorName}</span>
                   </div>
                 </div>
@@ -121,10 +153,7 @@ const PanelSelector = ({
                             {panel.name}
                           </span>
                           <div className="flex items-center">
-                            <div
-                              className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-                              style={{ backgroundColor: colorValue || '#f3f4f6' }}
-                            />
+                            {renderColorSwatch(colorValue, panel.id)}
                             <span className="text-zd-gray">{colorName}</span>
                           </div>
                         </div>
