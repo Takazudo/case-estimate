@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Series } from '@/types';
@@ -119,7 +119,7 @@ function Configurator() {
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
-  const [isUserTabChange, setIsUserTabChange] = useState(false);
+  const isUserTabChangeRef = useRef(false);
 
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -177,8 +177,6 @@ function Configurator() {
         }
       }
     }
-
-    setIsUserTabChange(false); // Initial load is not user-initiated
   }, []);
 
   // Sync selectedColor when selectedPanel changes (e.g., from panel selector dropdown)
@@ -199,8 +197,8 @@ function Configurator() {
     if (Object.keys(panelColorIds).length === 0) return;
 
     // Don't auto-switch if this was a user-initiated tab change
-    if (isUserTabChange) {
-      setIsUserTabChange(false); // Reset the flag
+    if (isUserTabChangeRef.current) {
+      isUserTabChangeRef.current = false; // Skip one cycle for manual switches
       return;
     }
 
@@ -212,7 +210,7 @@ function Configurator() {
     if (!matchesPreset) {
       setActiveTab('custom');
     }
-  }, [selectedCase, material, panelColors, panelColorIds, activeTab, isUserTabChange]);
+  }, [selectedCase, material, panelColors, panelColorIds, activeTab]);
 
   // Handle URL persistence for client-side state (only updates URL when state changes)
   useUrlPersistence({
@@ -223,7 +221,7 @@ function Configurator() {
   const handlePanelClick = (panelId: string) => {
     // If in Series tab, switch to Custom tab when a panel is clicked
     if (activeTab === 'series') {
-      setIsUserTabChange(true); // Panel click is user-initiated
+      isUserTabChangeRef.current = true; // Panel click is user-initiated
       setActiveTab('custom');
     }
 
@@ -249,7 +247,7 @@ function Configurator() {
   };
 
   const handleTabChange = (tabId: string) => {
-    setIsUserTabChange(true); // Mark as user-initiated
+    isUserTabChangeRef.current = true; // Mark as user-initiated
     setActiveTab(tabId);
   };
 
@@ -259,7 +257,7 @@ function Configurator() {
     setSelectedCase(caseType);
     setSelectedPanel(null);
     setSelectedColor(null);
-    setIsUserTabChange(false); // Case change is not user tab change
+    isUserTabChangeRef.current = false; // Case change resets tab change origin
     setActiveTab('series');
 
     // Auto-select first series
