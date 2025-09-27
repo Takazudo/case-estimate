@@ -2,8 +2,7 @@
 
 import { colors } from '@/data/colors';
 import type { Color } from '@/types';
-import PatternFill from '@/components/pattern-fill';
-import { isPanelPattern, getPanelPatternFallbackColor } from '@/utils/panel-patterns';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 
 interface ColorPickerProps {
   material: 'acrylic' | '3dp';
@@ -15,28 +14,13 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
   const availableColors = colors[material] || [];
 
   // Render color thumbnail with pattern support
-  const renderColorThumbnail = (color: Color) => {
-    if (isPanelPattern(color.value)) {
-      const fallback = getPanelPatternFallbackColor(color.value);
-
-      return (
-        <span
-          className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0 overflow-hidden"
-          style={{ backgroundColor: fallback }}
-        >
-          <PatternFill pattern={color.value} className="w-full h-full" />
-        </span>
-      );
-    }
-
-    // Regular color
-    return (
-      <span
-        className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
-        style={{ backgroundColor: color.value }}
-      />
-    );
-  };
+  const renderColorThumbnail = (color: Color) => (
+    <PanelColorSwatch
+      value={color.value}
+      className="relative overflow-hidden w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
+      dataTestId="color-picker-swatch"
+    />
+  );
 
   return (
     <div className="space-y-vgap-xs">

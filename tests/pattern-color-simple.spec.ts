@@ -60,4 +60,48 @@ test.describe('Pattern Color URL Persistence', () => {
     expect(finalUrl).toContain('3rg');
     expect(finalUrl).toContain('2cb');
   });
+
+  test('renders pattern swatches with valid fallback backgrounds', async ({ page }) => {
+    await page.goto('/m?c=2a');
+    await page.waitForLoadState('networkidle');
+
+    const customTabButton = page.locator('button:has-text("カスタム")');
+    await customTabButton.click();
+
+    const previewButton = page.locator('button[aria-label="Select サイド1"]');
+    await previewButton.click();
+
+    const patternColorButton = page.locator('button:has-text("レッドグリーンシルク")').first();
+
+    const expectedColor = 'rgb(164, 83, 74)';
+
+    // First check the color picker swatch BEFORE clicking
+    const colorPickerSwatch = patternColorButton.locator('[data-testid="color-picker-swatch"]');
+    await expect(colorPickerSwatch).toBeVisible();
+    await expect
+      .poll(async () => colorPickerSwatch.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .toBe(expectedColor);
+    const colorPickerStyle = await colorPickerSwatch.getAttribute('style');
+    expect(colorPickerStyle ?? '').not.toContain('pattern-');
+
+    // Now click the pattern color button
+    await patternColorButton.click();
+
+    // After clicking, check the selector and preview swatches
+    const selectorSwatch = page.locator('[data-testid="panel-selector-swatch"]').first();
+    await expect(selectorSwatch).toBeVisible();
+    await expect
+      .poll(async () => selectorSwatch.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .toBe(expectedColor);
+    const selectorStyle = await selectorSwatch.getAttribute('style');
+    expect(selectorStyle ?? '').not.toContain('pattern-');
+
+    const previewSwatch = previewButton.locator('[data-testid="custom-preview-swatch"]');
+    await expect(previewSwatch).toBeVisible();
+    await expect
+      .poll(async () => previewSwatch.evaluate((el) => getComputedStyle(el).backgroundColor))
+      .toBe(expectedColor);
+    const previewStyle = await previewSwatch.getAttribute('style');
+    expect(previewStyle ?? '').not.toContain('pattern-');
+  });
 });

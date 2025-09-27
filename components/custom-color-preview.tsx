@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { cases } from '@/data/cases';
-import PatternFill from '@/components/pattern-fill';
-import { isPanelPattern, getPanelPatternFallbackColor } from '@/utils/panel-patterns';
+import PanelColorSwatch, { resolvePanelColorBackground } from '@/components/panel-color-swatch';
 
 interface CustomColorPreviewProps {
   caseType: string;
@@ -57,9 +56,8 @@ const CustomColorPreview = ({
       <div ref={containerRef} className="px-hgap-sm lg:px-hgap-md py-vgap-xs">
         <div className="flex">
           {currentCase.panels.map((panel) => {
-            const color = panelColors[panel.id] || '#1f2937';
-            const patternKey = isPanelPattern(color) ? color : null;
-            const backgroundColor = patternKey ? getPanelPatternFallbackColor(patternKey) : color;
+            const color = panelColors[panel.id];
+            const backgroundColor = resolvePanelColorBackground(color, '#1f2937');
 
             return (
               <button
@@ -79,9 +77,12 @@ const CustomColorPreview = ({
                 title={panel.name}
                 aria-label={`Select ${panel.name}`}
               >
-                {patternKey && (
-                  <PatternFill pattern={patternKey} className="absolute inset-0 w-full h-full" />
-                )}
+                <PanelColorSwatch
+                  value={color}
+                  fallbackColor="#1f2937"
+                  className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
+                  dataTestId="custom-preview-swatch"
+                />
               </button>
             );
           })}

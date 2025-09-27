@@ -10,8 +10,7 @@ import {
 } from '@headlessui/react';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import type { Panel } from '@/types';
-import PatternFill from '@/components/pattern-fill';
-import { isPanelPattern, getPanelPatternFallbackColor } from '@/utils/panel-patterns';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 
 interface PanelSelectorProps {
   panels: Panel[];
@@ -36,35 +35,6 @@ const PanelSelector = ({
   const selectedPanelObj = panels.find((p) => p.id === selectedPanel);
   const selectedColorValue = selectedPanel ? panelColors[selectedPanel] : undefined;
   const selectedColorName = selectedColorValue ? colorMap[selectedColorValue] : 'Default';
-
-  // Helper to render color swatch (handle patterns)
-  const renderColorSwatch = (colorValue: string | undefined) => {
-    const color = colorValue || '#f3f4f6';
-
-    if (isPanelPattern(color)) {
-      const fallback = getPanelPatternFallbackColor(color);
-
-      return (
-        <div
-          className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs overflow-hidden relative"
-          style={{ backgroundColor: fallback }}
-        >
-          <PatternFill
-            pattern={color}
-            className="absolute inset-0 w-full h-full"
-            viewBoxSize={20}
-          />
-        </div>
-      );
-    }
-
-    return (
-      <div
-        className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-        style={{ backgroundColor: color }}
-      />
-    );
-  };
 
   // Track panel changes separately from color changes
   useEffect(() => {
@@ -107,7 +77,13 @@ const PanelSelector = ({
                       animation: 'quickFadeIn 200ms ease-out',
                     }}
                   >
-                    {renderColorSwatch(selectedColorValue)}
+                    <PanelColorSwatch
+                      value={selectedColorValue}
+                      fallbackColor="#f3f4f6"
+                      className="relative overflow-hidden w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+                      patternViewBoxSize={20}
+                      dataTestId="panel-selector-swatch"
+                    />
                     <span className="text-zd-gray">{selectedColorName}</span>
                   </div>
                 </div>
@@ -149,7 +125,13 @@ const PanelSelector = ({
                             {panel.name}
                           </span>
                           <div className="flex items-center">
-                            {renderColorSwatch(colorValue)}
+                            <PanelColorSwatch
+                              value={colorValue}
+                              fallbackColor="#f3f4f6"
+                              className="relative overflow-hidden w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+                              patternViewBoxSize={20}
+                              dataTestId="panel-selector-option-swatch"
+                            />
                             <span className="text-zd-gray">{colorName}</span>
                           </div>
                         </div>
