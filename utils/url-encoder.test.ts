@@ -242,5 +242,21 @@ describe('url-encoder', () => {
       expect(decoded.side2).toBe('crimson-red');
       expect(decoded.back1).toBe('clear-blue');
     });
+
+    it('should handle pattern colors like red-green-silk in round-trip', () => {
+      const panelColorIds = {
+        side1: 'red-green-silk',
+        front1: 'carbon-black',
+        back1: 'clear-blue',
+      };
+
+      const encoded = encodePanelColors(panelColorIds);
+      const decoded = decodePanelColors(encoded);
+
+      expect(decoded).toEqual(panelColorIds);
+      expect(decoded.side1).toBe('red-green-silk');
+      expect(decoded.front1).toBe('carbon-black');
+      expect(decoded.back1).toBe('clear-blue');
+    });
   });
 });
