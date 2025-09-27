@@ -282,7 +282,13 @@ function Configurator() {
       )}
 
       {selectedCase && (
-        <div className="h-full grid grid-cols-1 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_600px]">
+        <div
+          className={`
+            h-full grid grid-cols-1
+            md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_480px]
+            xl:grid-cols-[1fr_600px]
+          `}
+        >
           {/* Left Column - Visualization */}
           <VisualizationPanel
             selectedCase={selectedCase}
