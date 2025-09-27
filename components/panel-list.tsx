@@ -1,6 +1,8 @@
 'use client';
 
 import type { Panel } from '@/types';
+import PatternFill from '@/components/pattern-fill';
+import { isPanelPattern, getPanelPatternFallbackColor } from '@/utils/panel-patterns';
 
 interface PanelListProps {
   panels: Panel[];
@@ -18,28 +20,21 @@ const PanelList = ({
   colorMap,
 }: PanelListProps) => {
   // Helper to render color swatch (handle patterns)
-  const renderColorSwatch = (colorValue: string | undefined, panelId: string) => {
+  const renderColorSwatch = (colorValue: string | undefined) => {
     const color = colorValue || '#1f2937';
-    const isPattern = color.startsWith('pattern-');
 
-    if (isPattern && color === 'pattern-red-green-stripe') {
+    if (isPanelPattern(color)) {
+      const fallback = getPanelPatternFallbackColor(color);
       return (
-        <div className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs overflow-hidden relative">
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 20 20">
-            <defs>
-              <pattern
-                id={`list-stripe-${panelId}`}
-                patternUnits="userSpaceOnUse"
-                width="6"
-                height="6"
-                patternTransform="rotate(45)"
-              >
-                <rect width="6" height="6" fill="#a4534a" />
-                <rect x="0" y="0" width="3" height="6" fill="#7bc97d" />
-              </pattern>
-            </defs>
-            <rect width="20" height="20" fill={`url(#list-stripe-${panelId})`} />
-          </svg>
+        <div
+          className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs overflow-hidden relative"
+          style={{ backgroundColor: fallback }}
+        >
+          <PatternFill
+            pattern={color}
+            className="absolute inset-0 w-full h-full"
+            viewBoxSize={20}
+          />
         </div>
       );
     }
@@ -76,7 +71,7 @@ const PanelList = ({
               <div className="flex items-center justify-between">
                 <span className="font-medium">{panel.name}</span>
                 <div className="flex items-center">
-                  {renderColorSwatch(colorValue, panel.id)}
+                  {renderColorSwatch(colorValue)}
                   <span className="text-zd-gray">{colorName}</span>
                 </div>
               </div>

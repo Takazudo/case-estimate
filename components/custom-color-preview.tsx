@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import { cases } from '@/data/cases';
+import PatternFill from '@/components/pattern-fill';
+import { isPanelPattern, getPanelPatternFallbackColor } from '@/utils/panel-patterns';
 
 interface CustomColorPreviewProps {
   caseType: string;
@@ -18,31 +20,6 @@ const CustomColorPreview = ({
 }: CustomColorPreviewProps) => {
   const currentCase = cases[caseType];
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Helper to render panel color (handle patterns)
-  const renderPanelColor = (color: string) => {
-    if (color === 'pattern-red-green-stripe') {
-      // Return an inline SVG with the stripe pattern
-      return (
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 24 24">
-          <defs>
-            <pattern
-              id="preview-red-green-stripe"
-              patternUnits="userSpaceOnUse"
-              width="8"
-              height="8"
-              patternTransform="rotate(45)"
-            >
-              <rect width="8" height="8" fill="#a4534a" />
-              <rect x="0" y="0" width="4" height="8" fill="#7bc97d" />
-            </pattern>
-          </defs>
-          <rect width="24" height="24" fill="url(#preview-red-green-stripe)" />
-        </svg>
-      );
-    }
-    return null;
-  };
 
   // Handle arrow key navigation
   useEffect(() => {
@@ -81,14 +58,15 @@ const CustomColorPreview = ({
         <div className="flex">
           {currentCase.panels.map((panel) => {
             const color = panelColors[panel.id] || '#1f2937';
-            const isPattern = color.startsWith('pattern-');
+            const patternKey = isPanelPattern(color) ? color : null;
+            const backgroundColor = patternKey ? getPanelPatternFallbackColor(patternKey) : color;
 
             return (
               <button
                 key={panel.id}
                 onClick={() => onPanelSelect(panel.id)}
                 className={`
-                  flex-1 h-12 border transition-all
+                  flex-1 h-12 border transition-all overflow-hidden
                   ml-[2px] first:ml-0
                   relative active:z-10 focus:z-10
                   ${
@@ -97,11 +75,13 @@ const CustomColorPreview = ({
                       : 'border-zd-gray hover:border-zd-link'
                   }
                 `}
-                style={!isPattern ? { backgroundColor: color } : undefined}
+                style={{ backgroundColor }}
                 title={panel.name}
                 aria-label={`Select ${panel.name}`}
               >
-                {isPattern && renderPanelColor(color)}
+                {patternKey && (
+                  <PatternFill pattern={patternKey} className="absolute inset-0 w-full h-full" />
+                )}
               </button>
             );
           })}
