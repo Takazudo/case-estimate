@@ -119,6 +119,7 @@ function Configurator() {
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
+  const [isUserTabChange, setIsUserTabChange] = useState(false);
 
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -143,6 +144,41 @@ function Configurator() {
     const initialState = getInitialStateFromUrl();
     setSelectedCase(initialState.selectedCase);
     setPanelColorIds(initialState.panelColorIds);
+
+    // Check if initial colors match any preset series
+    if (initialState.selectedCase && cases[initialState.selectedCase]) {
+      const caseData = cases[initialState.selectedCase];
+      const material = caseData.material;
+      if (material && Object.keys(initialState.panelColorIds).length > 0) {
+        const seriesList = colors.series[material] ?? [];
+        const panelColorsFromIds: { [key: string]: string } = {};
+
+        // Convert color IDs to hex values for comparison
+        Object.entries(initialState.panelColorIds).forEach(([panelId, colorId]) => {
+          const color = colors[material]?.find((c) => c.id === colorId);
+          if (color) {
+            panelColorsFromIds[panelId] = color.value;
+          }
+        });
+
+        const matchesPreset = seriesList.some((series) =>
+          checkSeriesActive(
+            series,
+            panelColorsFromIds,
+            initialState.selectedCase,
+            material,
+            initialState.panelColorIds,
+          ),
+        );
+
+        // Auto-switch to custom if colors don't match any preset
+        if (!matchesPreset) {
+          setActiveTab('custom');
+        }
+      }
+    }
+
+    setIsUserTabChange(false); // Initial load is not user-initiated
   }, []);
 
   // Sync selectedColor when selectedPanel changes (e.g., from panel selector dropdown)
@@ -156,10 +192,17 @@ function Configurator() {
   }, [selectedPanel, material, panelColorIds]);
 
   // Ensure the Custom tab is active when the current colors don't match any preset series
+  // But only auto-switch on initial load or case change, not during manual tab switches
   useEffect(() => {
     if (!selectedCase || !material) return;
     if (activeTab !== 'series') return;
     if (Object.keys(panelColorIds).length === 0) return;
+
+    // Don't auto-switch if this was a user-initiated tab change
+    if (isUserTabChange) {
+      setIsUserTabChange(false); // Reset the flag
+      return;
+    }
 
     const seriesList = colors.series[material] ?? [];
     const matchesPreset = seriesList.some((series) =>
@@ -169,7 +212,7 @@ function Configurator() {
     if (!matchesPreset) {
       setActiveTab('custom');
     }
-  }, [selectedCase, material, panelColors, panelColorIds, activeTab]);
+  }, [selectedCase, material, panelColors, panelColorIds, activeTab, isUserTabChange]);
 
   // Handle URL persistence for client-side state (only updates URL when state changes)
   useUrlPersistence({
@@ -180,6 +223,7 @@ function Configurator() {
   const handlePanelClick = (panelId: string) => {
     // If in Series tab, switch to Custom tab when a panel is clicked
     if (activeTab === 'series') {
+      setIsUserTabChange(true); // Panel click is user-initiated
       setActiveTab('custom');
     }
 
@@ -204,12 +248,18 @@ function Configurator() {
     }
   };
 
+  const handleTabChange = (tabId: string) => {
+    setIsUserTabChange(true); // Mark as user-initiated
+    setActiveTab(tabId);
+  };
+
   const handleCaseSelect = (caseType: string) => {
     // Always require a case to be selected
     if (!caseType) return;
     setSelectedCase(caseType);
     setSelectedPanel(null);
     setSelectedColor(null);
+    setIsUserTabChange(false); // Case change is not user tab change
     setActiveTab('series');
 
     // Auto-select first series
@@ -306,7 +356,7 @@ function Configurator() {
           <ControlsSidebar
             selectedCase={selectedCase}
             activeTab={activeTab}
-            onTabChange={setActiveTab}
+            onTabChange={handleTabChange}
             material={material}
             onSeriesSelect={handleSeriesSelect}
             isSeriesActive={isSeriesActive}
