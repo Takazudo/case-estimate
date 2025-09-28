@@ -49,7 +49,9 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     (newSlug: string) => {
       const params = new URLSearchParams(searchParams);
       params.set('id', newSlug);
-      router.push(`/gallery?${params.toString()}`);
+      // Use replace instead of push to avoid page transition
+      // This updates the URL without triggering a full navigation
+      router.replace(`/gallery?${params.toString()}`);
     },
     [router, searchParams],
   );
