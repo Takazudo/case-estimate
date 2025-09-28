@@ -144,7 +144,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   return (
     <div
       data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-zd-black/70"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-zd-black/70 h-screen w-screen"
       onClick={handleBackdropClick}
       role="presentation"
     >
@@ -152,7 +152,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         data-testid="gallery-dialog"
         id="gallery-dialog"
         ref={containerRef}
-        className="relative flex h-full w-full items-center justify-center"
+        className="relative flex items-center justify-center max-h-screen max-w-screen"
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
