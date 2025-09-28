@@ -16,7 +16,7 @@ import {
   getEnlargedImageUrl,
   getItemsForPreloading,
 } from '@/data/gallery-data';
-import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Blurhash } from '@/components/blurhash';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
@@ -117,7 +117,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   return (
     <div
       data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-zd-black/70"
       onClick={handleBackdropClick}
       role="presentation"
     >
@@ -136,10 +136,19 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         <button
           data-testid="gallery-dialog-close"
           onClick={handleClose}
-          className="absolute right-8 top-8 z-10 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
+          className="absolute top-4 right-4 z-10 p-2 text-white hover:text-gray-300 transition-colors"
           aria-label="Close dialog"
         >
-          <XMarkIcon className="h-8 w-8" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
         </button>
 
         {/* Navigation buttons */}
