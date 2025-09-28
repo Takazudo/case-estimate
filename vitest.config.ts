@@ -15,6 +15,7 @@ export default defineConfig({
       'hooks/**/*.{test,spec}.{js,jsx,ts,tsx}',
       'components/**/*.{test,spec}.{js,jsx,ts,tsx}',
       'app/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'data/**/*.{test,spec}.{js,jsx,ts,tsx}',
     ],
     exclude: [
       'node_modules',
