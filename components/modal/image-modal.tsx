@@ -65,7 +65,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
 
   return (
     <div
-      ref={containerRef}
+      ref={containerRef as React.RefObject<HTMLDivElement>}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"

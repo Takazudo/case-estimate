@@ -1,6 +1,6 @@
 'use client';
 
-import {
+import React, {
   useEffect,
   useState,
   useCallback,
@@ -17,7 +17,6 @@ import {
   getItemsForPreloading,
 } from '@/data/gallery-data';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { Blurhash } from '@/components/blurhash';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
 
@@ -30,6 +29,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   const searchParams = useSearchParams();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const preloadedImagesRef = useRef(new Set<string>());
@@ -161,11 +161,13 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   useEffect(() => {
     setImageLoaded(false);
     setImageError(false);
+    setIsLoading(true);
 
     // Use a small delay to ensure the img element is properly set up
     const timeoutId = setTimeout(() => {
       if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
         setImageLoaded(true);
+        setIsLoading(false);
       }
     }, 0);
 
@@ -181,6 +183,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
       if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
         setImageLoaded(true);
         setImageError(false);
+        setIsLoading(false);
       }
     }, 100);
 
@@ -201,7 +204,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
       aria-labelledby={dialogTitleId}
       aria-describedby={dialogDescriptionId}
     >
-      <div ref={containerRef} className="relative flex h-full w-full items-center justify-center">
+      <div
+        ref={containerRef as React.RefObject<HTMLDivElement>}
+        className="relative flex h-full w-full items-center justify-center"
+      >
         {/* Close button - positioned at top-right of viewport */}
         <button
           data-testid="gallery-dialog-close"
@@ -255,18 +261,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         {/* Image container */}
         <div className="relative flex h-full w-full items-center justify-center p-16">
           <div className="relative flex h-full w-full items-center justify-center">
-            {/* Blurhash placeholder - shows immediately */}
-            {currentItem.blurhash && !imageLoaded && !imageError && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative h-full w-full max-h-[80vh] max-w-[80vw]">
-                  <Blurhash
-                    hash={currentItem.blurhash}
-                    width="100%"
-                    height="100%"
-                    className="h-full w-full"
-                  />
-                  <div className="absolute inset-0 backdrop-blur-xl" />
-                </div>
+            {/* Loading spinner - shows while image is loading */}
+            {isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center z-20">
+                <div className="loader" />
               </div>
             )}
 
@@ -279,10 +277,12 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
               onLoad={() => {
                 setImageLoaded(true);
                 setImageError(false);
+                setIsLoading(false);
               }}
               onError={() => {
                 setImageLoaded(false);
                 setImageError(true);
+                setIsLoading(false);
               }}
               style={{
                 opacity: imageLoaded ? 1 : 0,
