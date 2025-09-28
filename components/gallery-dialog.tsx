@@ -117,7 +117,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   return (
     <div
       data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
       onClick={handleBackdropClick}
       role="presentation"
     >
@@ -125,7 +125,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         data-testid="gallery-dialog"
         id="gallery-dialog"
         ref={containerRef}
-        className="relative h-full w-full max-w-7xl p-4"
+        className="relative flex h-full w-full items-center justify-center"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -136,10 +136,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         <button
           data-testid="gallery-dialog-close"
           onClick={handleClose}
-          className="absolute right-4 top-4 z-10 rounded-full bg-black bg-opacity-50 p-2 text-white transition-colors hover:bg-opacity-70"
+          className="absolute right-8 top-8 z-10 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
           aria-label="Close dialog"
         >
-          <XMarkIcon className="h-6 w-6" />
+          <XMarkIcon className="h-8 w-8" />
         </button>
 
         {/* Navigation buttons */}
@@ -147,10 +147,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-prev"
             onClick={handlePrevious}
-            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black bg-opacity-50 p-2 text-white transition-colors hover:bg-opacity-70"
+            className="absolute left-8 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
             aria-label="Previous image"
           >
-            <ChevronLeftIcon className="h-6 w-6" />
+            <ChevronLeftIcon className="h-10 w-10" />
           </button>
         )}
 
@@ -158,52 +158,57 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-next"
             onClick={handleNext}
-            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black bg-opacity-50 p-2 text-white transition-colors hover:bg-opacity-70"
+            className="absolute right-8 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
             aria-label="Next image"
           >
-            <ChevronRightIcon className="h-6 w-6" />
+            <ChevronRightIcon className="h-10 w-10" />
           </button>
         )}
 
         {/* Image container */}
-        <div className="relative flex h-full items-center justify-center">
+        <div className="relative flex h-full max-h-[90vh] w-full max-w-7xl items-center justify-center p-16">
           <h2 id={dialogTitleId} className="sr-only">
             {currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
           </h2>
           <p id={dialogDescriptionId} className="sr-only">
             Use the arrow keys to move through images. Press Escape to close.
           </p>
-          {/* Blurhash placeholder - shows immediately */}
-          {currentItem.blurhash && !imageLoaded && !imageError && (
-            <div className="absolute inset-0">
-              <Blurhash
-                hash={currentItem.blurhash}
-                width="100%"
-                height="100%"
-                className="absolute inset-0"
-              />
-              <div className="absolute inset-0 backdrop-blur-xl" />
-            </div>
-          )}
 
-          {/* Main image */}
-          <img
-            src={getEnlargedImageUrl(currentItem.slug)}
-            alt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
-            className="relative max-h-full max-w-full object-contain transition-opacity duration-300"
-            onLoad={() => {
-              setImageLoaded(true);
-              setImageError(false);
-            }}
-            onError={() => {
-              setImageLoaded(false);
-              setImageError(true);
-            }}
-            style={{
-              opacity: imageLoaded ? 1 : 0,
-            }}
-            aria-busy={!imageLoaded && !imageError}
-          />
+          <div className="relative flex h-full w-full items-center justify-center">
+            {/* Blurhash placeholder - shows immediately */}
+            {currentItem.blurhash && !imageLoaded && !imageError && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative h-full w-full max-h-[80vh] max-w-[80vw]">
+                  <Blurhash
+                    hash={currentItem.blurhash}
+                    width="100%"
+                    height="100%"
+                    className="h-full w-full"
+                  />
+                  <div className="absolute inset-0 backdrop-blur-xl" />
+                </div>
+              </div>
+            )}
+
+            {/* Main image */}
+            <img
+              src={getEnlargedImageUrl(currentItem.slug)}
+              alt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
+              className="relative max-h-[80vh] max-w-[80vw] object-contain transition-opacity duration-300"
+              onLoad={() => {
+                setImageLoaded(true);
+                setImageError(false);
+              }}
+              onError={() => {
+                setImageLoaded(false);
+                setImageError(true);
+              }}
+              style={{
+                opacity: imageLoaded ? 1 : 0,
+              }}
+              aria-busy={!imageLoaded && !imageError}
+            />
+          </div>
 
           {imageError && (
             <div
