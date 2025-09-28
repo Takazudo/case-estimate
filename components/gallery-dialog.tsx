@@ -30,6 +30,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   const searchParams = useSearchParams();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
   const preloadedImagesRef = useRef(new Set<string>());
   const dialogTitleId = useMemo(() => `gallery-dialog-title-${slug}`, [slug]);
   const dialogDescriptionId = useMemo(() => `gallery-dialog-description-${slug}`, [slug]);
@@ -100,10 +101,15 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     });
   }, [slug]);
 
-  // Reset image loaded state when slug changes
+  // Reset image loaded state when slug changes and check if already loaded
   useEffect(() => {
     setImageLoaded(false);
     setImageError(false);
+
+    // Check if image is already loaded (cached)
+    if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
+      setImageLoaded(true);
+    }
   }, [slug]);
 
   const handleBackdropClick = (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -119,7 +125,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   return (
     <div
       data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-zd-black/70"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-zd-black/70"
       onClick={handleBackdropClick}
       role="presentation"
     >
@@ -127,8 +133,8 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         data-testid="gallery-dialog"
         id="gallery-dialog"
         ref={containerRef}
-        className="relative flex h-full w-full items-center justify-center"
-        onClick={(event) => event.stopPropagation()}
+        className="relative flex items-center justify-center"
+        tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby={dialogTitleId}
@@ -138,7 +144,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         <button
           data-testid="gallery-dialog-close"
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 p-2 text-white hover:text-gray-300 transition-colors"
+          className="fixed top-20 right-4 z-[70] p-2 text-white hover:text-gray-300 transition-colors pointer-events-auto"
           aria-label="Close dialog"
         >
           <svg
@@ -147,7 +153,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 pointer-events-none"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
@@ -158,10 +164,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-prev"
             onClick={handlePrevious}
-            className="absolute left-8 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
+            className="fixed left-8 top-1/2 z-[70] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
             aria-label="Previous image"
           >
-            <ChevronLeftIcon className="h-10 w-10" />
+            <ChevronLeftIcon className="h-10 w-10 pointer-events-none" />
           </button>
         )}
 
@@ -169,15 +175,15 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-next"
             onClick={handleNext}
-            className="absolute right-8 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
+            className="fixed right-8 top-1/2 z-[70] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
             aria-label="Next image"
           >
-            <ChevronRightIcon className="h-10 w-10" />
+            <ChevronRightIcon className="h-10 w-10 pointer-events-none" />
           </button>
         )}
 
         {/* Image container */}
-        <div className="relative flex h-full max-h-[90vh] w-full max-w-7xl items-center justify-center p-16">
+        <div className="relative flex h-full max-h-[90vh] w-full max-w-7xl items-center justify-center p-16 pointer-events-auto">
           <h2 id={dialogTitleId} className="sr-only">
             {currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
           </h2>
@@ -203,6 +209,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
 
             {/* Main image */}
             <img
+              ref={imageRef}
               src={getEnlargedImageUrl(currentItem.slug)}
               alt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
               className="relative max-h-[80vh] max-w-[80vw] object-contain transition-opacity duration-300"

@@ -15,7 +15,6 @@ export const useFocusTrap = ({
   isActive,
   autoFocus = true,
   returnFocusOnDeactivate = true,
-  onClose,
 }: UseFocusTrapOptions) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
@@ -65,16 +64,8 @@ export const useFocusTrap = ({
     [getFocusableElements],
   );
 
-  // Handle Escape key to close
-  const handleEscapeKey = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isActive && onClose) {
-        event.preventDefault();
-        onClose();
-      }
-    },
-    [isActive, onClose],
-  );
+  // Note: Escape key handling is removed from focus trap
+  // to avoid conflicts with other keyboard handlers
 
   // Main effect for managing focus trap
   useEffect(() => {
@@ -96,13 +87,11 @@ export const useFocusTrap = ({
 
     // Add keyboard event listeners
     document.addEventListener('keydown', handleTabKey);
-    document.addEventListener('keydown', handleEscapeKey);
 
     return () => {
       document.removeEventListener('keydown', handleTabKey);
-      document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [isActive, autoFocus, handleTabKey, handleEscapeKey, getFocusableElements]);
+  }, [isActive, autoFocus, handleTabKey, getFocusableElements]);
 
   // Return focus when trap is deactivated
   useEffect(() => {
