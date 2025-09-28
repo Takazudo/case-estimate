@@ -106,11 +106,30 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     setImageLoaded(false);
     setImageError(false);
 
-    // Check if image is already loaded (cached)
-    if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-      setImageLoaded(true);
-    }
+    // Use a small delay to ensure the img element is properly set up
+    const timeoutId = setTimeout(() => {
+      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
+        setImageLoaded(true);
+      }
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
   }, [slug]);
+
+  // Additional effect to periodically check if image has loaded
+  // This handles cases where onLoad doesn't fire properly
+  useEffect(() => {
+    if (imageLoaded || imageError) return;
+
+    const intervalId = setInterval(() => {
+      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
+        setImageLoaded(true);
+        setImageError(false);
+      }
+    }, 100);
+
+    return () => clearInterval(intervalId);
+  }, [imageLoaded, imageError, slug]);
 
   const handleBackdropClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
