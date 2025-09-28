@@ -117,7 +117,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   return (
     <div
       data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
       onClick={handleBackdropClick}
       role="presentation"
     >
