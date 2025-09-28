@@ -152,7 +152,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         data-testid="gallery-dialog"
         id="gallery-dialog"
         ref={containerRef}
-        className="relative flex items-center justify-center"
+        className="relative flex h-full w-full items-center justify-center"
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
