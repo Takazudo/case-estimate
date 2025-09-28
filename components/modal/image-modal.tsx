@@ -73,9 +73,9 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
       className={`
         fixed inset-0 z-50 flex items-center justify-center
         transition-opacity duration-300
+        bg-zd-black/70
         ${isOpen ? 'opacity-100' : 'opacity-0'}
       `}
-      style={{ backgroundColor: 'rgba(32, 31, 31, 0.7)' }}
       onClick={onClose}
     >
       <div className="relative w-full h-full flex items-center justify-center p-[10px] md:p-[15px] lg:p-[20px]">
