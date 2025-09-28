@@ -163,7 +163,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         <button
           data-testid="gallery-dialog-close"
           onClick={handleClose}
-          className="fixed top-20 right-4 z-[70] p-2 text-white hover:text-gray-300 transition-colors pointer-events-auto"
+          className="absolute top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors pointer-events-auto"
           aria-label="Close dialog"
         >
           <svg
@@ -183,7 +183,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-prev"
             onClick={handlePrevious}
-            className="fixed left-8 top-1/2 z-[70] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
+            className="absolute left-8 top-1/2 z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
             aria-label="Previous image"
           >
             <ChevronLeftIcon className="h-10 w-10 pointer-events-none" />
@@ -194,7 +194,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-next"
             onClick={handleNext}
-            className="fixed right-8 top-1/2 z-[70] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
+            className="absolute right-8 top-1/2 z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
             aria-label="Next image"
           >
             <ChevronRightIcon className="h-10 w-10 pointer-events-none" />
