@@ -16,7 +16,7 @@ export const useFocusTrap = ({
   autoFocus = true,
   returnFocusOnDeactivate = true,
 }: UseFocusTrapOptions) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | HTMLDialogElement>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
 
   // Get all focusable elements within the container

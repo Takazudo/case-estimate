@@ -30,6 +30,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   const searchParams = useSearchParams();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const preloadedImagesRef = useRef(new Set<string>());
   const dialogTitleId = useMemo(() => `gallery-dialog-title-${slug}`, [slug]);
@@ -43,6 +44,12 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     const params = new URLSearchParams(searchParams);
     params.delete('id');
     const newUrl = params.toString() ? `/gallery?${params.toString()}` : '/gallery';
+
+    // Close the dialog first
+    if (dialogRef.current) {
+      dialogRef.current.close();
+    }
+
     router.replace(newUrl);
   }, [router, searchParams]);
 
@@ -80,6 +87,55 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     onPrevious: previousItem ? handlePrevious : undefined,
     onNext: nextItem ? handleNext : undefined,
   });
+
+  // Open/close dialog based on currentItem
+  useEffect(() => {
+    if (currentItem && dialogRef.current) {
+      // Use showModal for proper dialog behavior with backdrop
+      if (!dialogRef.current.open) {
+        dialogRef.current.showModal();
+      }
+    } else if (!currentItem && dialogRef.current && dialogRef.current.open) {
+      dialogRef.current.close();
+    }
+  }, [currentItem]);
+
+  // Handle backdrop click
+  const handleDialogClick = useCallback(
+    (event: ReactMouseEvent<HTMLDialogElement>) => {
+      // Check if click is on the backdrop (dialog element itself, not its children)
+      const rect = dialogRef.current?.getBoundingClientRect();
+      if (rect) {
+        const clickedInDialog =
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom;
+
+        // If clicked outside the dialog content area (on the backdrop)
+        if (!clickedInDialog || event.target === dialogRef.current) {
+          handleClose();
+        }
+      }
+    },
+    [handleClose],
+  );
+
+  // Handle native dialog cancel event (ESC key)
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const handleCancel = (event: Event) => {
+      event.preventDefault(); // Prevent default close behavior
+      handleClose();
+    };
+
+    dialog.addEventListener('cancel', handleCancel);
+    return () => {
+      dialog.removeEventListener('cancel', handleCancel);
+    };
+  }, [handleClose]);
 
   // Preload adjacent images
   useEffect(() => {
@@ -131,39 +187,26 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     return () => clearInterval(intervalId);
   }, [imageLoaded, imageError, slug]);
 
-  const handleBackdropClick = (event: ReactMouseEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget) {
-      handleClose();
-    }
-  };
-
   if (!currentItem) {
     return null;
   }
 
   return (
-    <div
-      data-testid="gallery-dialog-backdrop"
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-zd-black/70 h-screen w-screen"
-      onClick={handleBackdropClick}
-      role="presentation"
+    <dialog
+      ref={dialogRef}
+      data-testid="gallery-dialog"
+      id="gallery-dialog"
+      className="fixed inset-0 z-[60] m-0 max-h-screen h-screen max-w-screen w-screen bg-transparent p-0 backdrop:bg-zd-black/70"
+      onClick={handleDialogClick}
+      aria-labelledby={dialogTitleId}
+      aria-describedby={dialogDescriptionId}
     >
-      <div
-        data-testid="gallery-dialog"
-        id="gallery-dialog"
-        ref={containerRef}
-        className="relative flex items-center justify-center max-h-screen max-w-screen"
-        tabIndex={-1}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={dialogTitleId}
-        aria-describedby={dialogDescriptionId}
-      >
-        {/* Close button */}
+      <div ref={containerRef} className="relative flex h-full w-full items-center justify-center">
+        {/* Close button - positioned at top-right of viewport */}
         <button
           data-testid="gallery-dialog-close"
           onClick={handleClose}
-          className="fixed top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors pointer-events-auto"
+          className="fixed top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors"
           aria-label="Close dialog"
         >
           <svg
@@ -172,21 +215,21 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6 pointer-events-none"
+            className="w-6 h-6"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Navigation buttons */}
+        {/* Navigation buttons - properly centered at viewport edges */}
         {previousItem && (
           <button
             data-testid="gallery-dialog-prev"
             onClick={handlePrevious}
-            className="fixed left-8 top-1/2 z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
+            className="fixed left-8 top-[50vh] z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
             aria-label="Previous image"
           >
-            <ChevronLeftIcon className="h-10 w-10 pointer-events-none" />
+            <ChevronLeftIcon className="h-10 w-10" />
           </button>
         )}
 
@@ -194,22 +237,23 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-next"
             onClick={handleNext}
-            className="fixed right-8 top-1/2 z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20 pointer-events-auto"
+            className="fixed right-8 top-[50vh] z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
             aria-label="Next image"
           >
-            <ChevronRightIcon className="h-10 w-10 pointer-events-none" />
+            <ChevronRightIcon className="h-10 w-10" />
           </button>
         )}
 
-        {/* Image container */}
-        <div className="relative flex h-full max-h-[90vh] w-full max-w-7xl items-center justify-center p-16 pointer-events-auto">
-          <h2 id={dialogTitleId} className="sr-only">
-            {currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
-          </h2>
-          <p id={dialogDescriptionId} className="sr-only">
-            Use the arrow keys to move through images. Press Escape to close.
-          </p>
+        {/* Screen reader announcements */}
+        <h2 id={dialogTitleId} className="sr-only">
+          {currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
+        </h2>
+        <p id={dialogDescriptionId} className="sr-only">
+          Use the arrow keys to move through images. Press Escape to close.
+        </p>
 
+        {/* Image container */}
+        <div className="relative flex h-full w-full items-center justify-center p-16">
           <div className="relative flex h-full w-full items-center justify-center">
             {/* Blurhash placeholder - shows immediately */}
             {currentItem.blurhash && !imageLoaded && !imageError && (
@@ -226,7 +270,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
               </div>
             )}
 
-            {/* Main image */}
+            {/* Main image - centered in dialog */}
             <img
               ref={imageRef}
               src={getEnlargedImageUrl(currentItem.slug)}
@@ -257,6 +301,6 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           )}
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }
