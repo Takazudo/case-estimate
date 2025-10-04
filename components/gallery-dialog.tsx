@@ -50,7 +50,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
       dialogRef.current.close();
     }
 
-    router.replace(newUrl);
+    router.replace(newUrl, { scroll: false });
   }, [router, searchParams]);
 
   const handleNavigate = useCallback(
@@ -59,7 +59,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
       params.set('id', newSlug);
       // Use replace instead of push to avoid page transition
       // This updates the URL without triggering a full navigation
-      router.replace(`/gallery?${params.toString()}`);
+      router.replace(`/gallery?${params.toString()}`, { scroll: false });
     },
     [router, searchParams],
   );

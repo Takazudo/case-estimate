@@ -103,7 +103,7 @@ export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProp
 
   const handleThumbnailClick = useCallback(
     (slug: string) => {
-      router.push(`/gallery?id=${slug}`);
+      router.push(`/gallery?id=${slug}`, { scroll: false });
     },
     [router],
   );
