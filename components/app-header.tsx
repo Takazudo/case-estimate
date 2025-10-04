@@ -41,6 +41,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
     { href: '/panel', label: 'パネル素材' },
     { href: '/selection', label: 'パネル選択' },
     { href: '/price', label: '価格' },
+    { href: '/gallery', label: 'ギャラリー' },
     { href: '/m', label: 'ケースを作る' },
   ];
 
@@ -79,6 +80,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
                 <NavItem href="/panel" label="パネル素材" />
                 <NavItem href="/selection" label="パネル選択" />
                 <NavItem href="/price" label="価格" />
+                <NavItem href="/gallery" label="ギャラリー" />
               </nav>
               {/* CTA Button - Desktop */}
               <NavigationLink
