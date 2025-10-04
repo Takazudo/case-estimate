@@ -4,6 +4,7 @@ import { galleryData } from '@/data/gallery-data';
 import GalleryThumbnailGrid from '@/components/gallery-thumbnail-grid';
 import GalleryDialog from '@/components/gallery-dialog';
 import { useSearchParams } from 'next/navigation';
+import { H1 } from '@/components/article/h1';
 
 export default function GalleryPage() {
   const searchParams = useSearchParams();
@@ -13,7 +14,7 @@ export default function GalleryPage() {
     <>
       <div className="min-h-screen bg-black">
         <div className="py-8">
-          <h1>Gallery</h1>
+          <H1>ギャラリー / Gallery</H1>
           <GalleryThumbnailGrid items={galleryData} />
         </div>
       </div>
