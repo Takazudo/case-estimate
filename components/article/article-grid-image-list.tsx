@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
-import { ImageModal } from '../modal/image-modal';
+import { useState, useCallback } from 'react';
+import ArticleImageDialog from './article-image-dialog';
 import { BlurhashLoader } from '@/components/blurhash-loader';
 
 interface GridImageItem {
@@ -20,15 +20,15 @@ interface ArticleGridImageListProps {
 }
 
 const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, className = '' }) => {
-  const [modalImage, setModalImage] = useState<{ url: string; alt: string } | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number | null>(null);
 
-  const handleEnlargeClick = (enlargeUrl: string, alt: string) => {
-    setModalImage({ url: enlargeUrl, alt });
-  };
+  const handleEnlargeClick = useCallback((index: number) => {
+    setCurrentImageIndex(index);
+  }, []);
 
-  const handleCloseModal = () => {
-    setModalImage(null);
-  };
+  const handleCloseDialog = useCallback(() => {
+    setCurrentImageIndex(null);
+  }, []);
 
   return (
     <>
@@ -47,7 +47,7 @@ const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, clas
             </dt>
             <dd className="mt-0">
               <button
-                onClick={() => handleEnlargeClick(item.enlargeUrl, item.imageAlt)}
+                onClick={() => handleEnlargeClick(index)}
                 className="relative w-full aspect-square group cursor-pointer border-[3px] border-zd-link rounded-md p-[3px]"
                 aria-label={`Enlarge ${item.imageAlt} image`}
               >
@@ -75,11 +75,11 @@ const ArticleGridImageList: React.FC<ArticleGridImageListProps> = ({ items, clas
         ))}
       </div>
 
-      <ImageModal
-        isOpen={modalImage !== null}
-        imageUrl={modalImage?.url || ''}
-        imageAlt={modalImage?.alt || ''}
-        onClose={handleCloseModal}
+      <ArticleImageDialog
+        items={items}
+        currentIndex={currentImageIndex}
+        onClose={handleCloseDialog}
+        onNavigate={setCurrentImageIndex}
       />
     </>
   );
