@@ -54,7 +54,7 @@ function GalleryThumbnailButton({
         data-testid="gallery-thumbnail"
         data-slug={item.slug}
         onClick={() => onActivate(item.slug)}
-        className="group relative block aspect-square w-full overflow-hidden rounded-lg bg-gray-900 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+        className="group relative block aspect-square w-full overflow-hidden bg-gray-900 transition-transform hover:ring-3 hover:ring-zd-link hover:z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black focus:z-10"
         aria-haspopup="dialog"
         aria-label={item.imageAlt || `Open gallery image ${item.slug}`}
         aria-controls="gallery-dialog"
@@ -231,7 +231,7 @@ export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProp
   return (
     <ul
       data-testid="gallery-thumbnail-grid"
-      className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
+      className="grid grid-cols-2 gap-[1px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
       role="list"
     >
       {items.map((item) => {

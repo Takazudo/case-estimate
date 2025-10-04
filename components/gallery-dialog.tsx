@@ -232,10 +232,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-prev"
             onClick={handlePrevious}
-            className="fixed left-8 top-[50vh] z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
+            className="fixed left-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
             aria-label="Previous image"
           >
-            <ChevronLeftIcon className="h-10 w-10" />
+            <ChevronLeftIcon className="h-[50px] w-[50px]" />
           </button>
         )}
 
@@ -243,7 +243,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           <button
             data-testid="gallery-dialog-next"
             onClick={handleNext}
-            className="fixed right-8 top-[50vh] z-[100] -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur transition-colors hover:bg-white/20"
+            className="fixed right-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
             aria-label="Next image"
           >
             <ChevronRightIcon className="h-10 w-10" />
@@ -259,7 +259,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
         </p>
 
         {/* Image container */}
-        <div className="relative flex h-full w-full items-center justify-center p-16">
+        <div className="relative flex h-full w-full items-center justify-center">
           <div className="relative flex h-full w-full items-center justify-center">
             {/* Loading spinner - shows while image is loading */}
             {isLoading && (
@@ -273,7 +273,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
               ref={imageRef}
               src={getEnlargedImageUrl(currentItem.slug)}
               alt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
-              className="relative max-h-[80vh] max-w-[80vw] object-contain transition-opacity duration-300"
+              className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
               onLoad={() => {
                 setImageLoaded(true);
                 setImageError(false);
