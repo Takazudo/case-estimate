@@ -13,8 +13,8 @@ import {
 
 describe('gallery-data', () => {
   describe('galleryData', () => {
-    it('should contain the correct number of items', () => {
-      expect(galleryData).toHaveLength(galleryData.length);
+    it('should contain items', () => {
+      expect(galleryData.length).toBeGreaterThan(0);
     });
 
     it('should have valid structure for each item', () => {

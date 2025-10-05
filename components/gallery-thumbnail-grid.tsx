@@ -187,6 +187,8 @@ export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProp
       pendingImagesRef.current.clear();
 
       // Defer observation with timeout to ensure proper layout
+      // The 50ms delay ensures DOM layout is complete and element positions
+      // are accurately calculated before the IntersectionObserver starts tracking
       setTimeout(() => {
         // Register each image with the observer for lazy loading
         pendingImages.forEach((image) => {
@@ -209,6 +211,10 @@ export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProp
     if (observerRef.current) {
       // Defer observation with a small timeout to ensure DOM is fully settled
       // This prevents the IntersectionObserver from thinking all images are visible
+      // The 50ms delay ensures:
+      // 1. DOM layout is complete before observation begins
+      // 2. Initial page render doesn't trigger all images to load at once
+      // 3. Browser has time to calculate accurate element positions
       setTimeout(() => {
         if (observerRef.current) {
           observerRef.current.observe(image);
