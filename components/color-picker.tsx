@@ -2,6 +2,7 @@
 
 import { colors } from '@/data/colors';
 import type { Color } from '@/types';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 
 interface ColorPickerProps {
   material: 'acrylic' | '3dp';
@@ -11,6 +12,15 @@ interface ColorPickerProps {
 
 const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProps) => {
   const availableColors = colors[material] || [];
+
+  // Render color thumbnail with pattern support
+  const renderColorThumbnail = (color: Color) => (
+    <PanelColorSwatch
+      value={color.value}
+      className="relative overflow-hidden w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
+      dataTestId="color-picker-swatch"
+    />
+  );
 
   return (
     <div className="space-y-vgap-xs">
@@ -30,10 +40,7 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
               }
             `}
           >
-            <span
-              className="w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
-              style={{ backgroundColor: color.value }}
-            />
+            {renderColorThumbnail(color)}
             <span className="flex flex-1 flex-col lg:flex-row">
               <span className="font-medium text-zd-white flex-1">{color.name}</span>
               <span className="text-zd-gray nowrap">{color.material}</span>

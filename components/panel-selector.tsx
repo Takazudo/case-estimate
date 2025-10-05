@@ -10,6 +10,7 @@ import {
 } from '@headlessui/react';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import type { Panel } from '@/types';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 
 interface PanelSelectorProps {
   panels: Panel[];
@@ -76,9 +77,12 @@ const PanelSelector = ({
                       animation: 'quickFadeIn 200ms ease-out',
                     }}
                   >
-                    <div
-                      className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-                      style={{ backgroundColor: selectedColorValue || '#f3f4f6' }}
+                    <PanelColorSwatch
+                      value={selectedColorValue}
+                      fallbackColor="#f3f4f6"
+                      className="relative overflow-hidden w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+                      patternViewBoxSize={20}
+                      dataTestId="panel-selector-swatch"
                     />
                     <span className="text-zd-gray">{selectedColorName}</span>
                   </div>
@@ -121,9 +125,12 @@ const PanelSelector = ({
                             {panel.name}
                           </span>
                           <div className="flex items-center">
-                            <div
-                              className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-                              style={{ backgroundColor: colorValue || '#f3f4f6' }}
+                            <PanelColorSwatch
+                              value={colorValue}
+                              fallbackColor="#f3f4f6"
+                              className="relative overflow-hidden w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+                              patternViewBoxSize={20}
+                              dataTestId="panel-selector-option-swatch"
                             />
                             <span className="text-zd-gray">{colorName}</span>
                           </div>

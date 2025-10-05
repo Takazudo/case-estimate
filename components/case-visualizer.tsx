@@ -95,6 +95,45 @@ const CaseVisualizer = ({
   const is10BoxModel = caseType === '10box-3dp';
   const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
+  // Add pattern definitions to SVG
+  const addPatternsToSvg = (svg: SVGElement) => {
+    // Check if patterns already exist
+    if (svg.querySelector('#red-green-stripe-pattern')) return;
+
+    // Create defs element if it doesn't exist
+    let defs = svg.querySelector('defs');
+    if (!defs) {
+      defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      svg.insertBefore(defs, svg.firstChild);
+    }
+
+    // Create red/green diagonal stripe pattern
+    const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
+    pattern.setAttribute('id', 'red-green-stripe-pattern');
+    pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+    pattern.setAttribute('width', '20');
+    pattern.setAttribute('height', '20');
+    pattern.setAttribute('patternTransform', 'rotate(45)');
+
+    // Reddish-brown background (matching reference image)
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('width', '20');
+    bg.setAttribute('height', '20');
+    bg.setAttribute('fill', '#a4534a');
+    pattern.appendChild(bg);
+
+    // Light green stripes (matching reference image)
+    const stripe1 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    stripe1.setAttribute('x', '0');
+    stripe1.setAttribute('y', '0');
+    stripe1.setAttribute('width', '10');
+    stripe1.setAttribute('height', '20');
+    stripe1.setAttribute('fill', '#7bc97d');
+    pattern.appendChild(stripe1);
+
+    defs.appendChild(pattern);
+  };
+
   // Load and inject the SVG
   useEffect(() => {
     setSvgLoaded(false);
@@ -178,6 +217,11 @@ const CaseVisualizer = ({
             }
           }
 
+          // Add pattern definitions
+          if (svg) {
+            addPatternsToSvg(svg);
+          }
+
           setSvgLoaded(true);
           onLoadingChange?.(false);
         }
@@ -226,11 +270,19 @@ const CaseVisualizer = ({
             // Update color if specified, otherwise use default black
             const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
 
+            // Handle pattern fills
+            const isPatternFill = color === 'pattern-red-green-stripe';
+
             // Handle transparent acrylic colors specially
             const isTransparentAcrylic =
               material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
 
-            if (isTransparentAcrylic) {
+            if (isPatternFill) {
+              // Use pattern fill for red-green silk
+              pathElement.style.fill = 'url(#red-green-stripe-pattern)';
+              pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
+              pathElement.style.setProperty('fill-opacity', '1', 'important');
+            } else if (isTransparentAcrylic) {
               // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
               pathElement.style.fill = 'transparent';
               pathElement.style.setProperty('fill', 'transparent', 'important');
@@ -357,11 +409,20 @@ const CaseVisualizer = ({
             // Update color if specified, otherwise use default black
             const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
 
+            // Handle pattern fills
+            const isPatternFill = color === 'pattern-red-green-stripe';
+
             // Handle transparent acrylic colors specially
             const isTransparentAcrylic =
               material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
 
-            if (isTransparentAcrylic) {
+            if (isPatternFill) {
+              // Use pattern fill for red-green silk
+              pathElement.style.fill = 'url(#red-green-stripe-pattern)';
+              pathElement.setAttribute('fill', 'url(#red-green-stripe-pattern)');
+              pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
+              pathElement.style.setProperty('fill-opacity', '1', 'important');
+            } else if (isTransparentAcrylic) {
               // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
               pathElement.style.fill = 'transparent';
               pathElement.setAttribute('fill', 'transparent');

@@ -1,6 +1,7 @@
 'use client';
 
 import type { Panel } from '@/types';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 
 interface PanelListProps {
   panels: Panel[];
@@ -41,9 +42,12 @@ const PanelList = ({
               <div className="flex items-center justify-between">
                 <span className="font-medium">{panel.name}</span>
                 <div className="flex items-center">
-                  <div
-                    className="w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
-                    style={{ backgroundColor: colorValue || '#1f2937' }}
+                  <PanelColorSwatch
+                    value={colorValue}
+                    fallbackColor="#1f2937"
+                    className="relative overflow-hidden w-5 h-5 rounded border border-zd-gray mr-hgap-2xs"
+                    patternViewBoxSize={20}
+                    dataTestId="panel-list-swatch"
                   />
                   <span className="text-zd-gray">{colorName}</span>
                 </div>

@@ -25,9 +25,22 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     pathname === '/m' ? '' : 'page-fade-in',
   );
   const failsafeTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const previousPathnameRef = React.useRef(pathname);
 
-  // Reset loading state when URL changes (pathname or search params)
+  // Reset loading state when pathname changes (not search params)
   useEffect(() => {
+    // Only trigger animations when the pathname actually changes
+    // Ignore search param changes to support in-page navigation (like gallery dialog)
+    const isPathnameChange = previousPathnameRef.current !== pathname;
+
+    if (!isPathnameChange) {
+      // Search params changed but pathname didn't - skip animations
+      return;
+    }
+
+    // Update the previous pathname reference
+    previousPathnameRef.current = pathname;
+
     setIsPageLoading(false);
 
     // Clear any pending failsafe timeout to prevent race conditions

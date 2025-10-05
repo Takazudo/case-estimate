@@ -101,8 +101,18 @@ case-estimate/
 │       ├── zudo-block-40-lite.svg
 │       ├── zudo-block-60.svg
 │       └── zudo-block-60-lite.svg
-└── __inbox/                        # Temporary files and references
+└── __inbox/                        # Developer notes and documentation inbox
 ```
+
+### Developer Notes Inbox
+
+The `__inbox/` directory is used as a documentation inbox for developer notes, code reviews, and implementation logs. Files in this directory are intentionally preserved and should not be treated as temporary files to be cleaned up. This includes:
+
+- Code review notes
+- Implementation documentation
+- TDD development logs
+- Migration plans
+- Research notes
 
 ## Testing
 

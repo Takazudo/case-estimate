@@ -2,6 +2,11 @@ import type { Colors } from '@/types';
 
 // Helper function to get color opacity by hex value
 export const getColorOpacityByValue = (hexValue: string, material: 'acrylic' | '3dp'): number => {
+  // Handle pattern values
+  if (hexValue.startsWith('pattern-')) {
+    return 1; // Patterns are always fully opaque
+  }
+
   const colorList = colors[material];
 
   // For 3dp materials, check if this is a semi-transparent color
@@ -79,6 +84,13 @@ export const colors: Colors = {
     { id: 'clear-red', name: 'クリアレッド', value: '#b71c1c', material: 'PETG', opacity: 0.6 },
     { id: 'indigo-blue', name: 'インディゴブルー', value: '#172854', material: 'PLA', opacity: 1 },
     { id: 'bone-white', name: 'ボーンホワイト', value: '#a59d88', material: 'PLA', opacity: 1 },
+    {
+      id: 'red-green-silk',
+      name: 'レッドグリーンシルク',
+      value: 'pattern-red-green-stripe',
+      material: 'PLA',
+      opacity: 1,
+    },
   ],
   series: {
     acrylic: [
