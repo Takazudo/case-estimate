@@ -9,29 +9,29 @@ echo
 # Step 1: Run code quality checks
 echo "✨ Running code quality checks..."
 echo "  📝 Type checking..."
-npm run typecheck
+pnpm run typecheck
 echo "  🔍 Linting..."
-npm run lint
+pnpm run lint
 echo "  💅 Format checking..."
-npm run format
+pnpm run format
 echo "✅ Code quality checks passed"
 echo
 
 # Step 2: Run unit tests
 echo "🧪 Running unit tests..."
-npm run test:run
+pnpm run test:run
 echo "✅ Unit tests passed"
 echo
 
 # Step 3: Build the project
 echo "🔨 Building project..."
-npm run build
+pnpm run build
 echo "✅ Project built successfully"
 echo
 
 # Step 4: Build documentation
 echo "📚 Building documentation..."
-cd doc && npm run build && cd ..
+cd doc && pnpm run build && cd ..
 echo "✅ Documentation built"
 echo
 
@@ -39,8 +39,8 @@ echo
 echo "🎭 Running smoke tests with production build..."
 echo
 
-# Use npx serve to serve the static build
-npx serve out -p 3000 -s &
+# Use pnpm dlx serve to serve the static build
+pnpm dlx serve out -p 3000 -s &
 SERVER_PID=$!
 
 # Wait for server
@@ -59,7 +59,7 @@ echo
 
 # Run smoke tests with production config
 echo "🎭 Running smoke tests..."
-PORT=3000 npm run test:smoke:production
+PORT=3000 pnpm run test:smoke:production
 
 TEST_EXIT=$?
 
