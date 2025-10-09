@@ -72,7 +72,8 @@ describe('url-encoder', () => {
     it('should encode known case types', () => {
       expect(encodeCase('zudo-block-40-ACR-A')).toBe('1a');
       expect(encodeCase('zudo-block-60-3DP-B')).toBe('4b');
-      expect(encodeCase('10box-3dp')).toBe('9');
+      expect(encodeCase('10box-shallow-3dp')).toBe('9a');
+      expect(encodeCase('10box-deep-3dp')).toBe('9b');
     });
 
     it('should return original string for unknown case types', () => {
@@ -81,7 +82,8 @@ describe('url-encoder', () => {
 
     it('should handle legacy case mappings', () => {
       expect(encodeCase('zudo-block-40-type-a')).toBe('1a');
-      expect(encodeCase('10box-lite')).toBe('9');
+      expect(encodeCase('10box-lite')).toBe('9'); // Legacy old single-char code
+      expect(encodeCase('10box-3dp')).toBe('9a'); // Legacy maps to shallow
     });
   });
 
@@ -91,16 +93,24 @@ describe('url-encoder', () => {
       // Since legacy mappings exist, it might return legacy keys
       const result1a = decodeCase('1a');
       const result4b = decodeCase('4b');
-      const result9 = decodeCase('9');
+      const result9a = decodeCase('9a');
+      const result9b = decodeCase('9b');
 
       // Check that we get valid case types (could be legacy or current)
       expect(result1a).toMatch(/zudo-block-40/);
       expect(result4b).toMatch(/zudo-block-60/);
-      expect(result9).toMatch(/10box/);
+      expect(result9a).toMatch(/10box/);
+      expect(result9b).toMatch(/10box/);
 
       // Verify they contain some form of type indicator
       expect(result1a).toMatch(/(ACR|type)/);
       expect(result4b).toMatch(/(3DP|lite)/);
+    });
+
+    it('should decode legacy code 9 for backward compatibility', () => {
+      // Old URLs with '9' should still work and map to a 10box model
+      const result9 = decodeCase('9');
+      expect(result9).toBe('10box-lite'); // Legacy mapping
     });
 
     it('should return null for unknown codes', () => {
