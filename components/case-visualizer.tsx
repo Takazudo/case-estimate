@@ -43,7 +43,7 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
   l: 'front2', // L フロント2
 };
 
-// For 10BOX Lite model - maps fill colors to panel IDs
+// For 10BOX Shallow model - maps fill colors to panel IDs
 // SVG path positions (after v2 update):
 // Position 1: #2e3192 (dark blue) -> Panel 8 (main-side4)
 // Position 2: #00aeef (cyan) -> Panel 7 (main-side3)
@@ -53,7 +53,7 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
 // Position 6: #00a651 (green) -> Panel 6 (main-front)
 // Position 7: #fff200 (yellow) -> Panel 5 (main-bottom2)
 // Position 8: #ed1c24 (darker red) -> Panel 4 (main-bottom1)
-const COLOR_TO_PANEL_10BOX: { [key: string]: string } = {
+const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
   '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal)
   // Panel 2 (main-side2) has no fill style, handled by position
   '#ef4136': 'main-back1', // Panel 3: メイン: バック1 (red - top)
@@ -70,6 +70,43 @@ const COLOR_TO_PANEL_10BOX: { [key: string]: string } = {
   '#939598': 'lid-top2', // Panel 14: フタ: トップ2 (light gray - left center)
   '#58595b': 'lid-front', // Panel 15: フタ: フロント (dark gray - bottom)
   '#808285': 'lid-side2', // Panel 16: フタ: サイド2 (gray - right side)
+};
+
+// For 10BOX Deep model - 16 panels (same as shallow, includes all lid panels)
+// SVG path order (0-indexed):
+// Path 0: #00aeef (cyan) -> main-side3
+// Path 1: #00a99d (teal) -> main-side1
+// Path 2: #2e3192 (dark blue) -> main-side4
+// Path 3: No fill style -> main-side2
+// Path 4: #ef4136 (red) -> main-back1
+// Path 5: #00a651 (green) -> main-front
+// Path 6: #fff200 (yellow) -> main-bottom2
+// Path 7: #ed1c24 (darker red) -> main-bottom1
+// Path 8: #939598 (gray) -> lid-top2
+// Path 9: #a7a9ac (light gray) -> lid-top1
+// Path 10: #808285 (gray) -> lid-side2
+// Path 11: #662d91 (purple) -> lid-side1
+// Path 12: #58595b (dark gray) -> lid-front
+// Path 13: #a97c50 (brown) -> lid-back
+// Path 14: #ec008c (magenta) -> main-stand1
+// Path 15: #9e1f63 (dark purple) -> main-stand2
+const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
+  '#00aeef': 'main-side3', // Path 0: メイン: サイド3 (cyan)
+  '#00a99d': 'main-side1', // Path 1: メイン: サイド1 (teal)
+  '#2e3192': 'main-side4', // Path 2: メイン: サイド4 (dark blue)
+  // Path 3 (main-side2) has no fill style, handled by position
+  '#ef4136': 'main-back1', // Path 4: メイン: バック1 (red)
+  '#00a651': 'main-front', // Path 5: メイン: フロント (green)
+  '#fff200': 'main-bottom2', // Path 6: メイン: ボトム2 (yellow)
+  '#ed1c24': 'main-bottom1', // Path 7: メイン: ボトム1 (darker red)
+  '#939598': 'lid-top2', // Path 8: フタ: トップ2 (gray)
+  '#a7a9ac': 'lid-top1', // Path 9: フタ: トップ1 (light gray)
+  '#808285': 'lid-side2', // Path 10: フタ: サイド2 (gray)
+  '#662d91': 'lid-side1', // Path 11: フタ: サイド1 (purple)
+  '#58595b': 'lid-front', // Path 12: フタ: フロント (dark gray)
+  '#a97c50': 'lid-back', // Path 13: フタ: バック (brown)
+  '#ec008c': 'main-stand1', // Path 14: メイン: スタンド1 (magenta)
+  '#9e1f63': 'main-stand2', // Path 15: メイン: スタンド2 (dark purple)
 };
 
 // Default black color for all panels
@@ -92,7 +129,7 @@ const CaseVisualizer = ({
 
   // Determine which class mapping to use based on model type
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-3dp';
+  const is10BoxModel = caseType.startsWith('10box-');
   const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
@@ -166,6 +203,12 @@ const CaseVisualizer = ({
 
             // For 10BOX model, immediately set all panels to black to prevent color flash
             if (is10BoxModel) {
+              // Select the appropriate color mapping based on model type
+              const colorToPanelMap =
+                caseType === '10box-shallow-3dp'
+                  ? COLOR_TO_PANEL_10BOX_SHALLOW
+                  : COLOR_TO_PANEL_10BOX_DEEP;
+
               // Get all paths (including the one without fill style for Panel 2)
               const allPaths = svg.querySelectorAll('path');
               // Include both paths with fill styles AND the path at position 3 (Panel 2 with no fill)
@@ -178,12 +221,18 @@ const CaseVisualizer = ({
 
                 let panelId: string | undefined;
 
-                // Check if this is Panel 2 (position 3, index 2) - has no fill style
-                if (index === 2 && !fillMatch) {
+                // Check if this is Panel 2 (main-side2) - has no fill style
+                // Position varies between models: shallow (index 2) vs deep (index 3)
+                const isSide2NoFill =
+                  !fillMatch &&
+                  ((caseType === '10box-shallow-3dp' && index === 2) ||
+                    (caseType === '10box-deep-3dp' && index === 3));
+
+                if (isSide2NoFill) {
                   panelId = 'main-side2'; // Panel 2: メイン: サイド2
                 } else if (fillMatch) {
                   const originalColor = fillMatch[1].trim();
-                  panelId = COLOR_TO_PANEL_10BOX[originalColor];
+                  panelId = colorToPanelMap[originalColor];
                 }
 
                 if (panelId) {
@@ -199,6 +248,10 @@ const CaseVisualizer = ({
                     pathElement.style.strokeWidth = '1';
                     pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
                   }
+                } else if (fillMatch) {
+                  // This path has a fill color but no mapped panel ID
+                  // This shouldn't happen if our mappings are complete, but leave path in DOM
+                  console.warn(`Unmapped color in 10BOX model: ${fillMatch[1]} at index ${index}`);
                 }
               });
             } else {
