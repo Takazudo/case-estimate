@@ -21,7 +21,8 @@ This document specifies the new URL encoding format for the Takazudo Modular Cas
 - Examples:
   - `2a` = `zudo-block-40-3DP-A`
   - `7b` = `zudo-block-60x2-ACR-B`
-  - `9` = `10box-3dp`
+  - `9a` = `10box-shallow-3dp`
+  - `9b` = `10box-deep-3dp`
 
 #### `p` - Panel Colors (Optional)
 
@@ -52,7 +53,8 @@ const CASE_CODES = {
   'zudo-block-60x2-3DP-B': '8b',
   'zudo-block-60x2-ACR-A': '7a',
   'zudo-block-60x2-ACR-B': '7b',
-  '10box-3dp': '9'
+  '10box-shallow-3dp': '9a',
+  '10box-deep-3dp': '9b'
 };
 ```
 

@@ -19,8 +19,10 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60x2-ACR-B': '7b',
   'zudo-block-60x2-3DP-A': '8a',
   'zudo-block-60x2-3DP-B': '8b',
-  '10box-3dp': '9',
-  '10box-lite': '9', // Legacy mapping for backward compatibility
+  '10box-shallow-3dp': '9a',
+  '10box-deep-3dp': '9b',
+  '10box-3dp': '9a', // Legacy mapping for backward compatibility - maps to shallow version
+  '10box-lite': '9', // Legacy mapping for backward compatibility - old single-char code
   // Legacy mappings for backward compatibility
   'zudo-block-40-type-a': '1a',
   'zudo-block-40-type-b': '1b',
@@ -52,7 +54,8 @@ const CASE_REVERSE_MAP: { [key: string]: string } = (() => {
   Object.entries(CASE_MAP).forEach(([key, value]) => {
     if (
       key.includes('type-') ||
-      key === '10box-lite' ||
+      key === '10box-lite' || // Keep legacy '9' mapping
+      key === '10box-3dp' ||
       key === 'zudo-block-40' ||
       key === 'zudo-block-40-lite' ||
       key === 'zudo-block-60' ||
@@ -67,6 +70,7 @@ const CASE_REVERSE_MAP: { [key: string]: string } = (() => {
     if (
       !key.includes('type-') &&
       key !== '10box-lite' &&
+      key !== '10box-3dp' &&
       key !== 'zudo-block-40' &&
       key !== 'zudo-block-40-lite' &&
       key !== 'zudo-block-60' &&

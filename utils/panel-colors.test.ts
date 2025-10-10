@@ -32,7 +32,7 @@ vi.mock('../data/cases', () => ({
         { id: 'bottom3', name: 'Bottom 3' },
       ],
     },
-    '10box-3dp': {
+    '10box-shallow-3dp': {
       material: '3dp',
       panels: [
         { id: 'main-side1', name: 'Main Side 1' },
@@ -150,7 +150,7 @@ describe('panel-colors', () => {
         colors: { primary: 'carbon-black', secondary: 'bone-white' },
       };
 
-      const result = applySeriesColors(incompleteSeries, '10box-3dp', '3dp');
+      const result = applySeriesColors(incompleteSeries, '10box-shallow-3dp', '3dp');
 
       // Should fallback to carbon-black for all panels
       Object.values(result).forEach((color) => {
@@ -173,7 +173,7 @@ describe('panel-colors', () => {
         'lid-top1': '#000000',
       };
 
-      const result = isSeriesActive(allBlackSeries, panelColors, '10box-3dp', '3dp');
+      const result = isSeriesActive(allBlackSeries, panelColors, '10box-shallow-3dp', '3dp');
       expect(result).toBe(true);
     });
 
@@ -190,7 +190,7 @@ describe('panel-colors', () => {
         'lid-top1': '#000000',
       };
 
-      const result = isSeriesActive(allBlackSeries, panelColors, '10box-3dp', '3dp');
+      const result = isSeriesActive(allBlackSeries, panelColors, '10box-shallow-3dp', '3dp');
       expect(result).toBe(false);
     });
 
@@ -202,7 +202,7 @@ describe('panel-colors', () => {
       };
 
       expect(isSeriesActive(series, {}, null, '3dp')).toBe(false);
-      expect(isSeriesActive(series, {}, '10box-3dp', undefined)).toBe(false);
+      expect(isSeriesActive(series, {}, '10box-shallow-3dp', undefined)).toBe(false);
     });
 
     it('should handle x2 model primary/secondary logic', () => {
