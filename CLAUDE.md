@@ -1,5 +1,23 @@
 # Takazudo Modular: Panels
 
+## Deployment
+
+### Production URLs
+
+- **Main Application**: https://panels.takazudomodular.com/
+  - Deploys from `main` branch
+  - Interactive configurator for case customization
+- **Documentation**: https://panels.takazudomodular.com/doc/
+  - Deploys from `/doc/` directory (Docusaurus)
+  - Technical documentation and guides
+
+### URL Mapping
+
+When given a URL like `https://panels.takazudomodular.com/path` or `https://panels.takazudomodular.com/doc/path`, check the corresponding local files:
+
+- `https://panels.takazudomodular.com/` → Root of the project (Vite app)
+- `https://panels.takazudomodular.com/doc/` → `/doc/` directory (Docusaurus site)
+
 ## GitHub Integration
 
 When given a GitHub URL, use the `gh` command to fetch information:

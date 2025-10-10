@@ -154,7 +154,11 @@ const COLOR_CODES_3DP = {
   'clear-blue': 'bl',
   'bone-white': 'bw',
   'wood-white': 'ww',
-  'indigo-blue': 'ib'
+  'indigo-blue': 'ib',
+  'red-green-silk': 'rg',
+  'green': 'g',
+  'silver': 'sv',
+  '3dp-pink': 'pk'
 };
 ```
 
