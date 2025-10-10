@@ -42,7 +42,7 @@ export const applySeriesColorsWithIds = (
   const newColorIds: { [key: string]: string } = {};
 
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-3dp';
+  const is10BoxModel = caseType.startsWith('10box-');
 
   caseData.panels.forEach((panel) => {
     if (series.colors.all) {
@@ -111,7 +111,7 @@ export const applySeriesColors = (
   const newColors: PanelColors = {};
 
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-3dp';
+  const is10BoxModel = caseType.startsWith('10box-');
 
   caseData.panels.forEach((panel) => {
     if (series.colors.all) {
@@ -178,7 +178,7 @@ export const isSeriesActive = (
   if (!caseData) return false;
 
   const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType === '10box-3dp';
+  const is10BoxModel = caseType.startsWith('10box-');
 
   for (const panel of caseData.panels) {
     // If we have color IDs, use those for comparison (more accurate)
