@@ -153,6 +153,9 @@ const COLOR_MAP: { [key: string]: string } = {
   'wood-white': 'ww',
   'indigo-blue': 'ib',
   'red-green-silk': 'rg',
+  green: 'g',
+  silver: 'sv',
+  '3dp-pink': 'pk',
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
