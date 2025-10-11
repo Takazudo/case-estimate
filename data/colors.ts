@@ -91,6 +91,9 @@ export const colors: Colors = {
       material: 'PLA',
       opacity: 1,
     },
+    { id: 'green', name: 'グリーン', value: '#2d5d2d', material: 'PLA', opacity: 1 },
+    { id: 'silver', name: 'シルバー', value: '#9ca3af', material: 'PLA', opacity: 1 },
+    { id: '3dp-pink', name: 'ピンク', value: '#d4a5b0', material: 'PLA', opacity: 1 },
   ],
   series: {
     acrylic: [
