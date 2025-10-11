@@ -121,8 +121,8 @@ const COLOR_TO_PANEL_OPEN_UPGRADE: { [key: string]: string } = {
   '#be1e2d': 'back2', // Position 2: バック2 (red)
   '#ff7bac': 'bottom1', // Position 3: ボトム1 (pink)
   '#ed1e79': 'bottom2', // Position 4: ボトム2 (magenta/red)
-  '#f9ed32': 'front1', // Position 5: フロント1 (yellow)
-  '#c69c6d': 'front2', // Position 6: フロント2 (tan/beige)
+  '#f9ed32': 'top1', // Position 5: トップ1 (yellow)
+  '#c69c6d': 'top2', // Position 6: トップ2 (tan/beige)
 };
 
 // Default black color for all panels

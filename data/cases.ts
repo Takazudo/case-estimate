@@ -346,8 +346,8 @@ export const cases: Cases = {
       { id: 'back2', name: 'バック2' }, // Position 2: red
       { id: 'bottom1', name: 'ボトム1' }, // Position 3: black
       { id: 'bottom2', name: 'ボトム2' }, // Position 4: red
-      { id: 'front1', name: 'フロント1' }, // Position 5: black
-      { id: 'front2', name: 'フロント2' }, // Position 6: red
+      { id: 'top1', name: 'トップ1' }, // Position 5: black
+      { id: 'top2', name: 'トップ2' }, // Position 6: red
     ],
   },
   'zudo-block-60-open-3DP-A': {
@@ -377,8 +377,8 @@ export const cases: Cases = {
       { id: 'back2', name: 'バック2' }, // Position 2: red
       { id: 'bottom1', name: 'ボトム1' }, // Position 3: black
       { id: 'bottom2', name: 'ボトム2' }, // Position 4: red
-      { id: 'front1', name: 'フロント1' }, // Position 5: black
-      { id: 'front2', name: 'フロント2' }, // Position 6: red
+      { id: 'top1', name: 'トップ1' }, // Position 5: black
+      { id: 'top2', name: 'トップ2' }, // Position 6: red
     ],
   },
 };

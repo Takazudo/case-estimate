@@ -34,16 +34,17 @@ export default function SeriesCard({
       }
 
       // For upgrade models, alternating pattern based on physical display order
-      // Physical display order: back1, back2, bottom1, bottom2, front1, front2
+      // Physical display order: back1, back2, bottom1, bottom2, top1, top2
       // Desired pattern: black, red, black, red, black, red
-      // Panels ending in 1 are primary (black): side1, side2, front1, back1, bottom1
-      // Panels ending in 2 are secondary (colored): back2, bottom2, front2
+      // Panels ending in 1 are primary (black): side1, side2, front1, back1, bottom1, top1
+      // Panels ending in 2 are secondary (colored): back2, bottom2, front2, top2
       const isPrimary =
         panelId === 'side1' ||
         panelId === 'side2' ||
         panelId === 'front1' ||
         panelId === 'back1' ||
-        panelId === 'bottom1';
+        panelId === 'bottom1' ||
+        panelId === 'top1';
       const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       return color?.value || '#000000';
