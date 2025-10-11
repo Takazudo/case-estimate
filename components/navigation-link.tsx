@@ -51,6 +51,7 @@ export default function NavigationLink({
       onClick={handleClick}
       tabIndex={isActive ? -1 : 0}
       aria-current={isActive ? 'page' : undefined}
+      prefetch={false}
     >
       {children}
     </Link>
