@@ -273,8 +273,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  '10box-shallow-3DP': {
-    name: '10BOX-shallow-3DP',
+  '10box-shallow-3dp': {
+    name: '10BOX-shallow-3dp',
     hp: 104,
     material: '3dp',
     panels: [
@@ -296,8 +296,8 @@ export const cases: Cases = {
       { id: 'lid-side2', name: 'フタ: サイド2' },
     ],
   },
-  '10box-deep-3DP': {
-    name: '10BOX-deep-3DP',
+  '10box-deep-3dp': {
+    name: '10BOX-deep-3dp',
     hp: 104,
     material: '3dp',
     panels: [
