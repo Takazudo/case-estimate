@@ -1,57 +1,57 @@
 import React from 'react';
 
 const priceData = [
-  { model: 'zudo-block-40-3DP-A/B', lite: '4,980', nuts: '6,980', dual: '9,080', metal: '12,480' },
-  { model: 'zudo-block-40-ACR-A/B', lite: '7,980', nuts: '9,980', dual: '12,080', metal: '15,480' },
+  { model: 'zudo-block-40-3DP-A/B', lite: 4980, nuts: 6980, dual: 9080, metal: 12480 },
+  { model: 'zudo-block-40-ACR-A/B', lite: 7980, nuts: 9980, dual: 12080, metal: 15480 },
   {
     model: 'zudo-block-40x2-3DP-A/B',
-    lite: '15,060',
-    nuts: '21,060',
-    dual: '24,360',
-    metal: '34,560',
+    lite: 15060,
+    nuts: 21060,
+    dual: 24360,
+    metal: 34560,
   },
   {
     model: 'zudo-block-40x2-ACR-A/B',
-    lite: '18,060',
-    nuts: '24,060',
-    dual: '27,360',
-    metal: '37,560',
+    lite: 18060,
+    nuts: 24060,
+    dual: 27360,
+    metal: 37560,
   },
-  { model: 'zudo-block-60-3DP-A/B', lite: '6,980', nuts: '9,980', dual: '12,080', metal: '15,480' },
+  { model: 'zudo-block-60-3DP-A/B', lite: 6980, nuts: 9980, dual: 12080, metal: 15480 },
   {
     model: 'zudo-block-60-ACR-A/B',
-    lite: '8,980',
-    nuts: '11,980',
-    dual: '14,080',
-    metal: '17,480',
+    lite: 8980,
+    nuts: 11980,
+    dual: 14080,
+    metal: 17480,
   },
   {
     model: 'zudo-block-60x2-3DP-A/B',
-    lite: '17,760',
-    nuts: '26,760',
-    dual: '32,060',
-    metal: '42,260',
+    lite: 17760,
+    nuts: 26760,
+    dual: 32060,
+    metal: 42260,
   },
   {
     model: 'zudo-block-60x2-ACR-A/B',
-    lite: '19,760',
-    nuts: '28,760',
-    dual: '34,060',
-    metal: '44,260',
+    lite: 19760,
+    nuts: 28760,
+    dual: 34060,
+    metal: 44260,
   },
   {
     model: 'zudo-block-60-open-3DP-A/B',
-    lite: '3,480',
-    nuts: '5,480',
-    dual: '7,580',
-    metal: '10,980',
+    lite: 3480,
+    nuts: 5480,
+    dual: 7580,
+    metal: 10980,
   },
   {
     model: 'zudo-block-60-open-ACR-A/B',
-    lite: '4,280',
-    nuts: '6,280',
-    dual: '8,380',
-    metal: '11,780',
+    lite: 4280,
+    nuts: 6280,
+    dual: 8380,
+    metal: 11780,
   },
   {
     model: 'zudo-block-60-open-upgrade-3DP',
@@ -67,9 +67,21 @@ const priceData = [
     dual: 'dummy',
     metal: 'dummy',
   },
-  { model: '10BOX-shallow-3DP', lite: '19,680', nuts: '28,680', dual: '28,880', metal: '35,680' },
-  { model: '10BOX-deep-3DP', lite: '20,680', nuts: '29,680', dual: '29,880', metal: '36,680' },
+  { model: '10BOX-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
+  { model: '10BOX-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
 ];
+
+/**
+ * Formats a price value for display
+ * @param price - A number or string (for special values like 'dummy')
+ * @returns Formatted string with comma separators for numbers
+ */
+function formatPrice(price: number | string): string {
+  if (typeof price === 'string') {
+    return price;
+  }
+  return price.toLocaleString('ja-JP');
+}
 
 export function PriceTable() {
   // Define className variables for background colors
@@ -126,10 +138,10 @@ export function PriceTable() {
               return (
                 <tr key={row.model}>
                   <td className={styles.modelCell}>{row.model}</td>
-                  <td className={styles.right}>{row.lite}</td>
-                  <td className={styles.right}>{row.nuts}</td>
-                  <td className={styles.right}>{row.dual}</td>
-                  <td className={styles.right}>{row.metal}</td>
+                  <td className={styles.right}>{formatPrice(row.lite)}</td>
+                  <td className={styles.right}>{formatPrice(row.nuts)}</td>
+                  <td className={styles.right}>{formatPrice(row.dual)}</td>
+                  <td className={styles.right}>{formatPrice(row.metal)}</td>
                 </tr>
               );
             })}
