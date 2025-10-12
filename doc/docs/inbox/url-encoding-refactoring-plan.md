@@ -44,7 +44,7 @@ The current URL encoding system has a critical flaw: it encodes panel colors usi
 **Flow:**
 1. Page loads with URL parameters
 2. `getInitialStateFromUrl()` in `configurator.tsx`:
-- Decodes case: `2a` → `zudo-block-40-3dp-a`
+- Decodes case: `2a` → `zudo-block-40-3DP-A`
 - Decodes colors: `1cb.2rd` → panel colors
 3. `decodePanelColors()`:
 - Parses compact string

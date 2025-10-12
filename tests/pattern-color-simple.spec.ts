@@ -5,7 +5,7 @@ test.describe('Pattern Color URL Persistence', () => {
     // Test URL with red-green-silk pattern (rg code)
     const testUrl = '/m?c=2a&p=1rg.3cb';
     // This URL has:
-    // - Case: 2a (zudo-block-40-3dp-a)
+    // - Case: 2a (zudo-block-40-3DP-A)
     // - Panels: side1=red-green-silk (1rg), front1=carbon-black (3cb)
 
     await page.goto(testUrl);
@@ -33,7 +33,7 @@ test.describe('Pattern Color URL Persistence', () => {
 
   test('should preserve pattern color when switching between panels', async ({ page }) => {
     // Start with a 3DP case URL
-    await page.goto('/m?c=4a'); // zudo-block-60-3dp-a
+    await page.goto('/m?c=4a'); // zudo-block-60-3DP-A
     await page.waitForLoadState('networkidle');
 
     // Set a pattern color through URL

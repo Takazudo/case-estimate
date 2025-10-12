@@ -19,68 +19,68 @@ type PriceRow =
     };
 
 const priceData: PriceRow[] = [
-  { model: 'zudo-block-40-3dp-a/B', lite: 4980, nuts: 6980, dual: 9080, metal: 12480 },
-  { model: 'zudo-block-40-acr-a/B', lite: 7980, nuts: 9980, dual: 12080, metal: 15480 },
+  { model: 'zudo-block-40-3DP-A/B', lite: 4980, nuts: 6980, dual: 9080, metal: 12480 },
+  { model: 'zudo-block-40-ACR-A/B', lite: 7980, nuts: 9980, dual: 12080, metal: 15480 },
   {
-    model: 'zudo-block-40x2-3dp-a/B',
+    model: 'zudo-block-40x2-3DP-A/B',
     lite: 15060,
     nuts: 21060,
     dual: 24360,
     metal: 34560,
   },
   {
-    model: 'zudo-block-40x2-acr-a/B',
+    model: 'zudo-block-40x2-ACR-A/B',
     lite: 18060,
     nuts: 24060,
     dual: 27360,
     metal: 37560,
   },
-  { model: 'zudo-block-60-3dp-a/B', lite: 6980, nuts: 9980, dual: 12080, metal: 15480 },
+  { model: 'zudo-block-60-3DP-A/B', lite: 6980, nuts: 9980, dual: 12080, metal: 15480 },
   {
-    model: 'zudo-block-60-acr-a/B',
+    model: 'zudo-block-60-ACR-A/B',
     lite: 8980,
     nuts: 11980,
     dual: 14080,
     metal: 17480,
   },
   {
-    model: 'zudo-block-60x2-3dp-a/B',
+    model: 'zudo-block-60x2-3DP-A/B',
     lite: 17760,
     nuts: 26760,
     dual: 32060,
     metal: 42260,
   },
   {
-    model: 'zudo-block-60x2-acr-a/B',
+    model: 'zudo-block-60x2-ACR-A/B',
     lite: 19760,
     nuts: 28760,
     dual: 34060,
     metal: 44260,
   },
   {
-    model: 'zudo-block-60-open-3dp-a/B',
+    model: 'zudo-block-60-open-3DP-A/B',
     lite: 3480,
     nuts: 5480,
     dual: 7580,
     metal: 10980,
   },
   {
-    model: 'zudo-block-60-open-acr-a/B',
+    model: 'zudo-block-60-open-ACR-A/B',
     lite: 4280,
     nuts: 6280,
     dual: 8380,
     metal: 11780,
   },
   {
-    model: 'zudo-block-60-open-upgrade-3dp',
+    model: 'zudo-block-60-open-upgrade-3DP',
     singlePrice: 4980,
   },
   {
-    model: 'zudo-block-60-open-upgrade-acr',
+    model: 'zudo-block-60-open-upgrade-ACR',
     singlePrice: 6180,
   },
-  { model: '10BOX-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
-  { model: '10BOX-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
+  { model: '10box-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
+  { model: '10box-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
 ];
 
 /**

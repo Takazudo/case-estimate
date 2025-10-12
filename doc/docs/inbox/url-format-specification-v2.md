@@ -19,10 +19,10 @@ This document specifies the new URL encoding format for the Takazudo Modular Cas
 - Encoded case model identifier
 - Format: 1-2 character code
 - Examples:
-  - `2a` = `zudo-block-40-3dp-a`
-  - `7b` = `zudo-block-60x2-acr-b`
-  - `9a` = `10box-shallow-3dp`
-  - `9b` = `10box-deep-3dp`
+  - `2a` = `zudo-block-40-3DP-A`
+  - `7b` = `zudo-block-60x2-ACR-B`
+  - `9a` = `10box-shallow-3DP`
+  - `9b` = `10box-deep-3DP`
 
 #### `p` - Panel Colors (Optional)
 
@@ -37,24 +37,24 @@ This document specifies the new URL encoding format for the Takazudo Modular Cas
 
 ```typescript
 const CASE_CODES = {
-  'zudo-block-40-3dp-a': '2a',
-  'zudo-block-40-3dp-b': '2b',
-  'zudo-block-40-acr-a': '1a',
-  'zudo-block-40-acr-b': '1b',
-  'zudo-block-40x2-3dp-a': '6a',
-  'zudo-block-40x2-3dp-b': '6b',
-  'zudo-block-40x2-acr-a': '5a',
-  'zudo-block-40x2-acr-b': '5b',
-  'zudo-block-60-3dp-a': '4a',
-  'zudo-block-60-3dp-b': '4b',
-  'zudo-block-60-acr-a': '3a',
-  'zudo-block-60-acr-b': '3b',
-  'zudo-block-60x2-3dp-a': '8a',
-  'zudo-block-60x2-3dp-b': '8b',
-  'zudo-block-60x2-acr-a': '7a',
-  'zudo-block-60x2-acr-b': '7b',
-  '10box-shallow-3dp': '9a',
-  '10box-deep-3dp': '9b'
+  'zudo-block-40-3DP-A': '2a',
+  'zudo-block-40-3DP-B': '2b',
+  'zudo-block-40-ACR-A': '1a',
+  'zudo-block-40-ACR-B': '1b',
+  'zudo-block-40x2-3DP-A': '6a',
+  'zudo-block-40x2-3DP-B': '6b',
+  'zudo-block-40x2-ACR-A': '5a',
+  'zudo-block-40x2-ACR-B': '5b',
+  'zudo-block-60-3DP-A': '4a',
+  'zudo-block-60-3DP-B': '4b',
+  'zudo-block-60-ACR-A': '3a',
+  'zudo-block-60-ACR-B': '3b',
+  'zudo-block-60x2-3DP-A': '8a',
+  'zudo-block-60x2-3DP-B': '8b',
+  'zudo-block-60x2-ACR-A': '7a',
+  'zudo-block-60x2-ACR-B': '7b',
+  '10box-shallow-3DP': '9a',
+  '10box-deep-3DP': '9b'
 };
 ```
 
@@ -169,7 +169,7 @@ const COLOR_CODES_3DP = {
 **URL**: `/m?c=2a&p=1cb.2cb.3cr.4cr.5cb.6cr.7cb.8cr`
 
 **Decoded**:
-- Case: `zudo-block-40-3dp-a`
+- Case: `zudo-block-40-3DP-A`
 - Colors:
   - side1: carbon-black
   - side2: carbon-black
@@ -185,7 +185,7 @@ const COLOR_CODES_3DP = {
 **URL**: `/m?c=6a&p=1cb.2cb.3cb.4cb.5cr.6cr.7cb.8cr.9cb.acr.bcb.ccr`
 
 **Decoded**:
-- Case: `zudo-block-40x2-3dp-a`
+- Case: `zudo-block-40x2-3DP-A`
 - 12 panels with alternating colors
 
 ### Example 3: Series Preset (YamiKage)

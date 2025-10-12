@@ -70,10 +70,10 @@ describe('url-encoder', () => {
 
   describe('encodeCase', () => {
     it('should encode known case types', () => {
-      expect(encodeCase('zudo-block-40-acr-a')).toBe('1a');
-      expect(encodeCase('zudo-block-60-3dp-b')).toBe('4b');
-      expect(encodeCase('10box-shallow-3dp')).toBe('9a');
-      expect(encodeCase('10box-deep-3dp')).toBe('9b');
+      expect(encodeCase('zudo-block-40-ACR-A')).toBe('1a');
+      expect(encodeCase('zudo-block-60-3DP-B')).toBe('4b');
+      expect(encodeCase('10box-shallow-3DP')).toBe('9a');
+      expect(encodeCase('10box-deep-3DP')).toBe('9b');
     });
 
     it('should return original string for unknown case types', () => {
@@ -102,9 +102,9 @@ describe('url-encoder', () => {
       expect(result9a).toMatch(/10box/);
       expect(result9b).toMatch(/10box/);
 
-      // Verify they contain some form of type indicator (lowercase now)
-      expect(result1a).toMatch(/(acr|type)/);
-      expect(result4b).toMatch(/(3dp|lite)/);
+      // Verify they contain some form of type indicator (uppercase for current, lowercase for legacy)
+      expect(result1a).toMatch(/(ACR|type)/);
+      expect(result4b).toMatch(/(3DP|lite)/);
     });
 
     it('should decode legacy code 9 for backward compatibility', () => {
