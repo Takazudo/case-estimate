@@ -40,10 +40,10 @@ const ModelSelector = ({ selectedCase, onCaseSelect }: ModelSelectorProps) => {
           const order = [
             'zudo-block-60-open-3DP-A',
             'zudo-block-60-open-3DP-B',
-            'zudo-block-60-open-3DP-upgrade',
+            'zudo-block-60-open-upgrade-3DP',
             'zudo-block-60-open-ACR-A',
             'zudo-block-60-open-ACR-B',
-            'zudo-block-60-open-ACR-upgrade',
+            'zudo-block-60-open-upgrade-ACR',
           ];
           return order.indexOf(keyA) - order.indexOf(keyB);
         }),

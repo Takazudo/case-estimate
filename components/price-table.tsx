@@ -54,14 +54,14 @@ const priceData = [
     metal: '11,780',
   },
   {
-    model: 'zudo-block-60-open-3DP-upgrade',
+    model: 'zudo-block-60-open-upgrade-3DP',
     lite: 'dummy',
     nuts: 'dummy',
     dual: 'dummy',
     metal: 'dummy',
   },
   {
-    model: 'zudo-block-60-open-ACR-upgrade',
+    model: 'zudo-block-60-open-upgrade-ACR',
     lite: 'dummy',
     nuts: 'dummy',
     dual: 'dummy',

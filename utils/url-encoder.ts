@@ -25,10 +25,10 @@ const CASE_MAP: { [key: string]: string } = {
   '10box-lite': '9', // Legacy mapping for backward compatibility - old single-char code
   'zudo-block-60-open-ACR-A': 'oa',
   'zudo-block-60-open-ACR-B': 'ob',
-  'zudo-block-60-open-ACR-upgrade': 'ou',
+  'zudo-block-60-open-upgrade-ACR': 'ou',
   'zudo-block-60-open-3DP-A': 'pa',
   'zudo-block-60-open-3DP-B': 'pb',
-  'zudo-block-60-open-3DP-upgrade': 'pu',
+  'zudo-block-60-open-upgrade-3DP': 'pu',
   // Legacy mappings for backward compatibility
   'zudo-block-40-type-a': '1a',
   'zudo-block-40-type-b': '1b',

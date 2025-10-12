@@ -337,8 +337,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-ACR-upgrade': {
-    name: 'zudo-block-60-open-ACR-upgrade',
+  'zudo-block-60-open-upgrade-ACR': {
+    name: 'zudo-block-60-open-upgrade-ACR',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -368,8 +368,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-3DP-upgrade': {
-    name: 'zudo-block-60-open-3DP-upgrade',
+  'zudo-block-60-open-upgrade-3DP': {
+    name: 'zudo-block-60-open-upgrade-3DP',
     hp: 60,
     material: '3dp',
     panels: [
