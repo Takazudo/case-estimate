@@ -1,6 +1,24 @@
 import React from 'react';
 
-const priceData = [
+type PriceRow =
+  | {
+      model: string;
+      lite: number;
+      nuts: number;
+      dual: number;
+      metal: number;
+      singlePrice?: never;
+    }
+  | {
+      model: string;
+      singlePrice: number;
+      lite?: never;
+      nuts?: never;
+      dual?: never;
+      metal?: never;
+    };
+
+const priceData: PriceRow[] = [
   { model: 'zudo-block-40-3DP-A/B', lite: 4980, nuts: 6980, dual: 9080, metal: 12480 },
   { model: 'zudo-block-40-ACR-A/B', lite: 7980, nuts: 9980, dual: 12080, metal: 15480 },
   {
@@ -55,17 +73,11 @@ const priceData = [
   },
   {
     model: 'zudo-block-60-open-upgrade-3DP',
-    lite: 'dummy',
-    nuts: 'dummy',
-    dual: 'dummy',
-    metal: 'dummy',
+    singlePrice: 4980,
   },
   {
     model: 'zudo-block-60-open-upgrade-ACR',
-    lite: 'dummy',
-    nuts: 'dummy',
-    dual: 'dummy',
-    metal: 'dummy',
+    singlePrice: 6180,
   },
   { model: '10BOX-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
   { model: '10BOX-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
@@ -103,6 +115,7 @@ export function PriceTable() {
     base: `${bg} ${baseCellStyle} ${basePadding}`,
     left: `${bg} ${baseCellStyle} ${basePadding} text-left`,
     right: `${bg} ${baseCellStyle} ${basePadding} text-right`,
+    center: `${bg} ${baseCellStyle} ${basePadding} text-center`,
     modelCell: `${bg} ${baseCellStyle} ${basePadding} text-left font-medium`,
   });
 
@@ -135,6 +148,19 @@ export function PriceTable() {
             {priceData.map((row, index) => {
               const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
 
+              // Handle single-price rows (panels only, no rails)
+              if ('singlePrice' in row && row.singlePrice !== undefined) {
+                return (
+                  <tr key={row.model}>
+                    <td className={styles.modelCell}>{row.model}</td>
+                    <td colSpan={4} className={styles.center}>
+                      {formatPrice(row.singlePrice)} ※2
+                    </td>
+                  </tr>
+                );
+              }
+
+              // Handle regular rows with rail options
               return (
                 <tr key={row.model}>
                   <td className={styles.modelCell}>{row.model}</td>
