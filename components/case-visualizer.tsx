@@ -222,9 +222,9 @@ const CaseVisualizer = ({
             if (is10BoxModel || isOpenModel) {
               // Select the appropriate color mapping based on model type
               let colorToPanelMap: { [key: string]: string };
-              if (caseType === '10box-shallow-3dp') {
+              if (caseType === '10box-shallow-3DP') {
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_SHALLOW;
-              } else if (caseType === '10box-deep-3dp') {
+              } else if (caseType === '10box-deep-3DP') {
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
               } else if (caseType.includes('upgrade')) {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
@@ -250,8 +250,8 @@ const CaseVisualizer = ({
                 const isSide2NoFill =
                   is10BoxModel &&
                   !fillMatch &&
-                  ((caseType === '10box-shallow-3dp' && index === 2) ||
-                    (caseType === '10box-deep-3dp' && index === 3));
+                  ((caseType === '10box-shallow-3DP' && index === 2) ||
+                    (caseType === '10box-deep-3DP' && index === 3));
 
                 if (isSide2NoFill) {
                   panelId = 'main-side2'; // Panel 2: メイン: サイド2
