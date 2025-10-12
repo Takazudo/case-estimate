@@ -102,9 +102,9 @@ describe('url-encoder', () => {
       expect(result9a).toMatch(/10box/);
       expect(result9b).toMatch(/10box/);
 
-      // Verify they contain some form of type indicator
-      expect(result1a).toMatch(/(ACR|type)/);
-      expect(result4b).toMatch(/(3DP|lite)/);
+      // Verify they contain some form of type indicator (lowercase now)
+      expect(result1a).toMatch(/(acr|type)/);
+      expect(result4b).toMatch(/(3dp|lite)/);
     });
 
     it('should decode legacy code 9 for backward compatibility', () => {
