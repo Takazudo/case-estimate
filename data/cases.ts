@@ -1,8 +1,8 @@
 import type { Cases } from '@/types';
 
 export const cases: Cases = {
-  'zudo-block-40-3DP-A': {
-    name: 'zudo-block-40-3DP-A',
+  'zudo-block-40-3dp-a': {
+    name: 'zudo-block-40-3dp-a',
     hp: 40,
     material: '3dp',
     panels: [
@@ -16,8 +16,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40-3DP-B': {
-    name: 'zudo-block-40-3DP-B',
+  'zudo-block-40-3dp-b': {
+    name: 'zudo-block-40-3dp-b',
     hp: 40,
     material: '3dp',
     panels: [
@@ -31,8 +31,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40-ACR-A': {
-    name: 'zudo-block-40-ACR-A',
+  'zudo-block-40-acr-a': {
+    name: 'zudo-block-40-acr-a',
     hp: 40,
     material: 'acrylic',
     panels: [
@@ -46,8 +46,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40-ACR-B': {
-    name: 'zudo-block-40-ACR-B',
+  'zudo-block-40-acr-b': {
+    name: 'zudo-block-40-acr-b',
     hp: 40,
     material: 'acrylic',
     panels: [
@@ -61,8 +61,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40x2-3DP-A': {
-    name: 'zudo-block-40x2-3DP-A',
+  'zudo-block-40x2-3dp-a': {
+    name: 'zudo-block-40x2-3dp-a',
     hp: 80,
     material: '3dp',
     panels: [
@@ -80,8 +80,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40x2-3DP-B': {
-    name: 'zudo-block-40x2-3DP-B',
+  'zudo-block-40x2-3dp-b': {
+    name: 'zudo-block-40x2-3dp-b',
     hp: 80,
     material: '3dp',
     panels: [
@@ -99,8 +99,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40x2-ACR-A': {
-    name: 'zudo-block-40x2-ACR-A',
+  'zudo-block-40x2-acr-a': {
+    name: 'zudo-block-40x2-acr-a',
     hp: 80,
     material: 'acrylic',
     panels: [
@@ -118,8 +118,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-40x2-ACR-B': {
-    name: 'zudo-block-40x2-ACR-B',
+  'zudo-block-40x2-acr-b': {
+    name: 'zudo-block-40x2-acr-b',
     hp: 80,
     material: 'acrylic',
     panels: [
@@ -137,8 +137,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60-3DP-A': {
-    name: 'zudo-block-60-3DP-A',
+  'zudo-block-60-3dp-a': {
+    name: 'zudo-block-60-3dp-a',
     hp: 60,
     material: '3dp',
     panels: [
@@ -152,8 +152,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60-3DP-B': {
-    name: 'zudo-block-60-3DP-B',
+  'zudo-block-60-3dp-b': {
+    name: 'zudo-block-60-3dp-b',
     hp: 60,
     material: '3dp',
     panels: [
@@ -167,8 +167,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60-ACR-A': {
-    name: 'zudo-block-60-ACR-A',
+  'zudo-block-60-acr-a': {
+    name: 'zudo-block-60-acr-a',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -182,8 +182,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60-ACR-B': {
-    name: 'zudo-block-60-ACR-B',
+  'zudo-block-60-acr-b': {
+    name: 'zudo-block-60-acr-b',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -197,8 +197,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60x2-3DP-A': {
-    name: 'zudo-block-60x2-3DP-A',
+  'zudo-block-60x2-3dp-a': {
+    name: 'zudo-block-60x2-3dp-a',
     hp: 120,
     material: '3dp',
     panels: [
@@ -216,8 +216,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60x2-3DP-B': {
-    name: 'zudo-block-60x2-3DP-B',
+  'zudo-block-60x2-3dp-b': {
+    name: 'zudo-block-60x2-3dp-b',
     hp: 120,
     material: '3dp',
     panels: [
@@ -235,8 +235,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60x2-ACR-A': {
-    name: 'zudo-block-60x2-ACR-A',
+  'zudo-block-60x2-acr-a': {
+    name: 'zudo-block-60x2-acr-a',
     hp: 120,
     material: 'acrylic',
     panels: [
@@ -254,8 +254,8 @@ export const cases: Cases = {
       { id: 'front2', name: 'フロント2' },
     ],
   },
-  'zudo-block-60x2-ACR-B': {
-    name: 'zudo-block-60x2-ACR-B',
+  'zudo-block-60x2-acr-b': {
+    name: 'zudo-block-60x2-acr-b',
     hp: 120,
     material: 'acrylic',
     panels: [
@@ -319,8 +319,8 @@ export const cases: Cases = {
       { id: 'lid-side2', name: 'フタ: サイド2' },
     ],
   },
-  'zudo-block-60-open-ACR-A': {
-    name: 'zudo-block-60-open-ACR-A',
+  'zudo-block-60-open-acr-a': {
+    name: 'zudo-block-60-open-acr-a',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -328,8 +328,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-ACR-B': {
-    name: 'zudo-block-60-open-ACR-B',
+  'zudo-block-60-open-acr-b': {
+    name: 'zudo-block-60-open-acr-b',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -337,8 +337,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-upgrade-ACR': {
-    name: 'zudo-block-60-open-upgrade-ACR',
+  'zudo-block-60-open-upgrade-acr': {
+    name: 'zudo-block-60-open-upgrade-acr',
     hp: 60,
     material: 'acrylic',
     panels: [
@@ -350,8 +350,8 @@ export const cases: Cases = {
       { id: 'top2', name: 'トップ2' }, // Position 6: red
     ],
   },
-  'zudo-block-60-open-3DP-A': {
-    name: 'zudo-block-60-open-3DP-A',
+  'zudo-block-60-open-3dp-a': {
+    name: 'zudo-block-60-open-3dp-a',
     hp: 60,
     material: '3dp',
     panels: [
@@ -359,8 +359,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-3DP-B': {
-    name: 'zudo-block-60-open-3DP-B',
+  'zudo-block-60-open-3dp-b': {
+    name: 'zudo-block-60-open-3dp-b',
     hp: 60,
     material: '3dp',
     panels: [
@@ -368,8 +368,8 @@ export const cases: Cases = {
       { id: 'side2', name: 'サイド2' },
     ],
   },
-  'zudo-block-60-open-upgrade-3DP': {
-    name: 'zudo-block-60-open-upgrade-3DP',
+  'zudo-block-60-open-upgrade-3dp': {
+    name: 'zudo-block-60-open-upgrade-3dp',
     hp: 60,
     material: '3dp',
     panels: [

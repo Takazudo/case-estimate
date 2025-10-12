@@ -11,18 +11,13 @@ const __dirname = path.dirname(__filename);
 const colorToClass = {
   '#231f20': 'b', // black
   '#f0f': 'c', // magenta
-  '#FF00FF': 'c', // magenta (alternative)
+  '#ff00ff': 'c', // magenta (alternative - uppercase)
   '#8dc63f': 'd', // green
   '#be1e2d': 'e', // red
-  '#BE1E2D': 'e', // red (alternative)
   '#f9ed32': 'f', // yellow
-  '#F9ED32': 'f', // yellow (alternative)
   '#39b54a': 'g', // green2
-  '#39B54A': 'g', // green2 (alternative)
   '#c69c6d': 'h', // brown
-  '#C69C6D': 'h', // brown (alternative)
   '#fbb040': 'i', // orange
-  '#FBB040': 'i', // orange (alternative)
 };
 
 function convertSvg(filePath) {
@@ -48,10 +43,10 @@ function convertSvg(filePath) {
 // Process all type B SVG files
 const svgDir = path.join(__dirname, '..', 'public', 'svg');
 const typeBFiles = [
-  'zudo-block-40-ACR-B.svg',
-  'zudo-block-40-3DP-B.svg',
-  'zudo-block-60-ACR-B.svg',
-  'zudo-block-60-3DP-B.svg',
+  'zudo-block-40-acr-b.svg',
+  'zudo-block-40-3dp-b.svg',
+  'zudo-block-60-acr-b.svg',
+  'zudo-block-60-3dp-b.svg',
 ];
 
 typeBFiles.forEach((file) => {

@@ -73,7 +73,7 @@ test.describe('Hydration Tests', () => {
     // Check that case selector is visible and has correct value
     const caseSelector = page.getByRole('combobox').first();
     await expect(caseSelector).toBeVisible();
-    await expect(caseSelector).toHaveValue('zudo-block-40-ACR-A', { timeout: 5000 });
+    await expect(caseSelector).toHaveValue('zudo-block-40-acr-a', { timeout: 5000 });
 
     // Verify no hydration errors
     expect(hydrationErrors).toHaveLength(0);
@@ -90,7 +90,7 @@ test.describe('Hydration Tests', () => {
     // Check that case selector is visible and has correct value
     const caseSelector = page.getByRole('combobox').first();
     await expect(caseSelector).toBeVisible();
-    await expect(caseSelector).toHaveValue('zudo-block-60-ACR-A', { timeout: 5000 });
+    await expect(caseSelector).toHaveValue('zudo-block-60-acr-a', { timeout: 5000 });
 
     // Verify no hydration errors
     expect(hydrationErrors).toHaveLength(0);
@@ -138,7 +138,7 @@ test.describe('Hydration Tests', () => {
     await page.waitForLoadState('networkidle');
 
     // Click on a case model to navigate to configurator
-    await page.getByRole('link', { name: 'zudo-block-40-ACR-A' }).first().click();
+    await page.getByRole('link', { name: 'zudo-block-40-acr-a' }).first().click();
 
     // Wait for navigation
     await page.waitForURL(/\/m\?/);
@@ -148,7 +148,7 @@ test.describe('Hydration Tests', () => {
     // Verify case selector is visible with correct value
     const caseSelector = page.getByRole('combobox').first();
     await expect(caseSelector).toBeVisible();
-    await expect(caseSelector).toHaveValue('zudo-block-40-ACR-A', { timeout: 5000 });
+    await expect(caseSelector).toHaveValue('zudo-block-40-acr-a', { timeout: 5000 });
 
     // Verify no hydration errors
     expect(hydrationErrors).toHaveLength(0);
@@ -163,13 +163,13 @@ test.describe('Hydration Tests', () => {
     const caseSelector = page.getByRole('combobox').first();
 
     // Change to a different case
-    await caseSelector.selectOption('zudo-block-60-ACR-A');
+    await caseSelector.selectOption('zudo-block-60-acr-a');
 
     // Wait for update
     await page.waitForTimeout(1000);
 
     // Verify the selection changed
-    await expect(caseSelector).toHaveValue('zudo-block-60-ACR-A');
+    await expect(caseSelector).toHaveValue('zudo-block-60-acr-a');
 
     // Verify no hydration errors
     expect(hydrationErrors).toHaveLength(0);

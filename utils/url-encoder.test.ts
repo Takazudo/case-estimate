@@ -70,8 +70,8 @@ describe('url-encoder', () => {
 
   describe('encodeCase', () => {
     it('should encode known case types', () => {
-      expect(encodeCase('zudo-block-40-ACR-A')).toBe('1a');
-      expect(encodeCase('zudo-block-60-3DP-B')).toBe('4b');
+      expect(encodeCase('zudo-block-40-acr-a')).toBe('1a');
+      expect(encodeCase('zudo-block-60-3dp-b')).toBe('4b');
       expect(encodeCase('10box-shallow-3dp')).toBe('9a');
       expect(encodeCase('10box-deep-3dp')).toBe('9b');
     });

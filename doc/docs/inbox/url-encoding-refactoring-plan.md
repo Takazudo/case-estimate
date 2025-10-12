@@ -28,14 +28,14 @@ The current URL encoding system has a critical flaw: it encodes panel colors usi
 **Flow:**
 1. User selects colors in the configurator
 2. `configurator.tsx` maintains state:
-  - `panelColors`: `{ [panelId]: hexValue }` (e.g., `{ "side1": "#b71c1c" }`)
-  - `panelColorIds`: `{ [panelId]: colorId }` (e.g., `{ "side1": "crimson-red" }`)
+- `panelColors`: `{ [panelId]: hexValue }` (e.g., `{ "side1": "#b71c1c" }`)
+- `panelColorIds`: `{ [panelId]: colorId }` (e.g., `{ "side1": "crimson-red" }`)
 3. `useUrlPersistence` hook updates URL when state changes
 4. `encodePanelColors()` converts to URL:
-  - Takes `panelColors` (hex values)
-  - Uses `colorIdMap` to find color ID from hex value
-  - Maps to short codes (e.g., `crimson-red` → `cr`)
-  - Creates compact string like `1cb.2cr.3cb`
+- Takes `panelColors` (hex values)
+- Uses `colorIdMap` to find color ID from hex value
+- Maps to short codes (e.g., `crimson-red` → `cr`)
+- Creates compact string like `1cb.2cr.3cb`
 
 **Problem:** When multiple colors have same hex value, `colorIdMap[hexValue]` returns the first matching color ID, not necessarily the correct one.
 
@@ -44,21 +44,21 @@ The current URL encoding system has a critical flaw: it encodes panel colors usi
 **Flow:**
 1. Page loads with URL parameters
 2. `getInitialStateFromUrl()` in `configurator.tsx`:
-  - Decodes case: `2a` → `zudo-block-40-3DP-A`
-  - Decodes colors: `1cb.2rd` → panel colors
+- Decodes case: `2a` → `zudo-block-40-3dp-a`
+- Decodes colors: `1cb.2rd` → panel colors
 3. `decodePanelColors()`:
-  - Parses compact string
-  - Maps short codes back to color IDs (e.g., `cr` → `crimson-red`)
-  - Uses `colorValueMap` to get hex values
-  - Returns `{ [panelId]: hexValue }`
+- Parses compact string
+- Maps short codes back to color IDs (e.g., `cr` → `crimson-red`)
+- Uses `colorValueMap` to get hex values
+- Returns `{ [panelId]: hexValue }`
 4. Component reconstructs `panelColorIds` by searching for colors with matching hex values:
    ```typescript
    // configurator.tsx:119-126
    const matchingColor = availableColors?.find((c) => c.value === colorValue);
    ```
-  - **Critical Bug**: This always returns the first match
-  - For #b71c1c, returns `crimson-red` even if user selected `clear-red`
-  - Opacity information is lost, causing visual regression
+- **Critical Bug**: This always returns the first match
+- For #b71c1c, returns `crimson-red` even if user selected `clear-red`
+- Opacity information is lost, causing visual regression
 
 ## Proposed Solution
 
@@ -102,35 +102,35 @@ const panelColors = derivePanelColors(panelColorIds, material);
 ### Phase 1: Refactor Internal State Management
 
 1. **Update `configurator.tsx`**:
-  - Make `panelColorIds` the primary state
-  - Derive `panelColors` from `panelColorIds`
-  - Remove redundant color value lookups
+- Make `panelColorIds` the primary state
+- Derive `panelColors` from `panelColorIds`
+- Remove redundant color value lookups
 
 2. **Update color selection handlers**:
-  - `handleColorSelect()` should work with color IDs
-  - `handleSeriesSelect()` already returns IDs (good!)
+- `handleColorSelect()` should work with color IDs
+- `handleSeriesSelect()` already returns IDs (good!)
 
 ### Phase 2: Update URL Encoding/Decoding
 
 1. **Modify `url-encoder.ts`**:
-  - `encodePanelColors()`: Accept color IDs instead of values
-  - `decodePanelColors()`: Return color IDs instead of values
-  - Remove `colorIdMap` and `colorValueMap` dependencies
+- `encodePanelColors()`: Accept color IDs instead of values
+- `decodePanelColors()`: Return color IDs instead of values
+- Remove `colorIdMap` and `colorValueMap` dependencies
 
 2. **Update `use-url-persistence.ts`**:
-  - Pass `panelColorIds` instead of `panelColors`
-  - Remove color ID lookup logic
+- Pass `panelColorIds` instead of `panelColors`
+- Remove color ID lookup logic
 
 ### Phase 3: Clean Deployment
 
 1. **Remove legacy code**:
-  - Delete old hex-value based logic
-  - Remove color value lookups
-  - Clean up temporary workarounds
+- Delete old hex-value based logic
+- Remove color value lookups
+- Clean up temporary workarounds
 
 2. **Simplify URL format**:
-  - No version parameter needed
-  - Single, clean implementation
+- No version parameter needed
+- Single, clean implementation
 
 ## Benefits
 

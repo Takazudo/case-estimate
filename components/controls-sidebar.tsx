@@ -80,8 +80,8 @@ export default function ControlsSidebar({
                               // For 10BOX models and zudo-block-60-open 3DP Type A/B, only show YamiKage series
                               if (
                                 selectedCase.startsWith('10box-') ||
-                                selectedCase === 'zudo-block-60-open-3DP-A' ||
-                                selectedCase === 'zudo-block-60-open-3DP-B'
+                                selectedCase === 'zudo-block-60-open-3dp-a' ||
+                                selectedCase === 'zudo-block-60-open-3dp-b'
                               ) {
                                 return series.id === 'yamikage';
                               }

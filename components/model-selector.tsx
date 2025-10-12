@@ -38,12 +38,12 @@ const ModelSelector = ({ selectedCase, onCaseSelect }: ModelSelectorProps) => {
         .sort(([keyA], [keyB]) => {
           // Order: 3DP-A, 3DP-B, 3DP-upgrade, ACR-A, ACR-B, ACR-upgrade
           const order = [
-            'zudo-block-60-open-3DP-A',
-            'zudo-block-60-open-3DP-B',
-            'zudo-block-60-open-upgrade-3DP',
-            'zudo-block-60-open-ACR-A',
-            'zudo-block-60-open-ACR-B',
-            'zudo-block-60-open-upgrade-ACR',
+            'zudo-block-60-open-3dp-a',
+            'zudo-block-60-open-3dp-b',
+            'zudo-block-60-open-upgrade-3dp',
+            'zudo-block-60-open-acr-a',
+            'zudo-block-60-open-acr-b',
+            'zudo-block-60-open-upgrade-acr',
           ];
           return order.indexOf(keyA) - order.indexOf(keyB);
         }),

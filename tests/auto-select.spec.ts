@@ -24,7 +24,7 @@ test.describe('Auto-Select Feature', () => {
     await expect(page.locator('button:has-text("Series")')).not.toBeVisible();
 
     // Select a case model
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Series tab should now be visible and active
     await expect(page.locator('button:has-text("Series")')).toBeVisible();
@@ -45,8 +45,8 @@ test.describe('Auto-Select Feature', () => {
   }) => {
     const caseSelector = page.locator('select').first();
 
-    // Select zudo-block-40-ACR-A (acrylic case)
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    // Select zudo-block-40-acr-a (acrylic case)
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Wait for series cards to be visible
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
@@ -71,8 +71,8 @@ test.describe('Auto-Select Feature', () => {
   test('should auto-select first series for 3D printed cases', async ({ page }) => {
     const caseSelector = page.locator('select').first();
 
-    // Select zudo-block-40-3DP-A (3D printed case)
-    await caseSelector.selectOption('zudo-block-40-3DP-A');
+    // Select zudo-block-40-3dp-a (3D printed case)
+    await caseSelector.selectOption('zudo-block-40-3dp-a');
 
     // Wait for series cards to be visible
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
@@ -100,21 +100,21 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // First select acrylic case
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
     let firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
 
     // Switch to 3D printed case
-    await caseSelector.selectOption('zudo-block-40-3DP-A');
+    await caseSelector.selectOption('zudo-block-40-3dp-a');
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
 
     firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
     await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
 
     // Switch to another acrylic case
-    await caseSelector.selectOption('zudo-block-60-ACR-A');
+    await caseSelector.selectOption('zudo-block-60-acr-a');
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
     firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
@@ -125,7 +125,7 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Verify Series tab is active and first series is selected
     const seriesTabSpan = page.locator('button:has-text("Series") span').first();
@@ -151,7 +151,7 @@ test.describe('Auto-Select Feature', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Wait for series to load
     await page.waitForTimeout(500);
@@ -162,7 +162,7 @@ test.describe('Auto-Select Feature', () => {
     await expect(orangeCard).toHaveClass(/border-zd-white/);
 
     // Select the same case model again from dropdown
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Should auto-select the first series (レッド) again
     const redCard = page.locator('button').filter({ hasText: 'レッド' }).first();
@@ -176,10 +176,10 @@ test.describe('Auto-Select Feature', () => {
     // If we add a case without series in the future, it should fall back to default colors
     // For now, test that all existing cases have series
     const caseOptions = [
-      'zudo-block-40-ACR-A',
-      'zudo-block-40-3DP-A',
-      'zudo-block-60-ACR-A',
-      'zudo-block-60-3DP-A',
+      'zudo-block-40-acr-a',
+      'zudo-block-40-3dp-a',
+      'zudo-block-60-acr-a',
+      'zudo-block-60-3dp-a',
     ];
 
     for (const caseOption of caseOptions) {
@@ -209,11 +209,11 @@ test.describe('Auto-Select Edge Cases', () => {
     const caseSelector = page.locator('select').first();
 
     // Rapidly switch between cases
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
-    await caseSelector.selectOption('zudo-block-60-ACR-A');
-    await caseSelector.selectOption('zudo-block-40-3DP-A');
-    await caseSelector.selectOption('zudo-block-60-3DP-A');
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
+    await caseSelector.selectOption('zudo-block-60-acr-a');
+    await caseSelector.selectOption('zudo-block-40-3dp-a');
+    await caseSelector.selectOption('zudo-block-60-3dp-a');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // No console errors should occur
     expect(consoleErrors).toHaveLength(0);
@@ -231,7 +231,7 @@ test.describe('Auto-Select Edge Cases', () => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
-    await caseSelector.selectOption('zudo-block-40-ACR-A');
+    await caseSelector.selectOption('zudo-block-40-acr-a');
 
     // Switch to Custom tab and make a customization
     await page.locator('button:has-text("Custom")').click();
@@ -257,7 +257,7 @@ test.describe('Auto-Select Edge Cases', () => {
     }
 
     // Now select a different case
-    await caseSelector.selectOption('zudo-block-60-ACR-A');
+    await caseSelector.selectOption('zudo-block-60-acr-a');
 
     // Should auto-select Series tab and first series
     const seriesTabSpan = page.locator('button:has-text("Series") span').first();
