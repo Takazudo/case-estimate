@@ -21,11 +21,32 @@ const ModelSelector = ({ selectedCase, onCaseSelect }: ModelSelectorProps) => {
   const caseGroups = [
     {
       label: 'Zudo Block 40',
-      cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-40')),
+      cases: Object.entries(cases).filter(
+        ([key]) => key.startsWith('zudo-block-40') && !key.includes('x2'),
+      ),
     },
     {
       label: 'Zudo Block 60',
-      cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-60')),
+      cases: Object.entries(cases).filter(
+        ([key]) => key.startsWith('zudo-block-60') && !key.includes('x2') && !key.includes('open'),
+      ),
+    },
+    {
+      label: 'Zudo Block 60 Open (Starter Kit)',
+      cases: Object.entries(cases)
+        .filter(([key]) => key.includes('zudo-block-60-open'))
+        .sort(([keyA], [keyB]) => {
+          // Order: 3DP-A, 3DP-B, 3DP-upgrade, ACR-A, ACR-B, ACR-upgrade
+          const order = [
+            'zudo-block-60-open-3DP-A',
+            'zudo-block-60-open-3DP-B',
+            'zudo-block-60-open-upgrade-3DP',
+            'zudo-block-60-open-ACR-A',
+            'zudo-block-60-open-ACR-B',
+            'zudo-block-60-open-upgrade-ACR',
+          ];
+          return order.indexOf(keyA) - order.indexOf(keyB);
+        }),
     },
     {
       label: '10BOX',

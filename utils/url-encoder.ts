@@ -23,6 +23,12 @@ const CASE_MAP: { [key: string]: string } = {
   '10box-deep-3dp': '9b',
   '10box-3dp': '9a', // Legacy mapping for backward compatibility - maps to shallow version
   '10box-lite': '9', // Legacy mapping for backward compatibility - old single-char code
+  'zudo-block-60-open-ACR-A': 'oa',
+  'zudo-block-60-open-ACR-B': 'ob',
+  'zudo-block-60-open-upgrade-ACR': 'ou',
+  'zudo-block-60-open-3DP-A': 'pa',
+  'zudo-block-60-open-3DP-B': 'pb',
+  'zudo-block-60-open-upgrade-3DP': 'pu',
   // Legacy mappings for backward compatibility
   'zudo-block-40-type-a': '1a',
   'zudo-block-40-type-b': '1b',
@@ -117,6 +123,9 @@ const PANEL_MAP: { [key: string]: string } = {
   'lid-top1': 'l4',
   'lid-top2': 'l5',
   'lid-front': 'l6',
+  // zudo-block-60-open upgrade panels (use 't' prefix for top)
+  top1: 't1',
+  top2: 't2',
 };
 
 const PANEL_REVERSE_MAP: { [key: string]: string } = Object.entries(PANEL_MAP).reduce(
@@ -191,11 +200,12 @@ export function decodePanelColors(encoded: string): { [key: string]: string } {
   parts.forEach((part) => {
     // Determine panel code length based on first character
     // 10BOX panels start with 'm' or 'l' and use 2-char codes
+    // Open upgrade panels start with 't' and use 2-char codes
     // x2 model panels can use 'a', 'b', 'c' single chars
     // Regular panels use single digit chars
     let panelCodeLength = 1;
-    if (part[0] === 'm' || part[0] === 'l') {
-      panelCodeLength = 2; // 10BOX panels
+    if (part[0] === 'm' || part[0] === 'l' || part[0] === 't') {
+      panelCodeLength = 2; // 10BOX panels or open upgrade panels
     }
 
     const panelCode = part.slice(0, panelCodeLength);

@@ -109,6 +109,22 @@ const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
   '#9e1f63': 'main-stand2', // Path 15: メイン: スタンド2 (dark purple)
 };
 
+// For zudo-block-60-open Type A and B models - 2 panels
+const COLOR_TO_PANEL_OPEN_2: { [key: string]: string } = {
+  '#9e005d': 'side1', // Left panel (purple/magenta)
+  '#00a99d': 'side2', // Right panel (teal/cyan)
+};
+
+// For zudo-block-60-open Upgrade model - 6 panels
+const COLOR_TO_PANEL_OPEN_UPGRADE: { [key: string]: string } = {
+  '#fbb040': 'back1', // Position 1: バック1 (orange)
+  '#be1e2d': 'back2', // Position 2: バック2 (red)
+  '#ff7bac': 'bottom1', // Position 3: ボトム1 (pink)
+  '#ed1e79': 'bottom2', // Position 4: ボトム2 (magenta/red)
+  '#f9ed32': 'top1', // Position 5: トップ1 (yellow)
+  '#c69c6d': 'top2', // Position 6: トップ2 (tan/beige)
+};
+
 // Default black color for all panels
 const DEFAULT_PANEL_COLOR = '#1f2937';
 
@@ -130,6 +146,7 @@ const CaseVisualizer = ({
   // Determine which class mapping to use based on model type
   const isX2Model = caseType.includes('x2');
   const is10BoxModel = caseType.startsWith('10box-');
+  const isOpenModel = caseType.includes('open');
   const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
@@ -201,13 +218,19 @@ const CaseVisualizer = ({
             svg.style.display = 'block';
             svg.style.margin = 'auto';
 
-            // For 10BOX model, immediately set all panels to black to prevent color flash
-            if (is10BoxModel) {
+            // For 10BOX model and Open models, immediately set all panels to black to prevent color flash
+            if (is10BoxModel || isOpenModel) {
               // Select the appropriate color mapping based on model type
-              const colorToPanelMap =
-                caseType === '10box-shallow-3dp'
-                  ? COLOR_TO_PANEL_10BOX_SHALLOW
-                  : COLOR_TO_PANEL_10BOX_DEEP;
+              let colorToPanelMap: { [key: string]: string };
+              if (caseType === '10box-shallow-3dp') {
+                colorToPanelMap = COLOR_TO_PANEL_10BOX_SHALLOW;
+              } else if (caseType === '10box-deep-3dp') {
+                colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
+              } else if (caseType.includes('upgrade')) {
+                colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
+              } else {
+                colorToPanelMap = COLOR_TO_PANEL_OPEN_2;
+              }
 
               // Get all paths (including the one without fill style for Panel 2)
               const allPaths = svg.querySelectorAll('path');
@@ -223,7 +246,9 @@ const CaseVisualizer = ({
 
                 // Check if this is Panel 2 (main-side2) - has no fill style
                 // Position varies between models: shallow (index 2) vs deep (index 3)
+                // This logic only applies to 10BOX models, not Open models
                 const isSide2NoFill =
+                  is10BoxModel &&
                   !fillMatch &&
                   ((caseType === '10box-shallow-3dp' && index === 2) ||
                     (caseType === '10box-deep-3dp' && index === 3));
@@ -231,7 +256,8 @@ const CaseVisualizer = ({
                 if (isSide2NoFill) {
                   panelId = 'main-side2'; // Panel 2: メイン: サイド2
                 } else if (fillMatch) {
-                  const originalColor = fillMatch[1].trim();
+                  // Extract the color and normalize to lowercase for consistent matching
+                  const originalColor = fillMatch[1].trim().toLowerCase();
                   panelId = colorToPanelMap[originalColor];
                 }
 
@@ -251,7 +277,11 @@ const CaseVisualizer = ({
                 } else if (fillMatch) {
                   // This path has a fill color but no mapped panel ID
                   // This shouldn't happen if our mappings are complete, but leave path in DOM
-                  console.warn(`Unmapped color in 10BOX model: ${fillMatch[1]} at index ${index}`);
+                  const modelType = is10BoxModel ? '10BOX' : isOpenModel ? 'Open' : 'unknown';
+                  const unmappedColor = fillMatch[1].trim().toLowerCase();
+                  console.warn(
+                    `Unmapped color in ${modelType} model: ${unmappedColor} at index ${index}`,
+                  );
                 }
               });
             } else {
@@ -285,7 +315,7 @@ const CaseVisualizer = ({
     };
 
     loadSVG();
-  }, [caseType, isX2Model, is10BoxModel, onLoadingChange]);
+  }, [caseType, isX2Model, is10BoxModel, isOpenModel, onLoadingChange]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -296,8 +326,8 @@ const CaseVisualizer = ({
       const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
-      if (is10BoxModel) {
-        // Handle 10BOX Lite model which uses inline styles
+      if (is10BoxModel || isOpenModel) {
+        // Handle 10BOX and Open models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
         const paths = svg.querySelectorAll('path[data-panel-id]');
 
@@ -595,6 +625,7 @@ const CaseVisualizer = ({
     material,
     CLASS_TO_PANEL,
     is10BoxModel,
+    isOpenModel,
   ]);
 
   return (

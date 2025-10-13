@@ -274,7 +274,7 @@ export const cases: Cases = {
     ],
   },
   '10box-shallow-3dp': {
-    name: '10BOX-shallow-3DP',
+    name: '10BOX-shallow-3dp',
     hp: 104,
     material: '3dp',
     panels: [
@@ -297,7 +297,7 @@ export const cases: Cases = {
     ],
   },
   '10box-deep-3dp': {
-    name: '10BOX-deep-3DP',
+    name: '10BOX-deep-3dp',
     hp: 104,
     material: '3dp',
     panels: [
@@ -317,6 +317,68 @@ export const cases: Cases = {
       { id: 'lid-top2', name: 'フタ: トップ2' },
       { id: 'lid-front', name: 'フタ: フロント' },
       { id: 'lid-side2', name: 'フタ: サイド2' },
+    ],
+  },
+  'zudo-block-60-open-ACR-A': {
+    name: 'zudo-block-60-open-ACR-A',
+    hp: 60,
+    material: 'acrylic',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+    ],
+  },
+  'zudo-block-60-open-ACR-B': {
+    name: 'zudo-block-60-open-ACR-B',
+    hp: 60,
+    material: 'acrylic',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+    ],
+  },
+  'zudo-block-60-open-upgrade-ACR': {
+    name: 'zudo-block-60-open-upgrade-ACR',
+    hp: 60,
+    material: 'acrylic',
+    panels: [
+      { id: 'back1', name: 'バック1' }, // Position 1: black
+      { id: 'back2', name: 'バック2' }, // Position 2: red
+      { id: 'bottom1', name: 'ボトム1' }, // Position 3: black
+      { id: 'bottom2', name: 'ボトム2' }, // Position 4: red
+      { id: 'top1', name: 'トップ1' }, // Position 5: black
+      { id: 'top2', name: 'トップ2' }, // Position 6: red
+    ],
+  },
+  'zudo-block-60-open-3DP-A': {
+    name: 'zudo-block-60-open-3DP-A',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+    ],
+  },
+  'zudo-block-60-open-3DP-B': {
+    name: 'zudo-block-60-open-3DP-B',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'side1', name: 'サイド1' },
+      { id: 'side2', name: 'サイド2' },
+    ],
+  },
+  'zudo-block-60-open-upgrade-3DP': {
+    name: 'zudo-block-60-open-upgrade-3DP',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'back1', name: 'バック1' }, // Position 1: black
+      { id: 'back2', name: 'バック2' }, // Position 2: red
+      { id: 'bottom1', name: 'ボトム1' }, // Position 3: black
+      { id: 'bottom2', name: 'ボトム2' }, // Position 4: red
+      { id: 'top1', name: 'トップ1' }, // Position 5: black
+      { id: 'top2', name: 'トップ2' }, // Position 6: red
     ],
   },
 };

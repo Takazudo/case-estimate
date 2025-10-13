@@ -1,16 +1,99 @@
 import React from 'react';
 
-const priceData = [
-  { model: 'zudo-block-40-3DP', lite: '4,980', nuts: '6,980', dual: '9,080', metal: '12,480' },
-  { model: 'zudo-block-40-ACR', lite: '7,980', nuts: '9,980', dual: '12,080', metal: '15,480' },
-  { model: 'zudo-block-40x2-3DP', lite: '15,060', nuts: '21,060', dual: '24,360', metal: '34,560' },
-  { model: 'zudo-block-40x2-ACR', lite: '18,060', nuts: '24,060', dual: '27,360', metal: '37,560' },
-  { model: 'zudo-block-60-3DP', lite: '6,980', nuts: '9,980', dual: '12,080', metal: '15,480' },
-  { model: 'zudo-block-60-ACR', lite: '8,980', nuts: '11,980', dual: '14,080', metal: '17,480' },
-  { model: 'zudo-block-60x2-3DP', lite: '17,760', nuts: '26,760', dual: '32,060', metal: '42,260' },
-  { model: 'zudo-block-60x2-ACR', lite: '19,760', nuts: '28,760', dual: '34,060', metal: '44,260' },
-  { model: '10BOX-3DP', lite: '19,680', nuts: '25,680', dual: '28,880', metal: '35,680' },
+type PriceRow =
+  | {
+      model: string;
+      lite: number;
+      nuts: number;
+      dual: number;
+      metal: number;
+      singlePrice?: never;
+    }
+  | {
+      model: string;
+      singlePrice: number;
+      lite?: never;
+      nuts?: never;
+      dual?: never;
+      metal?: never;
+    };
+
+const priceData: PriceRow[] = [
+  { model: 'zudo-block-40-3DP-A/B', lite: 4980, nuts: 6980, dual: 9080, metal: 12480 },
+  { model: 'zudo-block-40-ACR-A/B', lite: 7980, nuts: 9980, dual: 12080, metal: 15480 },
+  {
+    model: 'zudo-block-40x2-3DP-A/B',
+    lite: 15060,
+    nuts: 21060,
+    dual: 24360,
+    metal: 34560,
+  },
+  {
+    model: 'zudo-block-40x2-ACR-A/B',
+    lite: 18060,
+    nuts: 24060,
+    dual: 27360,
+    metal: 37560,
+  },
+  { model: 'zudo-block-60-3DP-A/B', lite: 6980, nuts: 9980, dual: 12080, metal: 15480 },
+  {
+    model: 'zudo-block-60-ACR-A/B',
+    lite: 8980,
+    nuts: 11980,
+    dual: 14080,
+    metal: 17480,
+  },
+  {
+    model: 'zudo-block-60x2-3DP-A/B',
+    lite: 17760,
+    nuts: 26760,
+    dual: 32060,
+    metal: 42260,
+  },
+  {
+    model: 'zudo-block-60x2-ACR-A/B',
+    lite: 19760,
+    nuts: 28760,
+    dual: 34060,
+    metal: 44260,
+  },
+  {
+    model: 'zudo-block-60-open-3DP-A/B',
+    lite: 3480,
+    nuts: 5480,
+    dual: 7580,
+    metal: 10980,
+  },
+  {
+    model: 'zudo-block-60-open-ACR-A/B',
+    lite: 4280,
+    nuts: 6280,
+    dual: 8380,
+    metal: 11780,
+  },
+  {
+    model: 'zudo-block-60-open-upgrade-3DP',
+    singlePrice: 4980,
+  },
+  {
+    model: 'zudo-block-60-open-upgrade-ACR',
+    singlePrice: 6180,
+  },
+  { model: '10box-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
+  { model: '10box-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
 ];
+
+/**
+ * Formats a price value for display
+ * @param price - A number or string (for special values like 'dummy')
+ * @returns Formatted string with comma separators for numbers
+ */
+function formatPrice(price: number | string): string {
+  if (typeof price === 'string') {
+    return price;
+  }
+  return price.toLocaleString('ja-JP');
+}
 
 export function PriceTable() {
   // Define className variables for background colors
@@ -32,6 +115,7 @@ export function PriceTable() {
     base: `${bg} ${baseCellStyle} ${basePadding}`,
     left: `${bg} ${baseCellStyle} ${basePadding} text-left`,
     right: `${bg} ${baseCellStyle} ${basePadding} text-right`,
+    center: `${bg} ${baseCellStyle} ${basePadding} text-center`,
     modelCell: `${bg} ${baseCellStyle} ${basePadding} text-left font-medium`,
   });
 
@@ -64,13 +148,26 @@ export function PriceTable() {
             {priceData.map((row, index) => {
               const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
 
+              // Handle single-price rows (panels only, no rails)
+              if ('singlePrice' in row && row.singlePrice !== undefined) {
+                return (
+                  <tr key={row.model}>
+                    <td className={styles.modelCell}>{row.model}</td>
+                    <td colSpan={4} className={styles.center}>
+                      {formatPrice(row.singlePrice)} ※2
+                    </td>
+                  </tr>
+                );
+              }
+
+              // Handle regular rows with rail options
               return (
                 <tr key={row.model}>
                   <td className={styles.modelCell}>{row.model}</td>
-                  <td className={styles.right}>{row.lite}</td>
-                  <td className={styles.right}>{row.nuts}</td>
-                  <td className={styles.right}>{row.dual}</td>
-                  <td className={styles.right}>{row.metal}</td>
+                  <td className={styles.right}>{formatPrice(row.lite)}</td>
+                  <td className={styles.right}>{formatPrice(row.nuts)}</td>
+                  <td className={styles.right}>{formatPrice(row.dual)}</td>
+                  <td className={styles.right}>{formatPrice(row.metal)}</td>
                 </tr>
               );
             })}

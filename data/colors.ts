@@ -37,9 +37,9 @@ export const getColorOpacityById = (colorId: string, material: 'acrylic' | '3dp'
 
 export const colors: Colors = {
   acrylic: [
-    { id: 'red', name: 'レッド', value: '#b71c1c', material: 'Red', opacity: 0.8 },
-    { id: 'orange', name: 'オレンジ', value: '#ff9800', material: 'Orange', opacity: 0.8 },
-    { id: 'yellow', name: 'イエロー', value: '#ffeb3b', material: 'Yellow', opacity: 0.8 },
+    { id: 'red', name: 'レッド', value: '#5e0007', material: 'Red', opacity: 0.6 },
+    { id: 'orange', name: 'オレンジ', value: '#d14600', material: 'Orange', opacity: 0.6 },
+    { id: 'yellow', name: 'イエロー', value: '#dda300', material: 'Yellow', opacity: 0.45 },
     { id: 'clear', name: 'クリア', value: '#f8f9fa', material: 'Transparent', opacity: 1 },
     {
       id: 'frost-clear',
@@ -58,14 +58,14 @@ export const colors: Colors = {
     {
       id: 'sky-blue',
       name: 'スカイブルー',
-      value: '#42a5f5',
+      value: '#4497aa',
       material: 'Light Blue',
-      opacity: 0.8,
+      opacity: 0.45,
     },
-    { id: 'forest', name: 'フォレスト', value: '#1b5e20', material: 'Deep Green', opacity: 0.8 },
-    { id: 'lime', name: 'ライム', value: '#8bc34a', material: 'Light Green', opacity: 0.8 },
+    { id: 'forest', name: 'フォレスト', value: '#1b5e20', material: 'Deep Green', opacity: 0.7 },
+    { id: 'lime', name: 'ライム', value: '#8bc34a', material: 'Light Green', opacity: 0.7 },
     { id: 'shadow', name: 'シャドー', value: '#616161', material: 'Gray', opacity: 0.8 },
-    { id: 'pink', name: 'ピンク', value: '#e91e63', material: 'Pink', opacity: 0.8 },
+    { id: 'pink', name: 'ピンク', value: '#e91e63', material: 'Pink', opacity: 0.6 },
   ],
   '3dp': [
     {
@@ -97,31 +97,36 @@ export const colors: Colors = {
   ],
   series: {
     acrylic: [
-      { id: 'red', name: 'レッド', description: 'All Red', colors: { all: 'red' } },
-      { id: 'orange', name: 'オレンジ', description: 'All Orange', colors: { all: 'orange' } },
-      { id: 'yellow', name: 'イエロー', description: 'All Yellow', colors: { all: 'yellow' } },
-      { id: 'clear', name: 'クリア', description: 'All Clear', colors: { all: 'clear' } },
+      { id: 'red', name: 'フルレッド', description: 'All Red', colors: { all: 'red' } },
+      { id: 'orange', name: 'フルオレンジ', description: 'All Orange', colors: { all: 'orange' } },
+      { id: 'yellow', name: 'フルイエロー', description: 'All Yellow', colors: { all: 'yellow' } },
+      { id: 'clear', name: 'フルクリア', description: 'All Clear', colors: { all: 'clear' } },
       {
         id: 'frost-clear',
-        name: 'ガラスシアン',
+        name: 'フルガラスシアン',
         description: 'All Glass Cyan',
         colors: { all: 'frost-clear' },
       },
       {
         id: 'ocean-blue',
-        name: 'オーシャンブルー',
+        name: 'フルオーシャンブルー',
         description: 'All Ocean Blue',
         colors: { all: 'ocean-blue' },
       },
       {
         id: 'sky-blue',
-        name: 'スカイブルー',
+        name: 'フルスカイブルー',
         description: 'All Sky Blue',
         colors: { all: 'sky-blue' },
       },
-      { id: 'forest', name: 'フォレスト', description: 'All Forest', colors: { all: 'forest' } },
-      { id: 'lime', name: 'ライム', description: 'All Lime', colors: { all: 'lime' } },
-      { id: 'pink', name: 'ピンク', description: 'All Pink', colors: { all: 'pink' } },
+      {
+        id: 'forest',
+        name: 'フルフォレスト',
+        description: 'All Forest',
+        colors: { all: 'forest' },
+      },
+      { id: 'lime', name: 'フルライム', description: 'All Lime', colors: { all: 'lime' } },
+      { id: 'pink', name: 'フルピンク', description: 'All Pink', colors: { all: 'pink' } },
     ],
     '3dp': [
       {

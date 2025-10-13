@@ -102,7 +102,7 @@ describe('url-encoder', () => {
       expect(result9a).toMatch(/10box/);
       expect(result9b).toMatch(/10box/);
 
-      // Verify they contain some form of type indicator
+      // Verify they contain some form of type indicator (uppercase for current, lowercase for legacy)
       expect(result1a).toMatch(/(ACR|type)/);
       expect(result4b).toMatch(/(3DP|lite)/);
     });

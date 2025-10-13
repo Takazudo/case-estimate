@@ -79,13 +79,14 @@ export const applySeriesColorsWithIds = (
           isPrimary = false;
         }
       } else {
-        // For regular models (8 panels)
+        // For regular models (8 panels) and upgrade models (6 panels)
         isPrimary =
           panel.id === 'side1' ||
           panel.id === 'side2' ||
           panel.id === 'front1' ||
           panel.id === 'bottom1' ||
-          panel.id === 'back1';
+          panel.id === 'back1' ||
+          panel.id === 'top1';
       }
 
       const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
@@ -146,13 +147,14 @@ export const applySeriesColors = (
           isPrimary = false;
         }
       } else {
-        // For regular models (8 panels): existing logic
+        // For regular models (8 panels) and upgrade models (6 panels)
         isPrimary =
           panel.id === 'side1' ||
           panel.id === 'side2' ||
           panel.id === 'front1' ||
           panel.id === 'bottom1' ||
-          panel.id === 'back1';
+          panel.id === 'back1' ||
+          panel.id === 'top1';
       }
 
       const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
@@ -209,13 +211,14 @@ export const isSeriesActive = (
                 isPrimary = false;
               }
             } else {
-              // For regular models (8 panels)
+              // For regular models (8 panels) and upgrade models (6 panels)
               isPrimary =
                 panel.id === 'side1' ||
                 panel.id === 'side2' ||
                 panel.id === 'front1' ||
                 panel.id === 'bottom1' ||
-                panel.id === 'back1';
+                panel.id === 'back1' ||
+                panel.id === 'top1';
             }
 
             return isPrimary ? series.colors.primary : series.colors.secondary;
@@ -251,13 +254,14 @@ export const isSeriesActive = (
                 isPrimary = false;
               }
             } else {
-              // For regular models (8 panels)
+              // For regular models (8 panels) and upgrade models (6 panels)
               isPrimary =
                 panel.id === 'side1' ||
                 panel.id === 'side2' ||
                 panel.id === 'front1' ||
                 panel.id === 'bottom1' ||
-                panel.id === 'back1';
+                panel.id === 'back1' ||
+                panel.id === 'top1';
             }
 
             const colorId = isPrimary ? series.colors.primary : series.colors.secondary;

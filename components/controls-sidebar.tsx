@@ -77,8 +77,12 @@ export default function ControlsSidebar({
                         <>
                           {colors.series[material]
                             .filter((series) => {
-                              // For 10BOX models, only show YamiKage series
-                              if (selectedCase.startsWith('10box-')) {
+                              // For 10BOX models and zudo-block-60-open 3DP Type A/B, only show YamiKage series
+                              if (
+                                selectedCase.startsWith('10box-') ||
+                                selectedCase === 'zudo-block-60-open-3DP-A' ||
+                                selectedCase === 'zudo-block-60-open-3DP-B'
+                              ) {
                                 return series.id === 'yamikage';
                               }
                               return true;
