@@ -78,7 +78,7 @@ function GalleryThumbnailButton({
             ref={imageRef}
             data-src={thumbnailSrc}
             alt={item.imageAlt || `Gallery image ${item.slug}`}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
+            className="absolute inset-0 block h-full w-full object-cover transition-opacity duration-300"
             decoding="async"
             style={{ opacity: isLoaded ? 1 : 0 }}
             onLoad={(event) => onImageLoad(event.currentTarget, thumbnailSrc)}
