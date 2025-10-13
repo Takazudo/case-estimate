@@ -1,6 +1,6 @@
 /**
  * Gallery data for Takazudo Modular Panels
- * Contains 210 images with slugs and blurhash values
+ * Contains 252 images with slugs and blurhash values
  */
 
 export interface GalleryItem {
@@ -10,6 +10,208 @@ export interface GalleryItem {
 }
 
 export const galleryData: GalleryItem[] = [
+  /*
+  {
+    slug: 'panels-gallery-zudo-blocks-101',
+    imageAlt: '',
+    blurhash: 'UfK8O=s.s.S4M~WWs.R+}pazWCj?WDfQj@ay',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-102',
+    imageAlt: '',
+    blurhash: 'UhJE|nSgs.sCRlWXoeWV}psoWWj@R-WpoJjZ',
+  },
+  */
+  {
+    slug: 'panels-gallery-zudo-blocks-103',
+    imageAlt: '',
+    blurhash: 'UhK*MBRn}=$%o2xFxFj@t6jtWVj[oLj[oeay',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-104',
+    imageAlt: '',
+    blurhash: 'UYKkcaOD}p$PrtWDs.jZ^Ms.NIj?jbS4s,sA',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-105',
+    imageAlt: '',
+    blurhash: 'UTKt}5W:}pNdi}WDxYWV}po1I=ocsBWWoeay',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-106',
+    imageAlt: '',
+    blurhash: 'ULE-p-Ip]%S$9vbHs.R+|=s.W=n$kqR*s9W=',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-107',
+    imageAlt: '',
+    blurhash: 'URGj$:E1=Zoz57X8s:R*|=xZkCn$XmRjw^bI',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-108',
+    imageAlt: '',
+    blurhash: 'UHJ;@}E2^$M}D+WCs:WB~7oI#:xENLNH$$R,',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-109',
+    imageAlt: '',
+    blurhash: 'UEO]9v0KYz#X9FNb-Be-C{$*;QxsxdM{xrkD',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-110',
+    imageAlt: '',
+    blurhash: 'UPF4ikEN}qNdaeoLn+jZ$hs-oeoJESWCxCS4',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-111',
+    imageAlt: '',
+    blurhash: 'UdJ$sMM|,?ofSbj[n+ay}ns.R,oJERWBxEa}',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-112',
+    imageAlt: '',
+    blurhash: 'UMICvWvz=Y%210Rknjof}7kqbvV@R7ShODr?',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-113',
+    imageAlt: '',
+    blurhash: 'UKJYFbjE?FbuAENHNINw}=SgENwc#Ts.J7$g',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-114',
+    imageAlt: '',
+    blurhash: 'UELdDUm-^~V]D+nis.R+~St4i{s,v%NHt6R+',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-115',
+    imageAlt: '',
+    blurhash: 'UOM#FR={.4$%21ofWDt7hdt7M}ShX.bIj?WC',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-116',
+    imageAlt: '',
+    blurhash: 'UKH]g+=_xt%1CRWXs:of_LSgV[WW=yoeRjay',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-117',
+    imageAlt: '',
+    blurhash: 'UbM;jw-oxt$%7N%2R-NH?]ozf7oLx]kCxFoJ',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-118',
+    imageAlt: '',
+    blurhash: 'UaKR%u=|o}S#Lzt7t6n%.7NajFNb=|Rkaewf',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-119',
+    imageAlt: '',
+    blurhash: 'UCLm;axZ?@=x05R,14N_uMNaozOrKiJQ.5oz',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-120',
+    imageAlt: '',
+    blurhash: 'UiJQJ{xu$zxZC8%LNdR+~Bt7tQt6bbjaxaoL',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-121',
+    imageAlt: '',
+    blurhash: 'UoL:AZxD$gxZGukCRkR*~VbbSNWVt7ofxZs:',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-122',
+    imageAlt: '',
+    blurhash: 'UuL:4LxasmxaC8ofWBkC~Bt7R*j@s:ofoJWB',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-123',
+    imageAlt: '',
+    blurhash: 'UuMivJWU%1xtGcoLWXbb~Vs:R*oL%MW=sSjZ',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-124',
+    imageAlt: '',
+    blurhash: 'UXIgil}q^NxaK+J.JAni~UozbbI=-;slWBxG',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-125',
+    imageAlt: '',
+    blurhash: 'UTF~N,NdxGtQ~VkCxZt6_3%1R*oL%g$%I:oe',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-126',
+    imageAlt: '',
+    blurhash: 'UaHB3n-Ut7oz}qwIRQxa^4%1f5jF=aV@ozWB',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-127',
+    imageAlt: '',
+    blurhash: 'UUI|ah^4^N$$5=xaxawv}?s:S$NHX.I;W;Nx',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-128',
+    imageAlt: '',
+    blurhash: 'URLeHA?F%e$%1*S6Nxxa?[xboMJUY5%1%0oM',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-129',
+    imageAlt: '',
+    blurhash: 'UfLeWrxY$%s:GuafR+of_Lt6bHW;%Mbuj?of',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-130',
+    imageAlt: '',
+    blurhash: 'UdM}s?%Lx@-VGbkWNbkC_MsCRjS2O?xFw]fk',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-131',
+    imageAlt: '',
+    blurhash: 'UbM}R5tlO=xuK+xuSgXS?]s.rsn*7eaKwIr?',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-132',
+    imageAlt: '',
+    blurhash: 'UGLdx^T0?Z--0;~BWZENqD%Mo#$$krTJx@ix',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-133',
+    imageAlt: '',
+    blurhash: 'UNJFS}yBr={|Ly^PKNFv.RJR;4X8-;E*Eg#:',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-134',
+    imageAlt: '',
+    blurhash: 'UJKG{s-.Bj,DG@}Y-9OXY4tQv~$4-o%1NaR+',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-135',
+    imageAlt: '',
+    blurhash: 'UOL,n9x[F@-B%xkW}FoyyV$jOqFv^PFxNu+_',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-136',
+    imageAlt: '',
+    blurhash: 'UKJZYYxd^P%J2xJ:I[$%~D?FtOEQx^=_$$S4',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-137',
+    imageAlt: '',
+    blurhash: 'UJIW}bES07~89SI@^yni=}^zM}Ib~UV|WE%H',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-138',
+    imageAlt: '',
+    blurhash: 'UIIMoxBk=xwM14};kWAFIcwNxt^MXB5Wwfr=',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-139',
+    imageAlt: '',
+    blurhash: 'UTIDEk?a^Pt5B=KjbcxG~Cx[W;I=%f$%n$s+',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-140',
+    imageAlt: '',
+    blurhash: 'UkJZPIxsxXxDBpxsX7bH~BofWqofo~RnoLbH',
+  },
   {
     slug: 'panels-gallery-zudo-blocks-085',
     imageAlt: '',
