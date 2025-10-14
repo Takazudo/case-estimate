@@ -60,14 +60,14 @@ const priceData: PriceRow[] = [
   {
     model: 'zudo-block-60-open-3DP-A/B',
     lite: 3480,
-    nuts: 5480,
+    nuts: 4480,
     dual: 7580,
     metal: 10980,
   },
   {
     model: 'zudo-block-60-open-ACR-A/B',
     lite: 4280,
-    nuts: 6280,
+    nuts: 5280,
     dual: 8380,
     metal: 11780,
   },
