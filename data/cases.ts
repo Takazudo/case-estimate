@@ -274,7 +274,7 @@ export const cases: Cases = {
     ],
   },
   '10box-shallow-3dp': {
-    name: '10BOX-shallow-3dp',
+    name: '10BOX-shallow-3DP',
     hp: 104,
     material: '3dp',
     panels: [
@@ -297,7 +297,7 @@ export const cases: Cases = {
     ],
   },
   '10box-deep-3dp': {
-    name: '10BOX-deep-3dp',
+    name: '10BOX-deep-3DP',
     hp: 104,
     material: '3dp',
     panels: [
