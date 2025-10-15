@@ -38,6 +38,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const closeMenu = () => setIsMenuOpen(false);
 
   const navigationItems = [
+    { href: '/case-models', label: 'ケースの種類' },
     { href: '/panel', label: 'パネル素材' },
     { href: '/selection', label: 'パネル選択' },
     { href: '/price', label: '価格' },
@@ -77,6 +78,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             <div className="flex items-center gap-hgap-xs">
               {/* Navigation Links - Desktop */}
               <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
+                <NavItem href="/case-models" label="ケースの種類" />
                 <NavItem href="/panel" label="パネル素材" />
                 <NavItem href="/selection" label="パネル選択" />
                 <NavItem href="/price" label="価格" />
