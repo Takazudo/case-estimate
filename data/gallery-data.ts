@@ -23,6 +23,16 @@ export const galleryData: GalleryItem[] = [
   },
   */
   {
+    slug: 'panels-gallery-zudo-blocks-141',
+    imageAlt: '',
+    blurhash: 'UFFNxM^d=D~9:kJ.o~EMnAnTIWNf%L=Z-6b^',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-142',
+    imageAlt: '',
+    blurhash: 'UXHJs+ae^3$%niS#xFfi}AbHW;o0%1R*n%oe',
+  },
+  {
     slug: 'panels-gallery-zudo-blocks-103',
     imageAlt: '',
     blurhash: 'UhK*MBRn}=$%o2xFxFj@t6jtWVj[oLj[oeay',
