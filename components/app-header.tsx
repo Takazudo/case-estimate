@@ -77,12 +77,16 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* Right side actions */}
             <div className="flex items-center gap-hgap-xs">
               {/* Navigation Links - Desktop */}
-              <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
-                <NavItem href="/case-models" label="ケースの種類" />
-                <NavItem href="/panel" label="パネル素材" />
-                <NavItem href="/selection" label="パネル選択" />
-                <NavItem href="/price" label="価格" />
-                <NavItem href="/gallery" label="ギャラリー" />
+              <nav className="hidden md:flex flex-col gap-vgap-xs pr-[10px]">
+                <div className="flex items-center gap-hgap-sm">
+                  <NavItem href="/panel" label="パネル素材" />
+                  <NavItem href="/case-models" label="ケースの種類" />
+                </div>
+                <div className="flex items-center gap-hgap-sm">
+                  <NavItem href="/selection" label="パネル選択" />
+                  <NavItem href="/price" label="価格" />
+                  <NavItem href="/gallery" label="ギャラリー" />
+                </div>
               </nav>
               {/* CTA Button - Desktop */}
               <NavigationLink
