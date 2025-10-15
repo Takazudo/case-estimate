@@ -45,23 +45,23 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 
 ## Tech Stack
 
-- React 19 with Vite
+- React 19 with Next.js
 - TypeScript
 - Tailwind CSS 4
-- SVG panel components
+- pnpm workspace (monorepo with doc and sub-packages)
 
 ## Available Scripts
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-npm run typecheck # Run TypeScript type checking
-npm run test     # Run all Playwright tests
-npm run test:smoke # Run smoke tests only
-npm run test:ui  # Run tests with UI mode
-npm run test:debug # Debug tests interactively
+pnpm run dev      # Start development server
+pnpm run build    # Build for production
+pnpm run preview  # Preview production build
+pnpm run lint     # Run ESLint
+pnpm run typecheck # Run TypeScript type checking
+pnpm run test     # Run all Playwright tests
+pnpm run test:smoke # Run smoke tests only
+pnpm run test:ui  # Run tests with UI mode
+pnpm run test:debug # Debug tests interactively
 ```
 
 ## Code Style Guidelines
