@@ -14,6 +14,10 @@ import { Code, Pre } from './components/article/code';
 import { HR } from './components/article/hr';
 import { Strong } from './components/article/strong';
 import { ImgFloatRight } from './components/article/img-float-right';
+import ModelSection from './components/model-section';
+import ModelSectionGallery from './components/model-section-gallery';
+import ModelSectionBody from './components/model-section-body';
+import ModelGallery from './components/model-gallery';
 
 // This file is required for MDX support in Next.js App Router
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -40,6 +44,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     hr: HR,
     // Custom components
     ImgFloatRight,
+    ModelSection,
+    ModelSectionGallery,
+    ModelSectionBody,
+    ModelGallery,
     // Pass through any additional components
     ...components,
   };

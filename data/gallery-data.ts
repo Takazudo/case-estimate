@@ -10,7 +10,6 @@ export interface GalleryItem {
 }
 
 export const galleryData: GalleryItem[] = [
-  /*
   {
     slug: 'panels-gallery-zudo-blocks-101',
     imageAlt: '',
@@ -21,7 +20,6 @@ export const galleryData: GalleryItem[] = [
     imageAlt: '',
     blurhash: 'UhJE|nSgs.sCRlWXoeWV}psoWWj@R-WpoJjZ',
   },
-  */
   {
     slug: 'panels-gallery-zudo-blocks-141',
     imageAlt: '',
@@ -856,6 +854,16 @@ export const galleryData: GalleryItem[] = [
     slug: 'zb60-open-top-view-modules',
     imageAlt: '',
     blurhash: 'UEECnv-;~q9F~q%M%MM{D%xuRjRj%Mt7RjRj',
+  },
+  {
+    slug: 'zb60-open-with-modules',
+    imageAlt: '',
+    blurhash: 'UdH,x4v}$g-U}sR-sSs:}TofW=jZwvSOoeoJ',
+  },
+  {
+    slug: 'zb60-open-with-modules2',
+    imageAlt: '',
+    blurhash: 'UAD8nI}6T0?Gu3NYxB%Mt,,-%2xs^h$yxZ%0',
   },
   { slug: 'zb60-orange-01', imageAlt: '', blurhash: 'UOJkxeD$r?kD0KagWBkDvzoJj[j[smoeoead' },
   { slug: 'zb60-orange-02', imageAlt: '', blurhash: 'UPF5hr}W$^NH3=jaR%Vs}Wrsr:o#I.oeQ.bH' },
