@@ -14,6 +14,7 @@ Images for this project are **not hosted within the project repository or on the
 ## Parent Project Location
 
 Images are hosted on the main Takazudo Modular website:
+
 - **Production URL**: https://takazudomodular.com/
 - **Local Repository Path**: Defined in `.env` as `TAKAZUDO_MODULAR_LOCAL_LOCATION`
   - Example: `/Users/takazudo/repos/personal/takazudomodular`
@@ -109,6 +110,7 @@ This allows development tools and scripts to access the parent project's image d
 ## Image Processing Pipeline
 
 Images are processed through an automated pipeline that:
+
 1. Takes original source images (PNG/JPG)
 2. Generates responsive WebP variants at multiple sizes
 3. Creates BlurHash placeholders

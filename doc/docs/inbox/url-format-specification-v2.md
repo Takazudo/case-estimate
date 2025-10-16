@@ -54,7 +54,7 @@ const CASE_CODES = {
   'zudo-block-60x2-ACR-A': '7a',
   'zudo-block-60x2-ACR-B': '7b',
   '10box-shallow-3DP': '9a',
-  '10box-deep-3DP': '9b'
+  '10box-deep-3DP': '9b',
 };
 ```
 
@@ -64,14 +64,14 @@ const CASE_CODES = {
 
 ```typescript
 const PANEL_CODES_STANDARD = {
-  'side1': '1',
-  'side2': '2',
-  'back1': '3',
-  'back2': '4',
-  'bottom1': '5',
-  'bottom2': '6',
-  'front1': '7',
-  'front2': '8'
+  side1: '1',
+  side2: '2',
+  back1: '3',
+  back2: '4',
+  bottom1: '5',
+  bottom2: '6',
+  front1: '7',
+  front2: '8',
 };
 ```
 
@@ -79,18 +79,18 @@ const PANEL_CODES_STANDARD = {
 
 ```typescript
 const PANEL_CODES_X2 = {
-  'side1': '1',
-  'side2': '2',
-  'side3': '3',
-  'side4': '4',
-  'back1': '5',
-  'back2': '6',
-  'bottom1': '7',
-  'bottom2': '8',
-  'bottom3': '9',
-  'bottom4': 'a',
-  'front1': 'b',
-  'front2': 'c'
+  side1: '1',
+  side2: '2',
+  side3: '3',
+  side4: '4',
+  back1: '5',
+  back2: '6',
+  bottom1: '7',
+  bottom2: '8',
+  bottom3: '9',
+  bottom4: 'a',
+  front1: 'b',
+  front2: 'c',
 };
 ```
 
@@ -115,7 +115,7 @@ const PANEL_CODES_10BOX = {
   'lid-back': 'l3',
   'lid-top1': 'l4',
   'lid-top2': 'l5',
-  'lid-front': 'l6'
+  'lid-front': 'l6',
 };
 ```
 
@@ -125,17 +125,17 @@ const PANEL_CODES_10BOX = {
 
 ```typescript
 const COLOR_CODES_ACRYLIC = {
-  'clear': 'c',
-  'red': 'r',
-  'orange': 'o',
-  'yellow': 'y',
+  clear: 'c',
+  red: 'r',
+  orange: 'o',
+  yellow: 'y',
   'frost-clear': 'fc',
   'ocean-blue': 'ob',
   'sky-blue': 'sb',
-  'forest': 'f',
-  'lime': 'l',
-  'shadow': 's',
-  'pink': 'p'
+  forest: 'f',
+  lime: 'l',
+  shadow: 's',
+  pink: 'p',
 };
 ```
 
@@ -145,8 +145,8 @@ const COLOR_CODES_ACRYLIC = {
 const COLOR_CODES_3DP = {
   'carbon-black': 'cb',
   'matte-black': 'mb',
-  'crimson-red': 'cr',  // ← Unique code, not 'rd'
-  'clear-red': 'rd',    // ← Different from crimson-red
+  'crimson-red': 'cr', // ← Unique code, not 'rd'
+  'clear-red': 'rd', // ← Different from crimson-red
   'dark-orange': 'do',
   'light-orange': 'lo',
   'deep-yellow': 'dy',
@@ -156,9 +156,9 @@ const COLOR_CODES_3DP = {
   'wood-white': 'ww',
   'indigo-blue': 'ib',
   'red-green-silk': 'rg',
-  'green': 'g',
-  'silver': 'sv',
-  '3dp-pink': 'pk'
+  green: 'g',
+  silver: 'sv',
+  '3dp-pink': 'pk',
 };
 ```
 
@@ -169,6 +169,7 @@ const COLOR_CODES_3DP = {
 **URL**: `/m?c=2a&p=1cb.2cb.3cr.4cr.5cb.6cr.7cb.8cr`
 
 **Decoded**:
+
 - Case: `zudo-block-40-3DP-A`
 - Colors:
   - side1: carbon-black
@@ -185,6 +186,7 @@ const COLOR_CODES_3DP = {
 **URL**: `/m?c=6a&p=1cb.2cb.3cb.4cb.5cr.6cr.7cb.8cr.9cb.acr.bcb.ccr`
 
 **Decoded**:
+
 - Case: `zudo-block-40x2-3DP-A`
 - 12 panels with alternating colors
 
@@ -193,6 +195,7 @@ const COLOR_CODES_3DP = {
 **URL**: `/m?c=2a&p=1cb.2cb.3cb.4cb.5cb.6cb.7cb.8cb`
 
 **Decoded**:
+
 - All panels: carbon-black (YamiKage series)
 
 ## Encoding Algorithm
@@ -257,7 +260,7 @@ function decodeUrlV2(urlString: string): ConfiguratorState {
 
   return {
     selectedCase,
-    panelColorIds
+    panelColorIds,
   };
 }
 ```
