@@ -22,5 +22,6 @@ interface ModelSectionGalleryProps {
  * </ModelSection>
  */
 export default function ModelSectionGallery({ children }: ModelSectionGalleryProps) {
-  return <div className="w-full">{children}</div>;
+  // same pad top as H2
+  return <div className="w-full md:pt-vgap-sm lg:pt-vgap-lg">{children}</div>;
 }
