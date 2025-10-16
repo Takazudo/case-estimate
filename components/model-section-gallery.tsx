@@ -22,10 +22,5 @@ interface ModelSectionGalleryProps {
  * </ModelSection>
  */
 export default function ModelSectionGallery({ children }: ModelSectionGalleryProps) {
-  return (
-    <div className="w-full">
-      {/* Sticky positioning on desktop for better UX while scrolling */}
-      <div className="lg:sticky lg:top-24">{children}</div>
-    </div>
-  );
+  return <div className="w-full">{children}</div>;
 }
