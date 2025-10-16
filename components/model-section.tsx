@@ -22,8 +22,11 @@ interface ModelSectionProps {
 export default function ModelSection({ children }: ModelSectionProps) {
   return (
     <div className="w-full">
-      {/* Responsive grid: stacked on mobile, 2 columns on lg: breakpoint */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">{children}</div>
+      {/* Responsive layout: stacked on mobile, 2 columns on lg: breakpoint (500px left, rest for right) */}
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+        <div className="w-full lg:w-[500px] flex-shrink-0">{children[0]}</div>
+        <div className="w-full lg:flex-1">{children[1]}</div>
+      </div>
     </div>
   );
 }
