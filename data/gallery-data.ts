@@ -11,16 +11,6 @@ export interface GalleryItem {
 
 export const galleryData: GalleryItem[] = [
   {
-    slug: 'panels-gallery-zudo-blocks-101',
-    imageAlt: '',
-    blurhash: 'UfK8O=s.s.S4M~WWs.R+}pazWCj?WDfQj@ay',
-  },
-  {
-    slug: 'panels-gallery-zudo-blocks-102',
-    imageAlt: '',
-    blurhash: 'UhJE|nSgs.sCRlWXoeWV}psoWWj@R-WpoJjZ',
-  },
-  {
     slug: 'panels-gallery-zudo-blocks-141',
     imageAlt: '',
     blurhash: 'UFFNxM^d=D~9:kJ.o~EMnAnTIWNf%L=Z-6b^',
@@ -884,6 +874,16 @@ export const galleryData: GalleryItem[] = [
   { slug: 'zudo-rail-connect1', imageAlt: '', blurhash: 'U9ECnv00~q.8_N~q9FxuD%xuWBIU~qofM{M{' },
   { slug: 'zudo-rail-connect3', imageAlt: '', blurhash: 'UCDcT{%M~q%MD%RjRjM{M{M{xuM{~qWBRjRj' },
   { slug: 'zudo-rail-connect4', imageAlt: '', blurhash: 'UBDcT{xu~q9F~qRjRjM{M{RjxuM{~qWBRjRj' },
+  {
+    slug: 'panels-gallery-zudo-blocks-101',
+    imageAlt: '',
+    blurhash: 'UfK8O=s.s.S4M~WWs.R+}pazWCj?WDfQj@ay',
+  },
+  {
+    slug: 'panels-gallery-zudo-blocks-102',
+    imageAlt: '',
+    blurhash: 'UhJE|nSgs.sCRlWXoeWV}psoWWj@R-WpoJjZ',
+  },
 ];
 
 /**
