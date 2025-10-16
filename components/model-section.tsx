@@ -20,7 +20,10 @@ interface ModelSectionProps {
  * </ModelSection>
  */
 export default function ModelSection({ children }: ModelSectionProps) {
-  const childrenArray = React.Children.toArray(children);
+  // Filter out whitespace and only keep actual React elements
+  const childrenArray = React.Children.toArray(children).filter((child) =>
+    React.isValidElement(child),
+  );
 
   return (
     <div className="2xl:-mx-hgap-md">
