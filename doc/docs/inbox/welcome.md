@@ -1,6 +1,6 @@
 ---
 title: Welcome
-description: "Takazudo Modular: Panels Documentation"
+description: 'Takazudo Modular: Panels Documentation'
 ---
 
 # Welcome to Takazudo Modular: Panels Documentation
