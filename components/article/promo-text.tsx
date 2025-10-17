@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
-interface CatchTextProps {
+interface PromoTextProps {
   children: ReactNode;
 }
 
-export function CatchText({ children }: CatchTextProps) {
+export function PromoText({ children }: PromoTextProps) {
   return <p className="text-lg font-bold">{children}</p>;
 }
