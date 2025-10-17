@@ -14,6 +14,7 @@ import { Code, Pre } from './components/article/code';
 import { HR } from './components/article/hr';
 import { Strong } from './components/article/strong';
 import { ImgFloatRight } from './components/article/img-float-right';
+import { CatchText } from './components/article/catch-text';
 import ModelSection from './components/model-section';
 import ModelSectionGallery from './components/model-section-gallery';
 import ModelSectionBody from './components/model-section-body';
@@ -44,6 +45,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     hr: HR,
     // Custom components
     ImgFloatRight,
+    CatchText,
     ModelSection,
     ModelSectionGallery,
     ModelSectionBody,
