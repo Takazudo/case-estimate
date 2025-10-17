@@ -5,5 +5,5 @@ interface PromoTextProps {
 }
 
 export function PromoText({ children }: PromoTextProps) {
-  return <p className="text-lg font-bold">{children}</p>;
+  return <p className="text-lg pb-vgap-sm font-bold">{children}</p>;
 }
