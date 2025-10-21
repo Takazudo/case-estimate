@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@config '../tailwind.config.js';
 
 /* CSS Variables - Zudo Design System */
 :root {
@@ -103,9 +104,9 @@
   --color-zd-price: var(--zd-color-price);
 
   /* Custom font families */
-  --font-futura: 'Futura', 'Century Gothic', sans-serif;
-  --font-sans: 'Helvetica', sans-serif;
-  --font-mono: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-family-futura: 'Futura', 'Century Gothic', sans-serif;
+  --font-family-sans: 'Helvetica', sans-serif;
+  --font-family-mono: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
   /* Custom font sizes */
   --text-xs: var(--zd-font-xs-size);
