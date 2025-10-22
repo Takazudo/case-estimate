@@ -263,7 +263,10 @@
 
   /* Links */
   a {
-    @apply underline text-zd-link;
+    @apply underline;
+  }
+  a:hover {
+    @apply text-zd-link; /* Add hover effect */
   }
   a:focus,
   a:active {
