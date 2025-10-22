@@ -23,5 +23,5 @@ interface ModelSectionGalleryProps {
  */
 export default function ModelSectionGallery({ children }: ModelSectionGalleryProps) {
   // same pad top as H2
-  return <div className="md:pt-vgap-sm lg:pt-vgap-lg 2xl:ml-[-60px]">{children}</div>;
+  return <div className="md:pt-vgap-sm lg:pt-vgap-lg">{children}</div>;
 }
