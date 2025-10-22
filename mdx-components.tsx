@@ -19,6 +19,7 @@ import ModelSection from './components/model-section';
 import ModelSectionGallery from './components/model-section-gallery';
 import ModelSectionBody from './components/model-section-body';
 import ModelGallery from './components/model-gallery';
+import BuilderNav from './components/builder-nav';
 
 // This file is required for MDX support in Next.js App Router
 export function useMDXComponents(components: MDXComponents): MDXComponents {
@@ -50,6 +51,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ModelSectionGallery,
     ModelSectionBody,
     ModelGallery,
+    BuilderNav,
     // Pass through any additional components
     ...components,
   };
