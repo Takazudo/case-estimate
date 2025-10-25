@@ -6,6 +6,7 @@ import { H2 } from './article/h2';
 interface ModelSectionProps {
   children: React.ReactNode;
   heading?: string;
+  id?: string;
 }
 
 /**
@@ -21,7 +22,7 @@ interface ModelSectionProps {
  *   <ModelSectionBody>...</ModelSectionBody>
  * </ModelSection>
  */
-export default function ModelSection({ children, heading }: ModelSectionProps) {
+export default function ModelSection({ children, heading, id }: ModelSectionProps) {
   // Filter out whitespace and only keep actual React elements
   const childrenArray = React.Children.toArray(children).filter((child) =>
     React.isValidElement(child),
@@ -40,7 +41,7 @@ export default function ModelSection({ children, heading }: ModelSectionProps) {
         {/* H2: Mobile first row, Desktop right column first row */}
         {heading && (
           <div className="lg:col-start-2 lg:row-start-1">
-            <H2>{heading}</H2>
+            <H2 id={id}>{heading}</H2>
           </div>
         )}
 
