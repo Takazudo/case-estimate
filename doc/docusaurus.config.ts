@@ -91,6 +91,13 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
+          sidebarId: 'builderSidebar',
+          position: 'left',
+          label: 'Builder',
+          docsPluginId: 'default',
+        },
+        {
+          type: 'docSidebar',
           sidebarId: 'inboxSidebar',
           position: 'left',
           label: 'INBOX',

@@ -1,5 +1,6 @@
 packages:
   - 'sub-packages/*'
+  - 'doc'
 
 onlyBuiltDependencies:
   - esbuild
