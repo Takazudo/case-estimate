@@ -40,8 +40,13 @@ Built with modern web technologies:
 
 - **Zudo Block 40** - Compact 40HP case (Acrylic & 3D Printed variants)
 - **Zudo Block 60** - Extended 60HP case (Acrylic & 3D Printed variants)
-- **Zudo Block 40x2** - Dual 40HP configuration
-- **Zudo Block 60x2** - Dual 60HP configuration
+- **Zudo Block 40x2** - Dual 40HP configuration (80HP)
+- **Zudo Block 60x2** - Dual 60HP configuration (120HP)
+
+### Open Frame Series
+
+- **Zudo Block 60 Open** - Open frame 60HP case (Acrylic & 3D Printed variants)
+- **Zudo Block 60 Open Upgrade** - Open frame with additional panels
 
 ### 10BOX Series
 
@@ -84,8 +89,7 @@ case-estimate/
 Explore the sidebar for:
 
 - [Adding New Case Models](add-new-case-model-guide) - Complete implementation guide
-- [URL Format Specification](url-format-specification-v2) - Technical details on URL encoding
-- [URL Encoding Refactoring](url-encoding-refactoring-plan) - Architecture and design notes
+- [URL Format Specification](url-format-specification) - Technical details on URL encoding system
 
 ## Development Tools
 
