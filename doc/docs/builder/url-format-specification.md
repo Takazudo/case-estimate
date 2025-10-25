@@ -397,19 +397,6 @@ The system uses color IDs as the primary encoding mechanism to solve critical is
 - Gracefully degrade to default configuration
 - Preserve any valid parameters found
 
-## Legacy Compatibility
-
-The system includes backward compatibility mappings for older URL formats:
-
-```typescript
-// Legacy case name mappings
-'zudo-block-40-type-a' → '1a'  // Old naming
-'10box-3dp' → '9a'              // Maps to shallow version
-'10box-lite' → '9'              // Very old single-char code
-```
-
-These legacy mappings ensure older shared URLs continue to work.
-
 ## Related Files
 
 Implementation can be found in:
