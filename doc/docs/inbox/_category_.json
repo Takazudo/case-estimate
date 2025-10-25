@@ -2,10 +2,8 @@
   "label": "INBOX",
   "position": 1,
   "link": {
-    "type": "generated-index",
-    "title": "INBOX Documentation",
-    "description": "Takazudo Modular: Panels documentation and development notes",
-    "slug": "/inbox"
+    "type": "doc",
+    "id": "inbox/index"
   },
   "collapsed": false
 }

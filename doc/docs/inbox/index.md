@@ -1,6 +1,7 @@
 ---
 title: INBOX
 description: Developer notes and documentation inbox
+sidebar_position: 1
 ---
 
 # INBOX

@@ -1,38 +1,102 @@
 ---
 title: Case Builder
-description: Documentation for the Case Builder application
+description: Introduction to the Case Builder application
+sidebar_position: 1
 ---
 
-# Case Builder
+# Case Builder Introduction
 
-The **Case Builder** is an interactive web application for customizing Takazudo Modular synthesizer cases.
+The **Case Builder** is an interactive web application for customizing Takazudo Modular synthesizer cases. This tool allows users to visually configure their ideal case and see real-time pricing.
 
-## What is Case Builder?
+## What Can You Do?
 
-Case Builder allows users to:
+The Case Builder provides:
 
-- Select different case models (Zudo Block 40/60, 10BOX series)
-- Customize panel colors interactively
-- Choose rail types (Lite, Dual, Metal)
-- See real-time price estimates
-- Share configurations via URL
+- **Model Selection** - Choose from various case models (Zudo Block 40/60, 10BOX series)
+- **Panel Customization** - Select colors for each panel with an interactive SVG diagram
+- **Rail Options** - Choose between Lite, Dual, and Metal rail types
+- **Price Estimation** - See real-time pricing as you configure
+- **URL Sharing** - Share your configuration via URL parameters
 
-## Quick Links
+## Application URL
 
-- [Application Overview](intro) - Introduction to the Case Builder
-- [Adding New Models](add-new-case-model-guide) - Guide for developers
-- [URL Format Specification](url-format-specification-v2) - Technical details
-- [URL Encoding Refactoring](url-encoding-refactoring-plan) - Architecture notes
+Access the Case Builder at:
+
+**Production:** https://panels.takazudomodular.com/
+**Development:** http://localhost:3200
 
 ## Tech Stack
 
-The Case Builder is built with:
+Built with modern web technologies:
 
-- **React 19** with Vite
-- **TypeScript** - Type-safe development
-- **Tailwind CSS 4** - Styling
+- **React 19** with Vite - Fast, modern development
+- **TypeScript** - Type-safe code
+- **Tailwind CSS 4** - Utility-first styling
 - **SVG Components** - Interactive visualizations
 
-## For Developers
+## Available Models
 
-Browse the sidebar for detailed documentation on implementation, architecture, and development guides.
+### Zudo Block Series
+
+- **Zudo Block 40** - Compact 40HP case (Acrylic & 3D Printed variants)
+- **Zudo Block 60** - Extended 60HP case (Acrylic & 3D Printed variants)
+- **Zudo Block 40x2** - Dual 40HP configuration
+- **Zudo Block 60x2** - Dual 60HP configuration
+
+### 10BOX Series
+
+- **10BOX Shallow 3DP** - 104HP shallow 3D printed case
+- **10BOX Deep 3DP** - 104HP deep 3D printed case
+
+## Development Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run tests
+npm run test:smoke
+
+# Build for production
+npm run build
+```
+
+## Project Structure
+
+```
+case-estimate/
+├── src/
+│   ├── app.tsx              # Main application
+│   ├── components/          # React components
+│   ├── data/               # Case & color configurations
+│   ├── types/              # TypeScript definitions
+│   └── utils/              # Utility functions
+├── public/
+│   └── svg/                # Case SVG diagrams
+└── __inbox/                # Developer notes
+```
+
+## Documentation
+
+Explore the sidebar for:
+
+- [Adding New Case Models](add-new-case-model-guide) - Complete implementation guide
+- [URL Format Specification](url-format-specification-v2) - Technical details on URL encoding
+- [URL Encoding Refactoring](url-encoding-refactoring-plan) - Architecture and design notes
+
+## Development Tools
+
+The project uses:
+
+- **ESLint** - Code quality checks
+- **Prettier** - Code formatting
+- **Playwright** - E2E testing
+- **TypeScript** - Static type checking
+- **GitHub Actions** - CI/CD automation
+
+---
+
+For detailed technical documentation, see the guides in the sidebar.
