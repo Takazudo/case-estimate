@@ -255,6 +255,11 @@
     cursor: pointer;
   }
 
+  /* Scroll offset for anchor navigation with fixed header */
+  [id] {
+    scroll-margin-top: 100px;
+  }
+
   /* Reset box-sizing */
   *,
   *::before,
