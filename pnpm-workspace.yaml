@@ -1,0 +1,7 @@
+packages:
+  - 'sub-packages/*'
+
+onlyBuiltDependencies:
+  - esbuild
+  - puppeteer
+  - sharp
