@@ -203,21 +203,22 @@ const COLOR_CODES_ACRYLIC = {
 ```typescript
 const COLOR_CODES_3DP = {
   'carbon-black': 'cb',
-  'matte-black': 'mb',
-  'crimson-red': 'cr',      // Opaque red (PLA)
+  'bone-white': 'bw',
+  'clear-blue': 'bl',        // Semi-transparent blue (PETG)
   'clear-red': 'rd',         // Semi-transparent red (PETG) - distinct from crimson-red
+  'crimson-red': 'cr',       // Opaque red (PLA)
   'dark-orange': 'do',
   'light-orange': 'lo',
   'deep-yellow': 'dy',
-  'gold-yellow': 'gy',
-  'clear-blue': 'bl',        // Semi-transparent blue (PETG)
+  'bright-gold': 'bg',       // Renamed from 'gold-yellow'
+  'deep-gold': 'dg',         // New color
   'indigo-blue': 'ib',
-  'bone-white': 'bw',
-  'wood-white': 'ww',
   'red-green-silk': 'rg',
   green: 'g',
-  silver: 'sv',
+  'silver-gray': 'sg',       // Renamed from 'silver'
+  'silver-white': 'sw',      // New color
   '3dp-pink': 'pk',
+  caramel: 'ca',             // New color
 };
 ```
 
@@ -282,6 +283,19 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 Both use the same hex value (#b71c1c), but:
 - `rd` (clear-red) renders with 0.6 opacity (semi-transparent PETG)
 - `cr` (crimson-red) renders with 1.0 opacity (opaque PLA)
+
+### Example 6: New Color Demonstration
+
+**URL with deep-gold:** `/m?c=2a&p=1cb.2cb.3dg.4dg.5cb.6cb.7dg.8dg`
+
+**URL with silver-white:** `/m?c=2a&p=1sw.2sw.3sw.4sw.5sw.6sw.7sw.8sw`
+
+**URL with caramel:** `/m?c=2a&p=1cb.2cb.3ca.4ca.5cb.6cb.7ca.8ca`
+
+These demonstrate the new color options:
+- `dg` (deep-gold) - #ff9900 (PLA)
+- `sw` (silver-white) - #dfe0dd (PLA)
+- `ca` (caramel) - #ab461e (PLA)
 
 ## Implementation Details
 
