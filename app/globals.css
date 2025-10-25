@@ -244,6 +244,7 @@
   /* Base styles */
   html {
     @apply font-futura underline-offset-4 bg-zd-black;
+    scroll-behavior: smooth;
   }
   body {
     @apply text-base text-zd-white;
