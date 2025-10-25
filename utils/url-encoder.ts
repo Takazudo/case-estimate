@@ -96,21 +96,22 @@ const COLOR_MAP: { [key: string]: string } = {
 
   // 3DP colors
   'carbon-black': 'cb',
-  'matte-black': 'mb',
+  'bone-white': 'bw',
+  'clear-blue': 'bl',
+  'clear-red': 'rd',
   'crimson-red': 'cr',
   'dark-orange': 'do',
   'light-orange': 'lo',
   'deep-yellow': 'dy',
-  'gold-yellow': 'gy',
-  'clear-blue': 'bl',
-  'clear-red': 'rd',
-  'bone-white': 'bw',
-  'wood-white': 'ww',
+  'bright-gold': 'bg',
+  'deep-gold': 'dg',
   'indigo-blue': 'ib',
   'red-green-silk': 'rg',
   green: 'g',
-  silver: 'sv',
+  'silver-gray': 'sg',
+  'silver-white': 'sw',
   '3dp-pink': 'pk',
+  caramel: 'ca',
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
