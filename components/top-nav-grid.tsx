@@ -131,13 +131,19 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
     >
       {topNavItems.map((item) => {
         return (
-          <Link key={item.id} href={item.href} className="group block focus-visible:outline-none">
+          <Link
+            key={item.id}
+            href={item.href}
+            className="group block zd-invert-color-link no-underline"
+          >
             <div
               className="
-                relative overflow-hidden rounded-md border-[3px] border-zd-white
+                relative overflow-hidden
                 transition-all duration-300 ease-out
-                group-hover:border-zd-link group-hover:-translate-y-1
+                hover:underline
+                group-hover:-translate-y-1
                 shadow-[0_0_20px_rgba(0,0,0,0.35)]
+                border-2 border-zd-white
               "
             >
               {/* Image at the top */}
@@ -161,13 +167,22 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   />
                 </div>
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/90" />
+                <div className="absolute inset-0 bg-linear-to-b from-zd-black/70 to-zd-black" />
 
                 {/* Content */}
-                <div className="relative p-hgap-sm pb-vgap-md">
+                <div
+                  className={`
+                    relative
+                    px-hgap-md py-vgap-md
+                    group-hover:bg-zd-white
+                    group-focus:bg-zd-white
+                    group-active:bg-zd-active
+                    group-active:text-zd-black
+                  `}
+                >
                   {/* Heading with arrow */}
-                  <h2 className="flex items-center gap-hgap-xs pb-vgap-sm text-lg lg:text-xl font-bold text-zd-white border-b-[3px] border-zd-white/30 mb-vgap-sm">
-                    <ArrowRight className="w-[18px] flex-shrink-0 group-hover:text-zd-link transition-colors" />
+                  <h2 className="flex items-center gap-hgap-xs text-lg lg:text-xl font-bold underline">
+                    <ArrowRight className="w-[24px] shrink-0 transition-colors mt-[.2em]" />
                     <span className="flex-1">
                       <span>{item.title}</span>{' '}
                       <span className="text-base lg:text-lg opacity-80">/ {item.titleEn}</span>
@@ -175,9 +190,7 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   </h2>
 
                   {/* Description */}
-                  <p className="text-sm lg:text-base text-zd-white/90 leading-snug">
-                    {item.description}
-                  </p>
+                  <p className="text-sm lg:text-base pt-vgap-sm">{item.description}</p>
                 </div>
               </div>
             </div>
