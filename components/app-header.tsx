@@ -46,6 +46,11 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
     { href: '/m', label: 'ケースを作る' },
   ];
 
+  // Split navigation items for desktop layout (exclude CTA)
+  const desktopNavItems = navigationItems.filter((item) => item.href !== '/m');
+  const firstRowItems = desktopNavItems.slice(0, 2);
+  const secondRowItems = desktopNavItems.slice(2);
+
   useEffect(() => {
     closeMenu();
   }, [pathname]);
@@ -79,13 +84,14 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
               {/* Navigation Links - Desktop */}
               <nav className="hidden lg:flex flex-col xl:flex-row gap-y-[2px] xl:gap-hgap-xs pr-[10px]">
                 <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
-                  <NavItem href="/gallery" label="ギャラリー" />
-                  <NavItem href="/case-models" label="ケースの種類" />
+                  {firstRowItems.map((item) => (
+                    <NavItem key={item.href} href={item.href} label={item.label} />
+                  ))}
                 </div>
                 <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
-                  <NavItem href="/panel" label="パネル素材" />
-                  <NavItem href="/price" label="価格" />
-                  <NavItem href="/faq" label="FAQ" />
+                  {secondRowItems.map((item) => (
+                    <NavItem key={item.href} href={item.href} label={item.label} />
+                  ))}
                 </div>
               </nav>
               {/* CTA Button - Desktop */}
