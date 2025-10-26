@@ -77,28 +77,28 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* Right side actions */}
             <div className="flex items-center gap-hgap-xs">
               {/* Navigation Links - Desktop */}
-              <nav className="hidden md:flex flex-col gap-vgap-xs pr-[10px]">
-                <div className="flex items-center gap-hgap-sm">
-                  <NavItem href="/panel" label="パネル素材" />
+              <nav className="hidden lg:flex flex-col xl:flex-row gap-y-[2px] xl:gap-hgap-xs pr-[10px]">
+                <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
+                  <NavItem href="/gallery" label="ギャラリー" />
                   <NavItem href="/case-models" label="ケースの種類" />
                 </div>
-                <div className="flex items-center gap-hgap-sm">
-                  <NavItem href="/selection" label="パネル選択" />
+                <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
+                  <NavItem href="/panel" label="パネル素材" />
                   <NavItem href="/price" label="価格" />
-                  <NavItem href="/gallery" label="ギャラリー" />
+                  <NavItem href="/faq" label="FAQ" />
                 </div>
               </nav>
               {/* CTA Button - Desktop */}
               <NavigationLink
                 href="/m"
-                className="hidden md:inline-block px-hgap-sm py-vgap-xs rounded text-sm md:text-base text-zd-white whitespace-nowrap zd-button-gradient no-underline"
+                className="hidden lg:inline-block px-hgap-sm py-vgap-xs rounded text-sm lg:text-base text-zd-white whitespace-nowrap zd-button-gradient no-underline"
                 activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
               >
                 ケースを作る
               </NavigationLink>
 
               {/* Hamburger menu - Mobile only */}
-              <div className="flex items-center justify-center md:hidden">
+              <div className="flex items-center justify-center lg:hidden">
                 <MobileMenuToggle isOpen={isMenuOpen} onToggle={toggleMenu} className="" />
               </div>
             </div>
