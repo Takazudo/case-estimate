@@ -124,8 +124,9 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
   return (
     <div
       className={`
-        grid grid-cols-1 lg:grid-cols-2
-        gap-hgap-lg gap-y-vgap-lg
+        grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3
+        2xl:mx-[-100px]
+        gap-x-hgap-sm gap-y-vgap-sm
         ${className}
       `}
     >
@@ -134,7 +135,7 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
           <Link
             key={item.id}
             href={item.href}
-            className="group block zd-invert-color-link no-underline"
+            className="group flex zd-invert-color-link no-underline"
           >
             <div
               className="
@@ -144,6 +145,8 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                 group-hover:-translate-y-1
                 shadow-[0_0_20px_rgba(0,0,0,0.35)]
                 border-2 border-zd-white
+                h-full w-full
+                grid grid-rows-[auto_1fr]
               "
             >
               {/* Image at the top */}
@@ -154,7 +157,7 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
               />
 
               {/* Text section with blurhash background */}
-              <div className="relative">
+              <div className="relative grid grid-rows-[1fr]">
                 {/* Blurhash background for text section */}
                 <div className="absolute inset-0">
                   <Blurhash
@@ -174,6 +177,9 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   className={`
                     relative
                     px-hgap-md py-vgap-md
+                    md:px-hgap-md md:py-vgap-sm
+                    lg:px-hgap-md lg:py-vgap-md
+                    flex flex-col
                     group-hover:bg-zd-white
                     group-focus:bg-zd-white
                     group-active:bg-zd-active
@@ -181,16 +187,39 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   `}
                 >
                   {/* Heading with arrow */}
-                  <h2 className="flex items-center gap-hgap-xs text-lg lg:text-xl font-bold underline">
-                    <ArrowRight className="w-[24px] shrink-0 transition-colors mt-[.2em]" />
+                  <h2
+                    className={`
+                      flex items-center
+                      gap-hgap-xs
+                      text-lg md:text-base lg:text-lg
+                      font-bold underline
+                      leading-tight
+                    `}
+                  >
+                    <ArrowRight className="w-[18px] lg:w-[24px] shrink-0 transition-colors mt-[.1em]" />
                     <span className="flex-1">
                       <span>{item.title}</span>{' '}
-                      <span className="text-base lg:text-lg opacity-80">/ {item.titleEn}</span>
+                      <span
+                        className={`
+                          text-base md:text-sm lg:text-base
+                          opacity-80
+                        `}
+                      >
+                        / {item.titleEn}
+                      </span>
                     </span>
                   </h2>
 
                   {/* Description */}
-                  <p className="text-sm lg:text-base pt-vgap-sm">{item.description}</p>
+                  <p
+                    className={`
+                      text-sm lg:text-base
+                      pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm
+                      pb-vgap-xs
+                    `}
+                  >
+                    {item.description}
+                  </p>
                 </div>
               </div>
             </div>
