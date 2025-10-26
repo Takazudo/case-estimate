@@ -38,11 +38,11 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const closeMenu = () => setIsMenuOpen(false);
 
   const navigationItems = [
+    { href: '/gallery', label: 'ギャラリー' },
     { href: '/case-models', label: 'ケースの種類' },
     { href: '/panel', label: 'パネル素材' },
-    { href: '/selection', label: 'パネル選択' },
     { href: '/price', label: '価格' },
-    { href: '/gallery', label: 'ギャラリー' },
+    { href: '/faq', label: 'FAQ' },
     { href: '/m', label: 'ケースを作る' },
   ];
 
