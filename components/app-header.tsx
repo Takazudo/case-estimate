@@ -7,6 +7,7 @@ import NavigationLink from './navigation-link';
 import TakazudoLogo from './icons/takazudo-logo';
 import MobileMenuToggle from './mobile-menu-toggle';
 import MobileMenuDrawer from './mobile-menu-drawer';
+import BuildButton from './build-button';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -95,13 +96,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
                 </div>
               </nav>
               {/* CTA Button - Desktop */}
-              <NavigationLink
-                href="/m"
-                className="hidden lg:inline-block px-hgap-sm py-vgap-xs rounded text-sm lg:text-base text-zd-white whitespace-nowrap zd-button-gradient no-underline"
-                activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
-              >
-                ケースを作る
-              </NavigationLink>
+              <BuildButton href="/m" size="md" className="hidden lg:inline-flex" />
 
               {/* Hamburger menu - Mobile only */}
               <div className="flex items-center justify-center lg:hidden">
