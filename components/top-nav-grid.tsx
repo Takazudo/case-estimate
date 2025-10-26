@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Blurhash } from '@/components/blurhash';
 import ArrowRight from '@/components/icons/arrow-right';
@@ -80,6 +80,46 @@ interface TopNavGridProps {
   className?: string;
 }
 
+interface NavImageProps {
+  imageSlug: string;
+  blurhash: string;
+  alt: string;
+}
+
+function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const imageUrl = `https://takazudomodular.com/static/images/p/${imageSlug}/1200w.webp`;
+
+  return (
+    <div className="relative w-full overflow-hidden" style={{ paddingBottom: '63.35%' }}>
+      <div className="absolute inset-0">
+        {/* Blurhash placeholder */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-500 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
+        >
+          <Blurhash
+            hash={blurhash}
+            width="100%"
+            height="100%"
+            resolutionX={32}
+            resolutionY={32}
+            punch={1}
+          />
+        </div>
+        {/* Actual image */}
+        <img
+          src={imageUrl}
+          alt={alt}
+          className={`w-full h-full object-contain transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageLoaded(true)}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function TopNavGrid({ className = '' }: TopNavGridProps) {
   return (
     <div
@@ -91,11 +131,7 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
     >
       {topNavItems.map((item) => {
         return (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="group relative block focus-visible:outline-none"
-          >
+          <Link key={item.id} href={item.href} className="group block focus-visible:outline-none">
             <div
               className="
                 relative overflow-hidden rounded-md border-[3px] border-zd-white
@@ -104,8 +140,16 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                 shadow-[0_0_20px_rgba(0,0,0,0.35)]
               "
             >
-              {/* Blurhash background with aspect ratio */}
-              <div className="relative w-full" style={{ paddingBottom: '63.35%' }}>
+              {/* Image at the top */}
+              <NavImage
+                imageSlug={item.imageSlug}
+                blurhash={item.blurhash}
+                alt={`${item.title} / ${item.titleEn}`}
+              />
+
+              {/* Text section with blurhash background */}
+              <div className="relative">
+                {/* Blurhash background for text section */}
                 <div className="absolute inset-0">
                   <Blurhash
                     hash={item.blurhash}
@@ -117,19 +161,12 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   />
                 </div>
                 {/* Gradient overlay */}
-                <div
-                  className="
-                    absolute inset-0 transition-all duration-300
-                    bg-gradient-to-b from-black/30 via-black/70 to-black/80
-                  "
-                />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/90" />
 
-              {/* Content overlay */}
-              <div className="absolute inset-0 flex flex-col justify-between p-hgap-sm pb-vgap-md">
-                <div>
+                {/* Content */}
+                <div className="relative p-hgap-sm pb-vgap-md">
                   {/* Heading with arrow */}
-                  <h2 className="flex items-center gap-hgap-xs text-lg lg:text-xl font-bold text-zd-white">
+                  <h2 className="flex items-center gap-hgap-xs pb-vgap-sm text-lg lg:text-xl font-bold text-zd-white border-b-[3px] border-zd-white/30 mb-vgap-sm">
                     <ArrowRight className="w-[18px] flex-shrink-0 group-hover:text-zd-link transition-colors" />
                     <span className="flex-1">
                       <span>{item.title}</span>{' '}
@@ -138,7 +175,7 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
                   </h2>
 
                   {/* Description */}
-                  <p className="mt-vgap-xs text-sm lg:text-base text-zd-white leading-snug max-w-[420px]">
+                  <p className="text-sm lg:text-base text-zd-white/90 leading-snug">
                     {item.description}
                   </p>
                 </div>
