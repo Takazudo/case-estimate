@@ -93,7 +93,6 @@ function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
   return (
     <div className="relative w-full overflow-hidden" style={{ paddingBottom: '63.35%' }}>
       <div className="absolute inset-0">
-        {/* Blurhash placeholder */}
         <div
           className={`absolute inset-0 transition-opacity duration-500 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
         >
@@ -106,7 +105,6 @@ function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
             punch={1}
           />
         </div>
-        {/* Actual image */}
         <img
           src={imageUrl}
           alt={alt}
@@ -120,6 +118,94 @@ function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
   );
 }
 
+interface NavTextSectionProps {
+  blurhash: string;
+  title: string;
+  titleEn: string;
+  description: string;
+}
+
+function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectionProps) {
+  return (
+    <div className="relative grid grid-rows-[1fr]">
+      {/* Blurhash background */}
+      <div className="absolute inset-0">
+        <Blurhash
+          hash={blurhash}
+          width="100%"
+          height="100%"
+          resolutionX={32}
+          resolutionY={32}
+          punch={1}
+        />
+      </div>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-linear-to-b from-zd-black/70 to-zd-black" />
+
+      {/* Content */}
+      <div
+        className="
+          relative flex flex-col
+          px-hgap-md py-vgap-md
+          md:px-hgap-md md:py-vgap-sm
+          lg:px-hgap-md lg:py-vgap-md
+          group-hover:bg-zd-white
+          group-focus:bg-zd-white
+          group-active:bg-zd-active
+          group-active:text-zd-black
+        "
+      >
+        <h2 className="flex items-center gap-hgap-xs text-lg md:text-base lg:text-lg font-bold underline leading-tight">
+          <ArrowRight className="w-[18px] lg:w-[24px] shrink-0 transition-colors mt-[.1em]" />
+          <span className="flex-1">
+            <span>{title}</span>{' '}
+            <span className="text-base md:text-sm lg:text-base opacity-80">/ {titleEn}</span>
+          </span>
+        </h2>
+
+        <p className="text-sm lg:text-base pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm pb-vgap-xs">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+interface NavCardProps {
+  item: TopNavItem;
+}
+
+function NavCard({ item }: NavCardProps) {
+  return (
+    <Link href={item.href} className="group flex zd-invert-color-link no-underline">
+      <div
+        className="
+          relative overflow-hidden
+          transition-all duration-300 ease-out
+          hover:underline
+          group-hover:-translate-y-1
+          shadow-[0_0_20px_rgba(0,0,0,0.35)]
+          border-2 border-zd-white
+          h-full w-full
+          grid grid-rows-[auto_1fr]
+        "
+      >
+        <NavImage
+          imageSlug={item.imageSlug}
+          blurhash={item.blurhash}
+          alt={`${item.title} / ${item.titleEn}`}
+        />
+        <NavTextSection
+          blurhash={item.blurhash}
+          title={item.title}
+          titleEn={item.titleEn}
+          description={item.description}
+        />
+      </div>
+    </Link>
+  );
+}
+
 export default function TopNavGrid({ className = '' }: TopNavGridProps) {
   return (
     <div
@@ -130,102 +216,9 @@ export default function TopNavGrid({ className = '' }: TopNavGridProps) {
         ${className}
       `}
     >
-      {topNavItems.map((item) => {
-        return (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="group flex zd-invert-color-link no-underline"
-          >
-            <div
-              className="
-                relative overflow-hidden
-                transition-all duration-300 ease-out
-                hover:underline
-                group-hover:-translate-y-1
-                shadow-[0_0_20px_rgba(0,0,0,0.35)]
-                border-2 border-zd-white
-                h-full w-full
-                grid grid-rows-[auto_1fr]
-              "
-            >
-              {/* Image at the top */}
-              <NavImage
-                imageSlug={item.imageSlug}
-                blurhash={item.blurhash}
-                alt={`${item.title} / ${item.titleEn}`}
-              />
-
-              {/* Text section with blurhash background */}
-              <div className="relative grid grid-rows-[1fr]">
-                {/* Blurhash background for text section */}
-                <div className="absolute inset-0">
-                  <Blurhash
-                    hash={item.blurhash}
-                    width="100%"
-                    height="100%"
-                    resolutionX={32}
-                    resolutionY={32}
-                    punch={1}
-                  />
-                </div>
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-linear-to-b from-zd-black/70 to-zd-black" />
-
-                {/* Content */}
-                <div
-                  className={`
-                    relative
-                    px-hgap-md py-vgap-md
-                    md:px-hgap-md md:py-vgap-sm
-                    lg:px-hgap-md lg:py-vgap-md
-                    flex flex-col
-                    group-hover:bg-zd-white
-                    group-focus:bg-zd-white
-                    group-active:bg-zd-active
-                    group-active:text-zd-black
-                  `}
-                >
-                  {/* Heading with arrow */}
-                  <h2
-                    className={`
-                      flex items-center
-                      gap-hgap-xs
-                      text-lg md:text-base lg:text-lg
-                      font-bold underline
-                      leading-tight
-                    `}
-                  >
-                    <ArrowRight className="w-[18px] lg:w-[24px] shrink-0 transition-colors mt-[.1em]" />
-                    <span className="flex-1">
-                      <span>{item.title}</span>{' '}
-                      <span
-                        className={`
-                          text-base md:text-sm lg:text-base
-                          opacity-80
-                        `}
-                      >
-                        / {item.titleEn}
-                      </span>
-                    </span>
-                  </h2>
-
-                  {/* Description */}
-                  <p
-                    className={`
-                      text-sm lg:text-base
-                      pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm
-                      pb-vgap-xs
-                    `}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Link>
-        );
-      })}
+      {topNavItems.map((item) => (
+        <NavCard key={item.id} item={item} />
+      ))}
     </div>
   );
 }
