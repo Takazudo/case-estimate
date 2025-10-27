@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useFocusTrap } from '../../hooks/use-focus-trap';
+import { CloseIcon } from '@/components/icons/close-icon';
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -84,16 +85,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, imageUrl, imageAlt, onC
           className="absolute top-4 right-4 z-10 p-2 text-white hover:text-gray-300 transition-colors"
           aria-label="Close modal"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+          <CloseIcon className="w-6 h-6" />
         </button>
 
         {isLoading && (
