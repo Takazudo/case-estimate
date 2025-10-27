@@ -26,7 +26,6 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
     border-t border-dashed border-zd-white border-l-0 border-r-0 border-b-0
     lg:border lg:pl-hgap-md
     list-none pl-0
-    text-sm leading-[var(--zd-font-sm-lineHeight)]
     sm:text-base sm:leading-[var(--zd-font-base-lineHeight)]
     md:pt-vgap-md
     [&_li]:bg-[url(/svgs/arrow-down.svg)]
