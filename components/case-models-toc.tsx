@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookmarkIcon } from '@/components/icons/bookmark-icon';
+import { ArrowDownIcon } from '@/components/icons/arrow-down-icon';
 
 interface TocItem {
   id: string;
@@ -28,12 +29,15 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
     list-none pl-0
     sm:text-base sm:leading-[var(--zd-font-base-lineHeight)]
     md:pt-vgap-md
-    [&_li]:bg-[url(/svgs/arrow-down.svg)]
-    [&_li]:bg-no-repeat
-    [&_li]:bg-[0_0.4em]
-    [&_li]:bg-[length:20px_20px]
     [&_li]:pl-[28px]
     [&_li+li]:mt-vgap-xs
+  `;
+
+  const arrowClassName = `
+    inline-block
+    w-[20px] h-[20px]
+    mr-[8px]
+    translate-y-[0.4em]
   `;
 
   return (
@@ -44,6 +48,7 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
       <ul className={listClassName}>
         {items.map((item) => (
           <li key={item.id}>
+            <ArrowDownIcon className={arrowClassName} />
             <a href={`#${item.id}`} className="text-zd-link hover:text-white no-underline">
               {item.label}
             </a>
