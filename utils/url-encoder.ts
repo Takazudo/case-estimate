@@ -31,8 +31,11 @@ const CASE_MAP: { [key: string]: string } = {
 
 // Build reverse map
 const CASE_REVERSE_MAP: { [key: string]: string } = Object.entries(CASE_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
 );
 
 // Panel ID mappings (1-2 chars for compactness)
@@ -75,8 +78,11 @@ const PANEL_MAP: { [key: string]: string } = {
 };
 
 const PANEL_REVERSE_MAP: { [key: string]: string } = Object.entries(PANEL_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
 );
 
 // Color ID mappings (single char for common colors, 2 chars for others)
@@ -115,8 +121,11 @@ const COLOR_MAP: { [key: string]: string } = {
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
 );
 
 // Encode panel colors to a compact string (now accepts color IDs directly)
