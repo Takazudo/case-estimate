@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookmarkIcon } from './bookmark-icon';
+import { BookmarkIcon } from '@/components/icons/bookmark-icon';
 
 interface TocItem {
   id: string;

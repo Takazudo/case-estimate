@@ -2,13 +2,17 @@ import React from 'react';
 
 interface BookmarkIconProps {
   className?: string;
+  fill?: string;
 }
 
-export const BookmarkIcon: React.FC<BookmarkIconProps> = ({ className = '' }) => {
+export const BookmarkIcon: React.FC<BookmarkIconProps> = ({
+  className = '',
+  fill = 'currentColor',
+}) => {
   return (
     <svg
       className={className}
-      fill="currentColor"
+      fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       width="44"
       height="129"
