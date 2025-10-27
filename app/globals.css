@@ -269,7 +269,7 @@
 
   /* Links */
   a {
-    @apply underline text-zd-link font-bold;
+    @apply underline text-zd-link;
   }
   a:focus,
   a:active {

@@ -22,39 +22,38 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
   `;
 
   const listClassName = `
-    pt-vgap-sm mb-vgap-sm
+    pt-vgap-md pb-vgap-sm mb-vgap-sm
     pr-[50px] md:pr-[60px] lg:pr-hgap-md
     border-t border-dashed border-zd-white border-l-0 border-r-0 border-b-0
     lg:border lg:pl-hgap-md
     list-none pl-0
-    sm:text-base sm:leading-[var(--zd-font-base-lineHeight)]
-    md:pt-vgap-md
-    [&_li]:pl-[28px]
+    sm:text-base leading-tight
     [&_li+li]:mt-vgap-xs
   `;
 
   const arrowClassName = `
     inline-block
-    w-[20px] h-[20px]
+    w-[24px] h-[24px]
     mr-[8px]
-    translate-y-[0.4em]
+    translate-y-[.3em]
+    align-baseline
   `;
 
   return (
-    <div className="mt-vgap-lg">
-      <div className="relative text-zd-white">
-        <BookmarkIcon className={iconClassName} />
+    <div className="mt-vgap-lg lg:pl-[60px]">
+      <div className="mx-auto max-w-[1000px]">
+        <div className="relative text-zd-white">
+          <BookmarkIcon className={iconClassName} />
+        </div>
+        <ul className={listClassName}>
+          {items.map((item) => (
+            <li key={item.id} className="pb-vgap-xs">
+              <ArrowDownIcon className={arrowClassName} />
+              <a href={`#${item.id}`}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className={listClassName}>
-        {items.map((item) => (
-          <li key={item.id}>
-            <ArrowDownIcon className={arrowClassName} />
-            <a href={`#${item.id}`} className="text-zd-link hover:text-white no-underline">
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
