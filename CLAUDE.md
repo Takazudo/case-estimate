@@ -48,15 +48,14 @@ When given a GitHub URL, use the `gh` command to fetch information:
 
 ## Reference Project
 
-When implementing features or following patterns, refer to:
+When implementing features or following patterns, refer to the environment variable `TAKAZUDO_MODULAR_LOCAL_LOCATION` for the reference project path.
 
-- **Path**: `/Users/takazudo/repos/personal/takazudomodular`
-- Use this project as reference for:
-  - Component structure and naming conventions
-  - MDX configuration and usage patterns
-  - Styling approaches with Tailwind CSS
-  - Next.js app router patterns
-  - TypeScript patterns and types
+Use this project as reference for:
+- Component structure and naming conventions
+- MDX configuration and usage patterns
+- Styling approaches with Tailwind CSS
+- Next.js app router patterns
+- TypeScript patterns and types
 
 ## Project Overview
 
