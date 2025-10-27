@@ -140,7 +140,7 @@ function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectio
         />
       </div>
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-linear-to-b from-zd-black/70 to-zd-black" />
+      <div className="absolute inset-0 bg-gradient-to-b from-zd-black/70 to-zd-black" />
 
       {/* Content */}
       <div
