@@ -1,5 +1,4 @@
 import React from 'react';
-import './case-models-toc.css';
 
 interface TocItem {
   id: string;
@@ -11,11 +10,37 @@ interface CaseModelsTocProps {
 }
 
 export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
+  const svgClassName = `
+    absolute
+    top-[10px] md:top-[15px] lg:top-0
+    scale-50 md:scale-75 lg:scale-100
+    origin-top-right
+    right-[20px] lg:right-auto lg:left-[-60px]
+    text-zd-white
+  `;
+
+  const listClassName = `
+    pt-vgap-sm mb-vgap-sm
+    pr-[50px] md:pr-[60px] lg:pr-hgap-md
+    border-t border-dashed border-zd-white border-l-0 border-r-0 border-b-0
+    lg:border lg:pl-hgap-md
+    list-none pl-0
+    text-sm leading-[var(--zd-font-sm-lineHeight)]
+    sm:text-base sm:leading-[var(--zd-font-base-lineHeight)]
+    md:pt-vgap-md
+    [&_li]:bg-[url(/svgs/arrow-down.svg)]
+    [&_li]:bg-no-repeat
+    [&_li]:bg-[0_0.4em]
+    [&_li]:bg-[length:20px_20px]
+    [&_li]:pl-[28px]
+    [&_li+li]:mt-vgap-xs
+  `;
+
   return (
-    <div className="case-models-toc">
-      <div className="zd-toc-pointer relative">
+    <div className="mt-vgap-lg">
+      <div className="relative text-zd-white">
         <svg
-          className="bookmark-icon absolute top-[10px] md:top-[15px] lg:top-0 scale-50 md:scale-75 lg:scale-100 origin-top-right right-[20px] lg:right-auto lg:left-[-60px]"
+          className={svgClassName}
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"
           width="44"
@@ -27,7 +52,7 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
           <path d="M25.48,23.69c-.18.76-.28,1.55-.57,2.27-.55,1.38-1.79,2.09-3.34,2.05-1.11-.03-2.42-1.04-2.89-2.25-.79-2.03-.40-3.65,1.22-5.13,1.47-1.34,2.28-1.31,3.90-.07,1.14.88,1.70,1.88,1.68,3.12Z" />
         </svg>
       </div>
-      <ul className="case-models-toc-list">
+      <ul className={listClassName}>
         {items.map((item) => (
           <li key={item.id}>
             <a href={`#${item.id}`} className="text-zd-link hover:text-white no-underline">
