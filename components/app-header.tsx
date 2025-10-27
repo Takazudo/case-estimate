@@ -8,6 +8,7 @@ import TakazudoLogo from './icons/takazudo-logo';
 import MobileMenuToggle from './mobile-menu-toggle';
 import MobileMenuDrawer from './mobile-menu-drawer';
 import BuildButton from './build-button';
+import { NAVIGATION_ITEMS } from '@/data/navigation';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -38,17 +39,8 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const navigationItems = [
-    { href: '/gallery', label: 'ギャラリー' },
-    { href: '/case-models', label: 'ケースの種類' },
-    { href: '/panel', label: 'パネル素材' },
-    { href: '/price', label: '価格' },
-    { href: '/faq', label: 'FAQ' },
-    { href: '/m', label: 'ケースを作る' },
-  ];
-
   // Split navigation items for desktop layout (exclude CTA)
-  const desktopNavItems = navigationItems.filter((item) => item.href !== '/m');
+  const desktopNavItems = NAVIGATION_ITEMS.filter((item) => item.href !== '/m');
   const firstRowItems = desktopNavItems.slice(0, 2);
   const secondRowItems = desktopNavItems.slice(2);
 
@@ -112,7 +104,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
       <MobileMenuDrawer
         isOpen={isMenuOpen}
         onClose={closeMenu}
-        navigationItems={navigationItems}
+        navigationItems={NAVIGATION_ITEMS}
         currentPath={pathname}
       />
     </>

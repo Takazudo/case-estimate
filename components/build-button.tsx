@@ -6,6 +6,14 @@ interface BuildButtonProps {
   className?: string;
 }
 
+/**
+ * Reusable "Build!" call-to-action button with Takazudo Modular logo icon
+ * Used in header navigation and builder navigation lists
+ *
+ * @param href - Destination URL (typically '/m' for case builder)
+ * @param size - Button size variant: 'sm' for lists, 'md' for header
+ * @param className - Additional Tailwind classes for layout/visibility control
+ */
 export default function BuildButton({ href, size = 'md', className = '' }: BuildButtonProps) {
   const sizeClasses = {
     sm: 'gap-[6px] px-hgap-xs pt-[1px] pb-[4px] text-sm md:text-base',
