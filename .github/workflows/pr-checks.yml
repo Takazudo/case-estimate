@@ -3,9 +3,7 @@ name: PR Checks
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - main
-      - develop
+    # No branch restriction - run for ALL PRs
 
 concurrency:
   group: pr-checks-${{ github.head_ref }}
