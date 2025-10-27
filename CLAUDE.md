@@ -27,6 +27,25 @@ When given a GitHub URL, use the `gh` command to fetch information:
 - For PR comments: `gh api repos/{owner}/{repo}/pulls/{number}/comments`
 - For general API access: `gh api <endpoint>`
 
+## Git Worktree
+
+**IMPORTANT**: The `worktrees/` directory contains git worktree directories. Each worktree may have a different branch checked out.
+
+⚠️ **Critical Notes**:
+
+- When working in `worktrees/`, **be extremely careful with git operations**
+- Each worktree is an independent working directory with its own checked-out branch
+- Running git commands in a worktree affects only that specific worktree
+- **Always verify which worktree and branch you're in** before performing git operations
+- Confusion between worktrees can lead to changes being made on the wrong branch
+
+**Best Practices**:
+
+1. Always check the current branch: `git branch --show-current`
+2. Verify you're in the correct worktree before making changes
+3. Avoid running destructive git operations without confirmation
+4. When referencing files, be aware of which worktree context you're in
+
 ## Reference Project
 
 When implementing features or following patterns, refer to:
