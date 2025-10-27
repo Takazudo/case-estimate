@@ -192,4 +192,203 @@ test.describe('Smoke Test', () => {
     // HeadlessUI Listbox would render as button
     await expect(page.getByRole('button', { name: /Select a case model/i })).not.toBeVisible();
   });
+
+  test('should load /gallery page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/gallery');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should show gallery heading
+    await expect(page.getByRole('heading', { name: /ギャラリー|Gallery/i })).toBeVisible();
+
+    // Should show gallery grid
+    await expect(page.getByTestId('gallery-thumbnail-grid')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /modules page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/modules');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /selection page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/selection');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /price page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/price');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /case-models page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/case-models');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /panel page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/panel');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
+
+  test('should load /faq page without errors', async ({ page }) => {
+    // Track console errors
+    const consoleErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') {
+        consoleErrors.push(msg.text());
+      }
+    });
+
+    // Track page errors
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      pageErrors.push(error.message);
+    });
+
+    const response = await page.goto('/faq');
+    expect(response?.status()).toBeLessThan(400);
+
+    // Should have main content
+    await expect(page.getByRole('main')).toBeVisible();
+
+    // Verify no console errors
+    expect(consoleErrors).toHaveLength(0);
+
+    // Verify no page errors
+    expect(pageErrors).toHaveLength(0);
+  });
 });
