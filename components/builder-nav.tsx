@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import BuildButton from './build-button';
 
 interface BuilderNavItem {
@@ -17,7 +18,9 @@ export default function BuilderNav({ items }: BuilderNavProps) {
           <li key={item.href}>
             <div className="inline-flex items-center gap-hgap-xs group zd-invert-color-link">
               <BuildButton href={item.href} size="sm" />
-              <span className="underline">{item.label}</span>
+              <Link href={item.href} className="underline">
+                {item.label}
+              </Link>
             </div>
           </li>
         ))}
