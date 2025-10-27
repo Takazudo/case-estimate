@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Blurhash } from '@/components/blurhash';
+import { getStaticImageUrl } from '@/utils/cdn-urls';
 import ArrowRight from '@/components/icons/arrow-right';
 import { TOP_NAV_ITEMS, type TopNavItem } from '@/data/navigation';
 
@@ -25,7 +26,7 @@ interface NavImageProps {
 
 function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imageUrl = `https://takazudomodular.com/static/images/p/${imageSlug}/1200w.webp`;
+  const imageUrl = getStaticImageUrl(imageSlug, '1200w');
 
   return (
     <div className="relative w-full overflow-hidden" style={{ paddingBottom: '63.35%' }}>

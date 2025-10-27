@@ -925,19 +925,8 @@ export function getNextGalleryItem(slug: string): GalleryItem | undefined {
   return galleryData[index + 1];
 }
 
-/**
- * Generate the thumbnail image URL for a gallery item
- */
-export function getThumbnailUrl(slug: string): string {
-  return `https://takazudomodular.com/images/p/${slug}/900w.webp`;
-}
-
-/**
- * Generate the enlarged image URL for a gallery item
- */
-export function getEnlargedImageUrl(slug: string): string {
-  return `https://takazudomodular.com/images/p/${slug}/2000w.webp`;
-}
+// Re-export URL utilities from centralized location
+export { getThumbnailUrl, getEnlargedImageUrl } from '@/utils/cdn-urls';
 
 /**
  * Get items for preloading (current + next 2 + prev 2)

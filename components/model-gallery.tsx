@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getGalleryItemBySlug } from '@/data/gallery-data';
+import { getImageUrl } from '@/utils/cdn-urls';
 import { Blurhash } from '@/components/blurhash';
 import ModelGalleryDialog from '@/components/model-gallery-dialog';
 
@@ -37,11 +38,6 @@ export default function ModelGallery({ main, subs }: ModelGalleryProps) {
   // Get gallery items for blurhash rendering
   const mainItem = getGalleryItemBySlug(main);
   const subItems = subs.map((slug) => getGalleryItemBySlug(slug)).filter(Boolean);
-
-  // Helper to generate image URLs
-  const getImageUrl = (slug: string, size: '600w' | '900w' | '2000w') => {
-    return `https://takazudomodular.com/images/p/${slug}/${size}.webp`;
-  };
 
   const handleImageClick = useCallback((slug: string) => {
     setSelectedSlug(slug);

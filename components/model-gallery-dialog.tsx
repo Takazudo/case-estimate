@@ -9,6 +9,7 @@ import React, {
   type MouseEvent as ReactMouseEvent,
 } from 'react';
 import { getGalleryItemBySlug } from '@/data/gallery-data';
+import { getEnlargedImageUrl } from '@/utils/cdn-urls';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
@@ -61,11 +62,6 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
 
   // Get current item data
   const currentItem = getGalleryItemBySlug(currentSlug);
-
-  // Helper to generate image URL
-  const getEnlargedImageUrl = (slug: string) => {
-    return `https://takazudomodular.com/images/p/${slug}/2000w.webp`;
-  };
 
   const handlePrevious = useCallback(() => {
     if (previousSlug) {
