@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { CloseIcon } from '@/components/icons/close-icon';
 
 interface BackgroundColorPickerProps {
   bgColor: string;
@@ -103,14 +104,7 @@ function BackgroundColorPicker({
             className="absolute top-2 right-2 text-zd-gray hover:text-zd-link transition-colors"
             aria-label="Close"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <CloseIcon className="w-5 h-5" />
           </button>
 
           <h3 className="font-semibold text-zd-white mb-vgap-xs">Background Settings</h3>

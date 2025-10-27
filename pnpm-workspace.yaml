@@ -1,9 +1,12 @@
 packages:
-  - '.'
-  - 'doc'
-  - 'sub-packages/*'
+  - .
+  - doc
+  - sub-packages/*
 
 onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - core-js
+  - core-js-pure
   - esbuild
   - puppeteer
   - sharp

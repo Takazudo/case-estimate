@@ -19,6 +19,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
+import { CloseIcon } from '@/components/icons/close-icon';
 
 interface GalleryDialogProps {
   slug: string;
@@ -215,16 +216,7 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
           className="fixed top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors"
           aria-label="Close dialog"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+          <CloseIcon className="w-6 h-6" />
         </button>
 
         {/* Navigation buttons - properly centered at viewport edges */}

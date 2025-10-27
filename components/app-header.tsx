@@ -69,7 +69,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
               activeClassName="pointer-events-none opacity-100 hover:opacity-100"
             >
               <TakazudoLogo className="w-[50px] h-[50px]" />
-              <span className="whitespace-nowrap">Takazudo Modular: Panels</span>
+              <span className="whitespace-nowrap font-normal">Takazudo Modular: Panels</span>
             </NavigationLink>
 
             {/* Right side actions */}
