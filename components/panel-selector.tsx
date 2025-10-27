@@ -55,7 +55,7 @@ const PanelSelector = ({
   return (
     <div className="space-y-vgap-xs">
       <h3 className="font-semibold text-zd-white pb-vgap-xs">Select Panel</h3>
-      <Listbox value={selectedPanel ?? ''} onChange={onPanelSelect}>
+      <Listbox value={selectedPanel} onChange={onPanelSelect}>
         <div className="relative text-sm">
           <ListboxButton className="relative w-full cursor-default rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white">
             <span className="block truncate">

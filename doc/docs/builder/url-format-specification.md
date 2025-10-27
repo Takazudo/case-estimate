@@ -224,6 +224,14 @@ const COLOR_CODES_3DP = {
 
 **Important:** `crimson-red` (cr) and `clear-red` (rd) have the same hex value (#b71c1c) but different opacity. Using color IDs ensures the correct opacity is preserved.
 
+#### Migration Notes
+
+**Color Renames:**
+- `gold-yellow` (code: `gy`) was renamed to `bright-gold` (code: `bg`)
+- `silver` (code: `sv`) was renamed to `silver-gray` (code: `sg`)
+
+⚠️ **Breaking Change:** Old URLs containing the deprecated color codes (`gy`, `sv`) will no longer decode properly. These URLs need to be manually updated to use the new color codes (`bg`, `sg`).
+
 ## URL Examples
 
 ### Example 1: Simple 40HP Configuration
