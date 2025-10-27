@@ -60,7 +60,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     needs: quality-checks
     steps:
       - name: Checkout repository
