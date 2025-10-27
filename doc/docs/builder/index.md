@@ -88,8 +88,8 @@ case-estimate/
 
 Explore the sidebar for:
 
-- [Adding New Case Models](add-new-case-model-guide) - Complete implementation guide
-- [URL Format Specification](url-format-specification) - Technical details on URL encoding system
+- [Adding New Case Models](/builder/add-new-case-model-guide) - Complete implementation guide
+- [URL Format Specification](/builder/url-format-specification) - Technical details on URL encoding system
 
 ## Development Tools
 
