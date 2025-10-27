@@ -1,4 +1,4 @@
-import CaseGrid from '../../components/case-grid';
+import TopNavGrid from '../../components/top-nav-grid';
 
 export const metadata = {
   title: 'Takazudo Modular: Panels',
@@ -6,172 +6,13 @@ export const metadata = {
 
 Takazudo Modular: Panelsは、[Takazudo Modular](https://takazudomodular.com/)のケースオーダー用Webアプリです。
 
-Takazudo Modularでは、ユーロラックモジュラーシンセ用のケースDIYキットを販売しています。このDIYキットは、アルミ製のフレームとレール、そしてパネル、他接続用の金具群がセットになっている、自分で組み立てるタイプのケースです。
+Takazudo Modularでは、ユーロラックモジュラーシンセ用のケースDIYキットを販売しています。このDIYキットは、アルミ製のサイドフレーム、バリエーションのあるレール、そしてケース外側のパネル、他接続用の金具群がセットになっている、自分で組み立てるタイプのケースです。
+
+元々はいくつか作っていたレベルだったのですが、作っていくうちに種類やバリエーションが増えていき、もう自由に作れるようにしたら良いのではと思いこの仕組みを作りました。
 
 ケースのモデルをまず選び、パネル毎に好きな色を選んで、オリジナルのケースをデザインできます。
 
-## zudo-block-40
+<TopNavGrid className="pt-vgap-md pb-vgap-lg" />
 
-zudo-block-40は、40HPのコンパクトなユーロラックモジュラーシンセ向けケース。既存のシステムにちょっと足したい時にも便利なサイズです。
+ひとまず公開はしていますが、諸々工事中なので、ケースを買いたい！という方がいらっしゃいましたら[X:@Takazudo](https://x.com/home)及び[Takazudo Modular: お問い合わせ](https://takazudomodular.com/contact/)までご連絡頂ければと🙏
 
-<CaseGrid
-  items={[
-    {
-    id: '1',
-    caseId: 'zudo-block-40-ACR-A',
-    caption: 'zudo-block-40-ACR-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40-a/900w.webp',
-    blurhash: 'UXKA$r_M.S-=_MS2niRk_3aeRknP?asoWqR+',
-    },
-    {
-    id: '2',
-    caseId: 'zudo-block-40-ACR-B',
-    caption: 'zudo-block-40-ACR-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40-b/900w.webp',
-    blurhash: 'UQJj}A_N?^^,?]M|nOWE_3RQNGwf^+sAX8S#',
-    },
-    {
-    id: '3',
-    caseId: 'zudo-block-40-3DP-A',
-    caption: 'zudo-block-40-3DP-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40-a/900w.webp',
-    blurhash: 'UXJ*F*_M?v-=_MS2jFV[_3aeRknP?asoWpS3',
-    },
-    {
-    id: '4',
-    caseId: 'zudo-block-40-3DP-B',
-    caption: 'zudo-block-40-3DP-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40-b/900w.webp',
-    blurhash: 'UQJHaT_N?^?c_MIpaKa#_3RQRjsC^+n%W;X8',
-    },
-  ]} />
-
-## zudo-block-40x2
-
-zudo-block-40x2は、zudo-block-40を縦に2つ繋げたケース。3U 40HP×2に加え、余ったスペースに1U 40HPのレールが付いています。コンパクトだけど結構入る！ぐらいのサイズ感のケースです。
-
-<CaseGrid
-  items={[
-    {
-    id: '5',
-    caseId: 'zudo-block-40x2-ACR-A',
-    caption: 'zudo-block-40x2-ACR-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40x2-a/900w.webp',
-    blurhash: 'UgJHN|.8x]%2_N%Mt7g3?HjFr@bI%LRjI:ni',
-    },
-    {
-    id: '6',
-    caseId: 'zudo-block-40x2-ACR-B',
-    caption: 'zudo-block-40x2-ACR-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb40x2-b/900w.webp',
-    blurhash: 'UgJ7zN%z%f-p_Mx[xuo}-;V@sAs:%LRjI:jG',
-    },
-    {
-    id: '7',
-    caseId: 'zudo-block-40x2-3DP-A',
-    caption: 'zudo-block-40x2-3DP-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40x2-a/900w.webp',
-    blurhash: 'UgI#Gg?b%Mxb_N%Mt7oz-;jFr@bI%LRjNGni',
-    },
-    {
-    id: '8',
-    caseId: 'zudo-block-40x2-3DP-B',
-    caption: 'zudo-block-40x2-3DP-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb40x2-b/900w.webp',
-    blurhash: 'UgIhBJ.8%g%3_Mx[xutR-;V@sAs:%LRjI:jG',
-    },
-  ]} />
-
-## zudo-block-60
-
-zudo-block-60は、60HPの丁度良いサイズのケースちょっとモジュラーシンセを始めてみようと思う方にも十分なサイズのボリュームのケースです。
-
-<CaseGrid
-  items={[
-    {
-    id: '9',
-    caseId: 'zudo-block-60-ACR-A',
-    caption: 'zudo-block-60-ACR-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60-a/900w.webp',
-    blurhash: 'UUK1B%_3?]-;?]IVsoRk~poyW;nP?Hn%M|X8',
-    },
-    {
-    id: '10',
-    caseId: 'zudo-block-60-ACR-B',
-    caption: 'zudo-block-60-ACR-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60-b/900w.webp',
-    blurhash: 'USKA$r_M?^-=?]D*niR+~pW.R*nP-;niM|bv',
-    },
-    {
-    id: '11',
-    caseId: 'zudo-block-60-3DP-A',
-    caption: 'zudo-block-60-3DP-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60-a/900w.webp',
-    blurhash: 'UUJ*9n_3?^%g_MIVoLRk_MoybHi{?Hn%M|X8',
-    },
-    {
-    id: '12',
-    caseId: 'zudo-block-60-3DP-B',
-    caption: 'zudo-block-60-3DP-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60-b/900w.webp',
-    blurhash: 'USJ@wV_M_N-=_MD*jFWC_MbFR*i{?HniM|kW',
-    },
-  ]} />
-
-## zudo-block-60x2
-
-zudo-block-60x2は、zudo-block-60を縦に2つ繋げたケース。3U 60HP×2に加え、余ったスペースに1U 60HPのレールが付いています。中規模のシステムに丁度良いサイズのケースです。
-
-<CaseGrid
-  items={[
-    {
-    id: '13',
-    caseId: 'zudo-block-60x2-ACR-A',
-    caption: 'zudo-block-60x2-ACR-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60x2-a/900w.webp',
-    blurhash: 'UdIg+VtRx]$+_Mt7xuS$?boes:r@%fo0R*kC',
-    },
-    {
-    id: '14',
-    caseId: 'zudo-block-60x2-ACR-B',
-    caption: 'zudo-block-60x2-ACR-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-acr-zb60x2-b/900w.webp',
-    blurhash: 'UZI4qytRyD$+_MkDxuXS?bafs:we%MaeR*of',
-    },
-    {
-    id: '15',
-    caseId: 'zudo-block-60x2-3DP-A',
-    caption: 'zudo-block-60x2-3DP-A',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60x2-a/900w.webp',
-    blurhash: 'UdH_GRxu%fs;_Mozxubc?boes:r@-:jsR*of',
-    },
-    {
-    id: '16',
-    caseId: 'zudo-block-60x2-3DP-B',
-    caption: 'zudo-block-60x2-3DP-B',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-zb60x2-b/900w.webp',
-    blurhash: 'UZHx7_xu%gxb_NbcxukW?be:s:r[-:WBR*of',
-    },
-  ]} />
-
-## 10BOX Ju-Bako
-
-10BOX Ju-Bakoは、幅60HP、浅い前側、深い奥側の2レール構成の、固定レイアウトタイプのケース。深さの違いを利用したスタンドや、ホコリ避け用のケースも付属した、卓上に丁度良いサイズのケースです。
-
-<CaseGrid
-  items={[
-    {
-    id: '17',
-    caseId: '10box-shallow-3DP',
-    caption: '10box-shallow-3DP',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-10box-lite/900w.webp',
-    blurhash: 'UQGaqTS3pvai~q-;%2bv-V_3bcNwNu.8kWNG',
-    },
-    {
-    id: '18',
-    caseId: '10box-deep-3DP',
-    caption: '10box-deep-3DP',
-    imgSrc: 'https://takazudomodular.com/images/p/panel-thumb-3dp-10box-lite/900w.webp',
-    blurhash: 'UQGaqTS3pvai~q-;%2bv-V_3bcNwNu.8kWNG',
-    },
-  ]} />

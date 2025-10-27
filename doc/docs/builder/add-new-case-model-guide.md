@@ -58,6 +58,7 @@ Used for simpler models like Zudo Block series.
 ```
 
 **Mapping configuration:**
+
 ```typescript
 const CLASS_TO_PANEL_8: { [key: string]: string } = {
   a: 'side1',
@@ -82,6 +83,7 @@ Used for complex models like 10BOX series.
 ```
 
 **Mapping configuration:**
+
 ```typescript
 const COLOR_TO_PANEL_10BOX: { [key: string]: string } = {
   '#00a99d': 'main-side1',
@@ -98,11 +100,13 @@ const COLOR_TO_PANEL_10BOX: { [key: string]: string } = {
 ### 1.1 File Naming and Location
 
 Place your SVG file in:
+
 ```
 /public/svg/
 ```
 
 Use descriptive kebab-case naming:
+
 ```
 {model}-{variant}.svg
 
@@ -151,6 +155,7 @@ Ensure the viewBox tightly fits your content:
 ```
 
 **How to find optimal viewBox:**
+
 1. Open SVG in browser
 2. Use DevTools to select all paths
 3. Check computed bounding box
@@ -167,9 +172,9 @@ export const cases: { [key: string]: CaseConfig } = {
   // ...existing cases...
 
   'your-model-name': {
-    name: 'Display Name',     // Shows in dropdown
-    hp: 104,                   // HP rating
-    material: '3dp',           // '3dp' or 'acrylic'
+    name: 'Display Name', // Shows in dropdown
+    hp: 104, // HP rating
+    material: '3dp', // '3dp' or 'acrylic'
     panels: [
       { id: 'panel-1', name: 'パネル1' },
       { id: 'panel-2', name: 'パネル2' },
@@ -193,7 +198,7 @@ panels: [
   // Lid panels
   { id: 'lid-top1', name: 'フタ: トップ1' },
   { id: 'lid-front', name: 'フタ: フロント' },
-]
+];
 ```
 
 #### For unified models:
@@ -203,7 +208,7 @@ panels: [
   { id: 'side1', name: 'サイド1' },
   { id: 'side2', name: 'サイド2' },
   { id: 'back1', name: 'バック1' },
-]
+];
 ```
 
 ## Step 3: Implement Panel Mapping
@@ -215,8 +220,12 @@ If your model uses 8 or 12 panels with class attributes, the existing mappings m
 ```typescript
 // In case-visualizer.tsx
 // These constants already exist:
-const CLASS_TO_PANEL_8 = { /* ... */ };
-const CLASS_TO_PANEL_12 = { /* ... */ };
+const CLASS_TO_PANEL_8 = {
+  /* ... */
+};
+const CLASS_TO_PANEL_12 = {
+  /* ... */
+};
 ```
 
 ### 3.2 For Color-Based Models
@@ -261,7 +270,7 @@ const fillMatch = styleAttr?.match(/fill:\s*([^;]+)/);
 if (!fillMatch) {
   // Handle by index position
   if (index === 2) {
-    panelId = 'main-side2';  // Known panel at this index
+    panelId = 'main-side2'; // Known panel at this index
   }
   // Could check multiple indices for robustness
   else if (index === 3) {
@@ -274,6 +283,7 @@ if (!fillMatch) {
 ```
 
 **Finding the right index:**
+
 1. Open your SVG in browser
 2. Use console: `document.querySelectorAll('path').forEach((p, i) => console.log(i, p.getAttribute('style')))`
 3. Note which index has no style attribute
@@ -291,6 +301,7 @@ if (!panelId) {
 ```
 
 **Why remove instead of hide?**
+
 - Prevents accidental clicks on unavailable panels
 - Cleaner DOM for debugging
 - Better performance
@@ -334,7 +345,7 @@ Edit `/utils/url-encoder.ts`:
 ```typescript
 const CASE_MAPPING: { [key: string]: string } = {
   // ...existing mappings...
-  'your-model-name': 'xy',  // Choose unique 2-char code
+  'your-model-name': 'xy', // Choose unique 2-char code
 };
 ```
 
@@ -343,10 +354,12 @@ const CASE_MAPPING: { [key: string]: string } = {
 Format: 2 characters (alphanumeric)
 
 Strategy:
+
 - First character: model series number or letter
 - Second character: variant identifier (a, b, c)
 
 Examples:
+
 - `8a` = Zudo Block 40 ACR variant A
 - `9b` = 10BOX deep 3D printed
 - `1a` = 10BOX shallow 3D printed
@@ -354,13 +367,14 @@ Examples:
 ### 5.3 Verify It Works
 
 Test in browser console:
+
 ```javascript
 // After implementing
 const encoded = encodeCase('your-model-name');
-console.log(encoded);  // Should output 'xy'
+console.log(encoded); // Should output 'xy'
 
 const decoded = decodeCase('xy');
-console.log(decoded);  // Should output 'your-model-name'
+console.log(decoded); // Should output 'your-model-name'
 ```
 
 ## Step 6: Test Your Implementation
@@ -396,6 +410,7 @@ npm run dev
 4. Verify exact configuration loads
 
 Example URL:
+
 ```
 http://localhost:3200/m?c=xy&p=panel-1:w|panel-2:r|panel-3:b
 ```
@@ -504,22 +519,22 @@ Let's walk through the actual implementation of a complex model with special cas
 // Path 15: #9e1f63 (dark purple) -> main-stand2
 
 const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
-  '#00aeef': 'main-side3',   // Path 0
-  '#00a99d': 'main-side1',   // Path 1
-  '#2e3192': 'main-side4',   // Path 2
+  '#00aeef': 'main-side3', // Path 0
+  '#00a99d': 'main-side1', // Path 1
+  '#2e3192': 'main-side4', // Path 2
   // Path 3 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1',   // Path 4
-  '#00a651': 'main-front',   // Path 5
+  '#ef4136': 'main-back1', // Path 4
+  '#00a651': 'main-front', // Path 5
   '#fff200': 'main-bottom2', // Path 6
   '#ed1c24': 'main-bottom1', // Path 7
-  '#939598': 'lid-top2',     // Path 8
-  '#a7a9ac': 'lid-top1',     // Path 9
-  '#808285': 'lid-side2',    // Path 10
-  '#662d91': 'lid-side1',    // Path 11
-  '#58595b': 'lid-front',    // Path 12
-  '#a97c50': 'lid-back',     // Path 13
-  '#ec008c': 'main-stand1',  // Path 14
-  '#9e1f63': 'main-stand2',  // Path 15
+  '#939598': 'lid-top2', // Path 8
+  '#a7a9ac': 'lid-top1', // Path 9
+  '#808285': 'lid-side2', // Path 10
+  '#662d91': 'lid-side1', // Path 11
+  '#58595b': 'lid-front', // Path 12
+  '#a97c50': 'lid-back', // Path 13
+  '#ec008c': 'main-stand1', // Path 14
+  '#9e1f63': 'main-stand2', // Path 15
 };
 ```
 
@@ -535,9 +550,10 @@ paths.forEach((pathElement, index) => {
 
   // Check if this is Panel 2 (main-side2) - has no fill style
   // Position varies between models: shallow (index 2) vs deep (index 3)
-  const isSide2NoFill = !fillMatch &&
+  const isSide2NoFill =
+    !fillMatch &&
     ((caseType === '10box-shallow-3dp' && index === 2) ||
-     (caseType === '10box-deep-3dp' && index === 3));
+      (caseType === '10box-deep-3dp' && index === 3));
 
   if (isSide2NoFill) {
     panelId = 'main-side2';
@@ -574,30 +590,32 @@ paths.forEach((pathElement, index) => {
 **Symptoms:** Clicking a panel does nothing
 
 **Debug steps:**
+
 ```typescript
 // Add to case-visualizer.tsx
 console.log('Panel setup:', {
   index,
   panelId,
   style: pathElement.getAttribute('style'),
-  class: pathElement.getAttribute('class')
+  class: pathElement.getAttribute('class'),
 });
 ```
 
 **Solutions:**
 
-| Cause | Fix |
-|-------|-----|
+| Cause                 | Fix                             |
+| --------------------- | ------------------------------- |
 | Missing color mapping | Add color to `COLOR_TO_PANEL_*` |
-| No fill style | Add index-based detection |
-| Panel removed | Ensure panel ID in cases.ts |
-| Wrong mapping type | Check if using class vs color |
+| No fill style         | Add index-based detection       |
+| Panel removed         | Ensure panel ID in cases.ts     |
+| Wrong mapping type    | Check if using class vs color   |
 
 ### Wrong Panel Highlights
 
 **Symptoms:** Clicking panel A highlights panel B
 
 **Fix:** Verify exact ID match between:
+
 - Color/class mapping in case-visualizer.tsx
 - Panel ID in cases.ts
 
@@ -612,6 +630,7 @@ console.log('Panel setup:', {
 **Symptoms:** New model doesn't appear
 
 **Checklist:**
+
 - [ ] Added to cases.ts with valid key
 - [ ] Key has no spaces or special characters
 - [ ] Browser hard refreshed (Ctrl+Shift+R)
@@ -621,6 +640,7 @@ console.log('Panel setup:', {
 **Symptoms:** Shared URL loads wrong model or config
 
 **Debug:**
+
 ```typescript
 console.log('Encode test:', encodeCase('your-model'));
 console.log('Decode test:', decodeCase('xy'));
@@ -639,11 +659,11 @@ console.log('Decode test:', decodeCase('xy'));
 
 ### Naming Conventions
 
-| Type | Convention | Example |
-|------|------------|---------|
-| Files | kebab-case | `10box-deep-3dp.svg` |
-| Case IDs | kebab-case | `'10box-deep-3dp'` |
-| Panel IDs | kebab-case | `'main-side1'` |
+| Type      | Convention  | Example                |
+| --------- | ----------- | ---------------------- |
+| Files     | kebab-case  | `10box-deep-3dp.svg`   |
+| Case IDs  | kebab-case  | `'10box-deep-3dp'`     |
+| Panel IDs | kebab-case  | `'main-side1'`         |
 | Constants | UPPER_SNAKE | `COLOR_TO_PANEL_10BOX` |
 
 ### Testing Strategy
@@ -714,6 +734,7 @@ console.log(decodeCase('xy'));
 **Maintainer:** Takazudo
 
 For additional help, refer to:
+
 - Reference project: `/Users/takazudo/repos/personal/takazudomodular`
 - React docs: [react.dev](https://react.dev)
 - TypeScript docs: [typescriptlang.org](https://www.typescriptlang.org)

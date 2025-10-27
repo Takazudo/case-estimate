@@ -67,11 +67,9 @@ Add to your `package.json`:
 
 ```json
 {
-"lint-staged": {
-"*.{md,mdx}": [
-"md-formatter --write"
-]
-}
+  "lint-staged": {
+    "*.{md,mdx}": ["md-formatter --write"]
+  }
 }
 ```
 
@@ -89,9 +87,9 @@ Then use this formatter for markdown files:
 
 ```json
 {
-"scripts": {
-"format": "prettier --write . && md-formatter --write \"**/*.{md,mdx}\""
-}
+  "scripts": {
+    "format": "prettier --write . && md-formatter --write \"**/*.{md,mdx}\""
+  }
 }
 ```
 
@@ -136,9 +134,7 @@ Then use this formatter for markdown files:
 HTML definition lists are converted to markdown:
 
 ```html
-
 - **Term**: Definition
-
 ```
 
 Becomes:
@@ -170,8 +166,8 @@ Content
 
 ```javascript
 await format(content, {
-mdx: true,        // Force MDX mode (auto-detected by default)
-filepath: 'file.mdx'  // Used for better format detection
+  mdx: true, // Force MDX mode (auto-detected by default)
+  filepath: 'file.mdx', // Used for better format detection
 });
 ```
 

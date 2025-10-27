@@ -2,3 +2,8 @@ packages:
   - '.'
   - 'doc'
   - 'sub-packages/*'
+
+onlyBuiltDependencies:
+  - esbuild
+  - puppeteer
+  - sharp

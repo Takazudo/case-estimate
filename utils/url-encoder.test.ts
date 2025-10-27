@@ -79,38 +79,16 @@ describe('url-encoder', () => {
     it('should return original string for unknown case types', () => {
       expect(encodeCase('unknown-case')).toBe('unknown-case');
     });
-
-    it('should handle legacy case mappings', () => {
-      expect(encodeCase('zudo-block-40-type-a')).toBe('1a');
-      expect(encodeCase('10box-lite')).toBe('9'); // Legacy old single-char code
-      expect(encodeCase('10box-3dp')).toBe('9a'); // Legacy maps to shallow
-    });
   });
 
   describe('decodeCase', () => {
     it('should decode known case codes', () => {
-      // The decode function returns the first key that matches the encoded value
-      // Since legacy mappings exist, it might return legacy keys
-      const result1a = decodeCase('1a');
-      const result4b = decodeCase('4b');
-      const result9a = decodeCase('9a');
-      const result9b = decodeCase('9b');
-
-      // Check that we get valid case types (could be legacy or current)
-      expect(result1a).toMatch(/zudo-block-40/);
-      expect(result4b).toMatch(/zudo-block-60/);
-      expect(result9a).toMatch(/10box/);
-      expect(result9b).toMatch(/10box/);
-
-      // Verify they contain some form of type indicator (uppercase for current, lowercase for legacy)
-      expect(result1a).toMatch(/(ACR|type)/);
-      expect(result4b).toMatch(/(3DP|lite)/);
-    });
-
-    it('should decode legacy code 9 for backward compatibility', () => {
-      // Old URLs with '9' should still work and map to a 10box model
-      const result9 = decodeCase('9');
-      expect(result9).toBe('10box-lite'); // Legacy mapping
+      expect(decodeCase('1a')).toBe('zudo-block-40-ACR-A');
+      expect(decodeCase('4b')).toBe('zudo-block-60-3DP-B');
+      expect(decodeCase('9a')).toBe('10box-shallow-3dp');
+      expect(decodeCase('9b')).toBe('10box-deep-3dp');
+      expect(decodeCase('oa')).toBe('zudo-block-60-open-ACR-A');
+      expect(decodeCase('pu')).toBe('zudo-block-60-open-upgrade-3DP');
     });
 
     it('should return null for unknown codes', () => {

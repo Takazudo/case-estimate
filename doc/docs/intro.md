@@ -9,7 +9,7 @@ Welcome to the Takazudo Modular: Panels documentation site.
 
 ## Quick Links
 
-- [INBOX Documentation](./inbox/welcome) - Development notes and documentation
+- [INBOX Documentation](./inbox/) - Development notes and documentation
 
 ## About
 

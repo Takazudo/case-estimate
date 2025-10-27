@@ -1,0 +1,15 @@
+# Custom Dictionary Words
+
+# Blurhash library and components
+blurhash
+Blurhash
+
+# Blurhash string fragments (base83 encoded components)
+Cbuj
+Cxun
+Mivt
+Rjbb
+
+# Custom spacing tokens
+hgap
+vgap

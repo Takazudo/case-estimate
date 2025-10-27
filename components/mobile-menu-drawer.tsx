@@ -8,6 +8,7 @@ import { useLockBodyScroll } from '../hooks/use-lock-body-scroll';
 import { useFocusTrap } from '../hooks/use-focus-trap';
 import ArrowRight from './icons/arrow-right';
 import MobileMenuToggle from './mobile-menu-toggle';
+import BuildButton from './build-button';
 
 interface NavItem {
   href: string;
@@ -26,6 +27,15 @@ const MenuItemContent: React.FC<{
   currentPath: string;
   onClose: () => void;
 }> = ({ item, onClose }) => {
+  // Special rendering for the Build button
+  if (item.href === '/m') {
+    return (
+      <div className="px-hgap-sm py-vgap-xs">
+        <BuildButton href={item.href} size="sm" className="w-full justify-center" />
+      </div>
+    );
+  }
+
   return (
     <NavigationLink
       href={item.href}

@@ -33,8 +33,8 @@ test.describe('10BOX URL Persistence - Simple', () => {
   test('should handle 10BOX with custom colors in URL', async ({ page }) => {
     // Test URL with some custom panel colors
     // c=9 (10box-lite)
-    // p=m1cr.l4gy (main-side1=crimson-red, lid-top1=gold-yellow)
-    await page.goto('/?c=9&p=m1cr.l4gy');
+    // p=m1cr.l4bg (main-side1=crimson-red, lid-top1=bright-gold)
+    await page.goto('/?c=9&p=m1cr.l4bg');
     await page.waitForLoadState('networkidle');
 
     // Verify case is loaded
@@ -47,7 +47,7 @@ test.describe('10BOX URL Persistence - Simple', () => {
 
     // Should contain our custom colors
     expect(panelParam).toContain('m1cr'); // main-side1 with crimson-red
-    expect(panelParam).toContain('l4gy'); // lid-top1 with gold-yellow
+    expect(panelParam).toContain('l4bg'); // lid-top1 with bright-gold
 
     // Should also contain default colors for other panels
     expect(panelParam).toContain('cb'); // carbon-black (default for 3dp)

@@ -7,6 +7,8 @@ import NavigationLink from './navigation-link';
 import TakazudoLogo from './icons/takazudo-logo';
 import MobileMenuToggle from './mobile-menu-toggle';
 import MobileMenuDrawer from './mobile-menu-drawer';
+import BuildButton from './build-button';
+import { NAVIGATION_ITEMS } from '@/data/navigation';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -37,13 +39,10 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const navigationItems = [
-    { href: '/panel', label: 'パネル素材' },
-    { href: '/selection', label: 'パネル選択' },
-    { href: '/price', label: '価格' },
-    { href: '/gallery', label: 'ギャラリー' },
-    { href: '/m', label: 'ケースを作る' },
-  ];
+  // Split navigation items for desktop layout (exclude CTA)
+  const desktopNavItems = NAVIGATION_ITEMS.filter((item) => item.href !== '/m');
+  const firstRowItems = desktopNavItems.slice(0, 2);
+  const secondRowItems = desktopNavItems.slice(2);
 
   useEffect(() => {
     closeMenu();
@@ -76,23 +75,24 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* Right side actions */}
             <div className="flex items-center gap-hgap-xs">
               {/* Navigation Links - Desktop */}
-              <nav className="hidden md:flex items-center gap-hgap-sm pr-[10px]">
-                <NavItem href="/panel" label="パネル素材" />
-                <NavItem href="/selection" label="パネル選択" />
-                <NavItem href="/price" label="価格" />
-                <NavItem href="/gallery" label="ギャラリー" />
+              <nav className="hidden lg:flex flex-col xl:flex-row gap-y-[2px] xl:gap-hgap-xs pr-[10px]">
+                <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
+                  {firstRowItems.map((item) => (
+                    <NavItem key={item.href} href={item.href} label={item.label} />
+                  ))}
+                </div>
+                <div className="flex items-center gap-hgap-xs xl:gap-hgap-sm">
+                  {secondRowItems.map((item) => (
+                    <NavItem key={item.href} href={item.href} label={item.label} />
+                  ))}
+                </div>
               </nav>
-              {/* CTA Button - Desktop */}
-              <NavigationLink
-                href="/m"
-                className="hidden md:inline-block px-hgap-sm py-vgap-xs rounded text-sm md:text-base text-zd-white whitespace-nowrap zd-button-gradient no-underline"
-                activeClassName="pointer-events-none !bg-none !bg-transparent border border-zd-white"
-              >
-                ケースを作る
-              </NavigationLink>
-
+              {/* CTA Button - Hidden on small (<md), visible from md and up */}
+              <span className="hidden md:inline-flex">
+                <BuildButton href="/m" size="md" />
+              </span>
               {/* Hamburger menu - Mobile only */}
-              <div className="flex items-center justify-center md:hidden">
+              <div className="flex items-center justify-center lg:hidden">
                 <MobileMenuToggle isOpen={isMenuOpen} onToggle={toggleMenu} className="" />
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
       <MobileMenuDrawer
         isOpen={isMenuOpen}
         onClose={closeMenu}
-        navigationItems={navigationItems}
+        navigationItems={NAVIGATION_ITEMS}
         currentPath={pathname}
       />
     </>

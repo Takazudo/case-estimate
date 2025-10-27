@@ -16,7 +16,6 @@ const config: Config = {
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang.
@@ -30,6 +29,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
 
@@ -90,11 +92,16 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'inboxSidebar',
+          type: 'doc',
+          docId: 'inbox/index',
           position: 'left',
           label: 'INBOX',
-          docsPluginId: 'default',
+        },
+        {
+          type: 'doc',
+          docId: 'builder/index',
+          position: 'left',
+          label: 'Builder',
         },
         {
           href: 'https://case-estimate.netlify.app',

@@ -21,73 +21,22 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60x2-3DP-B': '8b',
   '10box-shallow-3dp': '9a',
   '10box-deep-3dp': '9b',
-  '10box-3dp': '9a', // Legacy mapping for backward compatibility - maps to shallow version
-  '10box-lite': '9', // Legacy mapping for backward compatibility - old single-char code
   'zudo-block-60-open-ACR-A': 'oa',
   'zudo-block-60-open-ACR-B': 'ob',
   'zudo-block-60-open-upgrade-ACR': 'ou',
   'zudo-block-60-open-3DP-A': 'pa',
   'zudo-block-60-open-3DP-B': 'pb',
   'zudo-block-60-open-upgrade-3DP': 'pu',
-  // Legacy mappings for backward compatibility
-  'zudo-block-40-type-a': '1a',
-  'zudo-block-40-type-b': '1b',
-  'zudo-block-40-lite-type-a': '2a',
-  'zudo-block-40-lite-type-b': '2b',
-  'zudo-block-60-type-a': '3a',
-  'zudo-block-60-type-b': '3b',
-  'zudo-block-60-lite-type-a': '4a',
-  'zudo-block-60-lite-type-b': '4b',
-  'zudo-block-40x2-type-a': '5a',
-  'zudo-block-40x2-type-b': '5b',
-  'zudo-block-40x2-lite-type-a': '6a',
-  'zudo-block-40x2-lite-type-b': '6b',
-  'zudo-block-60x2-type-a': '7a',
-  'zudo-block-60x2-type-b': '7b',
-  'zudo-block-60x2-lite-type-a': '8a',
-  'zudo-block-60x2-lite-type-b': '8b',
-  'zudo-block-40': '1',
-  'zudo-block-40-lite': '2',
-  'zudo-block-60': '3',
-  'zudo-block-60-lite': '4',
 };
 
-// Build reverse map, prioritizing non-legacy entries
-const CASE_REVERSE_MAP: { [key: string]: string } = (() => {
-  const reverseMap: { [key: string]: string } = {};
-
-  // First add legacy entries (will be overwritten by current names)
-  Object.entries(CASE_MAP).forEach(([key, value]) => {
-    if (
-      key.includes('type-') ||
-      key === '10box-lite' || // Keep legacy '9' mapping
-      key === '10box-3dp' ||
-      key === 'zudo-block-40' ||
-      key === 'zudo-block-40-lite' ||
-      key === 'zudo-block-60' ||
-      key === 'zudo-block-60-lite'
-    ) {
-      reverseMap[value] = key;
-    }
-  });
-
-  // Then add current entries (will override legacy)
-  Object.entries(CASE_MAP).forEach(([key, value]) => {
-    if (
-      !key.includes('type-') &&
-      key !== '10box-lite' &&
-      key !== '10box-3dp' &&
-      key !== 'zudo-block-40' &&
-      key !== 'zudo-block-40-lite' &&
-      key !== 'zudo-block-60' &&
-      key !== 'zudo-block-60-lite'
-    ) {
-      reverseMap[value] = key;
-    }
-  });
-
-  return reverseMap;
-})();
+// Build reverse map
+const CASE_REVERSE_MAP: { [key: string]: string } = Object.entries(CASE_MAP).reduce(
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
+);
 
 // Panel ID mappings (1-2 chars for compactness)
 const PANEL_MAP: { [key: string]: string } = {
@@ -129,8 +78,11 @@ const PANEL_MAP: { [key: string]: string } = {
 };
 
 const PANEL_REVERSE_MAP: { [key: string]: string } = Object.entries(PANEL_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
 );
 
 // Color ID mappings (single char for common colors, 2 chars for others)
@@ -150,26 +102,30 @@ const COLOR_MAP: { [key: string]: string } = {
 
   // 3DP colors
   'carbon-black': 'cb',
-  'matte-black': 'mb',
+  'bone-white': 'bw',
+  'clear-blue': 'bl',
+  'clear-red': 'rd',
   'crimson-red': 'cr',
   'dark-orange': 'do',
   'light-orange': 'lo',
   'deep-yellow': 'dy',
-  'gold-yellow': 'gy',
-  'clear-blue': 'bl',
-  'clear-red': 'rd',
-  'bone-white': 'bw',
-  'wood-white': 'ww',
+  'bright-gold': 'bg',
+  'deep-gold': 'dg',
   'indigo-blue': 'ib',
   'red-green-silk': 'rg',
   green: 'g',
-  silver: 'sv',
+  'silver-gray': 'sg',
+  'silver-white': 'sw',
   '3dp-pink': 'pk',
+  caramel: 'ca',
 };
 
 const COLOR_REVERSE_MAP: { [key: string]: string } = Object.entries(COLOR_MAP).reduce(
-  (acc, [key, value]) => ({ ...acc, [value]: key }),
-  {},
+  (acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  },
+  {} as { [key: string]: string },
 );
 
 // Encode panel colors to a compact string (now accepts color IDs directly)
