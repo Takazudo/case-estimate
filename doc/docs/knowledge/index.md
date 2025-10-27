@@ -1,0 +1,12 @@
+# Knowledge Base
+
+Development knowledge and best practices accumulated during this project.
+
+## CI/CD & Testing
+
+- [Playwright Browser Caching](./playwright-browser-cache.md) - Speed up CI/CD E2E tests by 60-70%
+
+## Deployment
+
+- [Deploying to Netlify from GitHub Actions](./netlify-github-actions-deploy.md) - Manual Netlify deployment with full control
+- [Netlify PR Preview Deployments](./netlify-pr-preview.md) - Automatic preview URLs for pull requests

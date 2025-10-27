@@ -166,17 +166,39 @@ The project includes Playwright smoke tests that ensure:
 GitHub Actions runs automatically on:
 
 - Every push to `main` branch
-- Every pull request targeting `main`
+- **Every pull request (regardless of target branch)**
 
 CI pipeline includes:
 
 1. TypeScript type checking
 2. ESLint code quality checks
 3. Prettier format validation
-4. Build process verification
-5. Smoke tests with Playwright
+4. Unit tests
+5. Build process verification (main app + docs)
+6. Smoke tests with Playwright
+7. **Automatic Netlify preview deployment**
 
 Test results and screenshots are automatically uploaded as artifacts on failure.
+
+### PR Preview Deployments
+
+**Automatic preview URLs are generated for all pull requests:**
+
+- Preview deploys automatically when a PR is opened, synchronized, or reopened
+- Works for PRs targeting **any branch** (not just `main`)
+- Preview includes both the main application and documentation (`/doc/`)
+- A comment is automatically posted on the PR with:
+  - Link to the main site preview
+  - Link to the documentation preview
+  - Build timestamp and commit SHA
+- The comment updates automatically when new commits are pushed
+- Preview uses a stable URL alias: `pr-{number}`
+
+**Preview URL format:**
+- Main site: `https://deploy-preview-{number}--{site-name}.netlify.app/`
+- Documentation: `https://deploy-preview-{number}--{site-name}.netlify.app/doc/`
+
+No special branch naming is required - all PRs get preview deployments automatically.
 
 ## Development Notes
 
