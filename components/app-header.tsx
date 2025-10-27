@@ -95,9 +95,10 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
                   ))}
                 </div>
               </nav>
-              {/* CTA Button - Desktop */}
-              <BuildButton href="/m" size="md" className="hidden lg:inline-flex" />
-
+              {/* CTA Button - Hidden on small (<md), visible from md and up */}
+              <span className="hidden md:inline-flex">
+                <BuildButton href="/m" size="md" />
+              </span>
               {/* Hamburger menu - Mobile only */}
               <div className="flex items-center justify-center lg:hidden">
                 <MobileMenuToggle isOpen={isMenuOpen} onToggle={toggleMenu} className="" />
