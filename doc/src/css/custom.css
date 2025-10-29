@@ -108,9 +108,9 @@ article.theme-doc-markdown {
   margin-top: 1.5rem;
 }
 
-/* Code blocks container */
-.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-styles-module {
-  margin: 1.5rem 0;
+/* Code blocks spacing */
+[class*='codeBlock_'] {
+  margin: 0.2em 0 !important;
 }
 
 /* Sidebar menu optimization for Japanese text */
