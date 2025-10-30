@@ -49,7 +49,9 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
           {items.map((item) => (
             <li key={item.id} className="pb-vgap-xs">
               <ArrowDownIcon className={arrowClassName} />
-              <a href={`#${item.id}`}>{item.label}</a>
+              <a href={`#${item.id}`} className="zd-invert-color-link">
+                {item.label}
+              </a>
             </li>
           ))}
         </ul>

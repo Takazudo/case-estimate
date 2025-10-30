@@ -101,7 +101,7 @@ function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectio
           </span>
         </h2>
 
-        <p className="text-sm lg:text-base pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm pb-vgap-xs font-normal">
+        <p className="text-sm lg:text-base pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm pb-vgap-xs font-normal text-shadow-none">
           {description}
         </p>
       </div>

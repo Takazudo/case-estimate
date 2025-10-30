@@ -16,7 +16,7 @@ export default function GalleryLayout({ children }: { children: ReactNode }) {
 
   return (
     <ErrorBoundary>
-      <div className="bg-black pt-[96px]">
+      <div className="pt-[96px]">
         {children}
         <Footer />
       </div>

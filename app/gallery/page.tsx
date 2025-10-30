@@ -13,7 +13,7 @@ export default function GalleryPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-black">
+      <div>
         <div className="py-8">
           <H1>ギャラリー / Gallery</H1>
           <div className="text-center -mt-vgap-md">

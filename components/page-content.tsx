@@ -17,8 +17,8 @@ export default function PageContent({ children }: PageContentProps) {
   // For /m route: fixed viewport height layout
   // For other routes: min-height layout with normal scrolling
   const containerClassName = isConfiguratorRoute
-    ? 'h-screen bg-zd-black flex flex-col'
-    : 'min-h-screen bg-zd-black flex flex-col';
+    ? 'h-screen flex flex-col'
+    : 'min-h-screen flex flex-col';
 
   return (
     <div className={containerClassName}>

@@ -6,7 +6,7 @@
   /* Colors */
   --zd-color-black: #1c1917;
   --zd-color-white: #d6d3d1;
-  --zd-color-link: #d6d3d1;
+  --zd-color-link: #fff;
   --zd-color-active: #713f12;
   --zd-color-gray: #78716c;
   --zd-color-gray2: #201f1f;
@@ -155,6 +155,7 @@
 
   /* Custom shadows */
   --shadow-text-md: 0.05em 0.05em 0 #000;
+  --shadow-text-lg: 0.1em 0.1em 0 #000;
 
   /* Custom animations */
   --animation-loading-bar: loading-bar 2s ease-in-out infinite;
@@ -166,22 +167,29 @@
   .text-shadow-md {
     text-shadow: var(--shadow-text-md);
   }
+  .text-shadow-lg {
+    text-shadow: var(--shadow-text-lg);
+  }
   .text-shadow-none {
     text-shadow: none;
   }
 
   /* Inverted color link style */
   .zd-invert-color-link {
-    @apply text-shadow-md outline-offset-4;
+    text-shadow: var(--shadow-text-md);
+    @apply outline-offset-4;
     &:hover {
-      @apply text-zd-black bg-zd-white text-shadow-none no-underline;
+      text-shadow: none;
+      @apply text-zd-black bg-zd-white no-underline;
       @apply outline-2 rounded-sm outline-orange-600;
     }
     &:focus {
-      @apply text-zd-black bg-zd-white text-shadow-none no-underline;
+      text-shadow: none;
+      @apply text-zd-black bg-zd-white no-underline;
       @apply outline-2 rounded-sm outline-orange-600;
     }
     &:active {
+      text-shadow: none;
       @apply text-zd-black;
       @apply bg-zd-active;
     }
@@ -269,11 +277,11 @@
 
   /* Links */
   a {
-    @apply underline text-zd-link;
+    @apply underline text-zd-link text-shadow-md;
   }
   a:focus,
   a:active {
-    @apply outline-2 outline-orange-600 rounded-xs text-zd-active;
+    @apply outline-2 outline-orange-600 rounded-xs text-zd-active text-shadow-none;
   }
   a:active {
     @apply text-zd-black bg-zd-active;

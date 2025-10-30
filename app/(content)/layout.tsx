@@ -16,7 +16,7 @@ export default function ContentGroupLayout({ children }: { children: ReactNode }
 
   return (
     <ErrorBoundary>
-      <div className="bg-zd-black pt-[96px]">
+      <div className="pt-[96px]">
         <div
           className={`
             box-content mx-auto max-w-[1280px]
