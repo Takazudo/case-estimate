@@ -129,13 +129,19 @@ importers:
   doc:
     dependencies:
       '@docusaurus/core':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
+        version: 3.9.1(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(debug@4.4.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
+      '@docusaurus/plugin-content-docs':
+        specifier: 3.9.1
         version: 3.9.1(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(debug@4.4.3)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
       '@docusaurus/preset-classic':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
         version: 3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(@types/react@19.2.2)(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.3)
+      '@docusaurus/theme-common':
+        specifier: 3.9.1
+        version: 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/theme-mermaid':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
         version: 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3))(@mdx-js/react@3.1.1(@types/react@19.2.2)(react@19.2.0))(lightningcss@1.30.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
       '@easyops-cn/docusaurus-search-local':
         specifier: ^0.49.2
@@ -157,13 +163,13 @@ importers:
         version: 19.2.0(react@19.2.0)
     devDependencies:
       '@docusaurus/module-type-aliases':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
         version: 3.9.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/tsconfig':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
         version: 3.9.1
       '@docusaurus/types':
-        specifier: ^3.8.1
+        specifier: ^3.9.1
         version: 3.9.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       typescript:
         specifier: ^5.2.2

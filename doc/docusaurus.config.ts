@@ -44,6 +44,11 @@ const config: Config = {
           routeBasePath: '/',
           // Disable edit links since this is private documentation
           editUrl: undefined,
+          // Show last update time and author from git history
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
+          // Add remark plugin to inject creation dates
+          beforeDefaultRemarkPlugins: [[require('./plugins/remark-creation-date.js'), {}]],
         },
         // Disable blog feature
         blog: false,
