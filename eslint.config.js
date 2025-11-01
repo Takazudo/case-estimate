@@ -7,9 +7,22 @@ import eslintReactHooks from 'eslint-plugin-react-hooks';
 import eslintReactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import { FlatCompat } from '@eslint/eslintrc';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
+  // Next.js recommended config
+  ...compat.extends('next/core-web-vitals'),
+
   // Main configuration for source files
   {
     files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
