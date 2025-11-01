@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('Color Selection Bug - Double Click Required', () => {
   test('should update panel color on FIRST click, not requiring double click', async ({ page }) => {
     // Navigate to a URL with サイド1 already set to イエロー (y)
-    await page.goto('http://localhost:3200/m?c=5b&p=1y.2y.9o.ao.7o.8o.5o.6o.bo.co.3o.4o', {
+    // Using c=3b (zudo-block-60-ACR-B), p=1y.2y (side1=yellow, side2=yellow)
+    await page.goto('/m?c=3b&p=1y.2y', {
       waitUntil: 'networkidle',
     });
 
@@ -15,7 +16,6 @@ test.describe('Color Selection Bug - Double Click Required', () => {
     expect(initialUrl).toContain('1y'); // サイド1 is yellow
 
     // Click on サイド1 panel from the panel list (right column)
-    // Find the panel in the right sidebar list
     await page.click('button:has-text("サイド1")');
 
     // Wait for the color modal to open
@@ -50,22 +50,22 @@ test.describe('Color Selection Bug - Double Click Required', () => {
 
   test('should work correctly from SVG panel click as well', async ({ page }) => {
     // Navigate to a URL with a panel set to orange (o)
-    await page.goto('http://localhost:3200/m?c=5b&p=1o.2o.9o.ao.7o.8o.5o.6o.bo.co.3o.4o', {
+    // c=3b (zudo-block-60-ACR-B), p=1o.2o (side1=orange, side2=orange)
+    await page.goto('/m?c=3b&p=1o.2o', {
       waitUntil: 'networkidle',
     });
 
-    // Wait for SVG to load - find a visual element in the SVG
+    // Wait for page to load - look for a panel button
     await page.waitForSelector('button:has-text("サイド1")', { timeout: 10000 });
 
-    // Click directly on the SVG panel (using the button selector approach)
-    // The SVG panels are rendered as buttons in the visualization
-    await page.click('button:has-text("Select サイド1")');
+    // Click directly on the SVG panel (using the button with aria-label)
+    await page.click('button[aria-label="Select サイド1"]');
 
     // Wait for modal to open
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
 
-    // Select yellow color
-    await page.click('[role="dialog"] button:has-text("イエロー")');
+    // Select yellow color (force click to avoid image interception)
+    await page.click('[role="dialog"] button:has-text("イエロー")', { force: true });
 
     // Wait a moment for URL to update
     await page.waitForTimeout(500);
@@ -78,7 +78,8 @@ test.describe('Color Selection Bug - Double Click Required', () => {
   });
 
   test('should work correctly from color preview thumbnails', async ({ page }) => {
-    await page.goto('http://localhost:3200/m?c=5b&p=1y.2y.9o.ao.7o.8o.5o.6o.bo.co.3o.4o', {
+    // c=3b (zudo-block-60-ACR-B), p=1y.2y (side1=yellow, side2=yellow)
+    await page.goto('/m?c=3b&p=1y.2y', {
       waitUntil: 'networkidle',
     });
 
@@ -88,15 +89,18 @@ test.describe('Color Selection Bug - Double Click Required', () => {
     // Switch to Custom tab first
     await page.click('button:has-text("カスタム")');
 
+    // Wait for custom tab content to be visible
+    await page.waitForTimeout(300);
+
     // Find and click on the color preview for サイド1
     // The CustomColorPreview component renders buttons for each panel
-    await page.click('button:has-text("Select サイド1")');
+    await page.click('button[aria-label="Select サイド1"]');
 
     // Wait for modal
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
 
-    // Select orange color
-    await page.click('[role="dialog"] button:has-text("オレンジ")');
+    // Select orange color (force click to avoid image interception)
+    await page.click('[role="dialog"] button:has-text("オレンジ")', { force: true });
 
     // Wait a moment for URL to update
     await page.waitForTimeout(500);
