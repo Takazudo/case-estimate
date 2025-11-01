@@ -1,10 +1,10 @@
-import { cases } from './cases';
+import { cases, type CaseEntry } from './cases';
 
 export interface CaseGroup {
   label: string;
   displayLabel: string;
   imageSlug: string;
-  cases: [string, (typeof cases)[keyof typeof cases]][];
+  cases: CaseEntry[];
 }
 
 export const caseGroups: CaseGroup[] = [

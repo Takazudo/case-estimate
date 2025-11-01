@@ -25,7 +25,10 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     if (isOpen) {
       setShouldRender(true);
       document.body.style.overflow = 'hidden';
-    } else if (shouldRender) {
+      return undefined;
+    }
+
+    if (shouldRender) {
       // Delay unmounting to allow fade-out animation
       const timer = setTimeout(() => {
         setShouldRender(false);
@@ -35,11 +38,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
       return () => clearTimeout(timer);
     }
 
-    return () => {
-      if (isOpen) {
-        document.body.style.overflow = 'unset';
-      }
-    };
+    return undefined;
   }, [isOpen, shouldRender]);
 
   // Handle escape key
