@@ -115,7 +115,6 @@ function Configurator() {
   // Initialize with null/empty state for consistent SSR
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
@@ -179,16 +178,6 @@ function Configurator() {
     }
   }, []);
 
-  // Sync selectedColor when selectedPanel changes (e.g., from panel selector dropdown)
-  useEffect(() => {
-    if (selectedPanel && material && panelColorIds[selectedPanel]) {
-      const currentColorId = panelColorIds[selectedPanel];
-      const availableColors = colors[material];
-      const matchingColor = availableColors?.find((c) => c.id === currentColorId);
-      setSelectedColor(matchingColor || null);
-    }
-  }, [selectedPanel, material, panelColorIds]);
-
   // Ensure the Custom tab is active when the current colors don't match any preset series
   // But only auto-switch on initial load or case change, not during manual tab switches
   useEffect(() => {
@@ -226,18 +215,9 @@ function Configurator() {
     }
 
     setSelectedPanel(panelId);
-
-    // Sync selectedColor with the panel's current color ID
-    if (material && panelColorIds[panelId]) {
-      const currentColorId = panelColorIds[panelId];
-      const availableColors = colors[material];
-      const matchingColor = availableColors?.find((c) => c.id === currentColorId);
-      setSelectedColor(matchingColor || null);
-    }
   };
 
   const handleColorSelect = (color: Color) => {
-    setSelectedColor(color);
     if (selectedPanel) {
       setPanelColorIds((prev) => ({
         ...prev,
@@ -256,7 +236,6 @@ function Configurator() {
     if (!caseType) return;
     setSelectedCase(caseType);
     setSelectedPanel(null);
-    setSelectedColor(null);
     isUserTabChangeRef.current = false; // Case change resets tab change origin
     setActiveTab('series');
 
@@ -363,7 +342,6 @@ function Configurator() {
             selectedPanel={selectedPanel}
             onPanelSelect={setSelectedPanel}
             colorMap={colorMap}
-            selectedColor={selectedColor}
             onColorSelect={handleColorSelect}
             onCaseSelect={handleCaseSelect}
             bgColor={bgColor}
