@@ -138,7 +138,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     >
       <div
         className={`
-          relative bg-white rounded-lg shadow-xl
+          relative bg-zd-black rounded-lg shadow-xl border-2 border-zd-gray
           w-[90vw] max-w-[800px] max-h-[85vh]
           overflow-hidden
           transition-transform duration-300
@@ -147,13 +147,13 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-hgap-md border-b border-zd-black/10">
-          <h2 id="case-selector-modal-title" className="text-xl font-bold text-zd-black">
+        <div className="flex items-center justify-between p-hgap-md border-b border-zd-gray">
+          <h2 id="case-selector-modal-title" className="text-xl font-bold text-zd-white">
             モデル選択
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-zd-black hover:text-zd-black/60 transition-colors"
+            className="p-2 text-zd-white hover:text-zd-white/60 transition-colors"
             aria-label="Close modal"
           >
             <CloseIcon className="w-6 h-6" />
@@ -167,13 +167,13 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
 
             return (
               <div key={group.label} className="mb-vgap-lg last:mb-0">
-                <div className="flex items-center gap-hgap-sm mb-vgap-sm border-b border-zd-black/20 pb-vgap-xs">
+                <div className="flex items-center gap-hgap-sm mb-vgap-sm border-b border-zd-gray pb-vgap-xs">
                   <img
                     src={getThumbnailUrl(group.imageSlug)}
                     alt={group.displayLabel}
                     className="w-16 h-16 object-cover rounded"
                   />
-                  <h3 className="text-lg font-semibold text-zd-black">{group.displayLabel}</h3>
+                  <h3 className="text-lg font-semibold text-zd-white">{group.displayLabel}</h3>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-hgap-sm">
                   {group.cases.map(([key, caseData]) => (
@@ -184,13 +184,13 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
                         text-left p-hgap-md rounded-lg border-2 transition-all
                         ${
                           selectedCase === key
-                            ? 'border-zd-black bg-zd-black/5 font-semibold'
-                            : 'border-zd-black/20 hover:border-zd-black/40 hover:bg-zd-black/5'
+                            ? 'border-zd-link bg-zd-link/10 font-semibold'
+                            : 'border-zd-gray hover:border-zd-link/60 hover:bg-zd-gray2'
                         }
                       `}
                     >
-                      <div className="text-base text-zd-black">{caseData.name}</div>
-                      <div className="text-sm text-zd-black/60 mt-vgap-2xs">
+                      <div className="text-base text-zd-white">{caseData.name}</div>
+                      <div className="text-sm text-zd-gray mt-vgap-2xs">
                         {caseData.hp} HP • {caseData.material === '3dp' ? '3D Printed' : 'Acrylic'}
                       </div>
                     </button>
