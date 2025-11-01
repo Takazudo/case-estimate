@@ -121,6 +121,7 @@ function Configurator() {
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const isUserTabChangeRef = useRef(false);
+  const modalPanelIdRef = useRef<string | null>(null); // Track panel ID for modal
 
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -217,8 +218,23 @@ function Configurator() {
     }
 
     setSelectedPanel(panelId);
+    // Store the panel ID for the modal to use immediately
+    modalPanelIdRef.current = panelId;
     // Open color selection modal when SVG panel is clicked
     setIsColorModalOpen(true);
+  };
+
+  // Handle panel selection from sidebar (panel list or color preview)
+  const handleSidebarPanelSelect = (panelId: string | null) => {
+    if (panelId) {
+      setSelectedPanel(panelId);
+      // Store the panel ID for the modal to use immediately
+      modalPanelIdRef.current = panelId;
+      // Open color selection modal
+      setIsColorModalOpen(true);
+    } else {
+      setSelectedPanel(null);
+    }
   };
 
   const handleColorSelect = (color: Color) => {
@@ -231,18 +247,28 @@ function Configurator() {
   };
 
   const handleModalColorSelect = (color: Color) => {
-    handleColorSelect(color);
+    // Use the panel ID from ref, which was set when modal was opened
+    const targetPanelId = modalPanelIdRef.current || selectedPanel;
+    if (targetPanelId) {
+      setPanelColorIds((prev) => ({
+        ...prev,
+        [targetPanelId]: color.id,
+      }));
+    }
     setIsColorModalOpen(false);
   };
 
-  const getSelectedColor = (): Color | null => {
-    if (!selectedPanel || !material) return null;
+  const getSelectedColor = (panelId?: string): Color | null => {
+    // Use provided panelId or fall back to selectedPanel state
+    const targetPanelId = panelId || selectedPanel;
 
-    const colorValue = panelColors[selectedPanel];
+    if (!targetPanelId || !material) return null;
+
+    const colorValue = panelColors[targetPanelId];
     const colorName = colorMap[colorValue] || 'Default';
 
     return {
-      id: panelColorIds[selectedPanel] || 'default',
+      id: panelColorIds[targetPanelId] || 'default',
       name: colorName,
       value: colorValue || '#f3f4f6',
       material: material === 'acrylic' ? 'Acrylic' : '3DP',
@@ -363,7 +389,7 @@ function Configurator() {
             panels={currentCase?.panels || []}
             panelColors={panelColors}
             selectedPanel={selectedPanel}
-            onPanelSelect={setSelectedPanel}
+            onPanelSelect={handleSidebarPanelSelect}
             colorMap={colorMap}
             onColorSelect={handleColorSelect}
             onCaseSelect={handleCaseSelect}
@@ -380,9 +406,12 @@ function Configurator() {
         <ColorSelectorModal
           isOpen={isColorModalOpen}
           material={material}
-          selectedColor={getSelectedColor()}
+          selectedColor={getSelectedColor(modalPanelIdRef.current || undefined)}
           onColorSelect={handleModalColorSelect}
-          onClose={() => setIsColorModalOpen(false)}
+          onClose={() => {
+            setIsColorModalOpen(false);
+            modalPanelIdRef.current = null; // Clear the ref after closing
+          }}
         />
       )}
     </div>

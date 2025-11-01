@@ -129,12 +129,7 @@ export default function ControlsSidebar({
                           <PanelListWithColorPicker
                             panels={panels}
                             panelColors={panelColors}
-                            onPanelColorChange={(panelId, color) => {
-                              // First select the panel
-                              onPanelSelect(panelId);
-                              // Then apply the color
-                              onColorSelect(color);
-                            }}
+                            onPanelClick={onPanelSelect}
                             colorMap={colorMap}
                             material={material}
                           />
