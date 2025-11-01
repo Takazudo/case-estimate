@@ -1,0 +1,17 @@
+# Markdown formatter ignore patterns
+# One glob pattern per line
+
+# Build and dependency directories
+**/node_modules/**
+**/.next/**
+**/out/**
+**/dist/**
+**/build/**
+**/.git/**
+**/coverage/**
+
+# Project-specific excludes
+**/doc/**
+**/worktrees/**
+**/sub-packages/**
+**/__inbox/**
