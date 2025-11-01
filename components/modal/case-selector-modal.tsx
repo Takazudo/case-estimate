@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { cases } from '@/data/cases';
 import { CloseIcon } from '@/components/icons/close-icon';
+import { ModelBoxIcon } from '@/components/icons/model-box-icon';
 import { getThumbnailUrl } from '@/utils/cdn-urls';
 
 interface CaseSelectorModalProps {
@@ -148,7 +149,11 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-hgap-md border-b border-zd-gray">
-          <h2 id="case-selector-modal-title" className="text-xl font-bold text-zd-white">
+          <h2
+            id="case-selector-modal-title"
+            className="text-xl font-bold text-zd-white flex items-center gap-hgap-xs"
+          >
+            <ModelBoxIcon className="w-6 h-6 text-zd-white" />
             モデル選択
           </h2>
           <button
