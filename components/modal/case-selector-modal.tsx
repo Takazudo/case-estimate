@@ -175,24 +175,26 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
                   />
                   <h3 className="text-lg font-semibold text-zd-white">{group.displayLabel}</h3>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-hgap-sm">
+                <div className="space-y-1">
                   {group.cases.map(([key, caseData]) => (
                     <button
                       key={key}
                       onClick={() => handleCaseClick(key)}
                       className={`
-                        text-left p-hgap-md rounded-lg border-2 transition-all
+                        w-full text-left px-hgap-sm py-vgap-xs rounded transition-all flex items-center justify-between
                         ${
                           selectedCase === key
-                            ? 'border-zd-link bg-zd-link/10 font-semibold'
-                            : 'border-zd-gray hover:border-zd-link/60 hover:bg-zd-gray2'
+                            ? 'bg-zd-link text-zd-black font-medium'
+                            : 'hover:bg-zd-gray2 text-zd-white'
                         }
                       `}
                     >
-                      <div className="text-base text-zd-white">{caseData.name}</div>
-                      <div className="text-sm text-zd-gray mt-vgap-2xs">
-                        {caseData.hp} HP • {caseData.material === '3dp' ? '3D Printed' : 'Acrylic'}
-                      </div>
+                      <span className="text-sm">{caseData.name}</span>
+                      <span
+                        className={`text-xs ${selectedCase === key ? 'text-zd-black/70' : 'text-zd-gray'}`}
+                      >
+                        {caseData.hp} HP • {caseData.material === '3dp' ? '3D' : 'ACR'}
+                      </span>
                     </button>
                   ))}
                 </div>
