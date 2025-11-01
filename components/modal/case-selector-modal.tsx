@@ -167,36 +167,38 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
 
             return (
               <div key={group.label} className="mb-vgap-lg last:mb-0">
-                <div className="flex items-center gap-hgap-sm mb-vgap-sm border-b border-zd-gray pb-vgap-xs">
+                <h3 className="text-lg font-semibold text-zd-white mb-vgap-sm border-b border-zd-gray pb-vgap-xs">
+                  {group.displayLabel}
+                </h3>
+                <div className="flex gap-hgap-md">
                   <img
                     src={getThumbnailUrl(group.imageSlug)}
                     alt={group.displayLabel}
-                    className="w-16 h-16 object-cover rounded"
+                    className="w-[200px] h-[200px] object-cover rounded flex-shrink-0"
                   />
-                  <h3 className="text-lg font-semibold text-zd-white">{group.displayLabel}</h3>
-                </div>
-                <div className="space-y-1">
-                  {group.cases.map(([key, caseData]) => (
-                    <button
-                      key={key}
-                      onClick={() => handleCaseClick(key)}
-                      className={`
-                        w-full text-left px-hgap-sm py-vgap-xs rounded transition-all flex items-center justify-between
-                        ${
-                          selectedCase === key
-                            ? 'bg-zd-link text-zd-black font-medium'
-                            : 'hover:bg-zd-gray2 text-zd-white'
-                        }
-                      `}
-                    >
-                      <span className="text-sm">{caseData.name}</span>
-                      <span
-                        className={`text-xs ${selectedCase === key ? 'text-zd-black/70' : 'text-zd-gray'}`}
+                  <div className="space-y-1 flex-1">
+                    {group.cases.map(([key, caseData]) => (
+                      <button
+                        key={key}
+                        onClick={() => handleCaseClick(key)}
+                        className={`
+                          w-full text-left px-hgap-sm py-vgap-xs rounded transition-all flex items-center justify-between
+                          ${
+                            selectedCase === key
+                              ? 'bg-zd-link text-zd-black font-medium'
+                              : 'hover:bg-zd-gray2 text-zd-white'
+                          }
+                        `}
                       >
-                        {caseData.hp} HP • {caseData.material === '3dp' ? '3D' : 'ACR'}
-                      </span>
-                    </button>
-                  ))}
+                        <span className="text-sm">{caseData.name}</span>
+                        <span
+                          className={`text-xs ${selectedCase === key ? 'text-zd-black/70' : 'text-zd-gray'}`}
+                        >
+                          {caseData.hp} HP • {caseData.material === '3dp' ? '3D' : 'ACR'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             );
