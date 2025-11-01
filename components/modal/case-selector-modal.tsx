@@ -139,8 +139,8 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     >
       <div
         className={`
-          relative bg-zd-black rounded-lg shadow-xl border-2 border-zd-gray
-          w-[90vw] max-w-[800px] max-h-[85vh]
+          relative bg-zd-black shadow-xl border border-zd-white
+          w-full md:w-[90vw] max-w-[1400px] max-h-[85vh]
           overflow-hidden
           transition-transform duration-300
           ${isOpen ? 'scale-100' : 'scale-95'}
@@ -148,61 +148,99 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-hgap-md border-b border-zd-gray">
+        <div
+          className={`
+            px-hgap-sm py-vgap-sm
+            md:px-hgap-md md:py-vgap-md
+            flex items-center justify-between
+            border-b border-zd-white
+          `}
+        >
           <h2
             id="case-selector-modal-title"
-            className="text-xl font-bold text-zd-white flex items-center gap-hgap-xs"
+            className={`
+              font-bold text-zd-white
+              flex items-baseline gap-hgap-xs
+            `}
           >
-            <ModelBoxIcon className="w-6 h-6 text-zd-white" />
-            モデル選択
+            <ModelBoxIcon className="w-[32px] h-[32px] text-zd-white relative top-[5px]" />
+            <span className="text-base lg:text-xl">モデル選択 </span>
+            <span className="hidden lg:inline text-base">/ Model Selection</span>
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-zd-white hover:text-zd-white/60 transition-colors"
+            className="text-zd-white zd-invert-color-link"
             aria-label="Close modal"
           >
-            <CloseIcon className="w-6 h-6" />
+            <CloseIcon className="w-[30px] md:w-[44px] aspect-square" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto max-h-[calc(85vh-80px)] p-hgap-md">
+        <div
+          className={`
+            overflow-y-auto max-h-[calc(85vh-80px)]
+            px-hgap-md
+            pt-vgap-md
+            pb-[100px]
+          `}
+        >
           {caseGroups.map((group) => {
             if (group.cases.length === 0) return null;
 
             return (
               <div key={group.label} className="mb-vgap-lg last:mb-0">
-                <h3 className="text-lg font-semibold text-zd-white mb-vgap-sm border-b border-zd-gray pb-vgap-xs">
+                <h3
+                  className={`
+                    text-sm md:text-lg font-bold text-zd-white
+                    border-b border-zd-white pb-vgap-sm
+                    mb-vgap-sm md:mb-vgap-md
+                  `}
+                >
                   {group.displayLabel}
                 </h3>
                 <div className="flex gap-hgap-md">
-                  <img
-                    src={getThumbnailUrl(group.imageSlug)}
-                    alt={group.displayLabel}
-                    className="w-[200px] h-[200px] object-cover rounded flex-shrink-0"
-                  />
-                  <div className="space-y-1 flex-1">
-                    {group.cases.map(([key, caseData]) => (
-                      <button
-                        key={key}
-                        onClick={() => handleCaseClick(key)}
-                        className={`
-                          w-full text-left px-hgap-sm py-vgap-xs rounded transition-all flex items-center justify-between
-                          ${
-                            selectedCase === key
-                              ? 'bg-zd-link text-zd-black font-medium'
-                              : 'text-zd-white zd-invert-color-link'
-                          }
+                  <div
+                    className={`
+                      hidden md:block
+                      flex-shrink-0
+                    `}
+                  >
+                    <img
+                      src={getThumbnailUrl(group.imageSlug)}
+                      alt={group.displayLabel}
+                      className={`
+                        w-[200px] lg:w-[300px] xl:w-[400px] aspect-square border border-zd-white
+                      `}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <ul className="space-y-vgap-xs">
+                      {group.cases.map(([key, caseData]) => (
+                        <li key={key}>
+                          <button
+                            onClick={() => handleCaseClick(key)}
+                            className={`
+                              w-full text-left py-vgap-xs rounded transition-all flex items-baseline justify-between
+                              md:px-hgap-sm
+                              md:-mx-hgap-sm
+                              ${
+                                selectedCase === key
+                                  ? 'bg-zd-link text-zd-black font-medium'
+                                  : 'text-zd-white zd-invert-color-link'
+                              }
                         `}
-                      >
-                        <span className="text-sm">{caseData.name}</span>
-                        <span
-                          className={`text-xs ${selectedCase === key ? 'text-zd-black/70' : 'text-zd-gray'}`}
-                        >
-                          {caseData.hp} HP • {caseData.material === '3dp' ? '3D' : 'ACR'}
-                        </span>
-                      </button>
-                    ))}
+                          >
+                            <span className="text-sm md:text-base underline">{caseData.name}</span>
+                            <span
+                              className={`text-xs md:text-sm underline ${selectedCase === key ? 'text-zd-black' : 'text-zd-gray'}`}
+                            >
+                              {caseData.hp} HP • {caseData.material === '3dp' ? '3D' : 'ACR'}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>

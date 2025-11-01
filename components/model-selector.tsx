@@ -18,8 +18,8 @@ const ModelSelector = ({ selectedCase, onCaseSelect }: ModelSelectorProps) => {
     <>
       <div className="space-y-vgap-xs pb-vgap-sm">
         <h3 className="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
-          <ModelBoxIcon className="w-5 h-5 text-zd-white" />
-          モデル選択
+          <ModelBoxIcon className="w-[30px] h-[30px] text-zd-white mr-[2px]" />
+          ケースモデル <span className="text-sm">/ Case Model</span>
         </h3>
         <button
           onClick={() => setIsModalOpen(true)}
