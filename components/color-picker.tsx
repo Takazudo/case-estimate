@@ -1,8 +1,9 @@
 'use client';
 
-import { colors } from '@/data/colors';
+import { useState } from 'react';
 import type { Color } from '@/types';
 import PanelColorSwatch from '@/components/panel-color-swatch';
+import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
 
 interface ColorPickerProps {
   material: 'acrylic' | '3dp';
@@ -11,44 +12,68 @@ interface ColorPickerProps {
 }
 
 const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProps) => {
-  const availableColors = colors[material] || [];
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Render color thumbnail with pattern support
-  const renderColorThumbnail = (color: Color) => (
-    <PanelColorSwatch
-      value={color.value}
-      className="relative overflow-hidden w-6 h-6 rounded mr-hgap-xs border border-zd-gray flex-shrink-0"
-      dataTestId="color-picker-swatch"
-    />
-  );
+  const materialLabel = material === 'acrylic' ? 'アクリル' : '3Dプリント';
 
   return (
-    <div className="space-y-vgap-xs">
-      <h3 className="font-semibold text-zd-white pb-vgap-xs">Colors</h3>
-      <div className="grid grid-cols-1 gap-vgap-2xs text-sm">
-        {availableColors.map((color) => (
-          <button
-            key={color.id}
-            onClick={() => onColorSelect(color)}
-            className={`
-              flex items-center rounded-lg border-2 transition-all text-left
-              py-vgap-sm px-hgap-sm
-              ${
-                selectedColor?.id === color.id
-                  ? 'border-zd-link bg-zd-active'
-                  : 'border-zd-gray hover:border-zd-link'
-              }
-            `}
-          >
-            {renderColorThumbnail(color)}
-            <span className="flex flex-1 flex-col lg:flex-row">
-              <span className="font-medium text-zd-white flex-1">{color.name}</span>
-              <span className="text-zd-gray nowrap">{color.material}</span>
+    <>
+      <div className="space-y-vgap-xs">
+        <h3 className="font-semibold text-zd-white pb-vgap-xs">Colors</h3>
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className={`
+            w-full flex items-center gap-hgap-sm
+            rounded-lg border-2 transition-all text-left
+            py-vgap-sm px-hgap-sm
+            border-zd-gray hover:border-zd-link
+            bg-zd-surface-2
+          `}
+          data-testid="color-picker-button"
+        >
+          {selectedColor ? (
+            <>
+              <PanelColorSwatch
+                value={selectedColor.value}
+                className="relative overflow-hidden w-8 h-8 rounded border border-zd-gray flex-shrink-0"
+                dataTestId="color-picker-current-swatch"
+              />
+              <span className="flex flex-1 flex-col">
+                <span className="font-medium text-zd-white">{selectedColor.name}</span>
+                <span className="text-sm text-zd-gray">{selectedColor.material}</span>
+              </span>
+            </>
+          ) : (
+            <span className="flex flex-1 flex-col">
+              <span className="font-medium text-zd-white">カラーを選択</span>
+              <span className="text-sm text-zd-gray">{materialLabel}</span>
             </span>
-          </button>
-        ))}
+          )}
+
+          {/* Arrow icon */}
+          <svg
+            className="w-5 h-5 text-zd-gray flex-shrink-0"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
-    </div>
+
+      <ColorSelectorModal
+        isOpen={isModalOpen}
+        material={material}
+        selectedColor={selectedColor}
+        onColorSelect={onColorSelect}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
 

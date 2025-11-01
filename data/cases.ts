@@ -1,5 +1,7 @@
 import type { Cases } from '@/types';
 
+export type CaseEntry = [string, Cases[keyof Cases]];
+
 export const cases: Cases = {
   'zudo-block-40-3DP-A': {
     name: 'zudo-block-40-3DP-A',

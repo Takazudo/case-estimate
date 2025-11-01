@@ -2,11 +2,10 @@
 
 import { colors } from '@/data/colors';
 import { cases } from '@/data/cases';
-import type { Color, Series } from '@/types';
+import type { Series } from '@/types';
 import Tabs from './tabs';
 import SeriesCard from './series-card';
-import PanelSelector from './panel-selector';
-import ColorPicker from './color-picker';
+import PanelListWithColorPicker from './panel-list-with-color-picker';
 import CustomColorPreview from './custom-color-preview';
 import ModelSelector from './model-selector';
 import BackgroundColorPicker from './background-color-picker';
@@ -23,8 +22,6 @@ interface ControlsSidebarProps {
   selectedPanel: string | null;
   onPanelSelect: (panelId: string | null) => void;
   colorMap: { [key: string]: string };
-  selectedColor: Color | null;
-  onColorSelect: (color: Color) => void;
   onCaseSelect: (caseType: string) => void;
   bgColor?: string;
   gridColor?: string;
@@ -44,8 +41,6 @@ export default function ControlsSidebar({
   selectedPanel,
   onPanelSelect,
   colorMap,
-  selectedColor,
-  onColorSelect,
   onCaseSelect,
   bgColor,
   gridColor,
@@ -120,19 +115,13 @@ export default function ControlsSidebar({
                       )}
 
                       <div className="space-y-vgap-sm">
-                        <PanelSelector
-                          panels={panels}
-                          panelColors={panelColors}
-                          selectedPanel={selectedPanel}
-                          onPanelSelect={onPanelSelect}
-                          colorMap={colorMap}
-                        />
-
-                        {selectedPanel && material && (
-                          <ColorPicker
+                        {material && (
+                          <PanelListWithColorPicker
+                            panels={panels}
+                            panelColors={panelColors}
+                            onPanelClick={onPanelSelect}
+                            colorMap={colorMap}
                             material={material}
-                            selectedColor={selectedColor}
-                            onColorSelect={onColorSelect}
                           />
                         )}
                       </div>
@@ -145,8 +134,7 @@ export default function ControlsSidebar({
 
           <div className="px-hgap-sm lg:px-hgap-md py-vgap-md space-y-vgap-sm lg:space-y-vgap-md">
             <div className="text-sm text-zd-gray space-y-vgap-2xs">
-              <p>• Click on any panel to select it</p>
-              <p>• Choose a color to apply to the selected panel</p>
+              <p>• Click on a panel to choose its color</p>
               <p>• Your configuration is saved in the URL</p>
             </div>
 

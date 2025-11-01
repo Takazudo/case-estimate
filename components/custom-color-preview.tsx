@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import { cases } from '@/data/cases';
-import PanelColorSwatch, { resolvePanelColorBackground } from '@/components/panel-color-swatch';
+import PanelColorSwatch from '@/components/panel-color-swatch';
+import { resolvePanelColorBackground } from '@/utils/panel-color-utils';
 
 interface CustomColorPreviewProps {
   caseType: string;
@@ -64,15 +65,15 @@ const CustomColorPreview = ({
                 key={panel.id}
                 onClick={() => onPanelSelect(panel.id)}
                 className={`
-                  flex-1 h-12 border transition-all overflow-hidden
-                  ml-[2px] first:ml-0
-                  relative active:z-10 focus:z-10
-                  ${
-                    selectedPanel === panel.id
-                      ? 'border-zd-link border-2 shadow-lg'
-                      : 'border-zd-gray hover:border-zd-link'
-                  }
-                `}
+                    flex-1 h-12 border transition-all overflow-hidden
+                    ml-[2px] first:ml-0
+                    relative active:z-10 focus:z-10
+                    ${
+                      selectedPanel === panel.id
+                        ? 'border-zd-link border-2 shadow-lg'
+                        : 'border-zd-gray hover:border-zd-link'
+                    }
+                  `}
                 style={{ backgroundColor }}
                 title={panel.name}
                 aria-label={`Select ${panel.name}`}

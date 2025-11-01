@@ -1,93 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Article Image Dialog Test</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      padding: 20px;
-      background: #1a1a1a;
-      color: #fff;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .test-section {
-      background: #2a2a2a;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    .success {
-      color: #4ade80;
-    }
-    .error {
-      color: #f87171;
-    }
-    .warning {
-      color: #fbbf24;
-    }
-    pre {
-      background: #1a1a1a;
-      padding: 10px;
-      border-radius: 4px;
-      overflow-x: auto;
-    }
-    h2 {
-      border-bottom: 1px solid #444;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Article Image Dialog Refactoring Test Results</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Article Image Dialog Test</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        padding: 20px;
+        background: #1a1a1a;
+        color: #fff;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .test-section {
+        background: #2a2a2a;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+      .success {
+        color: #4ade80;
+      }
+      .error {
+        color: #f87171;
+      }
+      .warning {
+        color: #fbbf24;
+      }
+      pre {
+        background: #1a1a1a;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+      h2 {
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Article Image Dialog Refactoring Test Results</h1>
 
-    <div class="test-section">
-      <h2>✅ Component Structure</h2>
-      <ul>
-        <li class="success">✓ Created new ArticleImageDialog component</li>
-        <li class="success">✓ Updated ArticleGridImageList to use URL search params</li>
-        <li class="success">✓ Removed dependency on ImageModal component</li>
-      </ul>
-    </div>
+      <div class="test-section">
+        <h2>✅ Component Structure</h2>
+        <ul>
+          <li class="success">✓ Created new ArticleImageDialog component</li>
+          <li class="success">✓ Updated ArticleGridImageList to use URL search params</li>
+          <li class="success">✓ Removed dependency on ImageModal component</li>
+        </ul>
+      </div>
 
-    <div class="test-section">
-      <h2>✅ Features Implemented</h2>
-      <ul>
-        <li class="success">✓ Index-based navigation with prev/next buttons</li>
-        <li class="success">✓ URL search param 'imageIndex' for tracking selected image</li>
-        <li class="success">✓ Keyboard navigation (arrow keys and ESC)</li>
-        <li class="success">✓ Image preloading for adjacent images (±2 images)</li>
-        <li class="success">✓ Visual styling matching GalleryDialog</li>
-        <li class="success">✓ Image info overlay showing heading and subHeading</li>
-      </ul>
-    </div>
+      <div class="test-section">
+        <h2>✅ Features Implemented</h2>
+        <ul>
+          <li class="success">✓ Index-based navigation with prev/next buttons</li>
+          <li class="success">✓ URL search param 'imageIndex' for tracking selected image</li>
+          <li class="success">✓ Keyboard navigation (arrow keys and ESC)</li>
+          <li class="success">✓ Image preloading for adjacent images (±2 images)</li>
+          <li class="success">✓ Visual styling matching GalleryDialog</li>
+          <li class="success">✓ Image info overlay showing heading and subHeading</li>
+        </ul>
+      </div>
 
-    <div class="test-section">
-      <h2>✅ TypeScript Compliance</h2>
-      <ul>
-        <li class="success">✓ All TypeScript errors resolved</li>
-        <li class="success">✓ Proper type definitions maintained</li>
-        <li class="success">✓ Null safety checks implemented</li>
-      </ul>
-    </div>
+      <div class="test-section">
+        <h2>✅ TypeScript Compliance</h2>
+        <ul>
+          <li class="success">✓ All TypeScript errors resolved</li>
+          <li class="success">✓ Proper type definitions maintained</li>
+          <li class="success">✓ Null safety checks implemented</li>
+        </ul>
+      </div>
 
-    <div class="test-section">
-      <h2>✅ Code Quality</h2>
-      <ul>
-        <li class="success">✓ Prettier formatting applied</li>
-        <li class="success">✓ Build passes successfully</li>
-        <li class="success">✓ ESLint warnings minimal (only existing ones)</li>
-      </ul>
-    </div>
+      <div class="test-section">
+        <h2>✅ Code Quality</h2>
+        <ul>
+          <li class="success">✓ Prettier formatting applied</li>
+          <li class="success">✓ Build passes successfully</li>
+          <li class="success">✓ ESLint warnings minimal (only existing ones)</li>
+        </ul>
+      </div>
 
-    <div class="test-section">
-      <h2>📋 Key Changes Summary</h2>
-      <pre><code>1. ArticleGridImageList:
+      <div class="test-section">
+        <h2>📋 Key Changes Summary</h2>
+        <pre><code>1. ArticleGridImageList:
    - Replaced state-based modal with URL params
    - Changed handleEnlargeClick to use router navigation
    - Integrated ArticleImageDialog component
@@ -101,31 +104,30 @@
    - Image preloading mechanism
    - Loading states and error handling
    - Image info overlay with heading/subHeading</code></pre>
-    </div>
+      </div>
 
-    <div class="test-section">
-      <h2>⚠️ Notes for Usage</h2>
-      <ul>
-        <li class="warning">⚠ The dialog uses native HTML dialog element with showModal()</li>
-        <li class="warning">⚠ URL updates use router.replace() to avoid page transitions</li>
-        <li class="warning">⚠ Images preload ±2 positions from current for smooth navigation</li>
-      </ul>
-    </div>
+      <div class="test-section">
+        <h2>⚠️ Notes for Usage</h2>
+        <ul>
+          <li class="warning">⚠ The dialog uses native HTML dialog element with showModal()</li>
+          <li class="warning">⚠ URL updates use router.replace() to avoid page transitions</li>
+          <li class="warning">⚠ Images preload ±2 positions from current for smooth navigation</li>
+        </ul>
+      </div>
 
-    <div class="test-section">
-      <h2>🎯 Testing Instructions</h2>
-      <ol>
-        <li>Navigate to /panel page</li>
-        <li>Click on any panel image</li>
-        <li>Verify dialog opens with correct image</li>
-        <li>Test navigation with arrow keys</li>
-        <li>Test prev/next buttons</li>
-        <li>Test ESC key to close</li>
-        <li>Test backdrop click to close</li>
-        <li>Verify URL updates with imageIndex param</li>
-      </ol>
+      <div class="test-section">
+        <h2>🎯 Testing Instructions</h2>
+        <ol>
+          <li>Navigate to /panel page</li>
+          <li>Click on any panel image</li>
+          <li>Verify dialog opens with correct image</li>
+          <li>Test navigation with arrow keys</li>
+          <li>Test prev/next buttons</li>
+          <li>Test ESC key to close</li>
+          <li>Test backdrop click to close</li>
+          <li>Verify URL updates with imageIndex param</li>
+        </ol>
+      </div>
     </div>
-
-  </div>
-</body>
+  </body>
 </html>

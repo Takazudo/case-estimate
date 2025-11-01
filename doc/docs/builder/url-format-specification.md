@@ -21,6 +21,7 @@ The encoding uses **color IDs** as the source of truth, ensuring that colors wit
 Encoded case model identifier using 1-2 character codes.
 
 **Examples:**
+
 - `2a` → `zudo-block-40-3DP-A`
 - `7b` → `zudo-block-60x2-ACR-B`
 - `9a` → `10box-shallow-3dp`
@@ -171,7 +172,7 @@ const PANEL_CODES_OPEN_UPGRADE = {
   back2: '8',
   bottom1: '5',
   bottom2: '6',
-  top1: 't1',  // use 't' prefix for top panels
+  top1: 't1', // use 't' prefix for top panels
   top2: 't2',
 };
 ```
@@ -204,21 +205,21 @@ const COLOR_CODES_ACRYLIC = {
 const COLOR_CODES_3DP = {
   'carbon-black': 'cb',
   'bone-white': 'bw',
-  'clear-blue': 'bl',        // Semi-transparent blue (PETG)
-  'clear-red': 'rd',         // Semi-transparent red (PETG) - distinct from crimson-red
-  'crimson-red': 'cr',       // Opaque red (PLA)
+  'clear-blue': 'bl', // Semi-transparent blue (PETG)
+  'clear-red': 'rd', // Semi-transparent red (PETG) - distinct from crimson-red
+  'crimson-red': 'cr', // Opaque red (PLA)
   'dark-orange': 'do',
   'light-orange': 'lo',
   'deep-yellow': 'dy',
-  'bright-gold': 'bg',       // Renamed from 'gold-yellow'
-  'deep-gold': 'dg',         // New color
+  'bright-gold': 'bg', // Renamed from 'gold-yellow'
+  'deep-gold': 'dg', // New color
   'indigo-blue': 'ib',
   'red-green-silk': 'rg',
   green: 'g',
-  'silver-gray': 'sg',       // Renamed from 'silver'
-  'silver-white': 'sw',      // New color
+  'silver-gray': 'sg', // Renamed from 'silver'
+  'silver-white': 'sw', // New color
   '3dp-pink': 'pk',
-  caramel: 'ca',             // New color
+  caramel: 'ca', // New color
 };
 ```
 
@@ -227,6 +228,7 @@ const COLOR_CODES_3DP = {
 #### Migration Notes
 
 **Color Renames:**
+
 - `gold-yellow` (code: `gy`) was renamed to `bright-gold` (code: `bg`)
 - `silver` (code: `sv`) was renamed to `silver-gray` (code: `sg`)
 
@@ -239,6 +241,7 @@ const COLOR_CODES_3DP = {
 **URL:** `/m?c=2a&p=1cb.2cb.7cr.8cr.5cb.6cr.3cb.4cr`
 
 **Decoded:**
+
 - Case: `zudo-block-40-3DP-A` (40HP, 3D printed, Type A)
 - Panel Colors:
   - side1 (1): carbon-black (cb)
@@ -257,6 +260,7 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 **URL:** `/m?c=6a&p=1cb.2cb.9cb.acb.7cr.8cr.5cb.6cr.bcb.ccr.3cb.4cr`
 
 **Decoded:**
+
 - Case: `zudo-block-40x2-3DP-A` (80HP, 3D printed, Type A)
 - 12 panels with KuroBeni pattern (carbon-black + crimson-red)
 
@@ -265,6 +269,7 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 **URL:** `/m?c=9a&p=m1cb.m2cb.m3cb.m4cb.m5cb.m6cb.m7cb.m8cb.m9cb.macb.l1cb.l2cb.l3cb.l4cb.l5cb.l6cb`
 
 **Decoded:**
+
 - Case: `10box-shallow-3dp` (104HP, 3D printed)
 - All panels: carbon-black (YamiKage/All Black series)
 
@@ -273,6 +278,7 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 **URL:** `/m?c=ou&p=7cb.8cr.5cb.6cr.t1cb.t2cr`
 
 **Decoded:**
+
 - Case: `zudo-block-60-open-upgrade-ACR` (60HP open frame with upgrade panels)
 - Panel Colors:
   - back1 (7): carbon-black
@@ -289,6 +295,7 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 **URL with crimson-red:** `/m?c=2a&p=1cr.2cr.3cr.4cr.5cr.6cr.7cr.8cr`
 
 Both use the same hex value (#b71c1c), but:
+
 - `rd` (clear-red) renders with 0.6 opacity (semi-transparent PETG)
 - `cr` (crimson-red) renders with 1.0 opacity (opaque PLA)
 
@@ -301,6 +308,7 @@ Both use the same hex value (#b71c1c), but:
 **URL with caramel:** `/m?c=2a&p=1cb.2cb.3ca.4ca.5cb.6cb.7ca.8ca`
 
 These demonstrate the new color options:
+
 - `dg` (deep-gold) - #ff9900 (PLA)
 - `sw` (silver-white) - #dfe0dd (PLA)
 - `ca` (caramel) - #ab461e (PLA)
@@ -327,6 +335,7 @@ function encodePanelColors(panelColorIds: { [key: string]: string }): string {
 ```
 
 **Key Points:**
+
 - Accepts color IDs directly (not hex values)
 - Maps panel IDs to short codes (e.g., 'side1' → '1')
 - Maps color IDs to short codes (e.g., 'crimson-red' → 'cr')
@@ -366,6 +375,7 @@ function decodePanelColors(encoded: string): { [key: string]: string } {
 ```
 
 **Key Points:**
+
 - Returns color IDs directly (not hex values)
 - Handles variable-length panel codes (1-2 chars)
 - Automatically detects 10BOX (`m`, `l`) and open upgrade (`t`) prefixes
@@ -376,6 +386,7 @@ function decodePanelColors(encoded: string): { [key: string]: string } {
 The system uses color IDs as the primary encoding mechanism to solve critical issues:
 
 **Problem with hex-based encoding:**
+
 ```typescript
 // These two colors have the same hex value but different properties
 'crimson-red': { value: '#b71c1c', opacity: 1.0, material: 'PLA' }
@@ -387,6 +398,7 @@ The system uses color IDs as the primary encoding mechanism to solve critical is
 ```
 
 **Solution with color ID encoding:**
+
 ```typescript
 // URL stores color ID 'rd' or 'cr'
 // - 'rd' always decodes to 'clear-red' (semi-transparent)
@@ -422,6 +434,7 @@ The system uses color IDs as the primary encoding mechanism to solve critical is
 ## Related Files
 
 Implementation can be found in:
+
 - `/utils/url-encoder.ts` - Core encoding/decoding functions
 - `/utils/url-encoder.test.ts` - Comprehensive test suite
 - `/data/cases.ts` - Case model definitions

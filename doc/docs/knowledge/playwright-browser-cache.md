@@ -168,10 +168,12 @@ For cross-platform projects, use conditional paths:
 ### Cache Key Strategy
 
 The cache key includes:
+
 1. **OS**: `${{ runner.os }}` - Separate cache per OS
 2. **Lock file hash**: `${{ hashFiles('**/pnpm-lock.yaml') }}` - Invalidates when dependencies change
 
 **Why hash the lock file?**
+
 - Playwright version may change with dependency updates
 - Ensures cache is rebuilt when Playwright is upgraded
 - Prevents version mismatches
@@ -184,6 +186,7 @@ restore-keys: |
 ```
 
 This fallback allows:
+
 - Use cache even if lock file changed slightly
 - Faster than full re-download
 - `playwright install` will only download missing/updated browsers
@@ -212,7 +215,7 @@ Set appropriate timeout for first run (cache miss):
 ```yaml
 e2e:
   runs-on: ubuntu-latest
-  timeout-minutes: 15  # First run: ~10-12 min, Cached: ~2-3 min
+  timeout-minutes: 15 # First run: ~10-12 min, Cached: ~2-3 min
 ```
 
 ## Troubleshooting
@@ -237,6 +240,7 @@ Check if cache is being saved:
 If cache size becomes an issue:
 
 1. **Install specific browser only**
+
    ```bash
    playwright install chromium  # No --with-deps
    ```
@@ -252,6 +256,7 @@ If cache size becomes an issue:
 If you see "Browser version mismatch" errors:
 
 1. Clear cache by changing the key:
+
    ```yaml
    key: playwright-v2-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
    ```
@@ -265,11 +270,11 @@ If you see "Browser version mismatch" errors:
 
 From our `case-estimate` project:
 
-| Run Type | Time | Browser Install | Tests | Total |
-|----------|------|----------------|-------|-------|
-| Without cache (timeout) | - | ~8 minutes | ~45s | 10+ min (failed) |
-| With cache (first run) | 4m37s | ~3-4 minutes | ~45s | 4m37s |
-| With cache (subsequent) | ~2m30s | ~10 seconds | ~45s | ~2m30s |
+| Run Type                | Time   | Browser Install | Tests | Total            |
+| ----------------------- | ------ | --------------- | ----- | ---------------- |
+| Without cache (timeout) | -      | ~8 minutes      | ~45s  | 10+ min (failed) |
+| With cache (first run)  | 4m37s  | ~3-4 minutes    | ~45s  | 4m37s            |
+| With cache (subsequent) | ~2m30s | ~10 seconds     | ~45s  | ~2m30s           |
 
 **Result**: 60-70% faster CI runs after first cache build.
 

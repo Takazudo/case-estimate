@@ -3,8 +3,14 @@
 import { program } from 'commander';
 import { glob } from 'glob';
 import { promises as fs } from 'fs';
+import { existsSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import { formatFile, checkFile } from './index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 program
   .name('md-formatter')
@@ -18,6 +24,11 @@ program
     'Comma-separated patterns to ignore',
     '**/node_modules/**,**/dist/**,**/build/**,**/.git/**,**/out/**,**/.next/**,**/coverage/**',
   )
+  .option(
+    '--ignore-file <path>',
+    'Path to ignore file (default: .mdformatignore in current directory)',
+    '.mdformatignore',
+  )
   .action(async (patterns, options) => {
     try {
       await main(patterns, options);
@@ -30,12 +41,44 @@ program
 program.parse();
 
 /**
+ * Read ignore patterns from a file
+ * @param {string} filePath - Path to the ignore file
+ * @returns {Promise<string[]>} Array of ignore patterns
+ */
+async function readIgnoreFile(filePath) {
+  try {
+    const content = await fs.readFile(filePath, 'utf-8');
+    return content
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#')); // Skip empty lines and comments
+  } catch (error) {
+    // If file doesn't exist, return empty array
+    return [];
+  }
+}
+
+/**
  * Main CLI function
  * @param {string[]} patterns - File patterns to process
  * @param {Object} options - CLI options
  */
 async function main(patterns, options) {
-  const ignorePatterns = options.ignore.split(',').map((p) => p.trim());
+  // Read ignore patterns from file if it exists
+  const ignoreFilePath = path.resolve(process.cwd(), options.ignoreFile);
+  let ignorePatterns = [];
+
+  if (existsSync(ignoreFilePath)) {
+    const filePatterns = await readIgnoreFile(ignoreFilePath);
+    ignorePatterns.push(...filePatterns);
+  }
+
+  // Add CLI ignore patterns
+  const cliPatterns = options.ignore.split(',').map((p) => p.trim());
+  ignorePatterns.push(...cliPatterns);
+
+  // Remove duplicates
+  ignorePatterns = [...new Set(ignorePatterns)];
 
   // Find all matching files
   const files = [];

@@ -55,14 +55,16 @@ This approach is version-controlled and more maintainable.
 ### Prerequisites
 
 1. **Netlify Auth Token**
-  - Go to **User settings** → **Applications** → **Personal access tokens**
-  - Create new token with "Deploy" permissions
-  - Add to GitHub secrets as `NETLIFY_AUTH_TOKEN`
+
+- Go to **User settings** → **Applications** → **Personal access tokens**
+- Create new token with "Deploy" permissions
+- Add to GitHub secrets as `NETLIFY_AUTH_TOKEN`
 
 2. **Netlify Site ID**
-  - Go to **Site settings** → **General** → **Site details**
-  - Copy **API ID**
-  - Add to GitHub secrets as `NETLIFY_SITE_ID`
+
+- Go to **Site settings** → **General** → **Site details**
+- Copy **API ID**
+- Add to GitHub secrets as `NETLIFY_SITE_ID`
 
 ### Basic Deployment Workflow
 

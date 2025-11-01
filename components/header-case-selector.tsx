@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { cases } from '@/data/cases';
+import { CaseSelectorModal } from '@/components/modal/case-selector-modal';
 
 interface HeaderCaseSelectorProps {
   selectedCase: string | null;
@@ -8,44 +10,29 @@ interface HeaderCaseSelectorProps {
 }
 
 const HeaderCaseSelector = ({ selectedCase, onCaseSelect }: HeaderCaseSelectorProps) => {
-  // Group cases by their base model
-  const caseGroups = {
-    'zudo-block-40': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    'zudo-block-60': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    '10BOX': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Sort cases into groups
-  Object.entries(cases).forEach(([key, caseData]) => {
-    if (key.startsWith('zudo-block-40')) {
-      caseGroups['zudo-block-40'].push([key, caseData]);
-    } else if (key.startsWith('zudo-block-60')) {
-      caseGroups['zudo-block-60'].push([key, caseData]);
-    } else if (key.startsWith('10box')) {
-      caseGroups['10BOX'].push([key, caseData]);
-    }
-  });
+  const selectedCaseName = selectedCase ? cases[selectedCase]?.name || 'モデル選択' : 'モデル選択';
 
   return (
-    <div className="flex items-center gap-hgap-2xs">
-      <label className="text-zd-black font-medium text-sm lg:text-base px-[3px]">Model:</label>
-      <select
-        value={selectedCase || ''}
-        onChange={(e) => e.target.value && onCaseSelect(e.target.value)}
-        className="px-hgap-sm py-vgap-xs border border-zd-black/20 rounded focus:outline-none focus:ring-2 focus:ring-zd-black/30 bg-white text-zd-black text-sm md:text-base font-medium flex-1"
-      >
-        <option value="">モデル選択</option>
-        {Object.entries(caseGroups).map(([groupName, groupCases]) => (
-          <optgroup key={groupName} label={groupName}>
-            {groupCases.map(([key, caseData]) => (
-              <option key={key} value={key}>
-                {caseData.name}
-              </option>
-            ))}
-          </optgroup>
-        ))}
-      </select>
-    </div>
+    <>
+      <div className="flex items-center gap-hgap-2xs">
+        <label className="text-zd-black font-medium text-sm lg:text-base px-[3px]">Model:</label>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-hgap-sm py-vgap-xs border border-zd-black/20 rounded focus:outline-none focus:ring-2 focus:ring-zd-black/30 bg-white text-zd-black text-sm md:text-base font-medium flex-1 text-left hover:border-zd-black/40 transition-colors"
+        >
+          {selectedCaseName}
+        </button>
+      </div>
+
+      <CaseSelectorModal
+        isOpen={isModalOpen}
+        selectedCase={selectedCase}
+        onCaseSelect={onCaseSelect}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
   );
 };
 

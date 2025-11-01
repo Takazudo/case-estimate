@@ -9,6 +9,7 @@ import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 // Components
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
+import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
 
 // Hooks
 import { useLocalStorageColor } from '@/hooks/use-local-storage-color';
@@ -115,11 +116,16 @@ function Configurator() {
   // Initialize with null/empty state for consistent SSR
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<Color | null>(null);
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const isUserTabChangeRef = useRef(false);
+  // Use a ref to track the panel ID associated with the color selector modal.
+  // We use a ref instead of state to ensure we always have the latest panel ID
+  // when the modal opens, and to avoid stale closure issues in asynchronous
+  // callbacks or event handlers that may reference this value after state updates.
+  const modalPanelIdRef = useRef<string | null>(null);
 
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -179,16 +185,6 @@ function Configurator() {
     }
   }, []);
 
-  // Sync selectedColor when selectedPanel changes (e.g., from panel selector dropdown)
-  useEffect(() => {
-    if (selectedPanel && material && panelColorIds[selectedPanel]) {
-      const currentColorId = panelColorIds[selectedPanel];
-      const availableColors = colors[material];
-      const matchingColor = availableColors?.find((c) => c.id === currentColorId);
-      setSelectedColor(matchingColor || null);
-    }
-  }, [selectedPanel, material, panelColorIds]);
-
   // Ensure the Custom tab is active when the current colors don't match any preset series
   // But only auto-switch on initial load or case change, not during manual tab switches
   useEffect(() => {
@@ -226,24 +222,52 @@ function Configurator() {
     }
 
     setSelectedPanel(panelId);
+    // Store the panel ID for the modal to use immediately
+    modalPanelIdRef.current = panelId;
+    // Open color selection modal when SVG panel is clicked
+    setIsColorModalOpen(true);
+  };
 
-    // Sync selectedColor with the panel's current color ID
-    if (material && panelColorIds[panelId]) {
-      const currentColorId = panelColorIds[panelId];
-      const availableColors = colors[material];
-      const matchingColor = availableColors?.find((c) => c.id === currentColorId);
-      setSelectedColor(matchingColor || null);
+  // Handle panel selection from sidebar (panel list or color preview)
+  const handleSidebarPanelSelect = (panelId: string | null) => {
+    if (panelId) {
+      setSelectedPanel(panelId);
+      // Store the panel ID for the modal to use immediately
+      modalPanelIdRef.current = panelId;
+      // Open color selection modal
+      setIsColorModalOpen(true);
+    } else {
+      setSelectedPanel(null);
     }
   };
 
-  const handleColorSelect = (color: Color) => {
-    setSelectedColor(color);
-    if (selectedPanel) {
+  const handleModalColorSelect = (color: Color) => {
+    // Use the panel ID from ref, which was set when modal was opened
+    const targetPanelId = modalPanelIdRef.current || selectedPanel;
+    if (targetPanelId) {
       setPanelColorIds((prev) => ({
         ...prev,
-        [selectedPanel]: color.id,
+        [targetPanelId]: color.id,
       }));
     }
+    setIsColorModalOpen(false);
+  };
+
+  const getSelectedColor = (panelId?: string): Color | null => {
+    // Use provided panelId or fall back to selectedPanel state
+    const targetPanelId = panelId || selectedPanel;
+
+    if (!targetPanelId || !material) return null;
+
+    const colorValue = panelColors[targetPanelId];
+    const colorName = colorMap[colorValue] || 'Default';
+
+    return {
+      id: panelColorIds[targetPanelId] || 'default',
+      name: colorName,
+      value: colorValue || '#f3f4f6',
+      material: material === 'acrylic' ? 'Acrylic' : '3DP',
+    };
   };
 
   const handleTabChange = (tabId: string) => {
@@ -256,7 +280,6 @@ function Configurator() {
     if (!caseType) return;
     setSelectedCase(caseType);
     setSelectedPanel(null);
-    setSelectedColor(null);
     isUserTabChangeRef.current = false; // Case change resets tab change origin
     setActiveTab('series');
 
@@ -361,10 +384,8 @@ function Configurator() {
             panels={currentCase?.panels || []}
             panelColors={panelColors}
             selectedPanel={selectedPanel}
-            onPanelSelect={setSelectedPanel}
+            onPanelSelect={handleSidebarPanelSelect}
             colorMap={colorMap}
-            selectedColor={selectedColor}
-            onColorSelect={handleColorSelect}
             onCaseSelect={handleCaseSelect}
             bgColor={bgColor}
             gridColor={gridColor}
@@ -372,6 +393,20 @@ function Configurator() {
             onGridColorChange={setGridColor}
           />
         </div>
+      )}
+
+      {/* Color Selection Modal */}
+      {material && (
+        <ColorSelectorModal
+          isOpen={isColorModalOpen}
+          material={material}
+          selectedColor={getSelectedColor(modalPanelIdRef.current || undefined)}
+          onColorSelect={handleModalColorSelect}
+          onClose={() => {
+            setIsColorModalOpen(false);
+            modalPanelIdRef.current = null; // Clear the ref after closing
+          }}
+        />
       )}
     </div>
   );

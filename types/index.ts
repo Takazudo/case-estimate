@@ -26,6 +26,7 @@ export interface Color {
   value: string;
   material: string;
   opacity?: number;
+  imageUrl?: string;
 }
 
 export interface Series {
