@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { cases } from '@/data/cases';
 import { CloseIcon } from '@/components/icons/close-icon';
+import { getThumbnailUrl } from '@/utils/cdn-urls';
 
 interface CaseSelectorModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     {
       label: 'zudo-block-60-open',
       displayLabel: 'Zudo Block 60 Open (Starter Kit)',
+      imageSlug: 'zb60-open-high-view-a',
       cases: Object.entries(cases)
         .filter(([key]) => key.includes('zudo-block-60-open'))
         .sort(([keyA], [keyB]) => {
@@ -42,6 +44,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     {
       label: 'zudo-block-60',
       displayLabel: 'Zudo Block 60',
+      imageSlug: 'panels-gallery-zudo-blocks-110',
       cases: Object.entries(cases).filter(
         ([key]) => key.startsWith('zudo-block-60') && !key.includes('x2') && !key.includes('open'),
       ),
@@ -49,6 +52,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     {
       label: 'zudo-block-40',
       displayLabel: 'Zudo Block 40',
+      imageSlug: 'panels-gallery-zudo-blocks-102',
       cases: Object.entries(cases).filter(
         ([key]) => key.startsWith('zudo-block-40') && !key.includes('x2'),
       ),
@@ -56,16 +60,19 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
     {
       label: 'zudo-block-60x2',
       displayLabel: 'Zudo Block 60x2',
+      imageSlug: 'panels-gallery-zudo-blocks-114',
       cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-60x2')),
     },
     {
       label: 'zudo-block-40x2',
       displayLabel: 'Zudo Block 40x2',
+      imageSlug: 'panels-gallery-zudo-blocks-101',
       cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-40x2')),
     },
     {
       label: '10box',
       displayLabel: '10BOX Ju-Bako',
+      imageSlug: 'panels-gallery-zudo-blocks-142',
       cases: Object.entries(cases).filter(([key]) => key.startsWith('10box')),
     },
   ];
@@ -160,9 +167,14 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
 
             return (
               <div key={group.label} className="mb-vgap-lg last:mb-0">
-                <h3 className="text-lg font-semibold text-zd-black mb-vgap-sm border-b border-zd-black/20 pb-vgap-xs">
-                  {group.displayLabel}
-                </h3>
+                <div className="flex items-center gap-hgap-sm mb-vgap-sm border-b border-zd-black/20 pb-vgap-xs">
+                  <img
+                    src={getThumbnailUrl(group.imageSlug)}
+                    alt={group.displayLabel}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <h3 className="text-lg font-semibold text-zd-black">{group.displayLabel}</h3>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-hgap-sm">
                   {group.cases.map(([key, caseData]) => (
                     <button
