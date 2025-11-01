@@ -9,6 +9,7 @@ import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 // Components
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
+import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
 
 // Hooks
 import { useLocalStorageColor } from '@/hooks/use-local-storage-color';
@@ -118,6 +119,7 @@ function Configurator() {
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [activeTab, setActiveTab] = useState<string>('series');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const isUserTabChangeRef = useRef(false);
 
   // Derive panel colors (hex values) from color IDs for rendering
@@ -215,6 +217,8 @@ function Configurator() {
     }
 
     setSelectedPanel(panelId);
+    // Open color selection modal when SVG panel is clicked
+    setIsColorModalOpen(true);
   };
 
   const handleColorSelect = (color: Color) => {
@@ -224,6 +228,25 @@ function Configurator() {
         [selectedPanel]: color.id,
       }));
     }
+  };
+
+  const handleModalColorSelect = (color: Color) => {
+    handleColorSelect(color);
+    setIsColorModalOpen(false);
+  };
+
+  const getSelectedColor = (): Color | null => {
+    if (!selectedPanel || !material) return null;
+
+    const colorValue = panelColors[selectedPanel];
+    const colorName = colorMap[colorValue] || 'Default';
+
+    return {
+      id: panelColorIds[selectedPanel] || 'default',
+      name: colorName,
+      value: colorValue || '#f3f4f6',
+      material: material === 'acrylic' ? 'Acrylic' : '3DP',
+    };
   };
 
   const handleTabChange = (tabId: string) => {
@@ -350,6 +373,17 @@ function Configurator() {
             onGridColorChange={setGridColor}
           />
         </div>
+      )}
+
+      {/* Color Selection Modal */}
+      {material && (
+        <ColorSelectorModal
+          isOpen={isColorModalOpen}
+          material={material}
+          selectedColor={getSelectedColor()}
+          onColorSelect={handleModalColorSelect}
+          onClose={() => setIsColorModalOpen(false)}
+        />
       )}
     </div>
   );
