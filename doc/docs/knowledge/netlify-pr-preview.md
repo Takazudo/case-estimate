@@ -124,7 +124,7 @@ jobs:
 
   pr-preview:
     runs-on: ubuntu-latest
-    needs: quality-checks  # Only deploy if checks pass
+    needs: quality-checks # Only deploy if checks pass
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
@@ -156,7 +156,7 @@ jobs:
           production-deploy: false
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: 'Deploy PR #${{ github.event.pull_request.number }} preview'
-          enable-pull-request-comment: false  # We'll create custom comment
+          enable-pull-request-comment: false # We'll create custom comment
           enable-commit-comment: false
           overwrites-pull-request-comment: true
           alias: pr-${{ github.event.pull_request.number }}
@@ -226,9 +226,11 @@ alias: pr-${{ github.event.pull_request.number }}
 ```
 
 This generates URLs like:
+
 - `https://pr-37--your-site.netlify.app/`
 
 Benefits:
+
 - **Consistent URL** - Same URL across commits
 - **Easy sharing** - Share URL that doesn't change
 - **Bookmarkable** - Stakeholders can bookmark for testing
@@ -238,11 +240,12 @@ Benefits:
 The action can auto-comment, but custom comments provide better information:
 
 ```yaml
-enable-pull-request-comment: false  # Disable default
+enable-pull-request-comment: false # Disable default
 enable-commit-comment: false
 ```
 
 Then use `actions/github-script` to create formatted comment with:
+
 - Multiple preview URLs (main site, docs, etc.)
 - Status information
 - Build details
@@ -268,6 +271,7 @@ if (botComment) {
 ```
 
 Benefits:
+
 - **No spam** - One comment per PR
 - **Clear history** - Easy to see latest deployment
 - **Clean PR thread** - Reduces noise
@@ -368,7 +372,7 @@ jobs:
     # ... E2E tests
 
   pr-preview:
-    needs: quality-checks  # Only needs quality checks, not E2E
+    needs: quality-checks # Only needs quality checks, not E2E
 ```
 
 ## Troubleshooting
@@ -434,6 +438,7 @@ jobs:
 ### Auto-cleanup Old Previews
 
 In Netlify settings:
+
 - **Deploys** → **Deploy contexts** → **Branch deploys** → Set retention
 
 ### Branch Deploy Controls

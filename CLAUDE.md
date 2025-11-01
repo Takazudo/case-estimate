@@ -51,6 +51,7 @@ When given a GitHub URL, use the `gh` command to fetch information:
 When implementing features or following patterns, refer to the environment variable `TAKAZUDO_MODULAR_LOCAL_LOCATION` for the reference project path.
 
 Use this project as reference for:
+
 - Component structure and naming conventions
 - MDX configuration and usage patterns
 - Styling approaches with Tailwind CSS
@@ -195,6 +196,7 @@ Test results and screenshots are automatically uploaded as artifacts on failure.
 - Preview uses a stable URL alias: `pr-{number}`
 
 **Preview URL format:**
+
 - Main site: `https://deploy-preview-{number}--{site-name}.netlify.app/`
 - Documentation: `https://deploy-preview-{number}--{site-name}.netlify.app/doc/`
 
