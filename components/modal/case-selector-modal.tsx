@@ -19,23 +19,56 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
 }) => {
   const [shouldRender, setShouldRender] = useState(false);
 
-  // Group cases by their base model
-  const caseGroups = {
-    'zudo-block-40': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    'zudo-block-60': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    '10BOX': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-  };
-
-  // Sort cases into groups
-  Object.entries(cases).forEach(([key, caseData]) => {
-    if (key.startsWith('zudo-block-40')) {
-      caseGroups['zudo-block-40'].push([key, caseData]);
-    } else if (key.startsWith('zudo-block-60')) {
-      caseGroups['zudo-block-60'].push([key, caseData]);
-    } else if (key.startsWith('10box')) {
-      caseGroups['10BOX'].push([key, caseData]);
-    }
-  });
+  // Group cases by their base model, matching the order and categorization from /case-models page
+  const caseGroups = [
+    {
+      label: 'zudo-block-60-open',
+      displayLabel: 'Zudo Block 60 Open (Starter Kit)',
+      cases: Object.entries(cases)
+        .filter(([key]) => key.includes('zudo-block-60-open'))
+        .sort(([keyA], [keyB]) => {
+          // Order: 3DP-A, 3DP-B, 3DP-upgrade, ACR-A, ACR-B, ACR-upgrade
+          const order = [
+            'zudo-block-60-open-3DP-A',
+            'zudo-block-60-open-3DP-B',
+            'zudo-block-60-open-upgrade-3DP',
+            'zudo-block-60-open-ACR-A',
+            'zudo-block-60-open-ACR-B',
+            'zudo-block-60-open-upgrade-ACR',
+          ];
+          return order.indexOf(keyA) - order.indexOf(keyB);
+        }),
+    },
+    {
+      label: 'zudo-block-60',
+      displayLabel: 'Zudo Block 60',
+      cases: Object.entries(cases).filter(
+        ([key]) => key.startsWith('zudo-block-60') && !key.includes('x2') && !key.includes('open'),
+      ),
+    },
+    {
+      label: 'zudo-block-40',
+      displayLabel: 'Zudo Block 40',
+      cases: Object.entries(cases).filter(
+        ([key]) => key.startsWith('zudo-block-40') && !key.includes('x2'),
+      ),
+    },
+    {
+      label: 'zudo-block-60x2',
+      displayLabel: 'Zudo Block 60x2',
+      cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-60x2')),
+    },
+    {
+      label: 'zudo-block-40x2',
+      displayLabel: 'Zudo Block 40x2',
+      cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-40x2')),
+    },
+    {
+      label: '10box',
+      displayLabel: '10BOX Ju-Bako',
+      cases: Object.entries(cases).filter(([key]) => key.startsWith('10box')),
+    },
+  ];
 
   useEffect(() => {
     if (isOpen) {
@@ -122,16 +155,16 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
 
         {/* Content */}
         <div className="overflow-y-auto max-h-[calc(85vh-80px)] p-hgap-md">
-          {Object.entries(caseGroups).map(([groupName, groupCases]) => {
-            if (groupCases.length === 0) return null;
+          {caseGroups.map((group) => {
+            if (group.cases.length === 0) return null;
 
             return (
-              <div key={groupName} className="mb-vgap-lg last:mb-0">
+              <div key={group.label} className="mb-vgap-lg last:mb-0">
                 <h3 className="text-lg font-semibold text-zd-black mb-vgap-sm border-b border-zd-black/20 pb-vgap-xs">
-                  {groupName}
+                  {group.displayLabel}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-hgap-sm">
-                  {groupCases.map(([key, caseData]) => (
+                  {group.cases.map(([key, caseData]) => (
                     <button
                       key={key}
                       onClick={() => handleCaseClick(key)}
