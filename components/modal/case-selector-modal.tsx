@@ -186,7 +186,7 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
                           ${
                             selectedCase === key
                               ? 'bg-zd-link text-zd-black font-medium'
-                              : 'hover:bg-zd-gray2 text-zd-white'
+                              : 'text-zd-white zd-invert-color-link'
                           }
                         `}
                       >
