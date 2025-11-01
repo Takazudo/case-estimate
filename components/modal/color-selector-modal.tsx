@@ -69,6 +69,8 @@ const ColorSelectorModal: React.FC<ColorSelectorModalProps> = ({
                     alt={color.name}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    width="400"
+                    height="400"
                   />
                 ) : (
                   <PanelColorSwatch

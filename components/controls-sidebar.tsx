@@ -2,7 +2,7 @@
 
 import { colors } from '@/data/colors';
 import { cases } from '@/data/cases';
-import type { Color, Series } from '@/types';
+import type { Series } from '@/types';
 import Tabs from './tabs';
 import SeriesCard from './series-card';
 import PanelListWithColorPicker from './panel-list-with-color-picker';
@@ -22,7 +22,6 @@ interface ControlsSidebarProps {
   selectedPanel: string | null;
   onPanelSelect: (panelId: string | null) => void;
   colorMap: { [key: string]: string };
-  onColorSelect: (color: Color) => void;
   onCaseSelect: (caseType: string) => void;
   bgColor?: string;
   gridColor?: string;
@@ -42,7 +41,6 @@ export default function ControlsSidebar({
   selectedPanel,
   onPanelSelect,
   colorMap,
-  onColorSelect,
   onCaseSelect,
   bgColor,
   gridColor,
@@ -112,14 +110,6 @@ export default function ControlsSidebar({
                             panelColors={panelColors}
                             selectedPanel={selectedPanel}
                             onPanelSelect={onPanelSelect}
-                            onColorSelect={(panelId, color) => {
-                              // First select the panel
-                              onPanelSelect(panelId);
-                              // Then apply the color
-                              onColorSelect(color);
-                            }}
-                            colorMap={colorMap}
-                            material={material}
                           />
                         </div>
                       )}

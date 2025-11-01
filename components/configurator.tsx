@@ -121,7 +121,11 @@ function Configurator() {
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const isUserTabChangeRef = useRef(false);
-  const modalPanelIdRef = useRef<string | null>(null); // Track panel ID for modal
+  // Use a ref to track the panel ID associated with the color selector modal.
+  // We use a ref instead of state to ensure we always have the latest panel ID
+  // when the modal opens, and to avoid stale closure issues in asynchronous
+  // callbacks or event handlers that may reference this value after state updates.
+  const modalPanelIdRef = useRef<string | null>(null);
 
   // Derive panel colors (hex values) from color IDs for rendering
   const currentCase = selectedCase ? cases[selectedCase] : null;
@@ -234,15 +238,6 @@ function Configurator() {
       setIsColorModalOpen(true);
     } else {
       setSelectedPanel(null);
-    }
-  };
-
-  const handleColorSelect = (color: Color) => {
-    if (selectedPanel) {
-      setPanelColorIds((prev) => ({
-        ...prev,
-        [selectedPanel]: color.id,
-      }));
     }
   };
 
@@ -391,7 +386,6 @@ function Configurator() {
             selectedPanel={selectedPanel}
             onPanelSelect={handleSidebarPanelSelect}
             colorMap={colorMap}
-            onColorSelect={handleColorSelect}
             onCaseSelect={handleCaseSelect}
             bgColor={bgColor}
             gridColor={gridColor}

@@ -1,8 +1,8 @@
 import React from 'react';
-import { cases } from '@/data/cases';
+import type { CaseEntry } from '@/data/cases';
 
 interface CaseButtonProps {
-  caseData: (typeof cases)[keyof typeof cases];
+  caseData: CaseEntry[1];
   isSelected: boolean;
   onClick: () => void;
 }
