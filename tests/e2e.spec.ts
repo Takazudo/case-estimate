@@ -140,16 +140,19 @@ test.describe('Smoke Test', () => {
     // Wait for hydration to complete
     await page.waitForLoadState('networkidle');
 
-    // Click the case selector to open dropdown
+    // Click the case selector button to open modal
     const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
     await expect(caseSelector).toBeVisible({ timeout: 10000 });
     await caseSelector.click();
 
-    // Select a different case from the dropdown
-    await page.getByRole('option', { name: /zudo-block-60-ACR-A/i }).click();
+    // Wait for modal to appear
+    await expect(page.getByRole('dialog', { name: /モデル選択/i })).toBeVisible();
 
-    // Verify the selection changed
-    await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i })).toBeVisible();
+    // Select a different case from the modal (it's a button, not an option)
+    await page.getByRole('button', { name: /zudo-block-60-ACR-A/i }).click();
+
+    // Verify the selection changed in the sidebar
+    await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i }).first()).toBeVisible();
 
     // Verify SVG is still visible after change
     await expect(page.locator('svg').first()).toBeVisible();
