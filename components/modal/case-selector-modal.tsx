@@ -140,7 +140,8 @@ const CaseSelectorModal: React.FC<CaseSelectorModalProps> = ({
       <div
         className={`
           relative bg-zd-black shadow-xl border border-zd-white
-          w-full md:w-[90vw] max-w-[1400px] max-h-[85vh]
+          w-full md:w-[90vw] max-w-[1400px]
+          h-full md:h-[85vh]
           overflow-hidden
           transition-transform duration-300
           ${isOpen ? 'scale-100' : 'scale-95'}
