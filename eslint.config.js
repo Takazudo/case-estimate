@@ -7,22 +7,13 @@ import eslintReactHooks from 'eslint-plugin-react-hooks';
 import eslintReactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import { FlatCompat } from '@eslint/eslintrc';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+const require = createRequire(import.meta.url);
+const nextPlugin = require('@next/eslint-plugin-next');
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
-  // Next.js recommended config
-  ...compat.extends('next/core-web-vitals'),
-
   // Main configuration for source files
   {
     files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
@@ -54,6 +45,7 @@ export default [
     settings: { react: { version: '19.0' } },
     plugins: {
       '@typescript-eslint': typescript,
+      '@next/next': nextPlugin,
       react: eslintReact,
       'react-hooks': eslintReactHooks,
       'react-refresh': eslintReactRefresh,
@@ -65,6 +57,8 @@ export default [
       ...eslintReact.configs.recommended.rules,
       ...eslintReact.configs['jsx-runtime'].rules,
       ...eslintReactHooks.configs.recommended.rules,
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-refresh/only-export-components': [
@@ -83,6 +77,7 @@ export default [
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@next/next/no-img-element': 'off',
       ...eslintConfigPrettier.rules,
     },
   },
