@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { cases } from '@/data/cases';
-import PanelColorSwatch, { resolvePanelColorBackground } from '@/components/panel-color-swatch';
+import PanelColorSwatch from '@/components/panel-color-swatch';
 import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
+import { resolvePanelColorBackground } from '@/utils/panel-color-utils';
 import type { Color } from '@/types';
 
 interface CustomColorPreviewProps {
