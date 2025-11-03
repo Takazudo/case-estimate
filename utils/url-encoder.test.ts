@@ -21,7 +21,7 @@ const mockColors: Colors = {
     { id: 'bone-white', name: 'Bone White', value: '#f5f5dc', material: '3dp' },
     { id: 'crimson-red', name: 'Crimson Red', value: '#dc143c', material: '3dp' },
   ],
-  series: {
+  presets: {
     acrylic: [],
     '3dp': [],
   },
@@ -41,7 +41,7 @@ describe('url-encoder', () => {
       const emptyColors: Colors = {
         acrylic: [],
         '3dp': [],
-        series: { acrylic: [], '3dp': [] },
+        presets: { acrylic: [], '3dp': [] },
       };
       const map = createColorIdMap(emptyColors);
       expect(Object.keys(map)).toHaveLength(0);
@@ -61,7 +61,7 @@ describe('url-encoder', () => {
       const emptyColors: Colors = {
         acrylic: [],
         '3dp': [],
-        series: { acrylic: [], '3dp': [] },
+        presets: { acrylic: [], '3dp': [] },
       };
       const map = createColorValueMap(emptyColors);
       expect(Object.keys(map)).toHaveLength(0);

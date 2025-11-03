@@ -29,7 +29,7 @@ export interface Color {
   imageUrl?: string;
 }
 
-export interface Series {
+export interface Preset {
   id: string;
   name: string;
   description?: string;
@@ -43,8 +43,8 @@ export interface Series {
 export interface Colors {
   acrylic: Color[];
   '3dp': Color[];
-  series: {
-    acrylic: Series[];
-    '3dp': Series[];
+  presets: {
+    acrylic: Preset[];
+    '3dp': Preset[];
   };
 }

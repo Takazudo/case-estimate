@@ -12,7 +12,7 @@ The **Case Builder** is an interactive web application for customizing Takazudo 
 
 The Case Builder provides:
 
-- **Model Selection** - Choose from various case models (Zudo Block 40/60, 10BOX series)
+- **Model Selection** - Choose from various case models (Zudo Block 40/60, 10BOX preset)
 - **Panel Customization** - Select colors for each panel with an interactive SVG diagram
 - **Rail Options** - Choose between Lite, Dual, and Metal rail types
 - **Price Estimation** - See real-time pricing as you configure

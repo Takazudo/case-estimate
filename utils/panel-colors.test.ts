@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 import {
   getDefaultColors,
-  applySeriesColors,
-  isSeriesActive,
+  applyPresetColors,
+  isPresetActive,
   generateBackgroundPattern,
 } from './panel-colors';
-import type { Series } from '@/types';
+import type { Preset } from '@/types';
 
 // Mock the imports before any code that uses them
 vi.mock('../data/cases', () => ({
@@ -89,15 +89,15 @@ describe('panel-colors', () => {
     });
   });
 
-  describe('applySeriesColors', () => {
-    it('should apply single color for series with colors.all', () => {
-      const allBlackSeries: Series = {
+  describe('applyPresetColors', () => {
+    it('should apply single color for preset with colors.all', () => {
+      const allBlackPreset: Preset = {
         id: 'all-black',
         name: 'All Black',
         colors: { all: 'carbon-black' },
       };
 
-      const result = applySeriesColors(allBlackSeries, 'test-case-x2-3dp', '3dp');
+      const result = applyPresetColors(allBlackPreset, 'test-case-x2-3dp', '3dp');
 
       // All panels should have carbon-black color
       Object.values(result).forEach((color) => {
@@ -106,13 +106,13 @@ describe('panel-colors', () => {
     });
 
     it('should apply primary/secondary colors for regular models', () => {
-      const dualColorSeries: Series = {
+      const dualColorPreset: Preset = {
         id: 'dual-color',
         name: 'Dual Color',
         colors: { primary: 'red', secondary: 'blue' }, // Use colors that exist in mock
       };
 
-      const result = applySeriesColors(dualColorSeries, 'test-case-acrylic', 'acrylic');
+      const result = applyPresetColors(dualColorPreset, 'test-case-acrylic', 'acrylic');
 
       // Primary panels should have red color
       expect(result.side1).toBe('#ff0000'); // primary -> red
@@ -122,13 +122,13 @@ describe('panel-colors', () => {
     });
 
     it('should handle x2 model panel assignment correctly', () => {
-      const dualColorSeries: Series = {
+      const dualColorPreset: Preset = {
         id: 'dual-color',
         name: 'Dual Color',
         colors: { primary: 'carbon-black', secondary: 'bone-white' },
       };
 
-      const result = applySeriesColors(dualColorSeries, 'test-case-x2-3dp', '3dp');
+      const result = applyPresetColors(dualColorPreset, 'test-case-x2-3dp', '3dp');
 
       // All side panels should be primary
       expect(result.side1).toBe('#000000'); // primary (carbon-black)
@@ -144,13 +144,13 @@ describe('panel-colors', () => {
     });
 
     it('should handle 10BOX model fallback to carbon-black', () => {
-      const incompleteSeries: Series = {
+      const incompletePreset: Preset = {
         id: 'incomplete',
-        name: 'Incomplete Series',
+        name: 'Incomplete Preset',
         colors: { primary: 'carbon-black', secondary: 'bone-white' },
       };
 
-      const result = applySeriesColors(incompleteSeries, '10box-shallow-3dp', '3dp');
+      const result = applyPresetColors(incompletePreset, '10box-shallow-3dp', '3dp');
 
       // Should fallback to carbon-black for all panels
       Object.values(result).forEach((color) => {
@@ -159,9 +159,9 @@ describe('panel-colors', () => {
     });
   });
 
-  describe('isSeriesActive', () => {
+  describe('isPresetActive', () => {
     it('should return true when colors match series with colors.all', () => {
-      const allBlackSeries: Series = {
+      const allBlackPreset: Preset = {
         id: 'all-black',
         name: 'All Black',
         colors: { all: 'carbon-black' },
@@ -173,12 +173,12 @@ describe('panel-colors', () => {
         'lid-top1': '#000000',
       };
 
-      const result = isSeriesActive(allBlackSeries, panelColors, '10box-shallow-3dp', '3dp');
+      const result = isPresetActive(allBlackPreset, panelColors, '10box-shallow-3dp', '3dp');
       expect(result).toBe(true);
     });
 
     it("should return false when colors don't match series", () => {
-      const allBlackSeries: Series = {
+      const allBlackPreset: Preset = {
         id: 'all-black',
         name: 'All Black',
         colors: { all: 'carbon-black' },
@@ -190,23 +190,23 @@ describe('panel-colors', () => {
         'lid-top1': '#000000',
       };
 
-      const result = isSeriesActive(allBlackSeries, panelColors, '10box-shallow-3dp', '3dp');
+      const result = isPresetActive(allBlackPreset, panelColors, '10box-shallow-3dp', '3dp');
       expect(result).toBe(false);
     });
 
     it('should return false for null/undefined inputs', () => {
-      const series: Series = {
+      const series: Preset = {
         id: 'test',
         name: 'Test',
         colors: { all: 'carbon-black' },
       };
 
-      expect(isSeriesActive(series, {}, null, '3dp')).toBe(false);
-      expect(isSeriesActive(series, {}, '10box-shallow-3dp', undefined)).toBe(false);
+      expect(isPresetActive(series, {}, null, '3dp')).toBe(false);
+      expect(isPresetActive(series, {}, '10box-shallow-3dp', undefined)).toBe(false);
     });
 
     it('should handle x2 model primary/secondary logic', () => {
-      const dualColorSeries: Series = {
+      const dualColorPreset: Preset = {
         id: 'dual-color',
         name: 'Dual Color',
         colors: { primary: 'carbon-black', secondary: 'bone-white' },
@@ -223,8 +223,8 @@ describe('panel-colors', () => {
         bottom3: '#000000', // primary
       };
 
-      const result = isSeriesActive(
-        dualColorSeries,
+      const result = isPresetActive(
+        dualColorPreset,
         matchingPanelColors,
         'test-case-x2-3dp',
         '3dp',

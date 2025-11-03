@@ -45,7 +45,7 @@ The application supports two methods for identifying panels in SVG files, chosen
 
 ### Method 1: Class-Based (8-12 panels)
 
-Used for simpler models like Zudo Block series.
+Used for simpler models like Zudo Block preset.
 
 ```xml
 <svg>
@@ -70,7 +70,7 @@ const CLASS_TO_PANEL_8: { [key: string]: string } = {
 
 ### Method 2: Color-Based (16+ panels)
 
-Used for complex models like 10BOX series.
+Used for complex models like 10BOX preset.
 
 ```xml
 <svg>
@@ -355,7 +355,7 @@ Format: 2 characters (alphanumeric)
 
 Strategy:
 
-- First character: model series number or letter
+- First character: model preset number or letter
 - Second character: variant identifier (a, b, c)
 
 Examples:
