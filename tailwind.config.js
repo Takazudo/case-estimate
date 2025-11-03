@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        futura: ['Futura', 'Century Gothic', 'sans-serif'],
+        noto: ['var(--font-noto-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        futura: ['Futura', 'Jost', 'Century Gothic', 'var(--font-noto-sans)', 'sans-serif'],
         sans: ['Helvetica', 'sans-serif'],
         mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
       },

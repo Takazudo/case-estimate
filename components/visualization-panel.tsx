@@ -48,7 +48,9 @@ export default function VisualizationPanel({
           />
         ) : (
           <div className="text-center max-w-md">
-            <h2 className="text-3xl font-bold text-zd-white mb-4">Welcome to Takazudo Modular</h2>
+            <h2 className="text-3xl font-bold text-zd-white mb-4 font-futura">
+              Welcome to Takazudo Modular
+            </h2>
             <p className="text-lg text-zd-gray mb-8">
               Design your custom modular synthesizer case with our interactive configurator.
             </p>

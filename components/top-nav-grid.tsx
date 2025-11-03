@@ -93,7 +93,7 @@ function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectio
           group-active:text-zd-black
         "
       >
-        <h2 className="flex items-center gap-hgap-xs text-lg md:text-base lg:text-lg font-bold underline leading-tight">
+        <h2 className="flex items-center gap-hgap-xs text-lg md:text-base lg:text-lg font-bold underline leading-tight font-futura">
           <ArrowRight className="w-[18px] lg:w-[24px] shrink-0 transition-colors mt-[.1em]" />
           <span className="flex-1">
             <span>{title}</span>{' '}

@@ -104,7 +104,8 @@
   --color-zd-price: var(--zd-color-price);
 
   /* Custom font families */
-  --font-family-futura: 'Futura', 'Century Gothic', sans-serif;
+  --font-family-noto: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-family-futura: Futura, Jost, 'Century Gothic', 'Noto Sans', sans-serif;
   --font-family-sans: 'Helvetica', sans-serif;
   --font-family-mono: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
@@ -251,13 +252,14 @@
 @layer base {
   /* Base styles */
   html {
-    @apply font-futura underline-offset-4 bg-zd-black;
+    @apply font-noto underline-offset-4 bg-zd-black;
     scroll-behavior: smooth;
   }
   body {
-    @apply text-base text-zd-white;
+    @apply text-base text-zd-white font-light;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-wrap: pretty;
   }
   button {
     cursor: pointer;
