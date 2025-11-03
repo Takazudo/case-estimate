@@ -253,7 +253,7 @@ const COLOR_CODES_3DP = {
   - back1 (7): crimson-red (cr)
   - back2 (8): crimson-red (cr)
 
-This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
+This is the **KuroBeni** preset pattern (black primary, crimson-red secondary).
 
 ### Example 2: X2 Model (12 panels)
 
@@ -271,7 +271,7 @@ This is the **KuroBeni** series pattern (black primary, crimson-red secondary).
 **Decoded:**
 
 - Case: `10box-shallow-3dp` (104HP, 3D printed)
-- All panels: carbon-black (YamiKage/All Black series)
+- All panels: carbon-black (YamiKage/All Black preset)
 
 ### Example 4: Open Frame Upgrade
 

@@ -2,9 +2,9 @@
 
 import { colors } from '@/data/colors';
 import { cases } from '@/data/cases';
-import type { Series } from '@/types';
+import type { Preset } from '@/types';
 import Tabs from './tabs';
-import SeriesCard from './series-card';
+import PresetCard from './preset-card';
 import PanelListWithColorPicker from './panel-list-with-color-picker';
 import CustomColorPreview from './custom-color-preview';
 import ModelSelector from './model-selector';
@@ -15,8 +15,8 @@ interface ControlsSidebarProps {
   activeTab: string;
   onTabChange: (tabId: string) => void;
   material: 'acrylic' | '3dp' | undefined;
-  onSeriesSelect: (series: Series) => void;
-  isSeriesActive: (series: Series) => boolean;
+  onPresetSelect: (preset: Preset) => void;
+  isPresetActive: (preset: Preset) => boolean;
   panels: Array<{ id: string; name: string }>;
   panelColors: { [key: string]: string };
   selectedPanel: string | null;
@@ -34,8 +34,8 @@ export default function ControlsSidebar({
   activeTab,
   onTabChange,
   material,
-  onSeriesSelect,
-  isSeriesActive,
+  onPresetSelect,
+  isPresetActive,
   panels,
   panelColors,
   selectedPanel,
@@ -64,32 +64,32 @@ export default function ControlsSidebar({
               onTabChange={onTabChange}
               tabs={[
                 {
-                  id: 'series',
-                  label: 'シリーズ',
+                  id: 'preset',
+                  label: 'プリセット',
                   content: (
                     <div className="space-y-vgap-sm pt-vgap-md">
-                      {material && colors.series[material] && selectedCase && (
+                      {material && colors.presets[material] && selectedCase && (
                         <>
-                          {colors.series[material]
-                            .filter((series) => {
-                              // For 10BOX models and zudo-block-60-open 3DP Type A/B, only show YamiKage series
+                          {colors.presets[material]
+                            .filter((preset) => {
+                              // For 10BOX models and zudo-block-60-open 3DP Type A/B, only show YamiKage preset
                               if (
                                 selectedCase.startsWith('10box-') ||
                                 selectedCase === 'zudo-block-60-open-3DP-A' ||
                                 selectedCase === 'zudo-block-60-open-3DP-B'
                               ) {
-                                return series.id === 'yamikage';
+                                return preset.id === 'yamikage';
                               }
                               return true;
                             })
-                            .map((series) => (
-                              <SeriesCard
-                                key={series.id}
-                                series={series}
+                            .map((preset) => (
+                              <PresetCard
+                                key={preset.id}
+                                preset={preset}
                                 material={material}
                                 caseType={selectedCase}
-                                onClick={onSeriesSelect}
-                                isActive={isSeriesActive(series)}
+                                onClick={onPresetSelect}
+                                isActive={isPresetActive(preset)}
                               />
                             ))}
                         </>
