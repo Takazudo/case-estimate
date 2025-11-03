@@ -264,7 +264,7 @@ export const colors: Colors = {
       imageUrl: 'https://takazudomodular.com/images/p/panel-sample-3dp-caramel/900w.webp',
     },
   ],
-  series: {
+  presets: {
     acrylic: [
       { id: 'red', name: 'フルレッド', description: 'All Red', colors: { all: 'red' } },
       { id: 'orange', name: 'フルオレンジ', description: 'All Orange', colors: { all: 'orange' } },

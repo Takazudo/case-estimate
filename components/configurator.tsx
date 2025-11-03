@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
-import type { Color, Series } from '@/types';
+import type { Color, Preset } from '@/types';
 import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 
 // Components
@@ -17,8 +17,8 @@ import { useUrlPersistence } from '@/hooks/use-url-persistence';
 
 // Utils
 import {
-  applySeriesColorsWithIds,
-  isSeriesActive as checkSeriesActive,
+  applyPresetColorsWithIds,
+  isPresetActive as checkPresetActive,
   derivePanelColors,
 } from '@/utils/panel-colors';
 
@@ -117,7 +117,7 @@ function Configurator() {
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
-  const [activeTab, setActiveTab] = useState<string>('series');
+  const [activeTab, setActiveTab] = useState<string>('preset');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const isUserTabChangeRef = useRef(false);
@@ -151,12 +151,12 @@ function Configurator() {
     setSelectedCase(initialState.selectedCase);
     setPanelColorIds(initialState.panelColorIds);
 
-    // Check if initial colors match any preset series
+    // Check if initial colors match any preset
     if (initialState.selectedCase && cases[initialState.selectedCase]) {
       const caseData = cases[initialState.selectedCase];
       const material = caseData.material;
       if (material && Object.keys(initialState.panelColorIds).length > 0) {
-        const seriesList = colors.series[material] ?? [];
+        const presetList = colors.presets[material] ?? [];
         const panelColorsFromIds: { [key: string]: string } = {};
 
         // Convert color IDs to hex values for comparison
@@ -167,9 +167,9 @@ function Configurator() {
           }
         });
 
-        const matchesPreset = seriesList.some((series) =>
-          checkSeriesActive(
-            series,
+        const matchesPreset = presetList.some((preset) =>
+          checkPresetActive(
+            preset,
             panelColorsFromIds,
             initialState.selectedCase,
             material,
@@ -185,11 +185,11 @@ function Configurator() {
     }
   }, []);
 
-  // Ensure the Custom tab is active when the current colors don't match any preset series
+  // Ensure the Custom tab is active when the current colors don't match any preset
   // But only auto-switch on initial load or case change, not during manual tab switches
   useEffect(() => {
     if (!selectedCase || !material) return;
-    if (activeTab !== 'series') return;
+    if (activeTab !== 'preset') return;
     if (Object.keys(panelColorIds).length === 0) return;
 
     // Don't auto-switch if this was a user-initiated tab change
@@ -198,9 +198,9 @@ function Configurator() {
       return;
     }
 
-    const seriesList = colors.series[material] ?? [];
-    const matchesPreset = seriesList.some((series) =>
-      checkSeriesActive(series, panelColors, selectedCase, material, panelColorIds),
+    const presetList = colors.presets[material] ?? [];
+    const matchesPreset = presetList.some((preset) =>
+      checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds),
     );
 
     if (!matchesPreset) {
@@ -215,8 +215,8 @@ function Configurator() {
   });
 
   const handlePanelClick = (panelId: string) => {
-    // If in Series tab, switch to Custom tab when a panel is clicked
-    if (activeTab === 'series') {
+    // If in Preset tab, switch to Custom tab when a panel is clicked
+    if (activeTab === 'preset') {
       isUserTabChangeRef.current = true; // Panel click is user-initiated
       setActiveTab('custom');
     }
@@ -281,15 +281,15 @@ function Configurator() {
     setSelectedCase(caseType);
     setSelectedPanel(null);
     isUserTabChangeRef.current = false; // Case change resets tab change origin
-    setActiveTab('series');
+    setActiveTab('preset');
 
-    // Auto-select first series
+    // Auto-select first preset
     const caseData = cases[caseType];
     if (caseData && caseData.material) {
-      const seriesList = colors.series[caseData.material];
-      if (seriesList && seriesList.length > 0) {
-        const firstSeries = seriesList[0];
-        const result = applySeriesColorsWithIds(firstSeries, caseType, caseData.material);
+      const presetList = colors.presets[caseData.material];
+      if (presetList && presetList.length > 0) {
+        const firstPreset = presetList[0];
+        const result = applyPresetColorsWithIds(firstPreset, caseType, caseData.material);
         setPanelColorIds(result.colorIds);
       } else {
         // Set default color IDs for all panels
@@ -324,14 +324,14 @@ function Configurator() {
     }
   };
 
-  const handleSeriesSelect = (series: Series) => {
+  const handlePresetSelect = (preset: Preset) => {
     if (!selectedCase || !material) return;
-    const result = applySeriesColorsWithIds(series, selectedCase, material);
+    const result = applyPresetColorsWithIds(preset, selectedCase, material);
     setPanelColorIds(result.colorIds);
   };
 
-  const isSeriesActive = (series: Series): boolean => {
-    return checkSeriesActive(series, panelColors, selectedCase, material, panelColorIds);
+  const isPresetActive = (preset: Preset): boolean => {
+    return checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds);
   };
 
   // Create color map for display
@@ -379,8 +379,8 @@ function Configurator() {
             activeTab={activeTab}
             onTabChange={handleTabChange}
             material={material}
-            onSeriesSelect={handleSeriesSelect}
-            isSeriesActive={isSeriesActive}
+            onPresetSelect={handlePresetSelect}
+            isPresetActive={isPresetActive}
             panels={currentCase?.panels || []}
             panelColors={panelColors}
             selectedPanel={selectedPanel}

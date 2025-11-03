@@ -1,35 +1,35 @@
 'use client';
 
-import type { Series, Color } from '@/types';
+import type { Preset, Color } from '@/types';
 import { colors } from '@/data/colors';
 import { cases } from '@/data/cases';
 
-interface SeriesCardProps {
-  series: Series;
+interface PresetCardProps {
+  preset: Preset;
   material: 'acrylic' | '3dp';
   caseType: string;
-  onClick: (series: Series) => void;
+  onClick: (preset: Preset) => void;
   isActive?: boolean;
 }
 
-export default function SeriesCard({
-  series,
+export default function PresetCard({
+  preset,
   material,
   caseType,
   onClick,
   isActive = false,
-}: SeriesCardProps) {
+}: PresetCardProps) {
   const currentCase = cases[caseType];
   const availableColors = colors[material];
 
   const getPanelColor = (panelId: string): string => {
-    if (series.colors.all) {
-      const color = availableColors.find((c: Color) => c.id === series.colors.all);
+    if (preset.colors.all) {
+      const color = availableColors.find((c: Color) => c.id === preset.colors.all);
       return color?.value || '#000000';
     } else {
       // For 10BOX, all panels should use the same color for YamiKage
       if (caseType.startsWith('10box-')) {
-        const color = availableColors.find((c: Color) => c.id === series.colors.all);
+        const color = availableColors.find((c: Color) => c.id === preset.colors.all);
         return color?.value || '#000000';
       }
 
@@ -45,7 +45,7 @@ export default function SeriesCard({
         panelId === 'back1' ||
         panelId === 'bottom1' ||
         panelId === 'top1';
-      const colorId = isPrimary ? series.colors.primary : series.colors.secondary;
+      const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       return color?.value || '#000000';
     }
@@ -53,14 +53,14 @@ export default function SeriesCard({
 
   return (
     <button
-      onClick={() => onClick(series)}
+      onClick={() => onClick(preset)}
       className={`w-full border-3 transition-all ${
         isActive ? 'border-zd-white bg-zd-gray2' : 'border-zd-gray hover:border-zd-white'
       }`}
     >
       <div className="flex items-baseline justify-between px-hgap-sm py-vgap-sm border-b border-zd-gray flex-col lg:flex-row">
-        <span className="text-zd-white text-lg">{series.name}</span>
-        <span className="text-zd-gray text-sm">{series.description}</span>
+        <span className="text-zd-white text-lg">{preset.name}</span>
+        <span className="text-zd-gray text-sm">{preset.description}</span>
       </div>
 
       <div className="flex h-12">

@@ -15,32 +15,32 @@ test.describe('Auto-Select Feature', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('should auto-select Series tab when selecting a case model', async ({ page }) => {
+  test('should auto-select Preset tab when selecting a case model', async ({ page }) => {
     // Initially no case is selected
     const caseSelector = page.locator('select').first();
     await expect(caseSelector).toHaveValue('');
 
-    // Series tab should not be visible initially
-    await expect(page.locator('button:has-text("Series")')).not.toBeVisible();
+    // Preset tab should not be visible initially
+    await expect(page.locator('button:has-text("Preset")')).not.toBeVisible();
 
     // Select a case model
     await caseSelector.selectOption('zudo-block-40-ACR-A');
 
-    // Series tab should now be visible and active
-    await expect(page.locator('button:has-text("Series")')).toBeVisible();
+    // Preset tab should now be visible and active
+    await expect(page.locator('button:has-text("Preset")')).toBeVisible();
 
-    // Check that Series tab is active (has active styles)
-    const seriesTab = page.locator('button:has-text("Series")');
+    // Check that Preset tab is active (has active styles)
+    const presetTab = page.locator('button:has-text("Preset")');
     // Active tab has text-zd-white, inactive has text-zd-gray
-    const seriesTabSpan = seriesTab.locator('span').first();
-    await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
+    const presetTabSpan = presetTab.locator('span').first();
+    await expect(presetTabSpan).toHaveClass(/text-zd-white/);
 
     // Custom tab should not be active
     const customTabSpan = page.locator('button:has-text("Custom") span').first();
     await expect(customTabSpan).toHaveClass(/text-zd-gray/);
   });
 
-  test('should auto-select first series and apply its colors when selecting a case', async ({
+  test('should auto-select first preset and apply its colors when selecting a case', async ({
     page,
   }) => {
     const caseSelector = page.locator('select').first();
@@ -48,15 +48,15 @@ test.describe('Auto-Select Feature', () => {
     // Select zudo-block-40-ACR-A (acrylic case)
     await caseSelector.selectOption('zudo-block-40-ACR-A');
 
-    // Wait for series cards to be visible
+    // Wait for preset cards to be visible
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
-    // First series card should be active (has active border)
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
-    await expect(firstSeriesCard).toHaveClass(/bg-zd-gray2/);
+    // First preset card should be active (has active border)
+    const firstPresetCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
+    await expect(firstPresetCard).toHaveClass(/bg-zd-gray2/);
 
-    // Check that the SVG panels have the colors from the first series (Red - all red)
+    // Check that the SVG panels have the colors from the first preset (Red - all red)
     // Wait for SVG to render
     await page.waitForTimeout(500);
 
@@ -64,25 +64,25 @@ test.describe('Auto-Select Feature', () => {
     const svgPaths = page.locator('svg path[fill="#b71c1c"]');
     const pathCount = await svgPaths.count();
 
-    // Should have multiple panels with red color for Red series
+    // Should have multiple panels with red color for Red preset
     expect(pathCount).toBeGreaterThan(0);
   });
 
-  test('should auto-select first series for 3D printed cases', async ({ page }) => {
+  test('should auto-select first preset for 3D printed cases', async ({ page }) => {
     const caseSelector = page.locator('select').first();
 
     // Select zudo-block-40-3DP-A (3D printed case)
     await caseSelector.selectOption('zudo-block-40-3DP-A');
 
-    // Wait for series cards to be visible
+    // Wait for preset cards to be visible
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
 
-    // First series card (YamiKage) should be active
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
-    await expect(firstSeriesCard).toHaveClass(/bg-zd-gray2/);
+    // First preset card (YamiKage) should be active
+    const firstPresetCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
+    await expect(firstPresetCard).toHaveClass(/bg-zd-gray2/);
 
-    // Check that panels have YamiKage series colors (all carbon-black)
+    // Check that panels have YamiKage preset colors (all carbon-black)
     // Wait for SVG to render
     await page.waitForTimeout(500);
 
@@ -90,11 +90,11 @@ test.describe('Auto-Select Feature', () => {
     const svgPaths = page.locator('svg path[fill="#212121"]');
     const pathCount = await svgPaths.count();
 
-    // Should have multiple panels with carbon-black color for YamiKage series
+    // Should have multiple panels with carbon-black color for YamiKage preset
     expect(pathCount).toBeGreaterThan(0);
   });
 
-  test('should switch case models and auto-select appropriate series each time', async ({
+  test('should switch case models and auto-select appropriate preset each time', async ({
     page,
   }) => {
     const caseSelector = page.locator('select').first();
@@ -103,49 +103,49 @@ test.describe('Auto-Select Feature', () => {
     await caseSelector.selectOption('zudo-block-40-ACR-A');
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
-    let firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    let firstPresetCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
 
     // Switch to 3D printed case
     await caseSelector.selectOption('zudo-block-40-3DP-A');
     await expect(page.locator('button').filter({ hasText: 'YamiKage' }).first()).toBeVisible();
 
-    firstSeriesCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    firstPresetCard = page.locator('button').filter({ hasText: 'YamiKage' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
 
     // Switch to another acrylic case
     await caseSelector.selectOption('zudo-block-60-ACR-A');
     await expect(page.locator('button').filter({ hasText: 'レッド' }).first()).toBeVisible();
 
-    firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    firstPresetCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
   });
 
-  test('should maintain auto-selected series when switching between tabs', async ({ page }) => {
+  test('should maintain auto-selected preset when switching between tabs', async ({ page }) => {
     const caseSelector = page.locator('select').first();
 
     // Select a case
     await caseSelector.selectOption('zudo-block-40-ACR-A');
 
-    // Verify Series tab is active and first series is selected
-    const seriesTabSpan = page.locator('button:has-text("Series") span').first();
-    await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
+    // Verify Preset tab is active and first preset is selected
+    const presetTabSpan = page.locator('button:has-text("Preset") span').first();
+    await expect(presetTabSpan).toHaveClass(/text-zd-white/);
 
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    const firstPresetCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
 
     // Switch to Custom tab
     await page.locator('button:has-text("Custom")').click();
     await expect(page.locator('text=Select Panel')).toBeVisible();
 
-    // Switch back to Series tab
-    await page.locator('button:has-text("Series")').click();
+    // Switch back to Preset tab
+    await page.locator('button:has-text("Preset")').click();
 
-    // First series should still be active
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    // First preset should still be active
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
   });
 
-  test('should reset to first series when selecting the same case model again', async ({
+  test('should reset to first preset when selecting the same case model again', async ({
     page,
   }) => {
     const caseSelector = page.locator('select').first();
@@ -153,10 +153,10 @@ test.describe('Auto-Select Feature', () => {
     // Select a case
     await caseSelector.selectOption('zudo-block-40-ACR-A');
 
-    // Wait for series to load
+    // Wait for preset to load
     await page.waitForTimeout(500);
 
-    // Select a different series (e.g., オレンジ - Orange)
+    // Select a different preset (e.g., オレンジ - Orange)
     const orangeCard = page.locator('button').filter({ hasText: 'オレンジ' }).first();
     await orangeCard.click();
     await expect(orangeCard).toHaveClass(/border-zd-white/);
@@ -164,17 +164,17 @@ test.describe('Auto-Select Feature', () => {
     // Select the same case model again from dropdown
     await caseSelector.selectOption('zudo-block-40-ACR-A');
 
-    // Should auto-select the first series (レッド) again
+    // Should auto-select the first preset (レッド) again
     const redCard = page.locator('button').filter({ hasText: 'レッド' }).first();
     await expect(redCard).toHaveClass(/border-zd-white/);
     await expect(orangeCard).not.toHaveClass(/bg-zd-gray2/);
   });
 
-  test('should handle case with no series gracefully', async ({ page }) => {
+  test('should handle case with no preset gracefully', async ({ page }) => {
     const caseSelector = page.locator('select').first();
 
-    // If we add a case without series in the future, it should fall back to default colors
-    // For now, test that all existing cases have series
+    // If we add a case without preset in the future, it should fall back to default colors
+    // For now, test that all existing cases have preset
     const caseOptions = [
       'zudo-block-40-ACR-A',
       'zudo-block-40-3DP-A',
@@ -185,12 +185,12 @@ test.describe('Auto-Select Feature', () => {
     for (const caseOption of caseOptions) {
       await caseSelector.selectOption(caseOption);
 
-      // Should always show Series tab
-      await expect(page.locator('button:has-text("Series")')).toBeVisible();
+      // Should always show Preset tab
+      await expect(page.locator('button:has-text("Preset")')).toBeVisible();
 
-      // Should have at least one series card
-      const seriesCards = page.locator('button[class*="border-3"]');
-      const count = await seriesCards.count();
+      // Should have at least one preset card
+      const presetCards = page.locator('button[class*="border-3"]');
+      const count = await presetCards.count();
       expect(count).toBeGreaterThan(0);
     }
   });
@@ -219,11 +219,11 @@ test.describe('Auto-Select Edge Cases', () => {
     expect(consoleErrors).toHaveLength(0);
 
     // Final state should be correct
-    const seriesTabSpan = page.locator('button:has-text("Series") span').first();
-    await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
+    const presetTabSpan = page.locator('button:has-text("Preset") span').first();
+    await expect(presetTabSpan).toHaveClass(/text-zd-white/);
 
-    const firstSeriesCard = page.locator('button').filter({ hasText: 'レッド' }).first();
-    await expect(firstSeriesCard).toHaveClass(/border-zd-white/);
+    const firstPresetCard = page.locator('button').filter({ hasText: 'レッド' }).first();
+    await expect(firstPresetCard).toHaveClass(/border-zd-white/);
   });
 
   test('should preserve user customizations until case change', async ({ page }) => {
@@ -259,9 +259,9 @@ test.describe('Auto-Select Edge Cases', () => {
     // Now select a different case
     await caseSelector.selectOption('zudo-block-60-ACR-A');
 
-    // Should auto-select Series tab and first series
-    const seriesTabSpan = page.locator('button:has-text("Series") span').first();
-    await expect(seriesTabSpan).toHaveClass(/text-zd-white/);
+    // Should auto-select Preset tab and first preset
+    const presetTabSpan = page.locator('button:has-text("Preset") span').first();
+    await expect(presetTabSpan).toHaveClass(/text-zd-white/);
 
     // Customizations from previous case should be reset
     // Wait for SVG to render
