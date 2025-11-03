@@ -17,26 +17,27 @@ Request AI-powered code reviews from both Codex and GitHub Copilot for the curre
    ```
 
 3. **Post Codex review trigger:**
-  - Always post "@codex review" comment to trigger Codex
+- Always post "@codex review" comment to trigger Codex
    ```bash
    gh pr comment {PR_NUMBER} --body "@codex review"
    ```
 
 4. **Handle GitHub Copilot reviewer:**
-  - **If Copilot has NOT reviewed yet:** Add as reviewer using API
+- **If Copilot has NOT reviewed yet:** Add as reviewer using API
    ```bash
    gh api --method POST repos/{owner}/{repo}/pulls/{PR_NUMBER}/requested_reviewers \
      -f "reviewers[]=Copilot"
    ```
 
-  - **If Copilot HAS already reviewed:** Inform user to manually re-request via UI
-    - GitHub's API does not reliably support re-requesting Copilot reviews programmatically
-    - User should: Go to PR → Reviewers section → Click re-review button next to Copilot
-    - Alternative: Copilot may auto-review if "Review new pushes" is configured in repo settings
+- **If Copilot HAS already reviewed:** Inform user to manually re-request via UI
+  - GitHub's API does NOT support re-requesting Copilot reviews programmatically
+  - Attempted workaround (DELETE then POST) also fails - API accepts but doesn't add Copilot
+  - User MUST: Go to PR → Reviewers section → Click re-review button (↻) next to Copilot
+  - Alternative: Configure "Review new pushes" in repo settings for automatic re-reviews
 
 5. **Report results:**
-  - Codex: Always reports success with comment link
-  - Copilot: Report if added as new reviewer OR if manual re-request needed
+- Codex: Always reports success with comment link
+- Copilot: Report if added as new reviewer OR if manual re-request needed
 
 **Error Handling:**
 - If no PR found: Inform user
