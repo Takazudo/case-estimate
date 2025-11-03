@@ -46,7 +46,19 @@ const PresetSelector = ({
   };
 
   const activePreset = getActivePreset();
-  const displayText = activePreset ? activePreset.name : 'カスタム / Custom';
+
+  // Determine display text
+  let displayText: string;
+  if (activePreset) {
+    // For 3DP models, show YamiKage with description
+    if (material === '3dp' && activePreset.id === 'yamikage') {
+      displayText = 'YamiKage（デフォルト黒一色）';
+    } else {
+      displayText = activePreset.name;
+    }
+  } else {
+    displayText = 'カスタム';
+  }
 
   return (
     <>
