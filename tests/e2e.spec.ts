@@ -129,9 +129,13 @@ test.describe('Smoke Test', () => {
     // Check that visualization panel is visible
     await expect(page.locator('svg').first()).toBeVisible();
 
-    // Check that tab buttons are visible
-    await expect(page.getByRole('button', { name: 'プリセット' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'カスタム' })).toBeVisible();
+    // Check that preset selector is visible (instead of tabs)
+    const presetSection = page.locator('h3', { hasText: 'プリセット' });
+    await expect(presetSection).toBeVisible();
+
+    // Check that panel list is visible (always visible now, not in a tab)
+    const panelList = page.locator('text=サイド1');
+    await expect(panelList).toBeVisible();
   });
 
   test('should switch between different case models', async ({ page }) => {
