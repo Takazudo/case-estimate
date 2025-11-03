@@ -10,7 +10,7 @@ export const H3: React.FC<H3Props> = ({ children, subText, id }) => {
   return (
     <h3
       id={id}
-      className="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm"
+      className="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm font-futura"
     >
       <span className="flow-root">
         <span className="flex justify-between items-center relative group">

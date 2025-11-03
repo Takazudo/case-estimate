@@ -61,7 +61,7 @@ export default function ModulesPage() {
     <div className="h-full overflow-y-auto bg-zd-black">
       <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
         {/* Header */}
-        <h1 className="text-3xl font-bold text-white text-center mb-vgap-md">
+        <h1 className="text-3xl font-bold text-white text-center mb-vgap-md font-futura">
           Module List / コンポーネントリスト
         </h1>
 

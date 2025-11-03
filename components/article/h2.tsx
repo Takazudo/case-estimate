@@ -15,6 +15,7 @@ export const H2: React.FC<H2Props> = ({ children, id, noTopPad = false }) => {
         ${noTopPad ? '' : 'md:pt-vgap-sm lg:pt-vgap-lg'}
         text-base md:text-lg lg:text-xl pb-vgap-md lg:pb-vgap-lg font-bold ml-[-1.5em] pl-[1.5em]
         clear-both
+        font-futura
       `}
     >
       <span className="block border-t-1 border-zd-white will-change-[transform]">
