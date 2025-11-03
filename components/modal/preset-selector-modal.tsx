@@ -149,7 +149,7 @@ const PresetSelectorModal: React.FC<PresetSelectorModalProps> = ({
             pb-[100px]
           `}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-vgap-sm max-w-4xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-vgap-sm">
             {filteredPresets.map((preset) => (
               <PresetCard
                 key={preset.id}
