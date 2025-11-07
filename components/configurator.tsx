@@ -117,10 +117,8 @@ function Configurator() {
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
   const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
-  const [activeTab, setActiveTab] = useState<string>('preset');
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
-  const isUserTabChangeRef = useRef(false);
   // Use a ref to track the panel ID associated with the color selector modal.
   // We use a ref instead of state to ensure we always have the latest panel ID
   // when the modal opens, and to avoid stale closure issues in asynchronous
@@ -150,63 +148,7 @@ function Configurator() {
     const initialState = getInitialStateFromUrl();
     setSelectedCase(initialState.selectedCase);
     setPanelColorIds(initialState.panelColorIds);
-
-    // Check if initial colors match any preset
-    if (initialState.selectedCase && cases[initialState.selectedCase]) {
-      const caseData = cases[initialState.selectedCase];
-      const material = caseData.material;
-      if (material && Object.keys(initialState.panelColorIds).length > 0) {
-        const presetList = colors.presets[material] ?? [];
-        const panelColorsFromIds: { [key: string]: string } = {};
-
-        // Convert color IDs to hex values for comparison
-        Object.entries(initialState.panelColorIds).forEach(([panelId, colorId]) => {
-          const color = colors[material]?.find((c) => c.id === colorId);
-          if (color) {
-            panelColorsFromIds[panelId] = color.value;
-          }
-        });
-
-        const matchesPreset = presetList.some((preset) =>
-          checkPresetActive(
-            preset,
-            panelColorsFromIds,
-            initialState.selectedCase,
-            material,
-            initialState.panelColorIds,
-          ),
-        );
-
-        // Auto-switch to custom if colors don't match any preset
-        if (!matchesPreset) {
-          setActiveTab('custom');
-        }
-      }
-    }
   }, []);
-
-  // Ensure the Custom tab is active when the current colors don't match any preset
-  // But only auto-switch on initial load or case change, not during manual tab switches
-  useEffect(() => {
-    if (!selectedCase || !material) return;
-    if (activeTab !== 'preset') return;
-    if (Object.keys(panelColorIds).length === 0) return;
-
-    // Don't auto-switch if this was a user-initiated tab change
-    if (isUserTabChangeRef.current) {
-      isUserTabChangeRef.current = false; // Skip one cycle for manual switches
-      return;
-    }
-
-    const presetList = colors.presets[material] ?? [];
-    const matchesPreset = presetList.some((preset) =>
-      checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds),
-    );
-
-    if (!matchesPreset) {
-      setActiveTab('custom');
-    }
-  }, [selectedCase, material, panelColors, panelColorIds, activeTab]);
 
   // Handle URL persistence for client-side state (only updates URL when state changes)
   useUrlPersistence({
@@ -215,12 +157,6 @@ function Configurator() {
   });
 
   const handlePanelClick = (panelId: string) => {
-    // If in Preset tab, switch to Custom tab when a panel is clicked
-    if (activeTab === 'preset') {
-      isUserTabChangeRef.current = true; // Panel click is user-initiated
-      setActiveTab('custom');
-    }
-
     setSelectedPanel(panelId);
     // Store the panel ID for the modal to use immediately
     modalPanelIdRef.current = panelId;
@@ -270,18 +206,11 @@ function Configurator() {
     };
   };
 
-  const handleTabChange = (tabId: string) => {
-    isUserTabChangeRef.current = true; // Mark as user-initiated
-    setActiveTab(tabId);
-  };
-
   const handleCaseSelect = (caseType: string) => {
     // Always require a case to be selected
     if (!caseType) return;
     setSelectedCase(caseType);
     setSelectedPanel(null);
-    isUserTabChangeRef.current = false; // Case change resets tab change origin
-    setActiveTab('preset');
 
     // Auto-select first preset
     const caseData = cases[caseType];
@@ -376,8 +305,6 @@ function Configurator() {
           {/* Right Column - Controls */}
           <ControlsSidebar
             selectedCase={selectedCase}
-            activeTab={activeTab}
-            onTabChange={handleTabChange}
             material={material}
             onPresetSelect={handlePresetSelect}
             isPresetActive={isPresetActive}
