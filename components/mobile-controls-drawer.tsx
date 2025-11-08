@@ -121,6 +121,7 @@ export default function MobileControlsDrawer({ children, isOpen = true }: Mobile
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
+    return undefined;
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   // Handle backdrop click
