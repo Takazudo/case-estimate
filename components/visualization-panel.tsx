@@ -28,7 +28,7 @@ export default function VisualizationPanel({
 }: VisualizationPanelProps) {
   return (
     <div
-      className="relative border-r border-zd-gray overflow-hidden pt-[96px]"
+      className="relative border-r border-zd-gray overflow-hidden pt-[64px] md:pt-[80px] lg:pt-[96px]"
       style={{
         backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
         backgroundSize: '60px 60px',

@@ -23,6 +23,7 @@ interface ControlsSidebarProps {
   gridColor?: string;
   onBgColorChange?: (color: string) => void;
   onGridColorChange?: (color: string) => void;
+  inDrawer?: boolean;
 }
 
 export default function ControlsSidebar({
@@ -40,11 +41,16 @@ export default function ControlsSidebar({
   gridColor,
   onBgColorChange,
   onGridColorChange,
+  inDrawer = false,
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
 
   return (
-    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px]">
+    <div
+      className={`bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 ${
+        inDrawer ? '' : 'pt-[64px] md:pt-[80px] lg:pt-[96px]'
+      }`}
+    >
       {/* Model selector at the top */}
       <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
         <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />

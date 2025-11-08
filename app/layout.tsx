@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { Suspense } from 'react';
 import PersistentHeader from '@/components/persistent-header';
@@ -19,6 +19,13 @@ export const metadata: Metadata = {
   title: 'Takazudo Modular: Panels',
   description:
     'Interactive tool for customizing Takazudo Modular synthesizer cases with real-time price estimates',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

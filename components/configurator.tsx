@@ -9,6 +9,7 @@ import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 // Components
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
+import MobileControlsDrawer from '@/components/mobile-controls-drawer';
 import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
 
 // Hooks
@@ -282,44 +283,83 @@ function Configurator() {
       )}
 
       {selectedCase && (
-        <div
-          className={`
-            h-full grid grid-cols-1
-            md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_480px]
-            xl:grid-cols-[1fr_600px]
-          `}
-        >
-          {/* Left Column - Visualization */}
-          <VisualizationPanel
-            selectedCase={selectedCase}
-            panelColors={panelColors}
-            panelColorIds={panelColorIds}
-            onPanelClick={handlePanelClick}
-            selectedPanel={selectedPanel}
-            material={material}
-            bgColor={bgColor}
-            gridColor={gridColor}
-            onLoadingChange={setIsLoadingSvg}
-          />
+        <>
+          {/* Desktop Layout: Grid with sidebar */}
+          <div
+            className={`
+              hidden md:grid h-full
+              md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_480px]
+              xl:grid-cols-[1fr_600px]
+            `}
+          >
+            {/* Left Column - Visualization */}
+            <VisualizationPanel
+              selectedCase={selectedCase}
+              panelColors={panelColors}
+              panelColorIds={panelColorIds}
+              onPanelClick={handlePanelClick}
+              selectedPanel={selectedPanel}
+              material={material}
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onLoadingChange={setIsLoadingSvg}
+            />
 
-          {/* Right Column - Controls */}
-          <ControlsSidebar
-            selectedCase={selectedCase}
-            material={material}
-            onPresetSelect={handlePresetSelect}
-            isPresetActive={isPresetActive}
-            panels={currentCase?.panels || []}
-            panelColors={panelColors}
-            selectedPanel={selectedPanel}
-            onPanelSelect={handleSidebarPanelSelect}
-            colorMap={colorMap}
-            onCaseSelect={handleCaseSelect}
-            bgColor={bgColor}
-            gridColor={gridColor}
-            onBgColorChange={setBgColor}
-            onGridColorChange={setGridColor}
-          />
-        </div>
+            {/* Right Column - Controls */}
+            <ControlsSidebar
+              selectedCase={selectedCase}
+              material={material}
+              onPresetSelect={handlePresetSelect}
+              isPresetActive={isPresetActive}
+              panels={currentCase?.panels || []}
+              panelColors={panelColors}
+              selectedPanel={selectedPanel}
+              onPanelSelect={handleSidebarPanelSelect}
+              colorMap={colorMap}
+              onCaseSelect={handleCaseSelect}
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onBgColorChange={setBgColor}
+              onGridColorChange={setGridColor}
+            />
+          </div>
+
+          {/* Mobile Layout: Full-screen visualization + bottom drawer */}
+          <div className="md:hidden h-full">
+            <VisualizationPanel
+              selectedCase={selectedCase}
+              panelColors={panelColors}
+              panelColorIds={panelColorIds}
+              onPanelClick={handlePanelClick}
+              selectedPanel={selectedPanel}
+              material={material}
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onLoadingChange={setIsLoadingSvg}
+            />
+
+            {/* Mobile Controls Drawer */}
+            <MobileControlsDrawer>
+              <ControlsSidebar
+                selectedCase={selectedCase}
+                material={material}
+                onPresetSelect={handlePresetSelect}
+                isPresetActive={isPresetActive}
+                panels={currentCase?.panels || []}
+                panelColors={panelColors}
+                selectedPanel={selectedPanel}
+                onPanelSelect={handleSidebarPanelSelect}
+                colorMap={colorMap}
+                onCaseSelect={handleCaseSelect}
+                bgColor={bgColor}
+                gridColor={gridColor}
+                onBgColorChange={setBgColor}
+                onGridColorChange={setGridColor}
+                inDrawer={true}
+              />
+            </MobileControlsDrawer>
+          </div>
+        </>
       )}
 
       {/* Color Selection Modal */}

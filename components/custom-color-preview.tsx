@@ -65,7 +65,7 @@ const CustomColorPreview = ({
                 key={panel.id}
                 onClick={() => onPanelSelect(panel.id)}
                 className={`
-                    flex-1 h-12 border transition-all overflow-hidden
+                    flex-1 h-12 sm:h-14 border transition-all overflow-hidden
                     ml-[2px] first:ml-0
                     relative active:z-10 focus:z-10
                     ${
