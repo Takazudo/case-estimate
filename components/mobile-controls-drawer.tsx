@@ -10,9 +10,9 @@ interface MobileControlsDrawerProps {
 }
 
 const SNAP_POINTS = {
-  peek: 120, // Just peek - show handle and hint of controls
-  half: 50, // Half screen
-  full: 90, // Almost full screen (leave room for header)
+  peek: 20, // Just peek - show handle and hint of controls (20vh)
+  half: 50, // Half screen (50vh)
+  full: 90, // Almost full screen - leave room for header (90vh)
 } as const;
 
 export default function MobileControlsDrawer({ children, isOpen = true }: MobileControlsDrawerProps) {
