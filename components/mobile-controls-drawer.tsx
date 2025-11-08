@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
+import React, { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 
 type SnapPoint = 'peek' | 'half' | 'full';
 
@@ -15,7 +15,10 @@ const SNAP_POINTS = {
   full: 90, // Almost full screen - leave room for header (90vh)
 } as const;
 
-export default function MobileControlsDrawer({ children, isOpen = true }: MobileControlsDrawerProps) {
+export default function MobileControlsDrawer({
+  children,
+  isOpen = true,
+}: MobileControlsDrawerProps) {
   const [snapPoint, setSnapPoint] = useState<SnapPoint>('peek');
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
@@ -41,22 +44,25 @@ export default function MobileControlsDrawer({ children, isOpen = true }: Mobile
   }, [snapPoint, isDragging, startY, currentY]);
 
   // Determine snap point based on final drag position
-  const determineSnapPoint = useCallback((finalY: number): SnapPoint => {
-    const viewportHeight = window.innerHeight;
-    const currentSnapHeight = (SNAP_POINTS[snapPoint] / 100) * viewportHeight;
-    const dragDelta = finalY - startY;
-    const newHeight = currentSnapHeight - dragDelta;
-    const newHeightPercent = (newHeight / viewportHeight) * 100;
+  const determineSnapPoint = useCallback(
+    (finalY: number): SnapPoint => {
+      const viewportHeight = window.innerHeight;
+      const currentSnapHeight = (SNAP_POINTS[snapPoint] / 100) * viewportHeight;
+      const dragDelta = finalY - startY;
+      const newHeight = currentSnapHeight - dragDelta;
+      const newHeightPercent = (newHeight / viewportHeight) * 100;
 
-    // Determine closest snap point
-    if (newHeightPercent > SNAP_POINTS.half + (SNAP_POINTS.full - SNAP_POINTS.half) / 2) {
-      return 'full';
-    } else if (newHeightPercent > SNAP_POINTS.peek + (SNAP_POINTS.half - SNAP_POINTS.peek) / 2) {
-      return 'half';
-    } else {
-      return 'peek';
-    }
-  }, [snapPoint, startY]);
+      // Determine closest snap point
+      if (newHeightPercent > SNAP_POINTS.half + (SNAP_POINTS.full - SNAP_POINTS.half) / 2) {
+        return 'full';
+      } else if (newHeightPercent > SNAP_POINTS.peek + (SNAP_POINTS.half - SNAP_POINTS.peek) / 2) {
+        return 'half';
+      } else {
+        return 'peek';
+      }
+    },
+    [snapPoint, startY],
+  );
 
   // Touch event handlers
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
