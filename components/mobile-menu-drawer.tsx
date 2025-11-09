@@ -9,6 +9,7 @@ import { useFocusTrap } from '../hooks/use-focus-trap';
 import ArrowRight from './icons/arrow-right';
 import MobileMenuToggle from './mobile-menu-toggle';
 import BuildButton from './build-button';
+import LogoLink from './logo-link';
 
 interface NavItem {
   href: string;
@@ -110,14 +111,7 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
       <div className="fixed right-0 top-0 h-full w-full bg-zd-black shadow-xl">
         <DialogPanel ref={containerRef} className="flex h-full flex-col">
           <div className="flex items-center justify-between border-b border-dashed border-zd-gray px-hgap-sm py-vgap-sm">
-            <NavigationLink
-              href="/"
-              className="text-sm lg:text-xl text-zd-white no-underline zd-invert-color-link"
-              activeClassName="pointer-events-none"
-              onClick={onClose}
-            >
-              Takazudo Modular: Panels
-            </NavigationLink>
+            <LogoLink onClick={onClose} />
             <MobileMenuToggle isOpen={true} onToggle={onClose} aria-label="メニューを閉じる" />
           </div>
 

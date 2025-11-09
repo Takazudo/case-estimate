@@ -262,6 +262,7 @@
     text-wrap: pretty;
   }
   button {
+    @apply font-semibold;
     cursor: pointer;
   }
 
@@ -279,7 +280,7 @@
 
   /* Links */
   a {
-    @apply underline text-zd-link text-shadow-md;
+    @apply underline text-zd-link text-shadow-md font-semibold;
   }
   a:focus,
   a:active {

@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
-import TakazudoLogo from './icons/takazudo-logo';
 import MobileMenuToggle from './mobile-menu-toggle';
 import MobileMenuDrawer from './mobile-menu-drawer';
 import BuildButton from './build-button';
+import LogoLink from './logo-link';
 import { NAVIGATION_ITEMS } from '@/data/navigation';
 
 interface AppHeaderProps {
@@ -65,16 +65,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
         >
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <NavigationLink
-              href="/"
-              className="text-sm lg:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
-              activeClassName="pointer-events-none opacity-100 hover:opacity-100"
-            >
-              <TakazudoLogo className="w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]" />
-              <span className="whitespace-nowrap font-normal font-futura">
-                Takazudo Modular: Panels
-              </span>
-            </NavigationLink>
+            <LogoLink />
 
             {/* Right side actions */}
             <div className="flex items-center gap-hgap-xs">
