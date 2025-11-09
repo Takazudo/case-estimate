@@ -54,6 +54,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
         className={`
           backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0
           font-futura
+          font-semibold
           fixed top-0 left-0 right-0 z-50 bg-zd-black/70
         `}
       >

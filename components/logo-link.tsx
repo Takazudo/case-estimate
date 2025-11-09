@@ -9,7 +9,7 @@ export default function LogoLink({ onClick }: LogoLinkProps) {
   return (
     <NavigationLink
       href="/"
-      className="text-sm lg:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
+      className="text-[1.2rem] lg:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
       activeClassName="pointer-events-none opacity-100 hover:opacity-100"
       onClick={onClick}
     >
