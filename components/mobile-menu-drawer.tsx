@@ -30,7 +30,7 @@ const MenuItemContent: React.FC<{
   // Special rendering for the Build button
   if (item.href === '/m') {
     return (
-      <div className="px-hgap-sm py-vgap-xs">
+      <div className="px-hgap-sm pt-vgap-sm">
         <BuildButton href={item.href} size="sm" className="w-full justify-center" />
       </div>
     );
@@ -104,7 +104,7 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
   if (!portalRoot.current) return null;
 
   return ReactDOM.createPortal(
-    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
+    <Dialog open={isOpen} onClose={onClose} className="relative z-50 font-futura">
       <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
 
       <div className="fixed right-0 top-0 h-full w-full bg-zd-black shadow-xl">
@@ -112,11 +112,11 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
           <div className="flex items-center justify-between border-b border-dashed border-zd-gray px-hgap-sm py-vgap-sm">
             <NavigationLink
               href="/"
-              className="text-xl font-bold text-zd-white no-underline zd-invert-color-link"
+              className="text-sm lg:text-xl text-zd-white no-underline zd-invert-color-link"
               activeClassName="pointer-events-none"
               onClick={onClose}
             >
-              Takazudo Modular
+              Takazudo Modular: Panels
             </NavigationLink>
             <MobileMenuToggle isOpen={true} onToggle={onClose} aria-label="メニューを閉じる" />
           </div>
@@ -126,7 +126,7 @@ const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
             role="navigation"
             aria-label="メインナビゲーション"
           >
-            <ul className="py-vgap-sm px-[3px]">
+            <ul className="pt-vgap-sm pb-vgap-md px-[3px]">
               {navigationItems.map((item) => (
                 <li key={item.href}>
                   <MenuItemContent item={item} currentPath={currentPath} onClose={onClose} />

@@ -52,7 +52,9 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
     <>
       <header
         className={`
-          backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0 fixed top-0 left-0 right-0 z-50 bg-zd-black/70
+          backdrop-blur-md border-b border-dashed border-zd-gray flex-shrink-0
+          font-futura
+          fixed top-0 left-0 right-0 z-50 bg-zd-black/70
         `}
       >
         <div
@@ -65,10 +67,10 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
             {/* Logo */}
             <NavigationLink
               href="/"
-              className="text-base md:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
+              className="text-sm lg:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
               activeClassName="pointer-events-none opacity-100 hover:opacity-100"
             >
-              <TakazudoLogo className="w-[50px] h-[50px]" />
+              <TakazudoLogo className="w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]" />
               <span className="whitespace-nowrap font-normal font-futura">
                 Takazudo Modular: Panels
               </span>
