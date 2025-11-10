@@ -39,7 +39,7 @@ For each product, concatenate the selected sections in order:
 
 All blockquotes can be copied directly and concatenated to form the final Mercari Shops product description.
 
-## 1. Intro Notes (Fixed Text)
+## 1. Intro Notes
 
 This text is used for ALL product listings:
 
@@ -56,13 +56,13 @@ This text is used for ALL product listings:
 
 Each product page uses ONE of these:
 
-### 3DP Version (Finalized)
+### 3DP Version
 
 > ## 3Dプリント製パネルについて
 >
 > お選びのケースは3Dプリント製パネルを使用したバージョンです。標準はカーボンブラックのPLA-CF素材。軽量で丈夫な樹脂素材で、シックでしっかりした質感です。パネルカスタマイズをご希望の場合、Takzudo Modular: Panels Webアプリ（後述）にて希望するパターンを作成の上、オプションで「カラーカスタマイズ」をご選択下さい。
 
-### Acrylic Version (Finalized)
+### Acrylic Version
 
 > ## アクリルボードパネルについて
 >
@@ -74,25 +74,25 @@ Each product page uses ONE of these:
 
 Each product page uses ONE of these based on the rail type included:
 
-### Lite Version (Finalized)
+### Lite Version
 
 > ## お選びのレールについて: Lite版レール
 >
 > こちらはLite版レール搭載バージョン。ASA樹脂製レール採用でコストを抑え、モジュラーシンセを始めたい方が試しやすい価格設定です。
 
-### Nuts Version (Finalized)
+### Nuts Version
 
 > ## お選びのレールについて: Nuts版レール
 >
 > こちらはNuts版レール搭載バージョン。モジュラーシンセの1HP幅とほぼ等しいスライドナットをベースに、ASA樹脂製レールを設計。価格と性能のバランスが良い当店一押しモデルです。
 
-### Dual Version (Finalized)
+### Dual Version
 
 > ## お選びのレールについて: Dual版レール
 >
 > こちらはDual版レール搭載バージョン。ASA樹脂製レールと、モジュラーシンセ定番の金属バーナットのハイブリッド構成で、コストと耐久性のバランスを実現したモデルです。
 
-### Metal Version (Finalized)
+### Metal Version
 
 > ## お選びのレールについて: Metal版レール
 >
