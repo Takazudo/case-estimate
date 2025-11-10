@@ -171,6 +171,8 @@ article.theme-doc-markdown {
 .markdown blockquote {
   border-left-color: oklch(55.5% 0.163 48.998);
   background-color: oklch(55.5% 0.163 48.998 / 0.05);
+  padding-top: 0.9em;
+  padding-bottom: 0.9em;
 }
 
 [data-theme='dark'] .markdown blockquote {

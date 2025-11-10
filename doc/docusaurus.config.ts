@@ -115,6 +115,12 @@ const config: Config = {
           label: 'Knowledge',
         },
         {
+          type: 'doc',
+          docId: 'misc/index',
+          position: 'left',
+          label: 'Misc',
+        },
+        {
           href: 'https://case-estimate.netlify.app',
           label: 'Main Site',
           position: 'right',
