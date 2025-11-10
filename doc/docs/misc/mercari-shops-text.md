@@ -21,6 +21,11 @@ Each product listing should follow this sequence:
 This text is used for ALL product listings:
 
 > モジュラーシンセケースDIYキットをお求めやすい価格で。Takazudo Modularは、パネルとパーツをお届けし、ご自身で組み立てていただくキット形式でコストパフォーマンスを実現しています。パネルは3Dプリント製とアクリルレーザーカット製をラインナップ。レールは4タイプ(Lite/Nuts/Dual/Metal)から予算と用途に応じてお選びいただけます。パネルカラーのバリエーションも豊富で、Webツールで展開図にカラーを当ててイメージを確認可能です。
+>
+> こちらの商品は多数のバリエーションがあるTakazudo ModularのDIYケースのバリエーションの一つです。ケースの種類毎の特徴については、以下Webサイトにて詳しく解説していますので、こちらをご確認の上、ご自身が選んでいるケースがどれかをご確認の上、ご購入を検討いただけると幸いです。
+>
+> Takazudo Modular: Panels
+> https://panels.takazudomodular.com/
 
 ## 2. Panel Type Notes
 
