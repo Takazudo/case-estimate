@@ -9,12 +9,35 @@ Product description templates and guidelines for Mercari Shops listings.
 
 ## Text Structure
 
-Each product listing should follow this sequence:
+Each product listing is created by **concatenating text from multiple sections** in the following sequence:
 
-1. **Intro Notes** (固定テキスト)
-2. **Panel Type Notes** (3DP版 or アクリル版)
-3. **Rail Variation Notes** (Lite/Nuts/Dual/Metal)
-4. **Main** (商品詳細)
+1. **Intro Notes** (固定テキスト) - Always included for ALL products
+2. **Panel Type Notes** (3DP版 or アクリル版) - Select ONE based on panel material
+3. **Rail Variation Notes** (Lite/Nuts/Dual/Metal) - Select ONE based on rail type
+4. **Main** (商品詳細) - Select ONE matching the specific product model
+5. **Extra** (共通情報) - Always included for ALL products
+
+### How to Build Product Descriptions
+
+For each product, concatenate the selected sections in order:
+
+```
+[Section 1: Intro Notes]
++ [Section 2: Panel Type Notes - ONE choice]
++ [Section 3: Rail Variation Notes - ONE choice]
++ [Section 4: Main - ONE specific product]
++ [Section 5: Extra]
+= Complete Product Description
+```
+
+**Example:** For "zudo-block-60-3DP-A Lite版":
+- Section 1: Intro Notes (fixed)
+- Section 2: 3DP Version panel notes
+- Section 3: Lite Version rail notes
+- Section 4: zudo-block-60-3DP-A/B main text
+- Section 5: Extra (fixed)
+
+All blockquotes can be copied directly and concatenated to form the final Mercari Shops product description.
 
 ## 1. Intro Notes (Fixed Text)
 
