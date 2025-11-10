@@ -49,6 +49,8 @@ const config: Config = {
           showLastUpdateAuthor: true,
           // Add remark plugin to inject creation dates
           beforeDefaultRemarkPlugins: [[require('./plugins/remark-creation-date.js'), {}]],
+          // Add remark-breaks to handle line breaks like GitHub
+          remarkPlugins: [require('remark-breaks')],
         },
         // Disable blog feature
         blog: false,
