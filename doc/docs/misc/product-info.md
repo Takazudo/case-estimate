@@ -14,30 +14,39 @@ Takazudo Modular cases are **DIY assembly kits** that consist of pre-cut panels 
 ## What's Included
 
 Each kit contains:
-- Pre-cut panels (3D printed or acrylic laser cut)
-- Rails (choice of 4 types)
-- Hardware components (screws, washers, nuts, brackets)
-- Access to web-based assembly guide
+- **Rail Set** - Rails and hardware according to rail model selection
+- **Panel Set** - Number and types of panels according to case model
+- **Panel Connection Hardware** - Screws, washers, nuts, and brackets for assembly
+- **Access to web-based assembly guide**
 
 **What's NOT included:**
 - Power supply (must be purchased separately)
 - Pre-assembled case
 - Physical assembly instructions (available online only)
+- Modules or cables
 
 ## Panel Materials
 
 Two panel material options are available:
 
-### 3D Printed Panels
-- Lightweight construction
+### 3D Printed Panels (3DP)
+- Material: PLA-CF (Carbon Fiber reinforced PLA)
+- Lightweight and durable resin material
+- Chic and solid texture
 - Default color: Carbon Black (カーボンブラック)
 - Cost-effective option
-- Suitable for portable setups
+- Suitable for portable setups and live performances
+- Better weight-to-durability ratio
 
-### Acrylic Laser Cut Panels
-- More robust construction
-- Default color: Glass Cyan (ガラスシアン)
-- Premium feel with transparency
+### Acrylic Board Panels (ACR)
+- Material: 5mm thick acrylic board
+- Precision laser cutting with beautiful edge processing
+- Transparent material creates light reflections
+- Default color: Glass Cyan (ガラスシアン) - transparent color resembling glass texture
+- Premium aesthetic appeal
+- Heavier than 3DP version
+- Best for stationary/home studio use
+- Excellent for video content and interior aesthetics
 - Higher price point
 
 **Note:** Aluminum panels are NOT available.
@@ -46,10 +55,31 @@ Two panel material options are available:
 
 Four rail types available, offering different material combinations and price points:
 
-1. **Lite** - Most affordable option
-2. **Nuts** - Recommended by Takazudo (推奨)
-3. **Dual** - Mid-range option
-4. **Metal** - Premium option
+### 1. Lite Version
+- **Material**: ASA resin rails
+- **Cost**: Most affordable option
+- **Target**: Beginners who want to try modular synth at accessible price
+- **Characteristics**: Budget-friendly entry point
+
+### 2. Nuts Version (推奨 - Recommended)
+- **Material**: ASA resin rails with slide nuts
+- **Design**: Slide nuts approximately equal to 1HP width of modular synth
+- **Balance**: Best price-to-performance ratio
+- **Recommendation**: Shop's top recommendation
+- **Characteristics**: Balanced performance and cost
+
+### 3. Dual Version
+- **Material**: Hybrid - ASA resin rails + metal barrel nuts
+- **Construction**: Combines modular synth standard metal barrel nuts with resin rails
+- **Balance**: Good balance between cost and durability
+- **Characteristics**: Mid-range option with enhanced durability
+
+### 4. Metal Version
+- **Material**: Metal barrel nuts + metal rails
+- **Construction**: Standard metal barrel nut and metal rail configuration
+- **Cost**: Higher price point
+- **Durability**: Outstanding durability
+- **Characteristics**: Premium option for maximum robustness
 
 For detailed pricing information, see: https://panels.takazudomodular.com/price
 
@@ -78,16 +108,50 @@ Two size options available:
 ### User Assembly Required
 This is a DIY kit - assembly by the purchaser is mandatory.
 
+### Required Tools
+- Phillips screwdriver (プラスドライバー)
+- Spanner (スパナ)
+- Pliers (ペンチ)
+- Hex key / Allen wrench (六角棒レンチ)
+
 ### Assembly Guide
 - Available online only (not physically included)
 - Accessible through the web
 - Designed to be approachable for DIY beginners
-- Requires basic tools: hex keys, spanners, screwdrivers
+- Step-by-step instructions provided
 
 ### Skill Level
 - Suitable for DIY beginners
 - No special technical skills required
 - Standard household tools needed
+- Basic mechanical assembly experience helpful but not required
+
+## Production & Delivery
+
+### Production Timeline
+Each order goes through the following process:
+
+**For 3D Printed Panels:**
+- If in stock: Direct packaging and shipping
+- If out of stock: 3D printing required before shipping
+
+**For Acrylic Board Panels:**
+- If in stock: Direct packaging and shipping
+- If out of stock: Laser cutting order placement required
+
+### Expected Delivery Time
+- **General timeline**: Approximately 2 weeks to 1 month
+- **If in stock**: 2-3 days for shipping preparation
+- **Recommendation**: Contact seller beforehand with desired panel pattern if delivery time is a concern
+
+### Panel Customization Process
+1. Visit https://panels.takazudomodular.com/
+2. Create desired panel color pattern using the web tool
+3. Copy the generated message and URL
+4. Select "Custom" option when purchasing
+5. Send the copied message and URL to the seller
+
+**Note**: Panel customization service is provided free of charge (無料)
 
 ## Sales Platform
 
