@@ -53,6 +53,13 @@ Built with modern web technologies:
 - **10BOX Shallow 3DP** - 104HP shallow 3D printed case
 - **10BOX Deep 3DP** - 104HP deep 3D printed case
 
+### Zudo Stand Series
+
+- **Zudo Stand 40** - 40HP case stand (3D printed)
+- **Zudo Stand 40x2** - 80HP case stand (3D printed)
+- **Zudo Stand 60** - 60HP case stand (3D printed)
+- **Zudo Stand 60x2** - 120HP case stand (3D printed)
+
 ## Development Quick Start
 
 ```bash

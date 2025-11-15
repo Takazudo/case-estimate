@@ -43,6 +43,7 @@ export const applyPresetColorsWithIds = (
 
   const isX2Model = caseType.includes('x2');
   const is10BoxModel = caseType.startsWith('10box-');
+  const isStandModel = caseType.startsWith('zudo-stand-');
 
   caseData.panels.forEach((panel) => {
     if (preset.colors.all) {
@@ -52,8 +53,8 @@ export const applyPresetColorsWithIds = (
         newColorIds[panel.id] = color.id;
       }
     } else {
-      // 10BOX only supports YamiKage (all black), so skip primary/secondary logic
-      if (is10BoxModel) {
+      // 10BOX and Stand models only support YamiKage (all black), so skip primary/secondary logic
+      if (is10BoxModel || isStandModel) {
         const color = availableColors.find((c: Color) => c.id === 'carbon-black');
         if (color) {
           newColors[panel.id] = color.value;
@@ -113,15 +114,16 @@ export const applyPresetColors = (
 
   const isX2Model = caseType.includes('x2');
   const is10BoxModel = caseType.startsWith('10box-');
+  const isStandModel = caseType.startsWith('zudo-stand-');
 
   caseData.panels.forEach((panel) => {
     if (preset.colors.all) {
       const color = availableColors.find((c: Color) => c.id === preset.colors.all);
       if (color) newColors[panel.id] = color.value;
     } else {
-      // 10BOX only supports YamiKage (all black), so skip primary/secondary logic
-      if (is10BoxModel) {
-        // This shouldn't happen since 10BOX only has YamiKage which has colors.all
+      // 10BOX and Stand models only support YamiKage (all black), so skip primary/secondary logic
+      if (is10BoxModel || isStandModel) {
+        // This shouldn't happen since 10BOX and Stand only have YamiKage which has colors.all
         // But as a fallback, use carbon-black for all panels
         const color = availableColors.find((c: Color) => c.id === 'carbon-black');
         if (color) newColors[panel.id] = color.value;
@@ -181,6 +183,7 @@ export const isPresetActive = (
 
   const isX2Model = caseType.includes('x2');
   const is10BoxModel = caseType.startsWith('10box-');
+  const isStandModel = caseType.startsWith('zudo-stand-');
 
   for (const panel of caseData.panels) {
     // If we have color IDs, use those for comparison (more accurate)
@@ -189,8 +192,8 @@ export const isPresetActive = (
       const expectedColorId = preset.colors.all
         ? preset.colors.all
         : (() => {
-            // 10BOX only supports YamiKage (all black)
-            if (is10BoxModel) {
+            // 10BOX and Stand models only support YamiKage (all black)
+            if (is10BoxModel || isStandModel) {
               return 'carbon-black';
             }
 
@@ -232,8 +235,8 @@ export const isPresetActive = (
       const expectedColor = preset.colors.all
         ? colors[material].find((c: Color) => c.id === preset.colors.all)?.value
         : (() => {
-            // 10BOX only supports YamiKage (all black)
-            if (is10BoxModel) {
+            // 10BOX and Stand models only support YamiKage (all black)
+            if (is10BoxModel || isStandModel) {
               return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
             }
 

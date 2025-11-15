@@ -27,6 +27,10 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60-open-3DP-A': 'pa',
   'zudo-block-60-open-3DP-B': 'pb',
   'zudo-block-60-open-upgrade-3DP': 'pu',
+  'zudo-stand-40': 's4',
+  'zudo-stand-40x2': 's8',
+  'zudo-stand-60': 's6',
+  'zudo-stand-60x2': 'sc',
 };
 
 // Build reverse map
@@ -75,6 +79,11 @@ const PANEL_MAP: { [key: string]: string } = {
   // zudo-block-60-open upgrade panels (use 't' prefix for top)
   top1: 't1',
   top2: 't2',
+  // zudo-stand panels
+  angle1: 'n1',
+  angle2: 'n2',
+  support1: 'p1',
+  support2: 'p2',
 };
 
 const PANEL_REVERSE_MAP: { [key: string]: string } = Object.entries(PANEL_MAP).reduce(

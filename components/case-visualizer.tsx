@@ -125,6 +125,14 @@ const COLOR_TO_PANEL_OPEN_UPGRADE: { [key: string]: string } = {
   '#c69c6d': 'top2', // Position 6: トップ2 (tan/beige)
 };
 
+// For zudo-stand models - 4 panels (all variants use same mapping)
+const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
+  '#fbb040': 'angle1', // Left angle (orange)
+  '#ed1e79': 'angle2', // Right angle (pink)
+  '#be1e2d': 'support1', // Top support (red)
+  '#ff7bac': 'support2', // Bottom support (light pink)
+};
+
 // Default black color for all panels
 const DEFAULT_PANEL_COLOR = '#1f2937';
 
@@ -147,6 +155,7 @@ const CaseVisualizer = ({
   const isX2Model = caseType.includes('x2');
   const is10BoxModel = caseType.startsWith('10box-');
   const isOpenModel = caseType.includes('open');
+  const isStandModel = caseType.startsWith('zudo-stand-');
   const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
@@ -218,8 +227,8 @@ const CaseVisualizer = ({
             svg.style.display = 'block';
             svg.style.margin = 'auto';
 
-            // For 10BOX model and Open models, immediately set all panels to black to prevent color flash
-            if (is10BoxModel || isOpenModel) {
+            // For 10BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
+            if (is10BoxModel || isOpenModel || isStandModel) {
               // Select the appropriate color mapping based on model type
               let colorToPanelMap: { [key: string]: string };
               if (caseType === '10box-shallow-3dp') {
@@ -228,6 +237,8 @@ const CaseVisualizer = ({
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
               } else if (caseType.includes('upgrade')) {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
+              } else if (isStandModel) {
+                colorToPanelMap = COLOR_TO_PANEL_ZUDO_STAND;
               } else {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_2;
               }
@@ -277,7 +288,13 @@ const CaseVisualizer = ({
                 } else if (fillMatch) {
                   // This path has a fill color but no mapped panel ID
                   // This shouldn't happen if our mappings are complete, but leave path in DOM
-                  const modelType = is10BoxModel ? '10BOX' : isOpenModel ? 'Open' : 'unknown';
+                  const modelType = is10BoxModel
+                    ? '10BOX'
+                    : isOpenModel
+                      ? 'Open'
+                      : isStandModel
+                        ? 'Stand'
+                        : 'unknown';
                   const unmappedColor = fillMatch[1].trim().toLowerCase();
                   console.warn(
                     `Unmapped color in ${modelType} model: ${unmappedColor} at index ${index}`,
@@ -315,7 +332,7 @@ const CaseVisualizer = ({
     };
 
     loadSVG();
-  }, [caseType, isX2Model, is10BoxModel, isOpenModel, onLoadingChange]);
+  }, [caseType, isX2Model, is10BoxModel, isOpenModel, isStandModel, onLoadingChange]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -326,8 +343,8 @@ const CaseVisualizer = ({
       const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
-      if (is10BoxModel || isOpenModel) {
-        // Handle 10BOX and Open models which use inline styles
+      if (is10BoxModel || isOpenModel || isStandModel) {
+        // Handle 10BOX, Open, and Stand models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
         const paths = svg.querySelectorAll('path[data-panel-id]');
 
@@ -626,6 +643,7 @@ const CaseVisualizer = ({
     CLASS_TO_PANEL,
     is10BoxModel,
     isOpenModel,
+    isStandModel,
   ]);
 
   return (

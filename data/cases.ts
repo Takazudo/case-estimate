@@ -383,4 +383,48 @@ export const cases: Cases = {
       { id: 'top2', name: 'トップ2' }, // Position 6: red
     ],
   },
+  'zudo-stand-40': {
+    name: 'zudo-stand-40',
+    hp: 40,
+    material: '3dp',
+    panels: [
+      { id: 'angle1', name: 'アングル1' },
+      { id: 'support1', name: 'サポート1' },
+      { id: 'support2', name: 'サポート2' },
+      { id: 'angle2', name: 'アングル2' },
+    ],
+  },
+  'zudo-stand-40x2': {
+    name: 'zudo-stand-40x2',
+    hp: 80,
+    material: '3dp',
+    panels: [
+      { id: 'angle1', name: 'アングル1' },
+      { id: 'support1', name: 'サポート1' },
+      { id: 'support2', name: 'サポート2' },
+      { id: 'angle2', name: 'アングル2' },
+    ],
+  },
+  'zudo-stand-60': {
+    name: 'zudo-stand-60',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'angle1', name: 'アングル1' },
+      { id: 'support1', name: 'サポート1' },
+      { id: 'support2', name: 'サポート2' },
+      { id: 'angle2', name: 'アングル2' },
+    ],
+  },
+  'zudo-stand-60x2': {
+    name: 'zudo-stand-60x2',
+    hp: 120,
+    material: '3dp',
+    panels: [
+      { id: 'angle1', name: 'アングル1' },
+      { id: 'support1', name: 'サポート1' },
+      { id: 'support2', name: 'サポート2' },
+      { id: 'angle2', name: 'アングル2' },
+    ],
+  },
 };
