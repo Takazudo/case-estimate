@@ -81,6 +81,10 @@ const priceData: PriceRow[] = [
   },
   { model: '10box-shallow-3DP', lite: 19680, nuts: 28680, dual: 28880, metal: 35680 },
   { model: '10box-deep-3DP', lite: 20680, nuts: 29680, dual: 29880, metal: 36680 },
+  { model: 'zudo-stand-40', singlePrice: 2480 },
+  { model: 'zudo-stand-40x2', singlePrice: 2980 },
+  { model: 'zudo-stand-60', singlePrice: 3980 },
+  { model: 'zudo-stand-60x2', singlePrice: 4480 },
 ];
 
 /**
