@@ -64,7 +64,7 @@ export const caseGroups: CaseGroup[] = [
   {
     label: 'zudo-stand',
     displayLabel: 'zudo-stand',
-    imageSlug: 'zudo-stand-40',
+    imageSlug: 'zudo-stand-40-view1',
     cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-stand')),
   },
 ];
