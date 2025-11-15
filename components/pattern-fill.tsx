@@ -16,7 +16,12 @@ const PatternFill = ({ pattern, className = '', viewBoxSize = 24 }: PatternFillP
   const patternId = `${definition.svgId}-${internalId}`;
 
   return (
-    <svg className={className} viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`} aria-hidden="true">
+    <svg
+      className={className}
+      viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
       <defs>
         <pattern
           id={patternId}
@@ -39,7 +44,7 @@ const PatternFill = ({ pattern, className = '', viewBoxSize = 24 }: PatternFillP
           />
         </pattern>
       </defs>
-      <rect width={viewBoxSize} height={viewBoxSize} fill={`url(#${patternId})`} />
+      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
     </svg>
   );
 };

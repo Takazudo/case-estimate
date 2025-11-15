@@ -45,7 +45,7 @@ The application supports two methods for identifying panels in SVG files, chosen
 
 ### Method 1: Class-Based (8-12 panels)
 
-Used for simpler models like Zudo Block preset.
+Used for simpler models like zudo-block preset.
 
 ```xml
 <svg>
@@ -360,7 +360,7 @@ Strategy:
 
 Examples:
 
-- `8a` = Zudo Block 40 ACR variant A
+- `8a` = zudo-block-40 ACR variant A
 - `9b` = 10BOX deep 3D printed
 - `1a` = 10BOX shallow 3D printed
 
@@ -451,6 +451,110 @@ describe('your-model-name encoding', () => {
   });
 });
 ```
+
+## Real Example: Zudo Stand Model
+
+Let's walk through a simple 4-panel model implementation.
+
+### The Model
+
+- **Name**: zudo-stand-40 (40HP case stand)
+- **Panels**: 4 panels with color-based identification
+- **Material**: 3D printed only
+- **Preset**: YamiKage (all black)
+
+### SVG Analysis
+
+The SVG has 4 paths with different fill colors:
+
+```xml
+<svg viewBox="0 0 1872.788 711.231">
+  <path style="fill:#fbb040" d="..." />  <!-- Orange - Left angle -->
+  <path style="fill:#ed1e79" d="..." />  <!-- Pink - Right angle -->
+  <path style="fill:#be1e2d" d="..." />  <!-- Red - Top support -->
+  <path style="fill:#ff7bac" d="..." />  <!-- Light pink - Bottom support -->
+</svg>
+```
+
+### Implementation Steps
+
+#### 1. Case Configuration
+
+```typescript
+// /data/cases.ts
+'zudo-stand-40': {
+  name: 'zudo-stand-40',
+  hp: 40,
+  material: '3dp',
+  panels: [
+    { id: 'angle1', name: 'アングル1' },      // Left angle
+    { id: 'support1', name: 'サポート1' },    // Top support
+    { id: 'support2', name: 'サポート2' },    // Bottom support
+    { id: 'angle2', name: 'アングル2' },      // Right angle
+  ],
+}
+```
+
+#### 2. Color Mapping
+
+```typescript
+// /components/case-visualizer.tsx
+const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
+  '#fbb040': 'angle1',     // Orange (left)
+  '#ed1e79': 'angle2',     // Pink (right)
+  '#be1e2d': 'support1',   // Red (top)
+  '#ff7bac': 'support2',   // Light pink (bottom)
+};
+
+// Add to COLOR_MAPS lookup
+const COLOR_MAPS: { [key: string]: { [key: string]: string } } = {
+  // ...existing mappings...
+  'zudo-stand-40': COLOR_TO_PANEL_ZUDO_STAND,
+  'zudo-stand-40x2': COLOR_TO_PANEL_ZUDO_STAND,
+  'zudo-stand-60': COLOR_TO_PANEL_ZUDO_STAND,
+  'zudo-stand-60x2': COLOR_TO_PANEL_ZUDO_STAND,
+};
+```
+
+**Note:** All 4 zudo-stand models use the same 4-panel structure and color mapping.
+
+#### 3. URL Encoding
+
+```typescript
+// /utils/url-encoder.ts
+const CASE_MAPPING: { [key: string]: string } = {
+  // ...existing mappings...
+  'zudo-stand-40': 's4',
+  'zudo-stand-40x2': 's8',
+  'zudo-stand-60': 's6',
+  'zudo-stand-60x2': 'sc',
+};
+
+// Panel codes for stand models
+const PANEL_CODES_STAND = {
+  'angle1': 'a1',
+  'support1': 's1',
+  'support2': 's2',
+  'angle2': 'a2',
+};
+```
+
+#### 4. Testing Results
+
+All panels work correctly:
+- Each panel is clickable and selectable
+- YamiKage preset applies black to all 4 panels
+- URL sharing preserves configuration
+- No unmapped colors or missing panels
+
+### Key Takeaways
+
+1. **Simple models** with 4 panels are straightforward to implement
+2. **Reusable mappings**: Same color mapping works across all stand variants
+3. **Consistent naming**: Japanese panel names follow the same pattern
+4. **Quick implementation**: ~30 minutes for 4 similar models
+
+---
 
 ## Real Example: 10BOX Deep Model
 

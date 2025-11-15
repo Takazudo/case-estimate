@@ -76,6 +76,12 @@ const CASE_CODES = {
   'zudo-block-60-open-3DP-A': 'pa',
   'zudo-block-60-open-3DP-B': 'pb',
   'zudo-block-60-open-upgrade-3DP': 'pu',
+
+  // Stand Models (3DP only)
+  'zudo-stand-40': 's4',    // 40HP stand
+  'zudo-stand-40x2': 's8',  // 80HP stand
+  'zudo-stand-60': 's6',    // 60HP stand
+  'zudo-stand-60x2': 'sc',  // 120HP stand
 };
 ```
 
@@ -174,6 +180,19 @@ const PANEL_CODES_OPEN_UPGRADE = {
   bottom2: '6',
   top1: 't1', // use 't' prefix for top panels
   top2: 't2',
+};
+```
+
+#### Stand Models (4 panels)
+
+Applies to: zudo-stand-40, zudo-stand-40x2, zudo-stand-60, zudo-stand-60x2
+
+```typescript
+const PANEL_CODES_STAND = {
+  angle1: 'n1',    // Left angle panel (use 'n' prefix)
+  angle2: 'n2',    // Right angle panel
+  support1: 'p1',  // Top support panel (use 'p' prefix)
+  support2: 'p2',  // Bottom support panel
 };
 ```
 
@@ -313,6 +332,27 @@ These demonstrate the new color options:
 - `sw` (silver-white) - #dfe0dd (PLA)
 - `ca` (caramel) - #ab461e (PLA)
 
+### Example 7: Stand Model
+
+**URL:** `/m?c=s4&p=n1cb.p1cb.p2cb.n2cb`
+
+**Decoded:**
+
+- Case: `zudo-stand-40` (40HP stand, 3D printed)
+- Panel Colors:
+  - angle1 (n1): carbon-black (cb)
+  - support1 (p1): carbon-black (cb)
+  - support2 (p2): carbon-black (cb)
+  - angle2 (n2): carbon-black (cb)
+
+This is the **YamiKage** preset (all black) - the only preset available for stand models.
+
+**Other stand model URLs:**
+
+- `zudo-stand-40x2` (80HP): `/m?c=s8&p=n1cb.p1cb.p2cb.n2cb`
+- `zudo-stand-60` (60HP): `/m?c=s6&p=n1cb.p1cb.p2cb.n2cb`
+- `zudo-stand-60x2` (120HP): `/m?c=sc&p=n1cb.p1cb.p2cb.n2cb`
+
 ## Implementation Details
 
 ### Encoding Algorithm
@@ -353,8 +393,8 @@ function decodePanelColors(encoded: string): { [key: string]: string } {
   parts.forEach((part) => {
     // Determine panel code length based on first character
     let panelCodeLength = 1;
-    if (part[0] === 'm' || part[0] === 'l' || part[0] === 't') {
-      panelCodeLength = 2; // 10BOX or open upgrade panels
+    if (part[0] === 'm' || part[0] === 'l' || part[0] === 't' || part[0] === 'n' || part[0] === 'p') {
+      panelCodeLength = 2; // 10BOX, open upgrade, or stand panels
     }
 
     const panelCode = part.slice(0, panelCodeLength);
