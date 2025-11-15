@@ -32,6 +32,7 @@ const PresetSelector = ({
       if (
         selectedCase &&
         (selectedCase.startsWith('10box-') ||
+          selectedCase.startsWith('zudo-stand-') ||
           selectedCase === 'zudo-block-60-open-3DP-A' ||
           selectedCase === 'zudo-block-60-open-3DP-B')
       ) {
