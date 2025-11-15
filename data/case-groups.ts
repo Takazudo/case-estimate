@@ -10,7 +10,7 @@ export interface CaseGroup {
 export const caseGroups: CaseGroup[] = [
   {
     label: 'zudo-block-60-open',
-    displayLabel: 'Zudo Block 60 Open (Starter Kit)',
+    displayLabel: 'zudo-block-60-open',
     imageSlug: 'zb60-open-high-view-a',
     cases: Object.entries(cases)
       .filter(([key]) => key.includes('zudo-block-60-open'))
@@ -29,7 +29,7 @@ export const caseGroups: CaseGroup[] = [
   },
   {
     label: 'zudo-block-60',
-    displayLabel: 'Zudo Block 60',
+    displayLabel: 'zudo-block-60',
     imageSlug: 'panels-gallery-zudo-blocks-110',
     cases: Object.entries(cases).filter(
       ([key]) => key.startsWith('zudo-block-60') && !key.includes('x2') && !key.includes('open'),
@@ -37,7 +37,7 @@ export const caseGroups: CaseGroup[] = [
   },
   {
     label: 'zudo-block-40',
-    displayLabel: 'Zudo Block 40',
+    displayLabel: 'zudo-block-40',
     imageSlug: 'panels-gallery-zudo-blocks-102',
     cases: Object.entries(cases).filter(
       ([key]) => key.startsWith('zudo-block-40') && !key.includes('x2'),
@@ -45,13 +45,13 @@ export const caseGroups: CaseGroup[] = [
   },
   {
     label: 'zudo-block-60x2',
-    displayLabel: 'Zudo Block 60x2',
+    displayLabel: 'zudo-block-60x2',
     imageSlug: 'panels-gallery-zudo-blocks-114',
     cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-60x2')),
   },
   {
     label: 'zudo-block-40x2',
-    displayLabel: 'Zudo Block 40x2',
+    displayLabel: 'zudo-block-40x2',
     imageSlug: 'panels-gallery-zudo-blocks-101',
     cases: Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-40x2')),
   },

@@ -45,7 +45,7 @@ The application supports two methods for identifying panels in SVG files, chosen
 
 ### Method 1: Class-Based (8-12 panels)
 
-Used for simpler models like Zudo Block preset.
+Used for simpler models like zudo-block preset.
 
 ```xml
 <svg>
@@ -360,7 +360,7 @@ Strategy:
 
 Examples:
 
-- `8a` = Zudo Block 40 ACR variant A
+- `8a` = zudo-block-40 ACR variant A
 - `9b` = 10BOX deep 3D printed
 - `1a` = 10BOX shallow 3D printed
 

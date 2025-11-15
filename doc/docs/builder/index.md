@@ -38,15 +38,15 @@ Built with modern web technologies:
 
 ### Zudo Block Series
 
-- **Zudo Block 40** - Compact 40HP case (Acrylic & 3D Printed variants)
-- **Zudo Block 60** - Extended 60HP case (Acrylic & 3D Printed variants)
-- **Zudo Block 40x2** - Dual 40HP configuration (80HP)
-- **Zudo Block 60x2** - Dual 60HP configuration (120HP)
+- **zudo-block-40** - Compact 40HP case (Acrylic & 3D Printed variants)
+- **zudo-block-60** - Extended 60HP case (Acrylic & 3D Printed variants)
+- **zudo-block-40x2** - Dual 40HP configuration (80HP)
+- **zudo-block-60x2** - Dual 60HP configuration (120HP)
 
 ### Open Frame Series
 
-- **Zudo Block 60 Open** - Open frame 60HP case (Acrylic & 3D Printed variants)
-- **Zudo Block 60 Open Upgrade** - Open frame with additional panels
+- **zudo-block-60-open** - Open frame 60HP case (Acrylic & 3D Printed variants)
+- **zudo-block-60-open-upgrade** - Open frame with additional panels
 
 ### 10BOX Series
 
@@ -55,10 +55,10 @@ Built with modern web technologies:
 
 ### Zudo Stand Series
 
-- **Zudo Stand 40** - 40HP case stand (3D printed)
-- **Zudo Stand 40x2** - 80HP case stand (3D printed)
-- **Zudo Stand 60** - 60HP case stand (3D printed)
-- **Zudo Stand 60x2** - 120HP case stand (3D printed)
+- **zudo-stand-40** - 40HP case stand (3D printed)
+- **zudo-stand-40x2** - 80HP case stand (3D printed)
+- **zudo-stand-60** - 60HP case stand (3D printed)
+- **zudo-stand-60x2** - 120HP case stand (3D printed)
 
 ## Development Quick Start
 
