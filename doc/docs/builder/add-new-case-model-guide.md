@@ -532,10 +532,10 @@ const CASE_MAPPING: { [key: string]: string } = {
 
 // Panel codes for stand models
 const PANEL_CODES_STAND = {
-  'angle1': 'a1',
-  'support1': 's1',
-  'support2': 's2',
-  'angle2': 'a2',
+  'angle1': 'n1',
+  'support1': 'p1',
+  'support2': 'p2',
+  'angle2': 'n2',
 };
 ```
 
