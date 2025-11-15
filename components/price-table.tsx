@@ -1,4 +1,5 @@
 import React from 'react';
+import { H3 } from './article/h3';
 
 type PriceRowWithRails = {
   model: string;
@@ -130,7 +131,7 @@ export function PriceTable() {
     <div className="space-y-vgap-xl pb-vgap-lg">
       {/* Main Case Models Table */}
       <div>
-        <h3 className="mb-vgap-md text-2xl font-bold">ケースモデル / Case Models</h3>
+        <H3 subText="Case Models">ケースモデル</H3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -169,7 +170,7 @@ export function PriceTable() {
 
       {/* Upgrade Kits Table */}
       <div>
-        <h3 className="mb-vgap-md text-2xl font-bold">アップグレードキット / Upgrade Kits</h3>
+        <H3 subText="Upgrade Kits">アップグレードキット</H3>
         <p className="mb-vgap-sm text-sm text-zd-gray3">
           ※ パネルのみの販売です。レールは付属しません。
         </p>
@@ -198,7 +199,7 @@ export function PriceTable() {
 
       {/* Accessories Table */}
       <div>
-        <h3 className="mb-vgap-md text-2xl font-bold">アクセサリー / Accessories</h3>
+        <H3 subText="Accessories">アクセサリー</H3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
