@@ -884,6 +884,106 @@ export const galleryData: GalleryItem[] = [
     imageAlt: '',
     blurhash: 'UhJE|nSgs.sCRlWXoeWV}psoWWj@R-WpoJjZ',
   },
+  {
+    slug: 'zudo-stand-40-view1',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40-view2',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40-view3',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40-view4',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40x2-view1',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40x2-view2',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40x2-view3',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-40x2-view4',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60-view1',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60-view2',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60-view3',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60-view4',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-view1',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-view2',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-view3',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-view4',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-10box-view1',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-10box-view2',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-10box-view3',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
+  {
+    slug: 'zudo-stand-60x2-10box-view4',
+    imageAlt: '',
+    blurhash: 'U9ECUZ00~q.8_3~q-;xuD%xuWBIU~qofM{M{',
+  },
 ];
 
 /**
