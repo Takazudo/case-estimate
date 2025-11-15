@@ -166,11 +166,18 @@ export function decodePanelColors(encoded: string): { [key: string]: string } {
     // Determine panel code length based on first character
     // 10BOX panels start with 'm' or 'l' and use 2-char codes
     // Open upgrade panels start with 't' and use 2-char codes
+    // Stand panels start with 'n' or 'p' and use 2-char codes
     // x2 model panels can use 'a', 'b', 'c' single chars
     // Regular panels use single digit chars
     let panelCodeLength = 1;
-    if (part[0] === 'm' || part[0] === 'l' || part[0] === 't') {
-      panelCodeLength = 2; // 10BOX panels or open upgrade panels
+    if (
+      part[0] === 'm' ||
+      part[0] === 'l' ||
+      part[0] === 't' ||
+      part[0] === 'n' ||
+      part[0] === 'p'
+    ) {
+      panelCodeLength = 2; // 10BOX, open upgrade, or stand panels
     }
 
     const panelCode = part.slice(0, panelCodeLength);
