@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { CloseIcon } from '@/components/icons/close-icon';
-import { ModelBoxIcon } from '@/components/icons/model-box-icon';
+import { PresetIcon } from '@/components/icons/preset-icon';
 import { colors } from '@/data/colors';
 import PresetCard from '@/components/preset-card';
 import type { Preset } from '@/types';
@@ -127,7 +127,7 @@ const PresetSelectorModal: React.FC<PresetSelectorModalProps> = ({
               flex items-baseline gap-hgap-xs
             `}
           >
-            <ModelBoxIcon className="w-[32px] h-[32px] text-zd-white relative top-[5px]" />
+            <PresetIcon className="w-[32px] h-[32px] text-zd-white relative top-[5px]" />
             <span className="text-base lg:text-xl">プリセット選択 </span>
             <span className="hidden lg:inline text-base">/ Preset Selection</span>
           </h2>
