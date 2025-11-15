@@ -17,27 +17,34 @@ Request AI-powered code reviews from both Codex and GitHub Copilot for the curre
    ```
 
 3. **Post Codex review trigger:**
-  - Always post "@codex review" comment to trigger Codex
+- Always post "@codex review" comment to trigger Codex
    ```bash
    gh pr comment {PR_NUMBER} --body "@codex review"
    ```
 
 4. **Handle GitHub Copilot reviewer:**
-  - **If Copilot has NOT reviewed yet:** Add as reviewer using API
+- **IMPORTANT:** GitHub Copilot cannot be added as a reviewer via API in most repositories
+- The API call may succeed but Copilot won't actually be assigned
+- **Always instruct the user to manually add Copilot:**
+  1. Go to the PR page: https://github.com/{owner}/{repo}/pull/{PR_NUMBER}
+  2. In the right sidebar under "Reviewers", click the gear icon
+  3. Select "Copilot" from the list
+  4. Copilot will automatically start reviewing
+
+- **Attempt API call anyway** (in case repo has special access):
    ```bash
    gh api --method POST repos/{owner}/{repo}/pulls/{PR_NUMBER}/requested_reviewers \
      -f "reviewers[]=Copilot"
    ```
 
-  - **If Copilot HAS already reviewed:** Inform user to manually re-request via UI
-    - GitHub's API does NOT support re-requesting Copilot reviews programmatically
-    - Attempted workaround (DELETE then POST) also fails - API accepts but doesn't add Copilot
-    - User MUST: Go to PR → Reviewers section → Click re-review button (↻) next to Copilot
-    - Alternative: Configure "Review new pushes" in repo settings for automatic re-reviews
+- **Then verify** if it actually worked:
+   ```bash
+   gh api repos/{owner}/{repo}/pulls/{PR_NUMBER} --jq '.requested_reviewers[] | select(.login == "Copilot") | .login'
+   ```
 
 5. **Report results:**
-  - Codex: Always reports success with comment link
-  - Copilot: Report if added as new reviewer OR if manual re-request needed
+- Codex: Always reports success with comment link
+- Copilot: Report API attempt result AND always provide manual instructions
 
 **Error Handling:**
 - If no PR found: Inform user
@@ -51,19 +58,25 @@ For first-time review:
 ✅ AI reviews requested for PR #42
 
 📝 Codex: Review triggered - https://github.com/user/repo/pull/42#comment-xxx
-🤖 GitHub Copilot: Added as reviewer
+
+🤖 GitHub Copilot: API call made, but verification shows Copilot was NOT assigned
+   → Please manually add Copilot as a reviewer:
+   → 1. Visit: https://github.com/user/repo/pull/42
+   → 2. Click the gear icon next to "Reviewers" in the right sidebar
+   → 3. Select "Copilot" from the list
+   → 4. Copilot will automatically start reviewing
 ```
 
-For re-review:
+If API call succeeds:
 ```
-✅ AI review re-requested for PR #42
+✅ AI reviews requested for PR #42
 
 📝 Codex: Review triggered - https://github.com/user/repo/pull/42#comment-xxx
-🤖 GitHub Copilot: Already reviewed this PR
-   → To re-request: Go to PR → Reviewers → Click re-review button next to Copilot
-   → Or: Copilot may auto-review new pushes if configured in repo settings
+🤖 GitHub Copilot: Successfully assigned as reviewer ✓
 ```
 
-**Note:** GitHub Copilot's PR review API has limitations. Once Copilot submits a review, it cannot be easily re-requested programmatically. The most reliable method for re-reviews is:
-1. Using the GitHub UI re-request button, OR
-2. Configuring automatic "Review new pushes" in repository settings
+**Note:** GitHub Copilot's PR review API has significant limitations:
+- In most repositories, the API accepts the request but doesn't actually assign Copilot
+- The most reliable method is to manually add Copilot through the GitHub UI
+- Once added, Copilot will automatically review the PR
+- For re-reviews, use the re-request button (↻) next to Copilot in the UI
