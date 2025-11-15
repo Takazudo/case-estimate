@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { colors } from '@/data/colors';
 import { PresetSelectorModal } from '@/components/modal/preset-selector-modal';
-import { ModelBoxIcon } from '@/components/icons/model-box-icon';
+import { PresetIcon } from '@/components/icons/preset-icon';
 import type { Preset } from '@/types';
 
 interface PresetSelectorProps {
@@ -64,7 +64,7 @@ const PresetSelector = ({
     <>
       <div className="space-y-vgap-xs pb-vgap-sm">
         <h3 className="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
-          <ModelBoxIcon className="w-[30px] h-[30px] text-zd-white mr-[2px]" />
+          <PresetIcon className="w-[30px] h-[30px] text-zd-white mr-[2px]" />
           プリセット <span className="text-sm">/ Preset</span>
         </h3>
         <button
