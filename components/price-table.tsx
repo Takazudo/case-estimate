@@ -131,13 +131,13 @@ export function PriceTable() {
     <div className="space-y-vgap-xl pb-vgap-lg">
       {/* Main Case Models Table */}
       <div>
-        <H3 subText="Case Models">ケースモデル</H3>
+        <H3 subText="Basic Lineup">基本ラインナップ</H3>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr>
                 <th rowSpan={2} className={headerCellStyle.center}>
-                  ケースのモデル
+                  モデル
                 </th>
                 <th colSpan={4} className={`${headerCellStyle.center} border-b-0`}>
                   レールの種類
