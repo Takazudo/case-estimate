@@ -81,8 +81,8 @@ const upgradeKitsData: SimplePriceRow[] = [
 // Accessories
 const accessoriesData: SimplePriceRow[] = [
   { model: 'zudo-stand-40', price: 2480 },
-  { model: 'zudo-stand-40x2', price: 2980 },
-  { model: 'zudo-stand-60', price: 3980 },
+  { model: 'zudo-stand-60', price: 2980 },
+  { model: 'zudo-stand-40x2', price: 3980 },
   { model: 'zudo-stand-60x2', price: 4480 },
 ];
 
