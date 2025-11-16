@@ -47,7 +47,7 @@ export default function ControlsSidebar({
   const currentCase = selectedCase ? cases[selectedCase] : null;
 
   return (
-    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px] pb-[80px] relative">
+    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px] relative">
       {/* Model selector at the top */}
       <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
         <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
@@ -110,9 +110,9 @@ export default function ControlsSidebar({
             )}
           </div>
 
-          {/* Order Info Button - Fixed at bottom */}
+          {/* Order Info Button - Sticky at bottom */}
           {onOrderInfoClick && (
-            <div className="fixed bottom-0 right-0 w-[400px] lg:w-[480px] xl:w-[600px] bg-zd-black border-t border-zd-white p-hgap-sm lg:p-hgap-md">
+            <div className="sticky bottom-0 left-0 right-0 w-full bg-zd-black border-t border-zd-white p-hgap-sm lg:p-hgap-md mt-vgap-md">
               <button
                 onClick={onOrderInfoClick}
                 className="w-full inline-flex items-center justify-center gap-[6px] px-hgap-sm py-vgap-xs rounded text-zd-white whitespace-nowrap zd-button-gradient transition-all text-sm lg:text-base"

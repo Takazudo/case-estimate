@@ -48,3 +48,7 @@ export interface Colors {
     '3dp': Preset[];
   };
 }
+
+export interface PanelColorIds {
+  [key: string]: string; // Maps panel ID to color ID
+}

@@ -1,11 +1,7 @@
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
-import type { Preset } from '@/types';
+import type { Preset, PanelColorIds } from '@/types';
 import { isPresetActive } from './panel-colors';
-
-interface PanelColorIds {
-  [key: string]: string;
-}
 
 interface OrderInfoParams {
   selectedCase: string;
@@ -36,7 +32,7 @@ export const detectActivePreset = (
   });
 
   for (const preset of availablePresets) {
-    if (isPresetActive(preset, panelColors, selectedCase, material, panelColorIds)) {
+    if (isPresetActive(preset, panelColors, selectedCase, material)) {
       return preset;
     }
   }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
-import type { Color, Preset } from '@/types';
+import type { Color, Preset, PanelColorIds } from '@/types';
 import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 
 // Components
@@ -22,10 +22,6 @@ import {
   isPresetActive as checkPresetActive,
   derivePanelColors,
 } from '@/utils/panel-colors';
-
-interface PanelColorIds {
-  [key: string]: string; // Maps panel ID to color ID
-}
 
 // localStorage keys
 const STORAGE_KEYS = {
