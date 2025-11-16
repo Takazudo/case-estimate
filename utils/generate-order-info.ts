@@ -32,7 +32,7 @@ export const detectActivePreset = (
   });
 
   for (const preset of availablePresets) {
-    if (isPresetActive(preset, panelColors, selectedCase, material)) {
+    if (isPresetActive(preset, panelColors, selectedCase, material, panelColorIds)) {
       return preset;
     }
   }
