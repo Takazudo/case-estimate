@@ -3,13 +3,14 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
-import type { Color, Preset } from '@/types';
+import type { Color, Preset, PanelColorIds } from '@/types';
 import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
 
 // Components
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
 import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
+import { OrderInfoModal } from '@/components/modal/order-info-modal';
 
 // Hooks
 import { useLocalStorageColor } from '@/hooks/use-local-storage-color';
@@ -21,10 +22,6 @@ import {
   isPresetActive as checkPresetActive,
   derivePanelColors,
 } from '@/utils/panel-colors';
-
-interface PanelColorIds {
-  [key: string]: string; // Maps panel ID to color ID
-}
 
 // localStorage keys
 const STORAGE_KEYS = {
@@ -119,6 +116,7 @@ function Configurator() {
   const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
   const [isLoadingSvg, setIsLoadingSvg] = useState(false);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+  const [isOrderInfoModalOpen, setIsOrderInfoModalOpen] = useState(false);
   // Use a ref to track the panel ID associated with the color selector modal.
   // We use a ref instead of state to ensure we always have the latest panel ID
   // when the modal opens, and to avoid stale closure issues in asynchronous
@@ -263,6 +261,10 @@ function Configurator() {
     return checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds);
   };
 
+  const handleOrderInfoClick = () => {
+    setIsOrderInfoModalOpen(true);
+  };
+
   // Create color map for display
   const colorMap: { [key: string]: string } = {};
   if (material) {
@@ -318,6 +320,7 @@ function Configurator() {
             gridColor={gridColor}
             onBgColorChange={setBgColor}
             onGridColorChange={setGridColor}
+            onOrderInfoClick={handleOrderInfoClick}
           />
         </div>
       )}
@@ -333,6 +336,17 @@ function Configurator() {
             setIsColorModalOpen(false);
             modalPanelIdRef.current = null; // Clear the ref after closing
           }}
+        />
+      )}
+
+      {/* Order Info Modal */}
+      {selectedCase && material && (
+        <OrderInfoModal
+          isOpen={isOrderInfoModalOpen}
+          selectedCase={selectedCase}
+          panelColorIds={panelColorIds}
+          material={material}
+          onClose={() => setIsOrderInfoModalOpen(false)}
         />
       )}
     </div>

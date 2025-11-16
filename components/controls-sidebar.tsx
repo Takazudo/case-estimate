@@ -7,6 +7,7 @@ import CustomColorPreview from './custom-color-preview';
 import ModelSelector from './model-selector';
 import PresetSelector from './preset-selector';
 import BackgroundColorPicker from './background-color-picker';
+import { OrderIcon } from './icons/order-icon';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -23,6 +24,7 @@ interface ControlsSidebarProps {
   gridColor?: string;
   onBgColorChange?: (color: string) => void;
   onGridColorChange?: (color: string) => void;
+  onOrderInfoClick?: () => void;
 }
 
 export default function ControlsSidebar({
@@ -40,11 +42,12 @@ export default function ControlsSidebar({
   gridColor,
   onBgColorChange,
   onGridColorChange,
+  onOrderInfoClick,
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
 
   return (
-    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px]">
+    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px] relative">
       {/* Model selector at the top */}
       <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
         <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
@@ -106,6 +109,19 @@ export default function ControlsSidebar({
               </div>
             )}
           </div>
+
+          {/* Order Info Button - Sticky at bottom */}
+          {onOrderInfoClick && (
+            <div className="sticky bottom-0 left-0 right-0 w-full bg-zd-black border-t border-zd-white p-hgap-sm lg:p-hgap-md mt-vgap-md">
+              <button
+                onClick={onOrderInfoClick}
+                className="w-full inline-flex items-center justify-center gap-[6px] px-hgap-sm py-vgap-xs rounded text-zd-white whitespace-nowrap zd-button-gradient transition-all text-sm lg:text-base"
+              >
+                <OrderIcon className="w-[28px] h-[28px] lg:w-[34px] lg:h-[34px] flex-shrink-0" />
+                <span className="font-medium pt-[.1em]">オーダー情報を表示</span>
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <div className="px-hgap-sm lg:px-hgap-md py-vgap-md">
