@@ -2,6 +2,8 @@
 
 import CaseVisualizer from './case-visualizer';
 import { generateBackgroundPattern } from '@/utils/panel-colors';
+import { useIsStandalone } from '@/hooks/use-is-standalone';
+import { usePathname } from 'next/navigation';
 
 interface VisualizationPanelProps {
   selectedCase: string | null;
@@ -26,9 +28,13 @@ export default function VisualizationPanel({
   gridColor,
   onLoadingChange,
 }: VisualizationPanelProps) {
+  const isStandalone = useIsStandalone();
+  const pathname = usePathname();
+  const shouldHideHeader = pathname === '/m' && isStandalone;
+
   return (
     <div
-      className="relative border-r border-zd-gray overflow-hidden pt-[96px]"
+      className={`relative border-r border-zd-gray overflow-hidden ${shouldHideHeader ? '' : 'pt-[96px]'}`}
       style={{
         backgroundImage: `url("${generateBackgroundPattern(bgColor, gridColor)}")`,
         backgroundSize: '60px 60px',
