@@ -8,6 +8,8 @@ import ModelSelector from './model-selector';
 import PresetSelector from './preset-selector';
 import BackgroundColorPicker from './background-color-picker';
 import { OrderIcon } from './icons/order-icon';
+import { useIsStandalone } from '@/hooks/use-is-standalone';
+import { usePathname } from 'next/navigation';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -45,9 +47,14 @@ export default function ControlsSidebar({
   onOrderInfoClick,
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
+  const isStandalone = useIsStandalone();
+  const pathname = usePathname();
+  const shouldHideHeader = pathname === '/m' && isStandalone;
 
   return (
-    <div className="bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 pt-[96px] relative">
+    <div
+      className={`bg-zd-black h-full overflow-y-scroll overflow-x-hidden min-w-0 relative ${shouldHideHeader ? '' : 'pt-[96px]'}`}
+    >
       {/* Model selector at the top */}
       <div className="px-hgap-sm lg:px-hgap-md pt-vgap-md pb-vgap-sm border-b border-zd-gray">
         <ModelSelector selectedCase={selectedCase} onCaseSelect={onCaseSelect} />
