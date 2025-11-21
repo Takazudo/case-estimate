@@ -4,6 +4,9 @@ import type { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: 'Takazudo Modular Panels - Builder',
   description: 'Build your custom Takazudo Modular synthesizer case',
+  icons: {
+    apple: '/apple-touch-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black',
