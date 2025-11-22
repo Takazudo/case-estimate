@@ -64,7 +64,7 @@ export const caseGroups: CaseGroup[] = [
   {
     label: '5box',
     displayLabel: '5BOX Go-Bako',
-    imageSlug: 'panels-gallery-zudo-blocks-142',
+    imageSlug: '5box-deep-view1',
     cases: Object.entries(cases).filter(([key]) => key.startsWith('5box')),
   },
   {
