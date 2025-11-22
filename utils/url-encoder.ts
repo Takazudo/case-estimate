@@ -22,6 +22,7 @@ const CASE_MAP: { [key: string]: string } = {
   '10box-shallow-3dp': '9a',
   '10box-deep-3dp': '9b',
   '5box-shallow-3dp': '5a',
+  '5box-deep-3dp': '5b',
   'zudo-block-60-open-ACR-A': 'oa',
   'zudo-block-60-open-ACR-B': 'ob',
   'zudo-block-60-open-upgrade-ACR': 'ou',

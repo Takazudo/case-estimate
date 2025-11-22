@@ -252,7 +252,7 @@ const CaseVisualizer = ({
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_SHALLOW;
               } else if (caseType === '10box-deep-3dp') {
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
-              } else if (caseType === '5box-shallow-3dp') {
+              } else if (caseType === '5box-shallow-3dp' || caseType === '5box-deep-3dp') {
                 colorToPanelMap = COLOR_TO_PANEL_5BOX_SHALLOW;
               } else if (caseType.includes('upgrade')) {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
