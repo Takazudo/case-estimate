@@ -134,18 +134,19 @@ const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
 };
 
 // For 5box-shallow model - 11 panels
+// Follows 10BOX naming convention for consistency
 const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // teal/cyan - left side
-  '#00aeef': 'main-side2', // light blue - right side
-  '#ed1c24': 'main-back1', // red - large main panel
-  '#a97c50': 'main-bottom1', // brown - middle section
-  '#58595b': 'main-bottom2', // dark gray - bottom back
-  '#00a651': 'main-front', // green - front section
-  '#a7a9ac': 'lid-side1', // light gray - left lid top
-  '#939598': 'lid-side2', // gray - right lid top
-  '#662d91': 'lid-back1', // purple - left bottom corner
-  '#808285': 'lid-back2', // gray - right bottom corner
-  '#ef4136': 'lid-front', // red/orange - top panel
+  '#00a99d': 'main-side1', // teal - left side panel
+  '#00aeef': 'main-side2', // light blue - right side panel
+  '#ef4136': 'main-back1', // red/orange - top back panel (like 10BOX)
+  '#ed1c24': 'main-bottom1', // darker red - center upper panel
+  '#a97c50': 'main-bottom2', // brown - center middle panel
+  '#00a651': 'main-front', // green - bottom front panel
+  '#a7a9ac': 'lid-side1', // light gray - lid left side
+  '#939598': 'lid-side2', // gray - lid right side
+  '#662d91': 'lid-back1', // purple - lid back left
+  '#808285': 'lid-back2', // gray - lid back right
+  '#58595b': 'lid-front', // dark gray - lid front/top
 };
 
 // Default black color for all panels
