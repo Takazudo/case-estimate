@@ -134,19 +134,19 @@ const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
 };
 
 // For 5box-shallow model - 11 panels
-// Maps SVG path colors to panel IDs based on visual positions in user's diagram
+// Maps SVG path colors to panel IDs based on visual positions
 const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // LEFT panel (visual pos 1) -> Panel 1: メイン: サイド1
-  '#ef4136': 'main-side2', // TOP panel (visual pos 2) -> Panel 2: メイン: サイド2
-  '#ed1c24': 'main-back1', // CENTER main (visual pos 3) -> Panel 3: メイン: バック1
-  '#00a651': 'main-bottom1', // BOTTOM panel (visual pos 4) -> Panel 4: メイン: ボトム1
-  '#00aeef': 'main-bottom2', // RIGHT panel (visual pos 5) -> Panel 5: メイン: ボトム2
-  '#939598': 'main-front', // Lid right section (visual pos 6) -> Panel 6: メイン: フロント
-  '#a7a9ac': 'lid-side1', // Lid left section (visual pos 7) -> Panel 7: フタ: サイド1
-  '#58595b': 'lid-side2', // Lid bottom (visual pos 8) -> Panel 8: フタ: サイド2
-  '#a97c50': 'lid-back1', // Lid top (visual pos 9) -> Panel 9: フタ: バック1
-  '#808285': 'lid-back2', // Lid right edge (visual pos 10) -> Panel 10: フタ: バック2
-  '#662d91': 'lid-front', // Lid left edge (visual pos 11) -> Panel 11: フタ: フロント
+  '#00a99d': 'main-side1', // Visual pos 1: Left side -> Panel 1: メイン: サイド1
+  '#ef4136': 'main-side2', // Visual pos 2: Top strip -> Panel 2: メイン: サイド2
+  '#ed1c24': 'main-back1', // Visual pos 3: Center main -> Panel 3: メイン: バック1
+  '#00a651': 'main-bottom1', // Visual pos 4: Bottom strip -> Panel 4: メイン: ボトム1
+  '#00aeef': 'main-bottom2', // Visual pos 5: Right side -> Panel 5: メイン: ボトム2
+  '#a97c50': 'main-front', // Visual pos 6: Transition strip -> Panel 6: メイン: フロント
+  '#662d91': 'lid-side1', // Visual pos 7: Lid left edge -> Panel 7: フタ: サイド1
+  '#a7a9ac': 'lid-side2', // Visual pos 8: Lid left section -> Panel 8: フタ: サイド2
+  '#939598': 'lid-back1', // Visual pos 9: Lid right section -> Panel 9: フタ: バック1
+  '#808285': 'lid-back2', // Visual pos 10: Lid right edge -> Panel 10: フタ: バック2
+  '#58595b': 'lid-front', // Visual pos 11: Lid bottom strip -> Panel 11: フタ: フロント
 };
 
 // Default black color for all panels
