@@ -11,6 +11,131 @@ export interface GalleryItem {
 
 export const galleryData: GalleryItem[] = [
   {
+    slug: '5box-deep-view1',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-deep-view2',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-deep-view3',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-deep-view4',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-deep-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shallow-view1',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shallow-view2',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shallow-view3',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shallow-view4',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shallow-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view1',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view2',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view3',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view4',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view6',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view7',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view8',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view9',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view10',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: '5box-shared-view11',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: 'zudo-stand-40-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: 'zudo-stand-40x2-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: 'zudo-stand-60-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
+    slug: 'zudo-stand-60x2-view5',
+    imageAlt: '',
+    blurhash: '',
+  },
+  {
     slug: 'panels-gallery-zudo-blocks-141',
     imageAlt: '',
     blurhash: 'UFFNxM^d=D~9:kJ.o~EMnAnTIWNf%L=Z-6b^',
