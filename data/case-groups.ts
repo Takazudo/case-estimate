@@ -62,6 +62,12 @@ export const caseGroups: CaseGroup[] = [
     cases: Object.entries(cases).filter(([key]) => key.startsWith('10box')),
   },
   {
+    label: '5box',
+    displayLabel: '5BOX Ju-Bako',
+    imageSlug: 'panels-gallery-zudo-blocks-142',
+    cases: Object.entries(cases).filter(([key]) => key.startsWith('5box')),
+  },
+  {
     label: 'zudo-stand',
     displayLabel: 'zudo-stand',
     imageSlug: 'zudo-stand-40-view1',

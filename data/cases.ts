@@ -427,4 +427,22 @@ export const cases: Cases = {
       { id: 'angle2', name: 'アングル2' },
     ],
   },
+  '5box-shallow-3dp': {
+    name: '5BOX-shallow-3DP',
+    hp: 60,
+    material: '3dp',
+    panels: [
+      { id: 'main-side1', name: 'メイン: サイド1' },
+      { id: 'main-side2', name: 'メイン: サイド2' },
+      { id: 'main-back1', name: 'メイン: バック1' },
+      { id: 'main-bottom1', name: 'メイン: ボトム1' },
+      { id: 'main-bottom2', name: 'メイン: ボトム2' },
+      { id: 'main-front', name: 'メイン: フロント' },
+      { id: 'lid-side1', name: 'フタ: サイド1' },
+      { id: 'lid-side2', name: 'フタ: サイド2' },
+      { id: 'lid-back1', name: 'フタ: バック1' },
+      { id: 'lid-back2', name: 'フタ: バック2' },
+      { id: 'lid-front', name: 'フタ: フロント' },
+    ],
+  },
 };
