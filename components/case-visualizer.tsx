@@ -134,19 +134,21 @@ const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
 };
 
 // For 5box-shallow model - 11 panels
-// Follows 10BOX naming convention for consistency
+// Uses EXACT same color mappings as 10BOX where applicable
 const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // teal - left side panel
-  '#00aeef': 'main-side2', // light blue - right side panel
-  '#ef4136': 'main-back1', // red/orange - top back panel (like 10BOX)
-  '#ed1c24': 'main-bottom1', // darker red - center upper panel
-  '#a97c50': 'main-bottom2', // brown - center middle panel
-  '#00a651': 'main-front', // green - bottom front panel
-  '#a7a9ac': 'lid-side1', // light gray - lid left side
-  '#939598': 'lid-side2', // gray - lid right side
-  '#662d91': 'lid-back1', // purple - lid back left
-  '#808285': 'lid-back2', // gray - lid back right
-  '#58595b': 'lid-front', // dark gray - lid front/top
+  // Main body panels - same as 10BOX
+  '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal) - SAME as 10BOX
+  '#00aeef': 'main-side2', // Panel 2: メイン: サイド2 (cyan) - was main-side3 in 10BOX
+  '#ef4136': 'main-back1', // Panel 3: メイン: バック1 (red) - SAME as 10BOX
+  '#ed1c24': 'main-bottom1', // Panel 4: メイン: ボトム1 (darker red) - SAME as 10BOX
+  '#a97c50': 'main-bottom2', // Panel 5: メイン: ボトム2 (brown) - was lid-back in 10BOX
+  '#00a651': 'main-front', // Panel 6: メイン: フロント (green) - SAME as 10BOX
+  // Lid panels - adapted from 10BOX
+  '#662d91': 'lid-side1', // Panel 7: フタ: サイド1 (purple) - SAME as 10BOX
+  '#808285': 'lid-side2', // Panel 8: フタ: サイド2 (gray) - SAME as 10BOX
+  '#a7a9ac': 'lid-back1', // Panel 9: フタ: バック1 (light gray) - was lid-top1 in 10BOX
+  '#939598': 'lid-back2', // Panel 10: フタ: バック2 (gray) - was lid-top2 in 10BOX
+  '#58595b': 'lid-front', // Panel 11: フタ: フロント (dark gray) - SAME as 10BOX
 };
 
 // Default black color for all panels
