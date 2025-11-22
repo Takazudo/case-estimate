@@ -21,6 +21,7 @@ const CASE_MAP: { [key: string]: string } = {
   'zudo-block-60x2-3DP-B': '8b',
   '10box-shallow-3dp': '9a',
   '10box-deep-3dp': '9b',
+  '5box-shallow-3dp': '5a',
   'zudo-block-60-open-ACR-A': 'oa',
   'zudo-block-60-open-ACR-B': 'ob',
   'zudo-block-60-open-upgrade-ACR': 'ou',
@@ -76,6 +77,9 @@ const PANEL_MAP: { [key: string]: string } = {
   'lid-top1': 'l4',
   'lid-top2': 'l5',
   'lid-front': 'l6',
+  // 5BOX lid back panels (additional lid panels)
+  'lid-back1': 'l7',
+  'lid-back2': 'l8',
   // zudo-block-60-open upgrade panels (use 't' prefix for top)
   top1: 't1',
   top2: 't2',
