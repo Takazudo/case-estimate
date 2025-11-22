@@ -69,6 +69,10 @@ const CASE_CODES = {
   '10box-shallow-3dp': '9a',
   '10box-deep-3dp': '9b',
 
+  // 5BOX Models (60HP)
+  '5box-shallow-3dp': 'fa',
+  '5box-deep-3dp': 'fb',
+
   // Open Frame Models (60HP)
   'zudo-block-60-open-ACR-A': 'oa',
   'zudo-block-60-open-ACR-B': 'ob',
@@ -156,6 +160,31 @@ const PANEL_CODES_10BOX = {
   'lid-front': 'l6',
 };
 ```
+
+#### 5BOX Models (11 panels)
+
+Applies to: 5box-shallow-3dp, 5box-deep-3dp
+
+```typescript
+const PANEL_CODES_5BOX = {
+  // Main body (use 'm' prefix)
+  'main-side1': 'm1',     // メイン: サイド1
+  'main-side2': 'm2',     // メイン: バック
+  'main-back1': 'm5',     // メイン: ボトム
+  'main-bottom1': 'm6',   // メイン: フロント
+  'main-bottom2': 'm7',   // メイン: サイド2
+  'main-front': 'm8',     // フタ: サイド1
+
+  // Lid (use 'l' prefix)
+  'lid-side1': 'l1',      // フタ: バック
+  'lid-side2': 'l2',      // フタ: トップ1
+  'lid-back1': 'l7',      // フタ: トップ2
+  'lid-back2': 'l8',      // フタ: フロント
+  'lid-front': 'l6',      // フタ: サイド2
+};
+```
+
+**Note:** The 5BOX models have 5 main body panels and 6 lid panels, for a total of 11 panels. Panel codes reuse some of the same encodings as the 10BOX models (m1, m2, m5-m8, l1, l2, l6-l8) for consistency.
 
 #### Open Frame Models
 
@@ -292,7 +321,27 @@ This is the **KuroBeni** preset pattern (black primary, crimson-red secondary).
 - Case: `10box-shallow-3dp` (104HP, 3D printed)
 - All panels: carbon-black (YamiKage/All Black preset)
 
-### Example 4: Open Frame Upgrade
+### Example 4: 5BOX Model
+
+**URL:** `/m?c=fa&p=m1cb.m2cb.m5cb.m6cb.m7cb.m8cb.l1cb.l2cb.l7cb.l8cb.l6cb`
+
+**Decoded:**
+
+- Case: `5box-shallow-3dp` (60HP, 3D printed)
+- All panels: carbon-black (YamiKage/All Black preset)
+- 11 panels total: 5 main body + 6 lid panels
+
+**Alternative with mixed colors:**
+
+**URL:** `/m?c=fb&p=m1cb.m2cb.m5cb.m6cb.m7cb.m8sw.l1sw.l2sw.l7sw.l8sw.l6sw`
+
+**Decoded:**
+
+- Case: `5box-deep-3dp` (60HP, 3D printed, deep variant)
+- Main panels: carbon-black (cb)
+- Lid panels: silver-white (sw)
+
+### Example 5: Open Frame Upgrade
 
 **URL:** `/m?c=ou&p=7cb.8cr.5cb.6cr.t1cb.t2cr`
 
@@ -307,7 +356,7 @@ This is the **KuroBeni** preset pattern (black primary, crimson-red secondary).
   - top1 (t1): carbon-black
   - top2 (t2): crimson-red
 
-### Example 5: Demonstrating Color ID Distinction
+### Example 6: Demonstrating Color ID Distinction
 
 **URL with clear-red:** `/m?c=2a&p=1rd.2rd.3rd.4rd.5rd.6rd.7rd.8rd`
 
@@ -318,7 +367,7 @@ Both use the same hex value (#b71c1c), but:
 - `rd` (clear-red) renders with 0.6 opacity (semi-transparent PETG)
 - `cr` (crimson-red) renders with 1.0 opacity (opaque PLA)
 
-### Example 6: New Color Demonstration
+### Example 7: New Color Demonstration
 
 **URL with deep-gold:** `/m?c=2a&p=1cb.2cb.3dg.4dg.5cb.6cb.7dg.8dg`
 
@@ -332,7 +381,7 @@ These demonstrate the new color options:
 - `sw` (silver-white) - #dfe0dd (PLA)
 - `ca` (caramel) - #ab461e (PLA)
 
-### Example 7: Stand Model
+### Example 8: Stand Model
 
 **URL:** `/m?c=s4&p=n1cb.p1cb.p2cb.n2cb`
 
