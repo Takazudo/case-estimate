@@ -137,16 +137,16 @@ const COLOR_TO_PANEL_ZUDO_STAND: { [key: string]: string } = {
 // Maps SVG path colors to panel IDs based on visual positions
 const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
   '#00a99d': 'main-side1', // Visual pos 1: Left side -> Panel 1: メイン: サイド1
-  '#ef4136': 'main-side2', // Visual pos 2: Top strip -> Panel 2: メイン: サイド2
-  '#ed1c24': 'main-back1', // Visual pos 3: Center main -> Panel 3: メイン: バック1
-  '#00a651': 'main-bottom1', // Visual pos 4: Bottom strip -> Panel 4: メイン: ボトム1
-  '#00aeef': 'main-bottom2', // Visual pos 5: Right side -> Panel 5: メイン: ボトム2
-  '#a97c50': 'main-front', // Visual pos 6: Transition strip -> Panel 6: メイン: フロント
-  '#662d91': 'lid-side1', // Visual pos 7: Lid left edge -> Panel 7: フタ: サイド1
+  '#ef4136': 'main-side2', // Visual pos 2: Top strip -> Panel 2: メイン: バック
+  '#ed1c24': 'main-back1', // Visual pos 3: Center main -> Panel 3: メイン: ボトム
+  '#00a651': 'main-bottom1', // Visual pos 4: Bottom strip -> Panel 4: メイン: フロント
+  '#00aeef': 'main-bottom2', // Visual pos 5: Right side -> Panel 5: メイン: サイド2
+  '#662d91': 'main-front', // Visual pos 6: Lid left edge -> Panel 6: メイン: フロント
+  '#a97c50': 'lid-side1', // Visual pos 7: Transition strip -> Panel 7: フタ: サイド1
   '#a7a9ac': 'lid-side2', // Visual pos 8: Lid left section -> Panel 8: フタ: サイド2
   '#939598': 'lid-back1', // Visual pos 9: Lid right section -> Panel 9: フタ: バック1
-  '#808285': 'lid-back2', // Visual pos 10: Lid right edge -> Panel 10: フタ: バック2
-  '#58595b': 'lid-front', // Visual pos 11: Lid bottom strip -> Panel 11: フタ: フロント
+  '#808285': 'lid-front', // Visual pos 10: Lid right edge -> Panel 11: フタ: フロント
+  '#58595b': 'lid-back2', // Visual pos 11: Lid bottom strip -> Panel 10: フタ: バック2
 };
 
 // Default black color for all panels
