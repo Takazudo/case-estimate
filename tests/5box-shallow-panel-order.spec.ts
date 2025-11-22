@@ -8,16 +8,16 @@ import { test, expect } from '@playwright/test';
  *
  * Expected mapping based on visual diagram:
  * Visual Position 1 → Panel 1: メイン: サイド1
- * Visual Position 2 → Panel 2: メイン: サイド2
- * Visual Position 3 → Panel 3: メイン: バック1
- * Visual Position 4 → Panel 4: メイン: ボトム1
- * Visual Position 5 → Panel 5: メイン: ボトム2
+ * Visual Position 2 → Panel 2: メイン: バック
+ * Visual Position 3 → Panel 3: メイン: ボトム
+ * Visual Position 4 → Panel 4: メイン: フロント
+ * Visual Position 5 → Panel 5: メイン: サイド2
  * Visual Position 6 → Panel 6: メイン: フロント
  * Visual Position 7 → Panel 7: フタ: サイド1
  * Visual Position 8 → Panel 8: フタ: サイド2
  * Visual Position 9 → Panel 9: フタ: バック1
- * Visual Position 10 → Panel 10: フタ: バック2
- * Visual Position 11 → Panel 11: フタ: フロント
+ * Visual Position 10 → Panel 11: フタ: フロント (swapped)
+ * Visual Position 11 → Panel 10: フタ: バック2 (swapped)
  */
 
 test.describe('5BOX-shallow-3DP Panel Order', () => {
@@ -54,9 +54,9 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     expect(url).toContain('m1');
   });
 
-  test('should map visual position 3 to メイン: バック1 (Panel 3)', async ({ page }) => {
+  test('should map visual position 3 to メイン: ボトム (Panel 3)', async ({ page }) => {
     // Click on panel from list
-    await page.click('button:has-text("メイン: バック1")');
+    await page.click('button:has-text("メイン: ボトム")');
 
     // Modal should open
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
@@ -83,10 +83,10 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     // Verify the order matches the expected panel names
     const expectedPanels = [
       'メイン: サイド1',
+      'メイン: バック',
+      'メイン: ボトム',
+      'メイン: フロント',
       'メイン: サイド2',
-      'メイン: バック1',
-      'メイン: ボトム1',
-      'メイン: ボトム2',
       'メイン: フロント',
       'フタ: サイド1',
       'フタ: サイド2',
@@ -139,7 +139,7 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
     // Change color of panel 3
-    await page.click('button:has-text("メイン: バック1")');
+    await page.click('button:has-text("メイン: ボトム")');
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
     await page.click('[role="dialog"] button:has-text("グリーン")', {
       force: true,
@@ -157,7 +157,7 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
 
     expect(firstPanelText).toContain('メイン: サイド1');
     expect(firstPanelText).toContain('ボーンホワイト');
-    expect(thirdPanelText).toContain('メイン: バック1');
+    expect(thirdPanelText).toContain('メイン: ボトム');
     expect(thirdPanelText).toContain('グリーン');
   });
 });
