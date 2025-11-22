@@ -12,12 +12,12 @@ import { test, expect } from '@playwright/test';
  * Visual Position 3 → Panel 3: メイン: ボトム
  * Visual Position 4 → Panel 4: メイン: フロント
  * Visual Position 5 → Panel 5: メイン: サイド2
- * Visual Position 6 → Panel 6: メイン: フロント
- * Visual Position 7 → Panel 7: フタ: サイド1
- * Visual Position 8 → Panel 8: フタ: サイド2
- * Visual Position 9 → Panel 9: フタ: バック1
- * Visual Position 10 → Panel 11: フタ: フロント (swapped)
- * Visual Position 11 → Panel 10: フタ: バック2 (swapped)
+ * Visual Position 6 → Panel 6: フタ: サイド1
+ * Visual Position 7 → Panel 7: フタ: バック
+ * Visual Position 8 → Panel 8: フタ: トップ1
+ * Visual Position 9 → Panel 9: フタ: トップ2
+ * Visual Position 10 → Panel 10: フタ: フロント
+ * Visual Position 11 → Panel 11: フタ: サイド2
  */
 
 test.describe('5BOX-shallow-3DP Panel Order', () => {
@@ -87,12 +87,12 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
       'メイン: ボトム',
       'メイン: フロント',
       'メイン: サイド2',
-      'メイン: フロント',
       'フタ: サイド1',
-      'フタ: サイド2',
-      'フタ: バック1',
-      'フタ: バック2',
+      'フタ: バック',
+      'フタ: トップ1',
+      'フタ: トップ2',
       'フタ: フロント',
+      'フタ: サイド2',
     ];
 
     for (let i = 0; i < expectedPanels.length; i++) {
