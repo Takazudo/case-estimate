@@ -556,6 +556,194 @@ All panels work correctly:
 
 ---
 
+## Real Example: 5BOX Shallow/Deep Models
+
+Let's walk through a medium-complexity implementation with iterative debugging.
+
+### The Challenge
+
+- 11 panels total (5 main body + 6 lid panels)
+- Color-based identification
+- Same SVG structure reused for shallow and deep variants
+- Initial panel mappings had visual position mismatches requiring debugging
+
+### The Model
+
+- **Name**: 5BOX-shallow-3DP and 5BOX-deep-3DP
+- **Panels**: 11 panels with main/lid separation
+- **Material**: 3D printed only
+- **HP**: 60HP
+- **Preset**: YamiKage (all black)
+
+### Implementation Steps
+
+#### 1. Case Configuration
+
+```typescript
+// /data/cases.ts
+'5box-shallow-3dp': {
+  name: '5BOX-shallow-3DP',
+  hp: 60,
+  material: '3dp',
+  panels: [
+    // 5 main body panels
+    { id: 'main-side1', name: 'メイン: サイド1' },
+    { id: 'main-side2', name: 'メイン: バック' },
+    { id: 'main-back1', name: 'メイン: ボトム' },
+    { id: 'main-bottom1', name: 'メイン: フロント' },
+    { id: 'main-bottom2', name: 'メイン: サイド2' },
+    // 6 lid panels (note: main-front ID prefix is intentional, used for consistency with 10BOX)
+    { id: 'main-front', name: 'フタ: サイド1' },
+    { id: 'lid-side1', name: 'フタ: バック' },
+    { id: 'lid-side2', name: 'フタ: トップ1' },
+    { id: 'lid-back1', name: 'フタ: トップ2' },
+    { id: 'lid-back2', name: 'フタ: フロント' },
+    { id: 'lid-front', name: 'フタ: サイド2' },
+  ],
+},
+'5box-deep-3dp': {
+  name: '5BOX-deep-3DP',
+  hp: 60,
+  material: '3dp',
+  panels: [
+    // Identical panel structure to shallow
+  ],
+}
+```
+
+#### 2. Color Mapping
+
+```typescript
+// /components/case-visualizer.tsx
+// Visual positions 1-11 mapped to panel IDs
+const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
+  '#00a99d': 'main-side1',    // Visual pos 1 → Panel 1
+  '#ef4136': 'main-side2',    // Visual pos 2 → Panel 2
+  '#ed1c24': 'main-back1',    // Visual pos 3 → Panel 3
+  '#00a651': 'main-bottom1',  // Visual pos 4 → Panel 4
+  '#00aeef': 'main-bottom2',  // Visual pos 5 → Panel 5
+  '#662d91': 'main-front',    // Visual pos 6 → Panel 6
+  '#a97c50': 'lid-side1',     // Visual pos 7 → Panel 7
+  '#a7a9ac': 'lid-side2',     // Visual pos 8 → Panel 8
+  '#939598': 'lid-back1',     // Visual pos 9 → Panel 9
+  '#808285': 'lid-front',     // Visual pos 10 → Panel 10
+  '#58595b': 'lid-back2',     // Visual pos 11 → Panel 11
+};
+
+// Add to COLOR_MAPS lookup
+const COLOR_MAPS: { [key: string]: { [key: string]: string } } = {
+  // ...existing mappings...
+  '5box-shallow-3dp': COLOR_TO_PANEL_5BOX_SHALLOW,
+  '5box-deep-3dp': COLOR_TO_PANEL_5BOX_SHALLOW, // Reuse same mapping
+};
+```
+
+**Note:** Both shallow and deep variants use the same SVG file and therefore share the same color-to-panel mapping.
+
+#### 3. URL Encoding
+
+```typescript
+// /utils/url-encoder.ts
+const CASE_MAP: { [key: string]: string } = {
+  // ...existing mappings...
+  '5box-shallow-3dp': 'fa',
+  '5box-deep-3dp': 'fb',
+};
+
+// Panel codes (reusing 10BOX codes for consistency)
+const PANEL_MAP: { [key: string]: string } = {
+  // Main body panels
+  'main-side1': 'm1',
+  'main-side2': 'm2',
+  'main-back1': 'm5',
+  'main-bottom1': 'm6',
+  'main-bottom2': 'm7',
+  'main-front': 'm8',
+  // Lid panels
+  'lid-side1': 'l1',
+  'lid-side2': 'l2',
+  'lid-back1': 'l7',
+  'lid-back2': 'l8',
+  'lid-front': 'l6',
+};
+```
+
+#### 4. Debugging Panel Mappings
+
+During implementation, visual positions didn't initially match the expected panel order. Here's how we debugged:
+
+**Issue 1:** Visual position 1 selected Panel 4
+- **Cause:** Color #00a99d was mapped to 'main-bottom1' (Panel 4) instead of 'main-side1' (Panel 1)
+- **Fix:** Corrected the color-to-panel mapping
+
+**Issue 2:** Visual positions 6-7 were inverted
+- **Debugging approach:** User clicked visual position 6, but Panel 7 was selected
+- **Fix:** Swapped color mappings for #662d91 and #a97c50
+
+**Issue 3:** Visual positions 10-11 needed swap
+- **Fix:** Swapped #808285 (lid-front) and #58595b (lid-back2)
+
+**Debugging technique:**
+```typescript
+// Temporarily add logging to verify mappings
+console.log('Visual position click:', {
+  color: fillMatch[1],
+  mappedPanel: panelId,
+  expectedPanel: 'main-side1' // What you expect for this position
+});
+```
+
+#### 5. E2E Testing
+
+Created test to verify correct panel order:
+
+```typescript
+// /tests/5box-shallow-panel-order.spec.ts
+test('should select correct panel when clicking SVG', async ({ page }) => {
+  const expectedPanels = [
+    'メイン: サイド1',
+    'メイン: バック',
+    'メイン: ボトム',
+    'メイン: フロント',
+    'メイン: サイド2',
+    'フタ: サイド1',
+    'フタ: バック',
+    'フタ: トップ1',
+    'フタ: トップ2',
+    'フタ: フロント',
+    'フタ: サイド2',
+  ];
+
+  for (let i = 0; i < expectedPanels.length; i++) {
+    // Click panel by visual position
+    await page.locator(`#svg-container path`).nth(i).click();
+
+    // Verify correct panel is selected in the list
+    const selectedPanel = await page.locator('.panel-item.selected .panel-name').textContent();
+    expect(selectedPanel?.trim()).toBe(expectedPanels[i]);
+  }
+});
+```
+
+### Results
+
+- All 11 panels are clickable and correctly mapped
+- Shallow and deep variants share the same implementation
+- E2E tests ensure panel order remains correct
+- URL sharing works for all configurations
+- YamiKage preset applies successfully
+
+### Key Takeaways
+
+1. **Iterative debugging** is normal - panel mappings often need adjustment after initial implementation
+2. **Visual testing** is crucial - clicking each panel and verifying the selection is the most reliable way to validate mappings
+3. **Reusable mappings** - When shallow/deep variants use the same SVG, share the color mapping
+4. **E2E tests** prevent regressions - Test panel order to catch mapping errors early
+5. **Panel structure patterns** - Main/lid separation works well for box-style cases
+6. **Implementation time** - ~1-2 hours including debugging and testing
+
+---
+
 ## Real Example: 10BOX Deep Model
 
 Let's walk through the actual implementation of a complex model with special cases.

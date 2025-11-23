@@ -11,6 +11,131 @@ export interface GalleryItem {
 
 export const galleryData: GalleryItem[] = [
   {
+    slug: '5box-deep-view1',
+    imageAlt: '',
+    blurhash: 'UcHACEae}TxZrsoJs.oL-7oeS4oJShWXWVWX',
+  },
+  {
+    slug: '5box-deep-view2',
+    imageAlt: '',
+    blurhash: 'UpJPMIR*=b$$Rk$gs.o0}pWXNcs.xFJAj[WW',
+  },
+  {
+    slug: '5box-deep-view3',
+    imageAlt: '',
+    blurhash: 'U.MN}an$xDoeIqayoLay}ns.R,oJ$%oKa|oL',
+  },
+  {
+    slug: '5box-deep-view4',
+    imageAlt: '',
+    blurhash: 'UwNQ#5n~xDs.E4ays.WV}Ts:S3oJ-Ts.WVoL',
+  },
+  {
+    slug: '5box-deep-view5',
+    imageAlt: '',
+    blurhash: 'UpMz~vae=a$%E3R+j@oK}TWXEio0soa|bHoL',
+  },
+  {
+    slug: '5box-shallow-view1',
+    imageAlt: '',
+    blurhash: 'UdHTBGax}nxZaKjsoLj@$zoLS4jZflj[oJaz',
+  },
+  {
+    slug: '5box-shallow-view2',
+    imageAlt: '',
+    blurhash: 'UtJ==JWC-7$$Rk$gs.az}pbHNcoK$iNdfka|',
+  },
+  {
+    slug: '5box-shallow-view3',
+    imageAlt: '',
+    blurhash: 'U;MXe}oJxDs.Rkj@j[ay}ps.NcoJ$%oKa|oL',
+  },
+  {
+    slug: '5box-shallow-view4',
+    imageAlt: '',
+    blurhash: 'UjN@T4xDw^xF9vays.WV}ps.NboJ^4xFR+oL',
+  },
+  {
+    slug: '5box-shallow-view5',
+    imageAlt: '',
+    blurhash: 'UhNaCQWB-7-A9vNIj[so}TR-EhjZ$ij@S3jt',
+  },
+  {
+    slug: '5box-shared-view1',
+    imageAlt: '',
+    blurhash: 'UwI{ZwNHsSj[s9s.oKf6}TbHS4o0$%jYfQaz',
+  },
+  {
+    slug: '5box-shared-view2',
+    imageAlt: '',
+    blurhash: 'UhJj^?%1-nxt%#NGV@ay~VWBNHR+o#s,oLa~',
+  },
+  {
+    slug: '5box-shared-view3',
+    imageAlt: '',
+    blurhash: 'UgJaDlxa=_-n%#kCM{kC~VflIpofbws.jsoe',
+  },
+  {
+    slug: '5box-shared-view4',
+    imageAlt: '',
+    blurhash: 'UkG*{Ao~xYs,~9RkslxZ=@WAoext-nxaWCaK',
+  },
+  {
+    slug: '5box-shared-view5',
+    imageAlt: '',
+    blurhash: 'UTFrR[%1-T$y}-s.xZxZ};t6xC%1^iWXt7t8',
+  },
+  {
+    slug: '5box-shared-view6',
+    imageAlt: '',
+    blurhash: 'UKE2wcpJ-Qnh=qE2$%-n~ANyoJs.^NEO-os.',
+  },
+  {
+    slug: '5box-shared-view7',
+    imageAlt: '',
+    blurhash: 'UWF=s:?Fx]-o0*V@$~WD~9%LozxtM|xZ%1sm',
+  },
+  {
+    slug: '5box-shared-view8',
+    imageAlt: '',
+    blurhash: 'UaF$FV~V?a%f?Fw@jEM{^%xtR-R+n$RkNGRj',
+  },
+  {
+    slug: '5box-shared-view9',
+    imageAlt: '',
+    blurhash: 'UeHLC,%h~V-;-TnNVrV@~BW=oJoJ-ns:ofog',
+  },
+  {
+    slug: '5box-shared-view10',
+    imageAlt: '',
+    blurhash: 'UnKTM7%0~Ak9o|jExZsS?FaeNLayX9IoRlWB',
+  },
+  {
+    slug: '5box-shared-view11',
+    imageAlt: '',
+    blurhash: 'U%LN3ut6~UxZ%gbckCa}%Ls:NHj[ozWDWBof',
+  },
+  {
+    slug: 'zudo-stand-40-view5',
+    imageAlt: '',
+    blurhash: 'UgMYi^t7}=oyC8xtogj[?at6Ejs:x]R+R*WX',
+  },
+  {
+    slug: 'zudo-stand-40x2-view5',
+    imageAlt: '',
+    blurhash: 'UZL3S?kq^i%1Cm%2S$Wr~Bt6I;of-UR*rrof',
+  },
+  {
+    slug: 'zudo-stand-60-view5',
+    imageAlt: '',
+    blurhash: 'UkLyZS%2-UX8CSozS4s:~Bj[I:s.-Vn$i_Nb',
+  },
+  {
+    slug: 'zudo-stand-60x2-view5',
+    imageAlt: '',
+    blurhash: 'UWK0Qexu={kW80xuShxa~VxZNHt6=|WUi_Nd',
+  },
+  {
     slug: 'panels-gallery-zudo-blocks-141',
     imageAlt: '',
     blurhash: 'UFFNxM^d=D~9:kJ.o~EMnAnTIWNf%L=Z-6b^',

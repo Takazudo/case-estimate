@@ -76,9 +76,10 @@ const PresetSelectorModal: React.FC<PresetSelectorModalProps> = ({
 
   // Filter presets based on case model (same logic as controls-sidebar)
   const filteredPresets = availablePresets.filter((preset) => {
-    // For 10BOX models, zudo-stand models, and zudo-block-60-open 3DP Type A/B, only show YamiKage preset
+    // For 10BOX, 5BOX, zudo-stand models, and zudo-block-60-open 3DP Type A/B, only show YamiKage preset
     if (
       selectedCase.startsWith('10box-') ||
+      selectedCase.startsWith('5box-') ||
       selectedCase.startsWith('zudo-stand-') ||
       selectedCase === 'zudo-block-60-open-3DP-A' ||
       selectedCase === 'zudo-block-60-open-3DP-B'
