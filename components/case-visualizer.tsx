@@ -145,8 +145,8 @@ const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
   '#a97c50': 'lid-side1', // Visual pos 7: Transition strip -> Panel 7: フタ: バック
   '#a7a9ac': 'lid-side2', // Visual pos 8: Lid left section -> Panel 8: フタ: トップ1
   '#939598': 'lid-back1', // Visual pos 9: Lid right section -> Panel 9: フタ: トップ2
-  '#808285': 'lid-front', // Visual pos 10: Lid right edge -> Panel 10: フタ: フロント
-  '#58595b': 'lid-back2', // Visual pos 11: Lid bottom strip -> Panel 11: フタ: サイド2
+  '#808285': 'lid-back2', // Visual pos 10: Lid right edge -> Panel 10: フタ: フロント
+  '#58595b': 'lid-front', // Visual pos 11: Lid bottom strip -> Panel 11: フタ: サイド2
 };
 
 // Default black color for all panels
