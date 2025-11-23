@@ -592,7 +592,7 @@ Let's walk through a medium-complexity implementation with iterative debugging.
     { id: 'main-back1', name: 'メイン: ボトム' },
     { id: 'main-bottom1', name: 'メイン: フロント' },
     { id: 'main-bottom2', name: 'メイン: サイド2' },
-    // 6 lid panels
+    // 6 lid panels (note: main-front ID prefix is intentional, used for consistency with 10BOX)
     { id: 'main-front', name: 'フタ: サイド1' },
     { id: 'lid-side1', name: 'フタ: バック' },
     { id: 'lid-side2', name: 'フタ: トップ1' },
