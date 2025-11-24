@@ -78,13 +78,20 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
     // Verify modal title shows it's for color selection
     await expect(page.locator('[role="dialog"] h2:has-text("カラー選択")')).toBeVisible();
 
+    // Select a new color to verify this panel is actually being modified
+    await page.click('[role="dialog"] button:has-text("クリムゾンレッド")', {
+      force: true,
+    });
+
+    // Wait for URL to update
+    await page.waitForTimeout(500);
+
     // Close modal
-    await page.click('[role="dialog"] button[aria-label="Close modal"]');
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
-    // Verify URL contains m1 (main panel 1)
-    const url = page.url();
-    expect(url).toContain('m1');
+    // Verify that メイン: サイド1 now shows クリムゾンレッド (verifies actual state change)
+    const panelButton = page.locator('button:has-text("メイン: サイド1")');
+    await expect(panelButton).toContainText('クリムゾンレッド');
   });
 
   test('should select メイン: サイド2 (previously rotated panel)', async ({ page }) => {
@@ -97,13 +104,20 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
     // Verify modal title shows it's for color selection
     await expect(page.locator('[role="dialog"] h2:has-text("カラー選択")')).toBeVisible();
 
+    // Select a new color to verify this panel is actually being modified
+    await page.click('[role="dialog"] button:has-text("グリーン")', {
+      force: true,
+    });
+
+    // Wait for URL to update
+    await page.waitForTimeout(500);
+
     // Close modal
-    await page.click('[role="dialog"] button[aria-label="Close modal"]');
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
-    // Verify URL is updated (panel 5 is encoded as m7)
-    const url = page.url();
-    expect(url).toMatch(/m[0-9]/);
+    // Verify that メイン: サイド2 now shows グリーン (verifies actual state change)
+    const panelButton = page.locator('button:has-text("メイン: サイド2")');
+    await expect(panelButton).toContainText('グリーン');
   });
 
   test('should select correct panel when clicking SVG', async ({ page }) => {
