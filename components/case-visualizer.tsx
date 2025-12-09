@@ -44,7 +44,7 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
 };
 
 // For 10BOX Shallow model - maps fill colors to panel IDs
-// SVG path positions (after v2 update):
+// SVG path positions (after v3 update with new stand parts):
 // Position 1: #2e3192 (dark blue) -> Panel 8 (main-side4)
 // Position 2: #00aeef (cyan) -> Panel 7 (main-side3)
 // Position 3: No fill style -> Panel 2 (main-side2)
@@ -62,17 +62,19 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
   '#00a651': 'main-front', // Panel 6: メイン: フロント (green - bottom)
   '#00aeef': 'main-side3', // Panel 7: メイン: サイド3 (cyan - right main side)
   '#2e3192': 'main-side4', // Panel 8: メイン: サイド4 (dark blue - right bottom side)
-  '#ec008c': 'main-stand1', // Panel 9: メイン: スタンド1 (bright magenta/pink - left stand)
-  '#9e1f63': 'main-stand2', // Panel 10: メイン: スタンド2 (darker purple - right stand)
-  '#662d91': 'lid-side1', // Panel 11: フタ: サイド1 (purple - left side)
-  '#a97c50': 'lid-back', // Panel 12: フタ: バック (brown - top)
-  '#a7a9ac': 'lid-top1', // Panel 13: フタ: トップ1 (gray - right center)
-  '#939598': 'lid-top2', // Panel 14: フタ: トップ2 (light gray - left center)
-  '#58595b': 'lid-front', // Panel 15: フタ: フロント (dark gray - bottom)
-  '#808285': 'lid-side2', // Panel 16: フタ: サイド2 (gray - right side)
+  '#662d91': 'lid-side1', // Panel 9: フタ: サイド1 (purple - left side)
+  '#a97c50': 'lid-back', // Panel 10: フタ: バック (brown - top)
+  '#a7a9ac': 'lid-top1', // Panel 11: フタ: トップ1 (gray - right center)
+  '#939598': 'lid-top2', // Panel 12: フタ: トップ2 (light gray - left center)
+  '#58595b': 'lid-front', // Panel 13: フタ: フロント (dark gray - bottom)
+  '#808285': 'lid-side2', // Panel 14: フタ: サイド2 (gray - right side)
+  '#ec008c': 'stand-angle1', // Panel 15: スタンド: アングル1 (bright magenta/pink)
+  '#9e1f63': 'stand-angle2', // Panel 16: スタンド: アングル2 (darker purple)
+  '#e179dd': 'stand-support1', // Panel 17: スタンド: サポート1 (light pink)
+  '#e1d57f': 'stand-support2', // Panel 18: スタンド: サポート2 (yellow/tan)
 };
 
-// For 10BOX Deep model - 16 panels (same as shallow, includes all lid panels)
+// For 10BOX Deep model - 18 panels (same as shallow, includes all lid panels and new stand parts)
 // SVG path order (0-indexed):
 // Path 0: #00aeef (cyan) -> main-side3
 // Path 1: #00a99d (teal) -> main-side1
@@ -88,8 +90,10 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
 // Path 11: #662d91 (purple) -> lid-side1
 // Path 12: #58595b (dark gray) -> lid-front
 // Path 13: #a97c50 (brown) -> lid-back
-// Path 14: #ec008c (magenta) -> main-stand1
-// Path 15: #9e1f63 (dark purple) -> main-stand2
+// Path 14: #e179dd (light pink) -> stand-support1
+// Path 15: #e1d57f (yellow/tan) -> stand-support2
+// Path 16: #ec008c (magenta) -> stand-angle1
+// Path 17: #9e1f63 (dark purple) -> stand-angle2
 const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
   '#00aeef': 'main-side3', // Path 0: メイン: サイド3 (cyan)
   '#00a99d': 'main-side1', // Path 1: メイン: サイド1 (teal)
@@ -105,8 +109,10 @@ const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
   '#662d91': 'lid-side1', // Path 11: フタ: サイド1 (purple)
   '#58595b': 'lid-front', // Path 12: フタ: フロント (dark gray)
   '#a97c50': 'lid-back', // Path 13: フタ: バック (brown)
-  '#ec008c': 'main-stand1', // Path 14: メイン: スタンド1 (magenta)
-  '#9e1f63': 'main-stand2', // Path 15: メイン: スタンド2 (dark purple)
+  '#e179dd': 'stand-support1', // Path 14: スタンド: サポート1 (light pink)
+  '#e1d57f': 'stand-support2', // Path 15: スタンド: サポート2 (yellow/tan)
+  '#ec008c': 'stand-angle1', // Path 16: スタンド: アングル1 (magenta)
+  '#9e1f63': 'stand-angle2', // Path 17: スタンド: アングル2 (dark purple)
 };
 
 // For zudo-block-60-open Type A and B models - 2 panels
