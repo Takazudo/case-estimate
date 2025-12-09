@@ -1,7 +1,12 @@
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, Material } from '@/types';
-import { isX2Model, isSingleColorOnlyModel } from '@/utils/case-model-type';
+import {
+  isX2Model,
+  is10BoxModel,
+  isStandModel,
+  isSingleColorOnlyModel,
+} from '@/utils/case-model-type';
 
 interface PanelColors {
   [key: string]: string;
@@ -131,10 +136,6 @@ export const isPresetActive = (
   const caseData = cases[caseType];
   if (!caseData) return false;
 
-  const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType.startsWith('10box-');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-
   for (const panel of caseData.panels) {
     // If we have color IDs, use those for comparison (more accurate)
     if (panelColorIds && panelColorIds[panel.id]) {
@@ -143,11 +144,11 @@ export const isPresetActive = (
         ? preset.colors.all
         : (() => {
             // 10BOX and Stand models only support YamiKage (all black)
-            if (is10BoxModel || isStandModel) {
+            if (is10BoxModel(caseType) || isStandModel(caseType)) {
               return 'carbon-black';
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model(caseType));
             return isPrimary ? preset.colors.primary : preset.colors.secondary;
           })();
 
@@ -160,11 +161,11 @@ export const isPresetActive = (
         ? colors[material].find((c: Color) => c.id === preset.colors.all)?.value
         : (() => {
             // 10BOX and Stand models only support YamiKage (all black)
-            if (is10BoxModel || isStandModel) {
+            if (is10BoxModel(caseType) || isStandModel(caseType)) {
               return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model(caseType));
             const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
             return colors[material].find((c: Color) => c.id === colorId)?.value;
           })();

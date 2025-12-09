@@ -2,6 +2,7 @@
 
 import type { Panel } from '@/types';
 import PanelColorSwatch from '@/components/panel-color-swatch';
+import { DEFAULT_PANEL_COLOR } from '@/data/colors';
 
 interface PanelListWithColorPickerProps {
   panels: Panel[];
@@ -40,7 +41,7 @@ const PanelListWithColorPicker = ({
                 <div className="flex items-center gap-hgap-2xs">
                   <PanelColorSwatch
                     value={colorValue}
-                    fallbackColor="#1f2937"
+                    fallbackColor={DEFAULT_PANEL_COLOR}
                     className="relative overflow-hidden w-6 h-6 rounded border border-zd-gray"
                     patternViewBoxSize={20}
                     dataTestId={`panel-button-swatch-${panel.id}`}

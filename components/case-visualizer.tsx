@@ -19,6 +19,7 @@ import {
   isOpenModel,
   isStandModel,
 } from '@/utils/case-model-type';
+import { DEFAULT_PANEL_COLOR } from '@/data/colors';
 
 interface CaseVisualizerProps {
   caseType: string;
@@ -29,9 +30,6 @@ interface CaseVisualizerProps {
   material?: string;
   onLoadingChange?: (isLoading: boolean) => void;
 }
-
-// Default black color for all panels
-const DEFAULT_PANEL_COLOR = '#1f2937';
 
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
