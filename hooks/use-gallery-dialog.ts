@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
+// Loading check constants
+const IMAGE_CHECK_INITIAL_DELAY = 0; // ms - small delay to ensure img element is set up
+const IMAGE_CHECK_INTERVAL = 100; // ms - periodic check if image has loaded
+const IMAGE_CHECK_TIMEOUT = 30000; // ms - stop checking after 30 seconds
+
 /**
  * Options for useGalleryDialog hook
  */
@@ -130,14 +135,13 @@ export function useGalleryDialog({
         setImageLoaded(true);
         setIsLoading(false);
       }
-    }, 0);
+    }, IMAGE_CHECK_INITIAL_DELAY);
 
     return () => clearTimeout(timeoutId);
   }, [currentSlug]);
 
   // Additional effect to periodically check if image has loaded
   // This handles cases where onLoad doesn't fire properly
-  // Stops after 30 seconds to prevent unnecessary work
   useEffect(() => {
     if (imageLoaded || imageError) return;
 
@@ -147,12 +151,12 @@ export function useGalleryDialog({
         setImageError(false);
         setIsLoading(false);
       }
-    }, 100);
+    }, IMAGE_CHECK_INTERVAL);
 
-    // Stop checking after 30 seconds
+    // Stop checking after timeout
     const timeoutId = setTimeout(() => {
       clearInterval(intervalId);
-    }, 30000);
+    }, IMAGE_CHECK_TIMEOUT);
 
     return () => {
       clearInterval(intervalId);

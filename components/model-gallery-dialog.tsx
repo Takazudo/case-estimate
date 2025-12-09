@@ -60,10 +60,13 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
   // Get current item data
   const currentItem = getGalleryItemBySlug(currentSlug);
 
-  // Get slugs to preload
-  const slugsToPreload: string[] = [];
-  if (previousSlug) slugsToPreload.push(previousSlug);
-  if (nextSlug) slugsToPreload.push(nextSlug);
+  // Get slugs to preload (memoized to prevent unnecessary effect re-runs)
+  const slugsToPreload = useMemo(() => {
+    const slugs: string[] = [];
+    if (previousSlug) slugs.push(previousSlug);
+    if (nextSlug) slugs.push(nextSlug);
+    return slugs;
+  }, [previousSlug, nextSlug]);
 
   // Use gallery dialog hook for image loading and preloading
   const { imageLoaded, imageError, isLoading, imageRef, handleImageLoad, handleImageError } =
@@ -188,7 +191,7 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
             className="fixed right-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
             aria-label="Next image"
           >
-            <ChevronRightIcon className="h-10 w-10" />
+            <ChevronRightIcon className="h-[50px] w-[50px]" />
           </button>
         )}
 
@@ -203,28 +206,26 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
 
         {/* Image container */}
         <div className="relative flex h-full w-full items-center justify-center">
-          <div className="relative flex h-full w-full items-center justify-center">
-            {/* Loading spinner */}
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="loader" />
-              </div>
-            )}
+          {/* Loading spinner */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+              <div className="loader" />
+            </div>
+          )}
 
-            {/* Main image */}
-            <img
-              ref={imageRef}
-              src={getEnlargedImageUrl(currentSlug)}
-              alt={currentItem.imageAlt || `Model gallery image ${currentSlug}`}
-              className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
-              onLoad={handleImageLoad}
-              onError={handleImageError}
-              style={{
-                opacity: imageLoaded ? 1 : 0,
-              }}
-              aria-busy={!imageLoaded && !imageError}
-            />
-          </div>
+          {/* Main image */}
+          <img
+            ref={imageRef}
+            src={getEnlargedImageUrl(currentSlug)}
+            alt={currentItem.imageAlt || `Model gallery image ${currentSlug}`}
+            className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            style={{
+              opacity: imageLoaded ? 1 : 0,
+            }}
+            aria-busy={!imageLoaded && !imageError}
+          />
 
           {imageError && (
             <div
