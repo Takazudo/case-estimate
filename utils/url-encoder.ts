@@ -69,8 +69,13 @@ const PANEL_MAP: { [key: string]: string } = {
   'main-bottom1': 'm6',
   'main-bottom2': 'm7',
   'main-front': 'm8',
-  'main-stand1': 'm9',
-  'main-stand2': 'ma',
+  'main-stand1': 'm9', // DEPRECATED: kept for backward compatibility
+  'main-stand2': 'ma', // DEPRECATED: kept for backward compatibility
+  // 10BOX stand panels (use 's' prefix for stand)
+  'stand-angle1': 'sa1',
+  'stand-angle2': 'sa2',
+  'stand-support1': 'ss1',
+  'stand-support2': 'ss2',
   // 10BOX lid panels (use 'l' prefix)
   'lid-side1': 'l1',
   'lid-side2': 'l2',
@@ -168,14 +173,17 @@ export function decodePanelColors(encoded: string): { [key: string]: string } {
   const parts = encoded.split('.');
 
   parts.forEach((part) => {
-    // Determine panel code length based on first character
+    // Determine panel code length based on first character(s)
+    // 10BOX stand panels start with 'sa' or 'ss' and use 3-char codes
     // 10BOX panels start with 'm' or 'l' and use 2-char codes
     // Open upgrade panels start with 't' and use 2-char codes
     // Stand panels start with 'n' or 'p' and use 2-char codes
     // x2 model panels can use 'a', 'b', 'c' single chars
     // Regular panels use single digit chars
     let panelCodeLength = 1;
-    if (
+    if (part.startsWith('sa') || part.startsWith('ss')) {
+      panelCodeLength = 3; // 10BOX stand panels (stand-angle1, stand-support1, etc.)
+    } else if (
       part[0] === 'm' ||
       part[0] === 'l' ||
       part[0] === 't' ||
