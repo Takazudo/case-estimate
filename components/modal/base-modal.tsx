@@ -29,19 +29,14 @@ const BaseModal: React.FC<BaseModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      return undefined;
+      return;
     }
 
-    if (shouldRender) {
-      // Delay unmounting to allow fade-out animation
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-      }, 300);
+    if (!shouldRender) return;
 
-      return () => clearTimeout(timer);
-    }
-
-    return undefined;
+    // Delay unmounting to allow fade-out animation
+    const timer = setTimeout(() => setShouldRender(false), 300);
+    return () => clearTimeout(timer);
   }, [isOpen, shouldRender]);
 
   // Handle escape key

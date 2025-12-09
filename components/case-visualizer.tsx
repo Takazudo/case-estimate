@@ -2,16 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { getColorOpacityByValue, getColorOpacityById } from '@/data/colors';
-import {
-  CLASS_TO_PANEL_8,
-  CLASS_TO_PANEL_12,
-  COLOR_TO_PANEL_10BOX_SHALLOW,
-  COLOR_TO_PANEL_10BOX_DEEP,
-  COLOR_TO_PANEL_OPEN_2,
-  COLOR_TO_PANEL_OPEN_UPGRADE,
-  COLOR_TO_PANEL_ZUDO_STAND,
-  COLOR_TO_PANEL_5BOX_SHALLOW,
-} from '@/data/panel-mappings';
+import { CLASS_TO_PANEL_8, CLASS_TO_PANEL_12, getColorToPanelMapping } from '@/data/panel-mappings';
 import {
   isX2Model,
   is10BoxModel,
@@ -371,21 +362,8 @@ const CaseVisualizer = ({
               isOpenModel(caseType) ||
               isStandModel(caseType)
             ) {
-              // Select the appropriate color mapping based on model type
-              let colorToPanelMap: { [key: string]: string };
-              if (caseType === '10box-shallow-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_10BOX_SHALLOW;
-              } else if (caseType === '10box-deep-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
-              } else if (caseType === '5box-shallow-3dp' || caseType === '5box-deep-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_5BOX_SHALLOW;
-              } else if (caseType.includes('upgrade')) {
-                colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
-              } else if (isStandModel(caseType)) {
-                colorToPanelMap = COLOR_TO_PANEL_ZUDO_STAND;
-              } else {
-                colorToPanelMap = COLOR_TO_PANEL_OPEN_2;
-              }
+              // Get the appropriate color-to-panel mapping for this case type
+              const colorToPanelMap = getColorToPanelMapping(caseType);
 
               // Get all paths (including the one without fill style for Panel 2)
               const allPaths = svgInDom.querySelectorAll('path');

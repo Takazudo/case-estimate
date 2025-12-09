@@ -136,3 +136,18 @@ export const COLOR_TO_PANEL_5BOX_SHALLOW: { [key: string]: string } = {
   '#808285': 'lid-back2', // Visual pos 10: Lid right edge -> Panel 10: フタ: フロント
   '#58595b': 'lid-front', // Visual pos 11: Lid bottom strip -> Panel 11: フタ: サイド2
 };
+
+/**
+ * Get the appropriate color-to-panel mapping for a given case type
+ * @param caseType - The case type identifier
+ * @returns The color-to-panel mapping object for the case type
+ */
+export function getColorToPanelMapping(caseType: string): { [key: string]: string } {
+  if (caseType === '10box-shallow-3dp') return COLOR_TO_PANEL_10BOX_SHALLOW;
+  if (caseType === '10box-deep-3dp') return COLOR_TO_PANEL_10BOX_DEEP;
+  if (caseType === '5box-shallow-3dp' || caseType === '5box-deep-3dp')
+    return COLOR_TO_PANEL_5BOX_SHALLOW;
+  if (caseType.includes('upgrade')) return COLOR_TO_PANEL_OPEN_UPGRADE;
+  if (caseType.startsWith('zudo-stand-')) return COLOR_TO_PANEL_ZUDO_STAND;
+  return COLOR_TO_PANEL_OPEN_2;
+}
