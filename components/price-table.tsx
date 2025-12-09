@@ -69,7 +69,7 @@ const caseModelsData: PriceRowWithRails[] = [
     metal: 12780,
   },
   { model: '10box-shallow-3DP', lite: 19680, nuts: 25680, dual: 28880, metal: 35680 },
-  { model: '10box-deep-3DP', lite: 20680, nuts: 26680, dual: 29880, metal: 36680 },
+  { model: '10box-deep-3DP', lite: 18680, nuts: 24680, dual: 27880, metal: 34680 },
   { model: '5box-shallow-3DP', lite: 9800, nuts: 13480, dual: 15580, metal: 18980 },
   { model: '5box-deep-3DP', lite: 10800, nuts: 14480, dual: 16580, metal: 19980 },
 ];
