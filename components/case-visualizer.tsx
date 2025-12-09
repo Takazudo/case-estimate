@@ -39,10 +39,11 @@ const STROKE_WIDTH = {
   selectedTransparent: '8',
 } as const;
 
-// Selection and hover colors
-const SELECTION_COLOR = 'oklch(54.6% 0.245 262.881)';
-const DROP_SHADOW_SELECTED = `drop-shadow(0 0 12px ${SELECTION_COLOR} / 0.9)`;
-const DROP_SHADOW_HOVER = `drop-shadow(0 0 4px ${SELECTION_COLOR} / 0.6)`;
+// Selection and hover colors (oklch: lightness%, chroma, hue, alpha)
+const SELECTION_COLOR_SELECTED = 'oklch(54.6% 0.245 262.881 / 0.9)';
+const SELECTION_COLOR_HOVER = 'oklch(54.6% 0.245 262.881 / 0.6)';
+const DROP_SHADOW_SELECTED = `drop-shadow(0 0 12px ${SELECTION_COLOR_SELECTED})`;
+const DROP_SHADOW_HOVER = `drop-shadow(0 0 4px ${SELECTION_COLOR_HOVER})`;
 const BRIGHTNESS_FILTER_HOVER = `${DROP_SHADOW_HOVER} brightness(1.1)`;
 
 // Transparent acrylic color constants
@@ -171,7 +172,7 @@ function setupPanelEventHandlers(
       ? STROKE_WIDTH.selectedTransparent
       : STROKE_WIDTH.selectedNormal;
     pathElement.style.strokeWidth = selectedStrokeWidth;
-    pathElement.style.stroke = `${SELECTION_COLOR} / 0.9`;
+    pathElement.style.stroke = SELECTION_COLOR_SELECTED;
   } else {
     pathElement.style.filter = 'none';
     // Keep the border with appropriate color and width
@@ -189,7 +190,7 @@ function setupPanelEventHandlers(
         ? STROKE_WIDTH.hoverTransparent
         : STROKE_WIDTH.hoverNormal;
       pathElement.style.strokeWidth = hoverStrokeWidth;
-      pathElement.style.stroke = `${SELECTION_COLOR} / 0.6`;
+      pathElement.style.stroke = SELECTION_COLOR_HOVER;
 
       // Subtle brightness adjustment instead of opacity
       if (material === 'acrylic') {
