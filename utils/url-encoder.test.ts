@@ -1,26 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import {
-  encodePanelColors,
-  decodePanelColors,
-  encodeCase,
-  decodeCase,
-  createColorIdMap,
-  createColorValueMap,
-} from './url-encoder';
+import { encodePanelColors, decodePanelColors, encodeCase, decodeCase } from './url-encoder';
+import { colorService } from './color-service';
 
 describe('url-encoder', () => {
-  describe('createColorIdMap', () => {
+  describe('colorService.createColorIdMap', () => {
     it('should create mapping from color values to IDs', () => {
-      const map = createColorIdMap();
+      const map = colorService.createColorIdMap();
       // Tests against actual color data from @/data/colors
       expect(map).toBeDefined();
       expect(typeof map).toBe('object');
     });
   });
 
-  describe('createColorValueMap', () => {
+  describe('colorService.createColorValueMap', () => {
     it('should create mapping from color IDs to values', () => {
-      const map = createColorValueMap();
+      const map = colorService.createColorValueMap();
       // Tests against actual color data from @/data/colors
       expect(map).toBeDefined();
       expect(typeof map).toBe('object');

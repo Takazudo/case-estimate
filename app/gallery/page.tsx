@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { galleryData } from '@/data/gallery-data';
 import GalleryThumbnailGrid from '@/components/gallery-thumbnail-grid';
 import GalleryDialog from '@/components/gallery-dialog';
@@ -7,7 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { H1 } from '@/components/article/h1';
 import { P } from '@/components/article/p';
 
-export default function GalleryPage() {
+function GalleryContent() {
   const searchParams = useSearchParams();
   const selectedId = searchParams.get('id');
 
@@ -28,5 +29,13 @@ export default function GalleryPage() {
       </div>
       {selectedId && <GalleryDialog slug={selectedId} />}
     </>
+  );
+}
+
+export default function GalleryPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GalleryContent />
+    </Suspense>
   );
 }
