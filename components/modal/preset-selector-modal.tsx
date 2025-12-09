@@ -6,6 +6,7 @@ import { PresetIcon } from '@/components/icons/preset-icon';
 import { colors } from '@/data/colors';
 import PresetCard from '@/components/preset-card';
 import type { Preset } from '@/types';
+import { isSingleColorOnlyModel, isOpenModel } from '@/utils/case-model-type';
 
 interface PresetSelectorModalProps {
   isOpen: boolean;
@@ -76,14 +77,8 @@ const PresetSelectorModal: React.FC<PresetSelectorModalProps> = ({
 
   // Filter presets based on case model (same logic as controls-sidebar)
   const filteredPresets = availablePresets.filter((preset) => {
-    // For 10BOX, 5BOX, zudo-stand models, and zudo-block-60-open 3DP Type A/B, only show YamiKage preset
-    if (
-      selectedCase.startsWith('10box-') ||
-      selectedCase.startsWith('5box-') ||
-      selectedCase.startsWith('zudo-stand-') ||
-      selectedCase === 'zudo-block-60-open-3DP-A' ||
-      selectedCase === 'zudo-block-60-open-3DP-B'
-    ) {
+    // For 10BOX, 5BOX, zudo-stand models, and open models, only show YamiKage preset
+    if (isSingleColorOnlyModel(selectedCase) || isOpenModel(selectedCase)) {
       return preset.id === 'yamikage';
     }
     return true;

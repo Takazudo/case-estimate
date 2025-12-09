@@ -3,6 +3,7 @@
 import type { Preset, Color } from '@/types';
 import { colors } from '@/data/colors';
 import { cases } from '@/data/cases';
+import { is10BoxModel } from '@/utils/case-model-type';
 
 interface PresetCardProps {
   preset: Preset;
@@ -28,7 +29,7 @@ export default function PresetCard({
       return color?.value || '#000000';
     } else {
       // For 10BOX, all panels should use the same color for YamiKage
-      if (caseType.startsWith('10box-')) {
+      if (is10BoxModel(caseType)) {
         const color = availableColors.find((c: Color) => c.id === preset.colors.all);
         return color?.value || '#000000';
       }

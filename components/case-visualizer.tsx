@@ -12,6 +12,13 @@ import {
   COLOR_TO_PANEL_ZUDO_STAND,
   COLOR_TO_PANEL_5BOX_SHALLOW,
 } from '@/data/panel-mappings';
+import {
+  isX2Model,
+  is10BoxModel,
+  is5BoxModel,
+  isOpenModel,
+  isStandModel,
+} from '@/utils/case-model-type';
 
 interface CaseVisualizerProps {
   caseType: string;
@@ -224,14 +231,10 @@ const CaseVisualizer = ({
 }: CaseVisualizerProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
+  const [svgError, setSvgError] = useState<string | null>(null);
 
-  // Determine which class mapping to use based on model type
-  const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType.startsWith('10box-');
-  const is5BoxModel = caseType.startsWith('5box-');
-  const isOpenModel = caseType.includes('open');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-  const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
+  // Determine which class mapping to use based on model type (using type-safe utilities)
+  const CLASS_TO_PANEL = isX2Model(caseType) ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
   const addPatternsToSvg = (svg: SVGElement) => {
@@ -275,6 +278,7 @@ const CaseVisualizer = ({
   // Load and inject the SVG
   useEffect(() => {
     setSvgLoaded(false);
+    setSvgError(null);
     onLoadingChange?.(true);
 
     const loadSVG = async () => {
@@ -337,6 +341,7 @@ const CaseVisualizer = ({
           const parseError = svgDoc.querySelector('parsererror');
           if (parseError || !svg) {
             console.error('Failed to parse SVG:', parseError?.textContent || 'Invalid SVG');
+            setSvgError('Failed to parse case visualization. The SVG file may be corrupted.');
             onLoadingChange?.(false);
             return;
           }
@@ -362,7 +367,12 @@ const CaseVisualizer = ({
             svgInDom.style.margin = 'auto';
 
             // For 10BOX model, 5BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
-            if (is10BoxModel || is5BoxModel || isOpenModel || isStandModel) {
+            if (
+              is10BoxModel(caseType) ||
+              is5BoxModel(caseType) ||
+              isOpenModel(caseType) ||
+              isStandModel(caseType)
+            ) {
               // Select the appropriate color mapping based on model type
               let colorToPanelMap: { [key: string]: string };
               if (caseType === '10box-shallow-3dp') {
@@ -373,7 +383,7 @@ const CaseVisualizer = ({
                 colorToPanelMap = COLOR_TO_PANEL_5BOX_SHALLOW;
               } else if (caseType.includes('upgrade')) {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
-              } else if (isStandModel) {
+              } else if (isStandModel(caseType)) {
                 colorToPanelMap = COLOR_TO_PANEL_ZUDO_STAND;
               } else {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_2;
@@ -395,7 +405,7 @@ const CaseVisualizer = ({
                 // Position varies between models: shallow (index 2) vs deep (index 3)
                 // This logic only applies to 10BOX models, not Open models
                 const isSide2NoFill =
-                  is10BoxModel &&
+                  is10BoxModel(caseType) &&
                   !fillMatch &&
                   ((caseType === '10box-shallow-3dp' && index === 2) ||
                     (caseType === '10box-deep-3dp' && index === 3));
@@ -424,13 +434,13 @@ const CaseVisualizer = ({
                 } else if (fillMatch) {
                   // This path has a fill color but no mapped panel ID
                   // This shouldn't happen if our mappings are complete, but leave path in DOM
-                  const modelType = is10BoxModel
+                  const modelType = is10BoxModel(caseType)
                     ? '10BOX'
-                    : is5BoxModel
+                    : is5BoxModel(caseType)
                       ? '5BOX'
-                      : isOpenModel
+                      : isOpenModel(caseType)
                         ? 'Open'
-                        : isStandModel
+                        : isStandModel(caseType)
                           ? 'Stand'
                           : 'unknown';
                   const unmappedColor = fillMatch[1].trim().toLowerCase();
@@ -444,7 +454,7 @@ const CaseVisualizer = ({
               const styleElement = svgInDom.querySelector('style');
               if (styleElement) {
                 // Override the CSS rules to use black as default
-                const classes = isX2Model
+                const classes = isX2Model(caseType)
                   ? ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
                   : ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
                 const newStyles = classes
@@ -465,12 +475,13 @@ const CaseVisualizer = ({
         }
       } catch (error) {
         console.error('Failed to load SVG:', error);
+        setSvgError('Failed to load case visualization. Please try refreshing the page.');
         onLoadingChange?.(false);
       }
     };
 
     loadSVG();
-  }, [caseType, isX2Model, is10BoxModel, is5BoxModel, isOpenModel, isStandModel, onLoadingChange]);
+  }, [caseType, onLoadingChange]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -481,7 +492,12 @@ const CaseVisualizer = ({
       const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
-      if (is10BoxModel || is5BoxModel || isOpenModel || isStandModel) {
+      if (
+        is10BoxModel(caseType) ||
+        is5BoxModel(caseType) ||
+        isOpenModel(caseType) ||
+        isStandModel(caseType)
+      ) {
         // Handle 10BOX, 5BOX, Open, and Stand models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
         const paths = svg.querySelectorAll('path[data-panel-id]');
@@ -601,14 +617,19 @@ const CaseVisualizer = ({
     onPanelClick,
     material,
     CLASS_TO_PANEL,
-    is10BoxModel,
-    is5BoxModel,
-    isOpenModel,
-    isStandModel,
+    caseType,
   ]);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">
+      {svgError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-zd-black/80 z-10">
+          <div className="max-w-md px-hgap-md py-vgap-md bg-zd-surface-2 rounded-lg border border-zd-gray">
+            <h3 className="text-lg font-semibold text-zd-white mb-vgap-2xs">Visualization Error</h3>
+            <p className="text-zd-gray">{svgError}</p>
+          </div>
+        </div>
+      )}
       <div ref={svgContainerRef} className="w-full h-full flex items-center justify-center" />
     </div>
   );
