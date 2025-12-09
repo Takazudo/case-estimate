@@ -29,6 +29,36 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
 
+// Stroke width constants
+const STROKE_WIDTH = {
+  default: '1',
+  transparent: '4',
+  hoverNormal: '2',
+  hoverTransparent: '6',
+  selectedNormal: '4',
+  selectedTransparent: '8',
+} as const;
+
+// Selection and hover colors
+const SELECTION_COLOR = 'oklch(54.6% 0.245 262.881)';
+const DROP_SHADOW_SELECTED = `drop-shadow(0 0 12px ${SELECTION_COLOR} / 0.9)`;
+const DROP_SHADOW_HOVER = `drop-shadow(0 0 4px ${SELECTION_COLOR} / 0.6)`;
+const BRIGHTNESS_FILTER_HOVER = `${DROP_SHADOW_HOVER} brightness(1.1)`;
+
+// Transparent acrylic color constants
+const TRANSPARENT_ACRYLIC_COLORS = {
+  clear: '#f8f9fa',
+  frostClear: '#4a9b9b',
+  frostClearEdge: '#117269', // ガラスシアン - glass-like edge
+} as const;
+
+// Stroke info returned by applyPanelStyles
+interface StrokeInfo {
+  strokeColor: string;
+  strokeWidth: string;
+  isTransparentAcrylic: boolean;
+}
+
 // Validate color value to prevent CSS injection
 // Only allow hex colors (#RRGGBB or #RGB) or the special pattern fill
 function isValidColor(color: string): boolean {
@@ -37,25 +67,44 @@ function isValidColor(color: string): boolean {
   return /^#([0-9A-Fa-f]{3}){1,2}$/.test(color);
 }
 
+// Helper function to calculate base opacity for a panel
+function getBaseOpacity(
+  panelId: string,
+  material: string | undefined,
+  panelColors: { [key: string]: string },
+  panelColorIds?: { [key: string]: string },
+): number {
+  if (material === 'acrylic' || material === '3dp') {
+    const colorId = panelColorIds?.[panelId];
+    if (colorId) {
+      return getColorOpacityById(colorId, material);
+    }
+    const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+    return getColorOpacityByValue(color, material);
+  }
+  return 0.8; // Default opacity for acrylic if material is undefined
+}
+
 // Helper function to apply panel styles
 function applyPanelStyles(
-  pathElement: HTMLElement,
+  pathElement: SVGPathElement,
   color: string,
   material: string | undefined,
   panelColorIds: { [key: string]: string } | undefined,
   panelId: string,
+  panelColors: { [key: string]: string },
   useSetAttribute: boolean = false,
-): { strokeColor: string; strokeWidth: string; isTransparentAcrylic: boolean } {
+): StrokeInfo {
   // Handle pattern fills
   const isPatternFill = color === 'pattern-red-green-stripe';
 
   // Handle transparent acrylic colors specially
   const isTransparentAcrylic =
-    material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
+    material === 'acrylic' &&
+    (color === TRANSPARENT_ACRYLIC_COLORS.clear || color === TRANSPARENT_ACRYLIC_COLORS.frostClear);
 
   if (isPatternFill) {
     // Use pattern fill for red-green silk
-    pathElement.style.fill = 'url(#red-green-stripe-pattern)';
     if (useSetAttribute) {
       pathElement.setAttribute('fill', 'url(#red-green-stripe-pattern)');
     }
@@ -63,7 +112,6 @@ function applyPanelStyles(
     pathElement.style.setProperty('fill-opacity', '1', 'important');
   } else if (isTransparentAcrylic) {
     // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
-    pathElement.style.fill = 'transparent';
     if (useSetAttribute) {
       pathElement.setAttribute('fill', 'transparent');
     }
@@ -74,37 +122,23 @@ function applyPanelStyles(
     if (useSetAttribute) {
       pathElement.setAttribute('fill', color);
     }
-    pathElement.style.fill = color;
     pathElement.style.setProperty('fill', color, 'important');
 
     // Get color-specific opacity from the color definition
-    let opacity: number;
-    if (material === 'acrylic' || material === '3dp') {
-      // Use color ID if available, otherwise fall back to hex value
-      const colorId = panelColorIds?.[panelId];
-      if (colorId) {
-        opacity = getColorOpacityById(colorId, material);
-      } else {
-        opacity = getColorOpacityByValue(color, material);
-      }
-    } else {
-      // Default opacity for acrylic if material is undefined
-      opacity = 0.8;
-    }
-
+    const opacity = getBaseOpacity(panelId, material, panelColors, panelColorIds);
     pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
   }
 
   // Set stroke color and width based on transparent acrylic type
   let strokeColor = '#000000'; // default black
-  let strokeWidth = '1'; // default 1px for non-transparent
+  let strokeWidth: string = STROKE_WIDTH.default;
 
   if (isTransparentAcrylic) {
-    strokeWidth = '4'; // 4px for transparent acrylics
-    if (color === '#4a9b9b') {
-      strokeColor = '#117269'; // ガラスシアン - glass-like edge
+    strokeWidth = STROKE_WIDTH.transparent;
+    if (color === TRANSPARENT_ACRYLIC_COLORS.frostClear) {
+      strokeColor = TRANSPARENT_ACRYLIC_COLORS.frostClearEdge;
     }
-    // クリア stays #000000 (default)
+    // Clear stays #000000 (default)
   }
 
   pathElement.style.stroke = strokeColor;
@@ -116,13 +150,13 @@ function applyPanelStyles(
 
 // Helper function to set up panel event handlers
 function setupPanelEventHandlers(
-  pathElement: HTMLElement,
+  pathElement: SVGPathElement,
   panelId: string,
   selectedPanel: string | null,
   material: string | undefined,
   panelColors: { [key: string]: string },
   panelColorIds: { [key: string]: string } | undefined,
-  strokeInfo: { strokeColor: string; strokeWidth: string; isTransparentAcrylic: boolean },
+  strokeInfo: StrokeInfo,
 ): void {
   const { strokeColor, strokeWidth, isTransparentAcrylic } = strokeInfo;
 
@@ -131,11 +165,13 @@ function setupPanelEventHandlers(
 
   // Add selected state visual feedback
   if (selectedPanel === panelId) {
-    pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
+    pathElement.style.filter = DROP_SHADOW_SELECTED;
     // Use thicker stroke for selected (4px for normal, 8px for transparent)
-    const selectedStrokeWidth = isTransparentAcrylic ? '8' : '4';
+    const selectedStrokeWidth = isTransparentAcrylic
+      ? STROKE_WIDTH.selectedTransparent
+      : STROKE_WIDTH.selectedNormal;
     pathElement.style.strokeWidth = selectedStrokeWidth;
-    pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
+    pathElement.style.stroke = `${SELECTION_COLOR} / 0.9`;
   } else {
     pathElement.style.filter = 'none';
     // Keep the border with appropriate color and width
@@ -147,16 +183,17 @@ function setupPanelEventHandlers(
   pathElement.onmouseenter = () => {
     if (selectedPanel !== panelId) {
       // Add drop shadow and border for better visibility
-      pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
+      pathElement.style.filter = DROP_SHADOW_HOVER;
       // Use thicker stroke for hover (2px for normal, 6px for transparent)
-      const hoverStrokeWidth = isTransparentAcrylic ? '6' : '2';
+      const hoverStrokeWidth = isTransparentAcrylic
+        ? STROKE_WIDTH.hoverTransparent
+        : STROKE_WIDTH.hoverNormal;
       pathElement.style.strokeWidth = hoverStrokeWidth;
-      pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
+      pathElement.style.stroke = `${SELECTION_COLOR} / 0.6`;
 
       // Subtle brightness adjustment instead of opacity
       if (material === 'acrylic') {
-        pathElement.style.filter =
-          'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6)) brightness(1.1)';
+        pathElement.style.filter = BRIGHTNESS_FILTER_HOVER;
       }
     }
   };
@@ -170,18 +207,7 @@ function setupPanelEventHandlers(
     }
 
     // Restore color-specific opacity
-    let baseOpacity: number;
-    if (material === 'acrylic' || material === '3dp') {
-      const colorId = panelColorIds?.[panelId];
-      if (colorId) {
-        baseOpacity = getColorOpacityById(colorId, material);
-      } else {
-        const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-        baseOpacity = getColorOpacityByValue(color, material);
-      }
-    } else {
-      baseOpacity = 0.8; // Default for acrylic if material is undefined
-    }
+    const baseOpacity = getBaseOpacity(panelId, material, panelColors, panelColorIds);
     pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
   };
 }
@@ -443,7 +469,7 @@ const CaseVisualizer = ({
         const paths = svg.querySelectorAll('path[data-panel-id]');
 
         paths.forEach((path: Element) => {
-          const pathElement = path as HTMLElement;
+          const pathElement = path as SVGPathElement;
 
           // Get the panel ID that was set during SVG load
           const panelId = pathElement.getAttribute('data-panel-id');
@@ -477,6 +503,7 @@ const CaseVisualizer = ({
               material,
               panelColorIds,
               panelId,
+              panelColors,
               false, // Don't use setAttribute for inline-style models
             );
 
@@ -499,7 +526,7 @@ const CaseVisualizer = ({
           const paths = svg.querySelectorAll(`.${className}`);
 
           paths.forEach((path: Element) => {
-            const pathElement = path as HTMLElement;
+            const pathElement = path as SVGPathElement;
             // Set cursor style
             pathElement.style.cursor = 'pointer';
 
@@ -528,6 +555,7 @@ const CaseVisualizer = ({
               material,
               panelColorIds,
               panelId,
+              panelColors,
               true, // Use setAttribute for class-based models
             );
 
