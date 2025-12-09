@@ -13,6 +13,7 @@ import { getEnlargedImageUrl } from '@/utils/cdn-urls';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
+import { useGalleryDialog } from '@/hooks/use-gallery-dialog';
 import { CloseIcon } from '@/components/icons/close-icon';
 
 interface ModelGalleryDialogProps {
@@ -41,12 +42,7 @@ interface ModelGalleryDialogProps {
  */
 export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGalleryDialogProps) {
   const [currentSlug, setCurrentSlug] = useState(slug);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const preloadedImagesRef = useRef(new Set<string>());
 
   const dialogTitleId = useMemo(() => `model-gallery-dialog-title-${currentSlug}`, [currentSlug]);
   const dialogDescriptionId = useMemo(
@@ -63,6 +59,22 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
 
   // Get current item data
   const currentItem = getGalleryItemBySlug(currentSlug);
+
+  // Get slugs to preload (memoized to prevent unnecessary effect re-runs)
+  const slugsToPreload = useMemo(() => {
+    const slugs: string[] = [];
+    if (previousSlug) slugs.push(previousSlug);
+    if (nextSlug) slugs.push(nextSlug);
+    return slugs;
+  }, [previousSlug, nextSlug]);
+
+  // Use gallery dialog hook for image loading and preloading
+  const { imageLoaded, imageError, isLoading, imageRef, handleImageLoad, handleImageError } =
+    useGalleryDialog({
+      currentSlug,
+      getImageUrl: getEnlargedImageUrl,
+      slugsToPreload,
+    });
 
   const handlePrevious = useCallback(() => {
     if (previousSlug) {
@@ -132,71 +144,6 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
     };
   }, [onClose]);
 
-  // Preload adjacent images
-  useEffect(() => {
-    const indicesToPreload: number[] = [];
-
-    // Add previous image
-    if (currentIndex > 0) {
-      indicesToPreload.push(currentIndex - 1);
-    }
-
-    // Add next image
-    if (currentIndex < allSlugs.length - 1) {
-      indicesToPreload.push(currentIndex + 1);
-    }
-
-    indicesToPreload.forEach((index) => {
-      const slugToPreload = allSlugs[index];
-      const url = getEnlargedImageUrl(slugToPreload);
-
-      if (preloadedImagesRef.current.has(url)) {
-        return;
-      }
-
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        preloadedImagesRef.current.add(url);
-      };
-      img.onerror = () => {
-        preloadedImagesRef.current.delete(url);
-      };
-    });
-  }, [currentSlug, currentIndex, allSlugs]);
-
-  // Reset image loaded state when slug changes
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-    setIsLoading(true);
-
-    // Check if image is already loaded
-    const timeoutId = setTimeout(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setIsLoading(false);
-      }
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
-  }, [currentSlug]);
-
-  // Periodically check if image has loaded
-  useEffect(() => {
-    if (imageLoaded || imageError) return;
-
-    const intervalId = setInterval(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setImageError(false);
-        setIsLoading(false);
-      }
-    }, 100);
-
-    return () => clearInterval(intervalId);
-  }, [imageLoaded, imageError, currentSlug]);
-
   if (!currentItem) {
     return null;
   }
@@ -244,7 +191,7 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
             className="fixed right-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
             aria-label="Next image"
           >
-            <ChevronRightIcon className="h-10 w-10" />
+            <ChevronRightIcon className="h-[50px] w-[50px]" />
           </button>
         )}
 
@@ -259,36 +206,26 @@ export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGal
 
         {/* Image container */}
         <div className="relative flex h-full w-full items-center justify-center">
-          <div className="relative flex h-full w-full items-center justify-center">
-            {/* Loading spinner */}
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="loader" />
-              </div>
-            )}
+          {/* Loading spinner */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+              <div className="loader" />
+            </div>
+          )}
 
-            {/* Main image */}
-            <img
-              ref={imageRef}
-              src={getEnlargedImageUrl(currentSlug)}
-              alt={currentItem.imageAlt || `Model gallery image ${currentSlug}`}
-              className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
-              onLoad={() => {
-                setImageLoaded(true);
-                setImageError(false);
-                setIsLoading(false);
-              }}
-              onError={() => {
-                setImageLoaded(false);
-                setImageError(true);
-                setIsLoading(false);
-              }}
-              style={{
-                opacity: imageLoaded ? 1 : 0,
-              }}
-              aria-busy={!imageLoaded && !imageError}
-            />
-          </div>
+          {/* Main image */}
+          <img
+            ref={imageRef}
+            src={getEnlargedImageUrl(currentSlug)}
+            alt={currentItem.imageAlt || `Model gallery image ${currentSlug}`}
+            className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            style={{
+              opacity: imageLoaded ? 1 : 0,
+            }}
+            aria-busy={!imageLoaded && !imageError}
+          />
 
           {imageError && (
             <div
