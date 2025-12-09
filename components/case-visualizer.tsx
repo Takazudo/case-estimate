@@ -43,8 +43,30 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
   l: 'front2', // L フロント2
 };
 
-// For 10BOX Shallow model - maps fill colors to panel IDs
-// SVG path positions (after v2 update):
+// Common color mappings shared by both 10BOX variants
+const COLOR_TO_PANEL_10BOX_COMMON: { [key: string]: string } = {
+  '#00a99d': 'main-side1', // メイン: サイド1 (teal)
+  // main-side2 has no fill style, handled by position
+  '#ef4136': 'main-back1', // メイン: バック1 (red)
+  '#ed1c24': 'main-bottom1', // メイン: ボトム1 (darker red)
+  '#fff200': 'main-bottom2', // メイン: ボトム2 (yellow)
+  '#00a651': 'main-front', // メイン: フロント (green)
+  '#00aeef': 'main-side3', // メイン: サイド3 (cyan)
+  '#2e3192': 'main-side4', // メイン: サイド4 (dark blue)
+  '#662d91': 'lid-side1', // フタ: サイド1 (purple)
+  '#a97c50': 'lid-back', // フタ: バック (brown)
+  '#a7a9ac': 'lid-top1', // フタ: トップ1 (light gray)
+  '#939598': 'lid-top2', // フタ: トップ2 (gray)
+  '#58595b': 'lid-front', // フタ: フロント (dark gray)
+  '#808285': 'lid-side2', // フタ: サイド2 (gray)
+  '#ec008c': 'stand-angle1', // スタンド: アングル1 (bright magenta/pink)
+  '#9e1f63': 'stand-angle2', // スタンド: アングル2 (darker purple)
+  '#e179dd': 'stand-support1', // スタンド: サポート1 (light pink)
+  '#e1d57f': 'stand-support2', // スタンド: サポート2 (yellow/tan)
+};
+
+// For 10BOX Shallow model - uses common mappings (all 18 panels)
+// SVG path positions (after v3 update with new stand parts):
 // Position 1: #2e3192 (dark blue) -> Panel 8 (main-side4)
 // Position 2: #00aeef (cyan) -> Panel 7 (main-side3)
 // Position 3: No fill style -> Panel 2 (main-side2)
@@ -54,25 +76,11 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
 // Position 7: #fff200 (yellow) -> Panel 5 (main-bottom2)
 // Position 8: #ed1c24 (darker red) -> Panel 4 (main-bottom1)
 const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal)
-  // Panel 2 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1', // Panel 3: メイン: バック1 (red - top)
-  '#ed1c24': 'main-bottom1', // Panel 4: メイン: ボトム1 (darker red - center upper)
-  '#fff200': 'main-bottom2', // Panel 5: メイン: ボトム2 (yellow - center middle)
-  '#00a651': 'main-front', // Panel 6: メイン: フロント (green - bottom)
-  '#00aeef': 'main-side3', // Panel 7: メイン: サイド3 (cyan - right main side)
-  '#2e3192': 'main-side4', // Panel 8: メイン: サイド4 (dark blue - right bottom side)
-  '#ec008c': 'main-stand1', // Panel 9: メイン: スタンド1 (bright magenta/pink - left stand)
-  '#9e1f63': 'main-stand2', // Panel 10: メイン: スタンド2 (darker purple - right stand)
-  '#662d91': 'lid-side1', // Panel 11: フタ: サイド1 (purple - left side)
-  '#a97c50': 'lid-back', // Panel 12: フタ: バック (brown - top)
-  '#a7a9ac': 'lid-top1', // Panel 13: フタ: トップ1 (gray - right center)
-  '#939598': 'lid-top2', // Panel 14: フタ: トップ2 (light gray - left center)
-  '#58595b': 'lid-front', // Panel 15: フタ: フロント (dark gray - bottom)
-  '#808285': 'lid-side2', // Panel 16: フタ: サイド2 (gray - right side)
+  ...COLOR_TO_PANEL_10BOX_COMMON,
 };
 
 // For 10BOX Deep model - 14 panels (8 main + 6 lid, no stand parts)
+// Uses common mappings but excludes stand parts (legs removed from deep model)
 // SVG path order (0-indexed):
 // Path 0: #00aeef (cyan) -> main-side3
 // Path 1: #00a99d (teal) -> main-side1
@@ -88,22 +96,15 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
 // Path 11: #662d91 (purple) -> lid-side1
 // Path 12: #58595b (dark gray) -> lid-front
 // Path 13: #a97c50 (brown) -> lid-back
-const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
-  '#00aeef': 'main-side3', // Path 0: メイン: サイド3 (cyan)
-  '#00a99d': 'main-side1', // Path 1: メイン: サイド1 (teal)
-  '#2e3192': 'main-side4', // Path 2: メイン: サイド4 (dark blue)
-  // Path 3 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1', // Path 4: メイン: バック1 (red)
-  '#00a651': 'main-front', // Path 5: メイン: フロント (green)
-  '#fff200': 'main-bottom2', // Path 6: メイン: ボトム2 (yellow)
-  '#ed1c24': 'main-bottom1', // Path 7: メイン: ボトム1 (darker red)
-  '#939598': 'lid-top2', // Path 8: フタ: トップ2 (gray)
-  '#a7a9ac': 'lid-top1', // Path 9: フタ: トップ1 (light gray)
-  '#808285': 'lid-side2', // Path 10: フタ: サイド2 (gray)
-  '#662d91': 'lid-side1', // Path 11: フタ: サイド1 (purple)
-  '#58595b': 'lid-front', // Path 12: フタ: フロント (dark gray)
-  '#a97c50': 'lid-back', // Path 13: フタ: バック (brown)
-};
+const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = (() => {
+  // Exclude stand parts from common mappings (deep model has no legs)
+  const standPartColors = ['#ec008c', '#9e1f63', '#e179dd', '#e1d57f'];
+  return Object.fromEntries(
+    Object.entries(COLOR_TO_PANEL_10BOX_COMMON).filter(
+      ([color]) => !standPartColors.includes(color),
+    ),
+  );
+})();
 
 // For zudo-block-60-open Type A and B models - 2 panels
 const COLOR_TO_PANEL_OPEN_2: { [key: string]: string } = {
@@ -150,6 +151,14 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
+
+// Validate color value to prevent CSS injection
+// Only allow hex colors (#RRGGBB or #RGB) or the special pattern fill
+function isValidColor(color: string): boolean {
+  if (color === 'pattern-red-green-stripe') return true;
+  // Validate hex color format: #RGB or #RRGGBB
+  return /^#([0-9A-Fa-f]{3}){1,2}$/.test(color);
+}
 
 const CaseVisualizer = ({
   caseType,
@@ -217,6 +226,48 @@ const CaseVisualizer = ({
 
     const loadSVG = async () => {
       try {
+        // Validate caseType to prevent path traversal and ensure only known models are loaded
+        // This prevents loading arbitrary files via ../ or other path manipulation
+        const validCaseTypes = [
+          'zudo-block-40-ACR-A',
+          'zudo-block-40-ACR-B',
+          'zudo-block-40-3DP-A',
+          'zudo-block-40-3DP-B',
+          'zudo-block-60-ACR-A',
+          'zudo-block-60-ACR-B',
+          'zudo-block-60-3DP-A',
+          'zudo-block-60-3DP-B',
+          'zudo-block-40x2-ACR-A',
+          'zudo-block-40x2-ACR-B',
+          'zudo-block-40x2-3DP-A',
+          'zudo-block-40x2-3DP-B',
+          'zudo-block-60x2-ACR-A',
+          'zudo-block-60x2-ACR-B',
+          'zudo-block-60x2-3DP-A',
+          'zudo-block-60x2-3DP-B',
+          '10box-shallow-3dp',
+          '10box-deep-3dp',
+          '10box-3dp',
+          '5box-shallow-3dp',
+          '5box-deep-3dp',
+          'zudo-block-60-open-ACR-A',
+          'zudo-block-60-open-ACR-B',
+          'zudo-block-60-open-upgrade-ACR',
+          'zudo-block-60-open-3DP-A',
+          'zudo-block-60-open-3DP-B',
+          'zudo-block-60-open-upgrade-3DP',
+          'zudo-stand-40',
+          'zudo-stand-40x2',
+          'zudo-stand-60',
+          'zudo-stand-60x2',
+        ];
+
+        if (!validCaseTypes.includes(caseType)) {
+          console.error(`Invalid case type: ${caseType}`);
+          onLoadingChange?.(false);
+          return;
+        }
+
         // Dynamically select SVG path based on caseType
         const svgPath = `/svg/${caseType}.svg`;
 
@@ -385,7 +436,13 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+
+            // Validate color to prevent CSS injection attacks (e.g., url() values)
+            if (!isValidColor(color)) {
+              console.warn(`Invalid color value detected: ${color}. Using default color.`);
+              color = DEFAULT_PANEL_COLOR;
+            }
 
             // Handle pattern fills
             const isPatternFill = color === 'pattern-red-green-stripe';
@@ -524,7 +581,13 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+
+            // Validate color to prevent CSS injection attacks (e.g., url() values)
+            if (!isValidColor(color)) {
+              console.warn(`Invalid color value detected: ${color}. Using default color.`);
+              color = DEFAULT_PANEL_COLOR;
+            }
 
             // Handle pattern fills
             const isPatternFill = color === 'pattern-red-green-stripe';
