@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useEffect,
-  useCallback,
-  useRef,
-  useMemo,
-  type MouseEvent as ReactMouseEvent,
-} from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   getGalleryItemBySlug,
@@ -15,11 +9,7 @@ import {
   getEnlargedImageUrl,
   getItemsForPreloading,
 } from '@/data/gallery-data';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
-import { useFocusTrap } from '@/hooks/use-focus-trap';
-import { useGalleryDialog } from '@/hooks/use-gallery-dialog';
-import { CloseIcon } from '@/components/icons/close-icon';
+import BaseImageDialog from './base-image-dialog';
 
 interface GalleryDialogProps {
   slug: string;
@@ -28,9 +18,6 @@ interface GalleryDialogProps {
 export default function GalleryDialog({ slug }: GalleryDialogProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const dialogTitleId = useMemo(() => `gallery-dialog-title-${slug}`, [slug]);
-  const dialogDescriptionId = useMemo(() => `gallery-dialog-description-${slug}`, [slug]);
 
   const currentItem = getGalleryItemBySlug(slug);
   const previousItem = getPreviousGalleryItem(slug);
@@ -42,24 +29,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     return itemsToPreload.map((item) => item.slug);
   }, [slug]);
 
-  // Use gallery dialog hook for image loading and preloading
-  const { imageLoaded, imageError, isLoading, imageRef, handleImageLoad, handleImageError } =
-    useGalleryDialog({
-      currentSlug: slug,
-      getImageUrl: getEnlargedImageUrl,
-      slugsToPreload,
-    });
-
   const handleClose = useCallback(() => {
     const params = new URLSearchParams(searchParams);
     params.delete('id');
     const newUrl = params.toString() ? `/gallery?${params.toString()}` : '/gallery';
-
-    // Close the dialog first
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-
     router.replace(newUrl, { scroll: false });
   }, [router, searchParams]);
 
@@ -67,8 +40,6 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     (newSlug: string) => {
       const params = new URLSearchParams(searchParams);
       params.set('id', newSlug);
-      // Use replace instead of push to avoid page transition
-      // This updates the URL without triggering a full navigation
       router.replace(`/gallery?${params.toString()}`, { scroll: false });
     },
     [router, searchParams],
@@ -86,159 +57,24 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     }
   }, [handleNavigate, nextItem]);
 
-  const { containerRef } = useFocusTrap({
-    isActive: Boolean(currentItem),
-    onClose: handleClose,
-  });
-
-  useGalleryKeyboardNavigation({
-    isActive: Boolean(currentItem),
-    onClose: handleClose,
-    onPrevious: previousItem ? handlePrevious : undefined,
-    onNext: nextItem ? handleNext : undefined,
-  });
-
-  // Open/close dialog based on currentItem
-  useEffect(() => {
-    if (currentItem && dialogRef.current) {
-      // Use showModal for proper dialog behavior with backdrop
-      if (!dialogRef.current.open) {
-        dialogRef.current.showModal();
-      }
-    } else if (!currentItem && dialogRef.current && dialogRef.current.open) {
-      dialogRef.current.close();
-    }
-  }, [currentItem]);
-
-  // Handle backdrop click
-  const handleDialogClick = useCallback(
-    (event: ReactMouseEvent<HTMLDialogElement>) => {
-      // Check if click is on the backdrop (dialog element itself, not its children)
-      const rect = dialogRef.current?.getBoundingClientRect();
-      if (rect) {
-        const clickedInDialog =
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom;
-
-        // If clicked outside the dialog content area (on the backdrop)
-        if (!clickedInDialog || event.target === dialogRef.current) {
-          handleClose();
-        }
-      }
-    },
-    [handleClose],
-  );
-
-  // Handle native dialog cancel event (ESC key)
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleCancel = (event: Event) => {
-      event.preventDefault(); // Prevent default close behavior
-      handleClose();
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-    };
-  }, [handleClose]);
-
   if (!currentItem) {
     return null;
   }
 
   return (
-    <dialog
-      ref={dialogRef}
-      data-testid="gallery-dialog"
-      id="gallery-dialog"
-      className="fixed inset-0 z-[60] m-0 max-h-screen h-screen max-w-screen w-screen bg-transparent p-0 backdrop:bg-zd-black/70"
-      onClick={handleDialogClick}
-      aria-labelledby={dialogTitleId}
-      aria-describedby={dialogDescriptionId}
-    >
-      <div
-        ref={containerRef as React.RefObject<HTMLDivElement>}
-        className="relative flex h-full w-full items-center justify-center"
-      >
-        {/* Close button - positioned at top-right of viewport */}
-        <button
-          data-testid="gallery-dialog-close"
-          onClick={handleClose}
-          className="fixed top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors"
-          aria-label="Close dialog"
-        >
-          <CloseIcon className="w-6 h-6" />
-        </button>
-
-        {/* Navigation buttons - properly centered at viewport edges */}
-        {previousItem && (
-          <button
-            data-testid="gallery-dialog-prev"
-            onClick={handlePrevious}
-            className="fixed left-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
-            aria-label="Previous image"
-          >
-            <ChevronLeftIcon className="h-[50px] w-[50px]" />
-          </button>
-        )}
-
-        {nextItem && (
-          <button
-            data-testid="gallery-dialog-next"
-            onClick={handleNext}
-            className="fixed right-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
-            aria-label="Next image"
-          >
-            <ChevronRightIcon className="h-[50px] w-[50px]" />
-          </button>
-        )}
-
-        {/* Screen reader announcements */}
-        <h2 id={dialogTitleId} className="sr-only">
-          {currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
-        </h2>
-        <p id={dialogDescriptionId} className="sr-only">
-          Use the arrow keys to move through images. Press Escape to close.
-        </p>
-
-        {/* Image container */}
-        <div className="relative flex h-full w-full items-center justify-center">
-          {/* Loading spinner - shows while image is loading */}
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center z-20">
-              <div className="loader" />
-            </div>
-          )}
-
-          {/* Main image - centered in dialog */}
-          <img
-            ref={imageRef}
-            src={getEnlargedImageUrl(currentItem.slug)}
-            alt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
-            className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            style={{
-              opacity: imageLoaded ? 1 : 0,
-            }}
-            aria-busy={!imageLoaded && !imageError}
-          />
-
-          {imageError && (
-            <div
-              role="alert"
-              className="absolute inset-0 flex items-center justify-center bg-black/80 px-4 text-center text-sm text-gray-200"
-            >
-              Unable to load this image. Please try another item.
-            </div>
-          )}
-        </div>
-      </div>
-    </dialog>
+    <BaseImageDialog
+      testId="gallery-dialog"
+      dialogId="gallery-dialog"
+      currentSlug={slug}
+      imageUrl={getEnlargedImageUrl(currentItem.slug)}
+      imageAlt={currentItem.imageAlt || `Gallery image ${currentItem.slug}`}
+      getImageUrl={getEnlargedImageUrl}
+      slugsToPreload={slugsToPreload}
+      onClose={handleClose}
+      onPrevious={handlePrevious}
+      onNext={handleNext}
+      hasPrevious={Boolean(previousItem)}
+      hasNext={Boolean(nextItem)}
+    />
   );
 }
