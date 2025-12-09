@@ -52,7 +52,7 @@ export const colorService = {
     const colorList = colors[material];
 
     // For 3dp materials, check if this is a semi-transparent color
-    // クリアレッド (#b71c1c) and クリアブルー (#0d47a1) should have 0.6 opacity
+    // クリアレッド (#b71c1c) and クリアブルー (#0d47a1) have 0.6 opacity
     if (material === '3dp') {
       // Find colors with explicit opacity < 1 (prefer semi-transparent versions)
       const semiTransparentColor = colorList.find(
