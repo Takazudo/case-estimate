@@ -1,9 +1,45 @@
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
-import type { Color, Preset } from '@/types';
+import type { Color, Preset, Material } from '@/types';
 
 interface PanelColors {
   [key: string]: string;
+}
+
+/**
+ * Determines if a panel should use the primary color in a preset.
+ * @param panelId - The panel ID (e.g., 'side1', 'back1')
+ * @param isX2Model - Whether this is an x2 model (12 panels)
+ * @returns true if the panel should use the primary color, false for secondary
+ */
+function isPrimaryPanel(panelId: string, isX2Model: boolean): boolean {
+  if (isX2Model) {
+    // For x2 models (12 panels):
+    // - All side panels (side1-4) are primary
+    // - Other panels alternate: back1, bottom1, bottom3, front1 are primary
+    if (panelId.startsWith('side')) {
+      return true;
+    }
+    if (
+      panelId === 'back1' ||
+      panelId === 'bottom1' ||
+      panelId === 'bottom3' ||
+      panelId === 'front1'
+    ) {
+      return true;
+    }
+    return false;
+  } else {
+    // For regular models (8 panels) and upgrade models (6 panels)
+    return (
+      panelId === 'side1' ||
+      panelId === 'side2' ||
+      panelId === 'front1' ||
+      panelId === 'bottom1' ||
+      panelId === 'back1' ||
+      panelId === 'top1'
+    );
+  }
 }
 
 // Initialize default colors for all panels (always use first color)
@@ -34,7 +70,7 @@ export interface PanelColorsWithIds {
 export const applyPresetColorsWithIds = (
   preset: Preset,
   caseType: string,
-  material: 'acrylic' | '3dp',
+  material: Material,
 ): PanelColorsWithIds => {
   const caseData = cases[caseType];
   const availableColors = colors[material];
@@ -63,33 +99,7 @@ export const applyPresetColorsWithIds = (
         return;
       }
 
-      let isPrimary: boolean;
-
-      if (isX2Model) {
-        // For x2 models (12 panels):
-        if (panel.id.startsWith('side')) {
-          isPrimary = true;
-        } else if (
-          panel.id === 'back1' ||
-          panel.id === 'bottom1' ||
-          panel.id === 'bottom3' ||
-          panel.id === 'front1'
-        ) {
-          isPrimary = true;
-        } else {
-          isPrimary = false;
-        }
-      } else {
-        // For regular models (8 panels) and upgrade models (6 panels)
-        isPrimary =
-          panel.id === 'side1' ||
-          panel.id === 'side2' ||
-          panel.id === 'front1' ||
-          panel.id === 'bottom1' ||
-          panel.id === 'back1' ||
-          panel.id === 'top1';
-      }
-
+      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
       const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) {
@@ -106,7 +116,7 @@ export const applyPresetColorsWithIds = (
 export const applyPresetColors = (
   preset: Preset,
   caseType: string,
-  material: 'acrylic' | '3dp',
+  material: Material,
 ): PanelColors => {
   const caseData = cases[caseType];
   const availableColors = colors[material];
@@ -130,35 +140,7 @@ export const applyPresetColors = (
         return;
       }
 
-      let isPrimary: boolean;
-
-      if (isX2Model) {
-        // For x2 models (12 panels):
-        // - All side panels (side1-4) are primary (e.g., black for Kurobeni)
-        // - Other panels alternate: back1, bottom1, bottom3, front1 are primary
-        if (panel.id.startsWith('side')) {
-          isPrimary = true;
-        } else if (
-          panel.id === 'back1' ||
-          panel.id === 'bottom1' ||
-          panel.id === 'bottom3' ||
-          panel.id === 'front1'
-        ) {
-          isPrimary = true;
-        } else {
-          isPrimary = false;
-        }
-      } else {
-        // For regular models (8 panels) and upgrade models (6 panels)
-        isPrimary =
-          panel.id === 'side1' ||
-          panel.id === 'side2' ||
-          panel.id === 'front1' ||
-          panel.id === 'bottom1' ||
-          panel.id === 'back1' ||
-          panel.id === 'top1';
-      }
-
+      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
       const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) newColors[panel.id] = color.value;
@@ -173,7 +155,7 @@ export const isPresetActive = (
   preset: Preset,
   panelColors: PanelColors,
   caseType: string | null,
-  material: 'acrylic' | '3dp' | undefined,
+  material: Material | undefined,
   panelColorIds?: { [key: string]: string },
 ): boolean => {
   if (!caseType || !material) return false;
@@ -197,33 +179,7 @@ export const isPresetActive = (
               return 'carbon-black';
             }
 
-            let isPrimary: boolean;
-
-            if (isX2Model) {
-              // For x2 models (12 panels)
-              if (panel.id.startsWith('side')) {
-                isPrimary = true;
-              } else if (
-                panel.id === 'back1' ||
-                panel.id === 'bottom1' ||
-                panel.id === 'bottom3' ||
-                panel.id === 'front1'
-              ) {
-                isPrimary = true;
-              } else {
-                isPrimary = false;
-              }
-            } else {
-              // For regular models (8 panels) and upgrade models (6 panels)
-              isPrimary =
-                panel.id === 'side1' ||
-                panel.id === 'side2' ||
-                panel.id === 'front1' ||
-                panel.id === 'bottom1' ||
-                panel.id === 'back1' ||
-                panel.id === 'top1';
-            }
-
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
             return isPrimary ? preset.colors.primary : preset.colors.secondary;
           })();
 
@@ -240,33 +196,7 @@ export const isPresetActive = (
               return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
             }
 
-            let isPrimary: boolean;
-
-            if (isX2Model) {
-              // For x2 models (12 panels)
-              if (panel.id.startsWith('side')) {
-                isPrimary = true;
-              } else if (
-                panel.id === 'back1' ||
-                panel.id === 'bottom1' ||
-                panel.id === 'bottom3' ||
-                panel.id === 'front1'
-              ) {
-                isPrimary = true;
-              } else {
-                isPrimary = false;
-              }
-            } else {
-              // For regular models (8 panels) and upgrade models (6 panels)
-              isPrimary =
-                panel.id === 'side1' ||
-                panel.id === 'side2' ||
-                panel.id === 'front1' ||
-                panel.id === 'bottom1' ||
-                panel.id === 'back1' ||
-                panel.id === 'top1';
-            }
-
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
             const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
             return colors[material].find((c: Color) => c.id === colorId)?.value;
           })();
@@ -283,7 +213,7 @@ export const isPresetActive = (
 // Derive panel colors (hex values) from color IDs for rendering
 export const derivePanelColors = (
   panelColorIds: { [key: string]: string },
-  material: 'acrylic' | '3dp' | undefined,
+  material: Material | undefined,
 ): PanelColors => {
   if (!material) return {};
 

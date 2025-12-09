@@ -750,10 +750,11 @@ Let's walk through the actual implementation of a complex model with special cas
 
 ### The Challenge
 
-- SVG has 16 paths total (15 with fill colors + 1 without)
+- SVG has 14 paths total (13 with fill colors + 1 without)
 - One panel (`main-side2`) has no fill style
-- Model includes all 16 panels (10 main + 6 lid panels)
-- Uses the same SVG as the shallow variant
+- Model includes 14 panels (8 main + 6 lid panels, no stand parts)
+- Differs from shallow variant which includes 4 stand parts
+- Uses shared color mappings with stand parts filtered out
 
 ### Implementation
 
@@ -766,7 +767,7 @@ Let's walk through the actual implementation of a complex model with special cas
   hp: 104,
   material: '3dp',
   panels: [
-    // 10 main panels
+    // 8 main panels (no stand parts - legs removed from this variant)
     { id: 'main-side1', name: 'メイン: サイド1' },
     { id: 'main-side2', name: 'メイン: サイド2' },
     { id: 'main-back1', name: 'メイン: バック1' },
@@ -775,8 +776,6 @@ Let's walk through the actual implementation of a complex model with special cas
     { id: 'main-front', name: 'メイン: フロント' },
     { id: 'main-side3', name: 'メイン: サイド3' },
     { id: 'main-side4', name: 'メイン: サイド4' },
-    { id: 'main-stand1', name: 'メイン: スタンド1' },
-    { id: 'main-stand2', name: 'メイン: スタンド2' },
     // 6 lid panels
     { id: 'lid-side1', name: 'フタ: サイド1' },
     { id: 'lid-back', name: 'フタ: バック' },
@@ -788,15 +787,45 @@ Let's walk through the actual implementation of a complex model with special cas
 }
 ```
 
-#### 2. Complete Color Mapping
+#### 2. Shared Color Mapping with Filtering
+
+The 10BOX models use a shared mapping approach to reduce duplication:
 
 ```typescript
 // /components/case-visualizer.tsx
+// Common color mappings shared by both 10BOX variants
+const COLOR_TO_PANEL_10BOX_COMMON: { [key: string]: string } = {
+  '#00a99d': 'main-side1',
+  '#ef4136': 'main-back1',
+  '#ed1c24': 'main-bottom1',
+  '#fff200': 'main-bottom2',
+  '#00a651': 'main-front',
+  '#00aeef': 'main-side3',
+  '#2e3192': 'main-side4',
+  '#662d91': 'lid-side1',
+  '#a97c50': 'lid-back',
+  '#a7a9ac': 'lid-top1',
+  '#939598': 'lid-top2',
+  '#58595b': 'lid-front',
+  '#808285': 'lid-side2',
+  // Stand parts (included in shallow, excluded in deep)
+  '#ec008c': 'stand-angle1',
+  '#9e1f63': 'stand-angle2',
+  '#e179dd': 'stand-support1',
+  '#e1d57f': 'stand-support2',
+};
+
+// Shallow variant uses all common mappings (18 panels total)
+const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
+  ...COLOR_TO_PANEL_10BOX_COMMON,
+};
+
+// Deep variant filters out stand parts (14 panels total)
 // SVG path order (0-indexed):
 // Path 0: #00aeef (cyan) -> main-side3
 // Path 1: #00a99d (teal) -> main-side1
 // Path 2: #2e3192 (dark blue) -> main-side4
-// Path 3: No fill style -> main-side2 (handled by index)
+// Path 3: No fill style -> main-side2 (handled by position)
 // Path 4: #ef4136 (red) -> main-back1
 // Path 5: #00a651 (green) -> main-front
 // Path 6: #fff200 (yellow) -> main-bottom2
@@ -807,28 +836,23 @@ Let's walk through the actual implementation of a complex model with special cas
 // Path 11: #662d91 (purple) -> lid-side1
 // Path 12: #58595b (dark gray) -> lid-front
 // Path 13: #a97c50 (brown) -> lid-back
-// Path 14: #ec008c (magenta) -> main-stand1
-// Path 15: #9e1f63 (dark purple) -> main-stand2
-
-const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
-  '#00aeef': 'main-side3', // Path 0
-  '#00a99d': 'main-side1', // Path 1
-  '#2e3192': 'main-side4', // Path 2
-  // Path 3 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1', // Path 4
-  '#00a651': 'main-front', // Path 5
-  '#fff200': 'main-bottom2', // Path 6
-  '#ed1c24': 'main-bottom1', // Path 7
-  '#939598': 'lid-top2', // Path 8
-  '#a7a9ac': 'lid-top1', // Path 9
-  '#808285': 'lid-side2', // Path 10
-  '#662d91': 'lid-side1', // Path 11
-  '#58595b': 'lid-front', // Path 12
-  '#a97c50': 'lid-back', // Path 13
-  '#ec008c': 'main-stand1', // Path 14
-  '#9e1f63': 'main-stand2', // Path 15
-};
+const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = (() => {
+  // Exclude stand parts from common mappings (deep model has no legs)
+  const standPartColors = ['#ec008c', '#9e1f63', '#e179dd', '#e1d57f'];
+  return Object.fromEntries(
+    Object.entries(COLOR_TO_PANEL_10BOX_COMMON).filter(
+      ([color]) => !standPartColors.includes(color),
+    ),
+  );
+})();
 ```
+
+**Why this approach?**
+
+- Reduces code duplication between shallow and deep variants
+- Makes it clear which colors represent stand parts
+- Easy to maintain when adding new common panels
+- Explicit filtering documents the intentional difference
 
 #### 3. Special Case Handling
 

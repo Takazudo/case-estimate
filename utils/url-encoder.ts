@@ -1,5 +1,5 @@
 // URL parameter encoding/decoding with short codes
-import type { Colors, Color } from '@/types';
+import type { Colors, Color, Material } from '@/types';
 
 // Case model mappings (1-2 chars)
 const CASE_MAP: { [key: string]: string } = {
@@ -224,7 +224,7 @@ export function decodeCase(encoded: string): string | null {
 export function createColorIdMap(colors: Colors): { [colorValue: string]: string } {
   const map: { [colorValue: string]: string } = {};
 
-  const materials: Array<'acrylic' | '3dp'> = ['acrylic', '3dp'];
+  const materials: Material[] = ['acrylic', '3dp'];
   materials.forEach((material) => {
     if (colors[material]) {
       colors[material].forEach((color: Color) => {
@@ -240,7 +240,7 @@ export function createColorIdMap(colors: Colors): { [colorValue: string]: string
 export function createColorValueMap(colors: Colors): { [colorId: string]: string } {
   const map: { [colorId: string]: string } = {};
 
-  const materials: Array<'acrylic' | '3dp'> = ['acrylic', '3dp'];
+  const materials: Material[] = ['acrylic', '3dp'];
   materials.forEach((material) => {
     if (colors[material]) {
       colors[material].forEach((color: Color) => {

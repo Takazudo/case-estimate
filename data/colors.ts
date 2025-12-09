@@ -1,7 +1,7 @@
-import type { Colors } from '@/types';
+import type { Colors, Material } from '@/types';
 
 // Helper function to get color opacity by hex value
-export const getColorOpacityByValue = (hexValue: string, material: 'acrylic' | '3dp'): number => {
+export const getColorOpacityByValue = (hexValue: string, material: Material): number => {
   // Handle pattern values
   if (hexValue.startsWith('pattern-')) {
     return 1; // Patterns are always fully opaque
@@ -28,7 +28,7 @@ export const getColorOpacityByValue = (hexValue: string, material: 'acrylic' | '
 };
 
 // Helper function to get color opacity by color ID
-export const getColorOpacityById = (colorId: string, material: 'acrylic' | '3dp'): number => {
+export const getColorOpacityById = (colorId: string, material: Material): number => {
   const colorList = colors[material];
   const color = colorList.find((c) => c.id === colorId);
   const opacity = color?.opacity ?? 1; // Default to 1 (fully opaque) if not specified

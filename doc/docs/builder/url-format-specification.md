@@ -133,12 +133,12 @@ const PANEL_CODES_X2 = {
 };
 ```
 
-#### 10BOX Models (18 panels)
+#### 10BOX Shallow Model (18 panels)
 
-Applies to: 10box-shallow-3dp, 10box-deep-3dp
+Applies to: 10box-shallow-3dp
 
 ```typescript
-const PANEL_CODES_10BOX = {
+const PANEL_CODES_10BOX_SHALLOW = {
   // Main body (use 'm' prefix)
   'main-side1': 'm1',
   'main-side2': 'm2',
@@ -166,6 +166,36 @@ const PANEL_CODES_10BOX = {
 ```
 
 **Note:** The stand panel codes use 3 characters (e.g., `sa1`, `ss1`) to distinguish them from the deprecated `main-stand1` (`m9`) and `main-stand2` (`ma`) codes used in older configurations.
+
+#### 10BOX Deep Model (14 panels)
+
+Applies to: 10box-deep-3dp
+
+```typescript
+const PANEL_CODES_10BOX_DEEP = {
+  // Main body (use 'm' prefix)
+  'main-side1': 'm1',
+  'main-side2': 'm2',
+  'main-side3': 'm3',
+  'main-side4': 'm4',
+  'main-back1': 'm5',
+  'main-bottom1': 'm6',
+  'main-bottom2': 'm7',
+  'main-front': 'm8',
+
+  // Lid (use 'l' prefix)
+  'lid-side1': 'l1',
+  'lid-side2': 'l2',
+  'lid-back': 'l3',
+  'lid-top1': 'l4',
+  'lid-top2': 'l5',
+  'lid-front': 'l6',
+
+  // Note: Deep model has no stand parts
+};
+```
+
+**Note:** The deep variant has no stand parts, so it only includes 14 panels (8 main + 6 lid).
 
 #### 5BOX Models (11 panels)
 

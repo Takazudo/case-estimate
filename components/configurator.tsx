@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, PanelColorIds } from '@/types';
@@ -154,16 +154,16 @@ function Configurator() {
     panelColorIds, // Pass color IDs instead of hex values
   });
 
-  const handlePanelClick = (panelId: string) => {
+  const handlePanelClick = useCallback((panelId: string) => {
     setSelectedPanel(panelId);
     // Store the panel ID for the modal to use immediately
     modalPanelIdRef.current = panelId;
     // Open color selection modal when SVG panel is clicked
     setIsColorModalOpen(true);
-  };
+  }, []);
 
   // Handle panel selection from sidebar (panel list or color preview)
-  const handleSidebarPanelSelect = (panelId: string | null) => {
+  const handleSidebarPanelSelect = useCallback((panelId: string | null) => {
     if (panelId) {
       setSelectedPanel(panelId);
       // Store the panel ID for the modal to use immediately
@@ -173,7 +173,7 @@ function Configurator() {
     } else {
       setSelectedPanel(null);
     }
-  };
+  }, []);
 
   const handleModalColorSelect = (color: Color) => {
     // Use the panel ID from ref, which was set when modal was opened
@@ -204,7 +204,7 @@ function Configurator() {
     };
   };
 
-  const handleCaseSelect = (caseType: string) => {
+  const handleCaseSelect = useCallback((caseType: string) => {
     // Always require a case to be selected
     if (!caseType) return;
     setSelectedCase(caseType);
@@ -249,13 +249,16 @@ function Configurator() {
         setPanelColorIds({});
       }
     }
-  };
+  }, []);
 
-  const handlePresetSelect = (preset: Preset) => {
-    if (!selectedCase || !material) return;
-    const result = applyPresetColorsWithIds(preset, selectedCase, material);
-    setPanelColorIds(result.colorIds);
-  };
+  const handlePresetSelect = useCallback(
+    (preset: Preset) => {
+      if (!selectedCase || !material) return;
+      const result = applyPresetColorsWithIds(preset, selectedCase, material);
+      setPanelColorIds(result.colorIds);
+    },
+    [selectedCase, material],
+  );
 
   const isPresetActive = (preset: Preset): boolean => {
     return checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds);
