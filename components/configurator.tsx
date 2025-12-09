@@ -200,56 +200,54 @@ function Configurator() {
       id: panelColorIds[targetPanelId] || 'default',
       name: colorName,
       value: colorValue || '#f3f4f6',
-      material: material === 'acrylic' ? 'Acrylic' : '3DP',
+      material: '', // Material display name not available in this context
     };
   };
 
-  const handleCaseSelect = useCallback((caseType: string) => {
-    // Always require a case to be selected
-    if (!caseType) return;
-    setSelectedCase(caseType);
-    setSelectedPanel(null);
-
-    // Auto-select first preset
-    const caseData = cases[caseType];
-    if (caseData && caseData.material) {
-      const presetList = colors.presets[caseData.material];
-      if (presetList && presetList.length > 0) {
-        const firstPreset = presetList[0];
-        const result = applyPresetColorsWithIds(firstPreset, caseType, caseData.material);
-        setPanelColorIds(result.colorIds);
-      } else {
-        // Set default color IDs for all panels
-        const defaultColorId = colors[caseData.material]?.[0]?.id;
-        if (defaultColorId) {
-          const defaultColorIds: PanelColorIds = {};
-          caseData.panels.forEach((panel) => {
-            defaultColorIds[panel.id] = defaultColorId;
-          });
-          setPanelColorIds(defaultColorIds);
-        } else {
-          setPanelColorIds({});
-        }
-      }
-    } else {
-      // Set default color IDs for all panels
-      const caseData = cases[caseType];
-      if (caseData && caseData.material) {
-        const defaultColorId = colors[caseData.material]?.[0]?.id;
-        if (defaultColorId) {
-          const defaultColorIds: PanelColorIds = {};
-          caseData.panels.forEach((panel) => {
-            defaultColorIds[panel.id] = defaultColorId;
-          });
-          setPanelColorIds(defaultColorIds);
-        } else {
-          setPanelColorIds({});
-        }
-      } else {
-        setPanelColorIds({});
-      }
+  // Helper function to set default color IDs for all panels
+  const setDefaultColorIds = useCallback((caseData: (typeof cases)[string]) => {
+    if (!caseData?.material) {
+      setPanelColorIds({});
+      return;
     }
+
+    const defaultColorId = colors[caseData.material]?.[0]?.id;
+    if (!defaultColorId) {
+      setPanelColorIds({});
+      return;
+    }
+
+    const defaultColorIds: PanelColorIds = {};
+    caseData.panels.forEach((panel) => {
+      defaultColorIds[panel.id] = defaultColorId;
+    });
+    setPanelColorIds(defaultColorIds);
   }, []);
+
+  const handleCaseSelect = useCallback(
+    (caseType: string) => {
+      // Always require a case to be selected
+      if (!caseType) return;
+      setSelectedCase(caseType);
+      setSelectedPanel(null);
+
+      // Auto-select first preset
+      const caseData = cases[caseType];
+      if (caseData?.material) {
+        const presetList = colors.presets[caseData.material];
+        if (presetList && presetList.length > 0) {
+          const firstPreset = presetList[0];
+          const result = applyPresetColorsWithIds(firstPreset, caseType, caseData.material);
+          setPanelColorIds(result.colorIds);
+        } else {
+          setDefaultColorIds(caseData);
+        }
+      } else {
+        setDefaultColorIds(cases[caseType]);
+      }
+    },
+    [setDefaultColorIds],
+  );
 
   const handlePresetSelect = useCallback(
     (preset: Preset) => {
@@ -268,13 +266,16 @@ function Configurator() {
     setIsOrderInfoModalOpen(true);
   };
 
-  // Create color map for display
-  const colorMap: { [key: string]: string } = {};
-  if (material) {
-    colors[material]?.forEach((color) => {
-      colorMap[color.value] = color.name;
-    });
-  }
+  // Create color map for display (memoized to prevent unnecessary recalculation)
+  const colorMap = useMemo(() => {
+    const map: { [key: string]: string } = {};
+    if (material) {
+      colors[material]?.forEach((color) => {
+        map[color.value] = color.name;
+      });
+    }
+    return map;
+  }, [material]);
 
   return (
     <div className="h-full relative">

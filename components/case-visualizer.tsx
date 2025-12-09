@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { colorService } from '@/utils/color-service';
+import { isX2Model, isOpenModel, isUpgradeModel } from '@/utils/case-type-utils';
+import type { Material } from '@/types';
 import {
   CLASS_TO_PANEL_8,
   CLASS_TO_PANEL_12,
@@ -19,7 +21,7 @@ interface CaseVisualizerProps {
   panelColorIds?: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
-  material?: string;
+  material?: Material;
   onLoadingChange?: (isLoading: boolean) => void;
 }
 
@@ -37,6 +39,19 @@ function isValidColor(color: string): boolean {
   return /^#([0-9A-Fa-f]{3}){1,2}$/.test(color);
 }
 
+// Sanitize SVG content to prevent XSS attacks
+// Removes script tags and dangerous event handlers
+function sanitizeSvg(svgText: string): string {
+  // Remove script tags and their contents
+  let sanitized = svgText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+
+  // Remove event handler attributes (onclick, onload, onerror, etc.)
+  sanitized = sanitized.replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, '');
+  sanitized = sanitized.replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '');
+
+  return sanitized;
+}
+
 const CaseVisualizer = ({
   caseType,
   panelColors,
@@ -50,12 +65,11 @@ const CaseVisualizer = ({
   const [svgLoaded, setSvgLoaded] = useState(false);
 
   // Determine which class mapping to use based on model type
-  const isX2Model = caseType.includes('x2');
+  const isX2 = isX2Model(caseType);
   const is10BoxModel = caseType.startsWith('10box-');
   const is5BoxModel = caseType.startsWith('5box-');
-  const isOpenModel = caseType.includes('open');
   const isStandModel = caseType.startsWith('zudo-stand-');
-  const CLASS_TO_PANEL = isX2Model ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
+  const CLASS_TO_PANEL = isX2 ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
   const addPatternsToSvg = (svg: SVGElement) => {
@@ -150,9 +164,10 @@ const CaseVisualizer = ({
 
         const response = await fetch(svgPath);
         const svgText = await response.text();
+        const sanitizedSvg = sanitizeSvg(svgText);
 
         if (svgContainerRef.current) {
-          svgContainerRef.current.innerHTML = svgText;
+          svgContainerRef.current.innerHTML = sanitizedSvg;
 
           // Ensure the SVG scales properly and centers
           const svg = svgContainerRef.current?.querySelector('svg');
@@ -169,7 +184,7 @@ const CaseVisualizer = ({
             svg.style.margin = 'auto';
 
             // For 10BOX model, 5BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
-            if (is10BoxModel || is5BoxModel || isOpenModel || isStandModel) {
+            if (is10BoxModel || is5BoxModel || isOpenModel(caseType) || isStandModel) {
               // Select the appropriate color mapping based on model type
               let colorToPanelMap: { [key: string]: string };
               if (caseType === '10box-shallow-3dp') {
@@ -178,7 +193,7 @@ const CaseVisualizer = ({
                 colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
               } else if (caseType === '5box-shallow-3dp' || caseType === '5box-deep-3dp') {
                 colorToPanelMap = COLOR_TO_PANEL_5BOX_SHALLOW;
-              } else if (caseType.includes('upgrade')) {
+              } else if (isUpgradeModel(caseType)) {
                 colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
               } else if (isStandModel) {
                 colorToPanelMap = COLOR_TO_PANEL_ZUDO_STAND;
@@ -235,7 +250,7 @@ const CaseVisualizer = ({
                     ? '10BOX'
                     : is5BoxModel
                       ? '5BOX'
-                      : isOpenModel
+                      : isOpenModel(caseType)
                         ? 'Open'
                         : isStandModel
                           ? 'Stand'
@@ -251,7 +266,7 @@ const CaseVisualizer = ({
               const styleElement = svg.querySelector('style');
               if (styleElement) {
                 // Override the CSS rules to use black as default
-                const classes = isX2Model
+                const classes = isX2
                   ? ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
                   : ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
                 const newStyles = classes
@@ -288,7 +303,7 @@ const CaseVisualizer = ({
       const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
-      if (is10BoxModel || is5BoxModel || isOpenModel || isStandModel) {
+      if (is10BoxModel || is5BoxModel || isOpenModel(caseType) || isStandModel) {
         // Handle 10BOX, 5BOX, Open, and Stand models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
         const paths = svg.querySelectorAll('path[data-panel-id]');

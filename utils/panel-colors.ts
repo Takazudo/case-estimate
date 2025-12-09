@@ -2,6 +2,7 @@ import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, Material } from '@/types';
 import { colorService } from './color-service';
+import { isX2Model } from './case-type-utils';
 
 interface PanelColors {
   [key: string]: string;
@@ -78,7 +79,7 @@ export const applyPresetColorsWithIds = (
   const newColors: PanelColors = {};
   const newColorIds: { [key: string]: string } = {};
 
-  const isX2Model = caseType.includes('x2');
+  const isX2 = isX2Model(caseType);
   const is10BoxModel = caseType.startsWith('10box-');
   const isStandModel = caseType.startsWith('zudo-stand-');
 
@@ -100,7 +101,7 @@ export const applyPresetColorsWithIds = (
         return;
       }
 
-      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+      const isPrimary = isPrimaryPanel(panel.id, isX2);
       const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) {
@@ -123,7 +124,7 @@ export const applyPresetColors = (
   const availableColors = colors[material];
   const newColors: PanelColors = {};
 
-  const isX2Model = caseType.includes('x2');
+  const isX2 = isX2Model(caseType);
   const is10BoxModel = caseType.startsWith('10box-');
   const isStandModel = caseType.startsWith('zudo-stand-');
 
@@ -141,7 +142,7 @@ export const applyPresetColors = (
         return;
       }
 
-      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+      const isPrimary = isPrimaryPanel(panel.id, isX2);
       const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) newColors[panel.id] = color.value;
@@ -164,7 +165,7 @@ export const isPresetActive = (
   const caseData = cases[caseType];
   if (!caseData) return false;
 
-  const isX2Model = caseType.includes('x2');
+  const isX2 = isX2Model(caseType);
   const is10BoxModel = caseType.startsWith('10box-');
   const isStandModel = caseType.startsWith('zudo-stand-');
 
@@ -180,7 +181,7 @@ export const isPresetActive = (
               return 'carbon-black';
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2);
             return isPrimary ? preset.colors.primary : preset.colors.secondary;
           })();
 
@@ -197,7 +198,7 @@ export const isPresetActive = (
               return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2);
             const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
             return colors[material].find((c: Color) => c.id === colorId)?.value;
           })();
