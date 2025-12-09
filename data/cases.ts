@@ -311,8 +311,6 @@ export const cases: Cases = {
       { id: 'main-front', name: 'メイン: フロント' },
       { id: 'main-side3', name: 'メイン: サイド3' },
       { id: 'main-side4', name: 'メイン: サイド4' },
-      { id: 'main-stand1', name: 'メイン: スタンド1' },
-      { id: 'main-stand2', name: 'メイン: スタンド2' },
       { id: 'lid-side1', name: 'フタ: サイド1' },
       { id: 'lid-back', name: 'フタ: バック' },
       { id: 'lid-top1', name: 'フタ: トップ1' },

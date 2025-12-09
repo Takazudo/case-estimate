@@ -72,7 +72,7 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
   '#808285': 'lid-side2', // Panel 16: フタ: サイド2 (gray - right side)
 };
 
-// For 10BOX Deep model - 16 panels (same as shallow, includes all lid panels)
+// For 10BOX Deep model - 14 panels (8 main + 6 lid, no stand parts)
 // SVG path order (0-indexed):
 // Path 0: #00aeef (cyan) -> main-side3
 // Path 1: #00a99d (teal) -> main-side1
@@ -88,8 +88,6 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
 // Path 11: #662d91 (purple) -> lid-side1
 // Path 12: #58595b (dark gray) -> lid-front
 // Path 13: #a97c50 (brown) -> lid-back
-// Path 14: #ec008c (magenta) -> main-stand1
-// Path 15: #9e1f63 (dark purple) -> main-stand2
 const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
   '#00aeef': 'main-side3', // Path 0: メイン: サイド3 (cyan)
   '#00a99d': 'main-side1', // Path 1: メイン: サイド1 (teal)
@@ -105,8 +103,6 @@ const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
   '#662d91': 'lid-side1', // Path 11: フタ: サイド1 (purple)
   '#58595b': 'lid-front', // Path 12: フタ: フロント (dark gray)
   '#a97c50': 'lid-back', // Path 13: フタ: バック (brown)
-  '#ec008c': 'main-stand1', // Path 14: メイン: スタンド1 (magenta)
-  '#9e1f63': 'main-stand2', // Path 15: メイン: スタンド2 (dark purple)
 };
 
 // For zudo-block-60-open Type A and B models - 2 panels
