@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { CloseIcon } from '@/components/icons/close-icon';
+import { useLockBodyScroll } from '@/hooks/use-lock-body-scroll';
 
 interface BaseModalProps {
   isOpen: boolean;
@@ -22,10 +23,12 @@ const BaseModal: React.FC<BaseModalProps> = ({
 }) => {
   const [shouldRender, setShouldRender] = useState(false);
 
+  // Use the existing hook for scroll locking
+  useLockBodyScroll(isOpen);
+
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      document.body.style.overflow = 'hidden';
       return undefined;
     }
 
@@ -33,7 +36,6 @@ const BaseModal: React.FC<BaseModalProps> = ({
       // Delay unmounting to allow fade-out animation
       const timer = setTimeout(() => {
         setShouldRender(false);
-        document.body.style.overflow = 'unset';
       }, 300);
 
       return () => clearTimeout(timer);

@@ -1,3 +1,5 @@
+export type Material = 'acrylic' | '3dp';
+
 export interface Panel {
   id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface RailOption {
 export interface Case {
   name: string;
   hp: number;
-  material: 'acrylic' | '3dp';
+  material: Material;
   panels: Panel[];
 }
 

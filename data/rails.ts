@@ -1,11 +1,8 @@
-import type { RailOption } from '@/types';
+import type { RailOption, Material } from '@/types';
 
 // Rail options shared across all products
 // Prices differ based on case material (acrylic vs 3dp)
-export const railOptions: {
-  acrylic: RailOption[];
-  '3dp': RailOption[];
-} = {
+export const railOptions: Record<Material, RailOption[]> = {
   acrylic: [
     { type: 'lite', name: 'Lite', price: 7980 },
     { type: 'dual', name: 'Dual', price: 11980 },
@@ -19,7 +16,7 @@ export const railOptions: {
 };
 
 // Get rail options for a specific case based on HP and material
-export function getRailOptions(hp: number, material: 'acrylic' | '3dp'): RailOption[] {
+export function getRailOptions(hp: number, material: Material): RailOption[] {
   // For 60HP cases, adjust prices
   if (hp === 60) {
     return railOptions[material].map((rail) => ({
