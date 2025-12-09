@@ -133,7 +133,7 @@ const PANEL_CODES_X2 = {
 };
 ```
 
-#### 10BOX Models (16 panels)
+#### 10BOX Models (18 panels)
 
 Applies to: 10box-shallow-3dp, 10box-deep-3dp
 
@@ -148,8 +148,6 @@ const PANEL_CODES_10BOX = {
   'main-bottom1': 'm6',
   'main-bottom2': 'm7',
   'main-front': 'm8',
-  'main-stand1': 'm9',
-  'main-stand2': 'ma',
 
   // Lid (use 'l' prefix)
   'lid-side1': 'l1',
@@ -158,8 +156,16 @@ const PANEL_CODES_10BOX = {
   'lid-top1': 'l4',
   'lid-top2': 'l5',
   'lid-front': 'l6',
+
+  // Stand parts (use 's' prefix with 3-character codes)
+  'stand-angle1': 'sa1',    // スタンド: アングル1
+  'stand-angle2': 'sa2',    // スタンド: アングル2
+  'stand-support1': 'ss1',  // スタンド: サポート1
+  'stand-support2': 'ss2',  // スタンド: サポート2
 };
 ```
+
+**Note:** The stand panel codes use 3 characters (e.g., `sa1`, `ss1`) to distinguish them from the deprecated `main-stand1` (`m9`) and `main-stand2` (`ma`) codes used in older configurations.
 
 #### 5BOX Models (11 panels)
 
@@ -314,12 +320,15 @@ This is the **KuroBeni** preset pattern (black primary, crimson-red secondary).
 
 ### Example 3: 10BOX Model
 
-**URL:** `/m?c=9a&p=m1cb.m2cb.m3cb.m4cb.m5cb.m6cb.m7cb.m8cb.m9cb.macb.l1cb.l2cb.l3cb.l4cb.l5cb.l6cb`
+**URL:** `/m?c=9a&p=m1cb.m2cb.m3cb.m4cb.m5cb.m6cb.m7cb.m8cb.l1cb.l2cb.l3cb.l4cb.l5cb.l6cb.sa1cb.sa2cb.ss1cb.ss2cb`
 
 **Decoded:**
 
 - Case: `10box-shallow-3dp` (104HP, 3D printed)
-- All panels: carbon-black (YamiKage/All Black preset)
+- All 18 panels: carbon-black (YamiKage/All Black preset)
+  - Main body: 8 panels (m1-m8)
+  - Lid: 6 panels (l1-l6)
+  - Stand: 4 panels (sa1, sa2, ss1, ss2)
 
 ### Example 4: 5BOX Model
 
@@ -440,10 +449,15 @@ function decodePanelColors(encoded: string): { [key: string]: string } {
   const parts = encoded.split('.');
 
   parts.forEach((part) => {
-    // Determine panel code length based on first character
+    // Determine panel code length based on first character(s)
+    // 10BOX stand panels use 3-char codes (sa1, sa2, ss1, ss2)
+    // Other special panels use 2-char codes (m*, l*, t*, n*, p*)
+    // Standard panels use 1-char codes (1-9, a-c)
     let panelCodeLength = 1;
-    if (part[0] === 'm' || part[0] === 'l' || part[0] === 't' || part[0] === 'n' || part[0] === 'p') {
-      panelCodeLength = 2; // 10BOX, open upgrade, or stand panels
+    if (part.startsWith('sa') || part.startsWith('ss')) {
+      panelCodeLength = 3; // 10BOX stand panels
+    } else if (part[0] === 'm' || part[0] === 'l' || part[0] === 't' || part[0] === 'n' || part[0] === 'p') {
+      panelCodeLength = 2; // 10BOX main/lid, open upgrade, or stand panels
     }
 
     const panelCode = part.slice(0, panelCodeLength);
@@ -466,8 +480,11 @@ function decodePanelColors(encoded: string): { [key: string]: string } {
 **Key Points:**
 
 - Returns color IDs directly (not hex values)
-- Handles variable-length panel codes (1-2 chars)
-- Automatically detects 10BOX (`m`, `l`) and open upgrade (`t`) prefixes
+- Handles variable-length panel codes (1-3 chars)
+  - 1 char: Standard panels (1-9, a-c)
+  - 2 chars: 10BOX main/lid (`m*`, `l*`), open upgrade (`t*`), stand models (`n*`, `p*`)
+  - 3 chars: 10BOX stand panels (`sa*`, `ss*`)
+- Automatically detects prefixes and adjusts parsing accordingly
 - Skips invalid codes gracefully
 
 ### Why Color IDs Instead of Hex Values?
