@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { getColorOpacityByValue, getColorOpacityById } from '@/data/colors';
+import { colorService } from '@/utils/color-service';
 import {
   CLASS_TO_PANEL_8,
   CLASS_TO_PANEL_12,
@@ -349,9 +349,9 @@ const CaseVisualizer = ({
                 // Use color ID if available, otherwise fall back to hex value
                 const colorId = panelColorIds?.[panelId];
                 if (colorId) {
-                  opacity = getColorOpacityById(colorId, material);
+                  opacity = colorService.getOpacity(colorId, material);
                 } else {
-                  opacity = getColorOpacityByValue(color, material);
+                  opacity = colorService.getOpacityByValue(color, material);
                 }
               } else {
                 // Default opacity for acrylic if material is undefined
@@ -425,10 +425,10 @@ const CaseVisualizer = ({
               if (material === 'acrylic' || material === '3dp') {
                 const colorId = panelColorIds?.[panelId];
                 if (colorId) {
-                  baseOpacity = getColorOpacityById(colorId, material);
+                  baseOpacity = colorService.getOpacity(colorId, material);
                 } else {
                   const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-                  baseOpacity = getColorOpacityByValue(color, material);
+                  baseOpacity = colorService.getOpacityByValue(color, material);
                 }
               } else {
                 baseOpacity = 0.8; // Default for acrylic if material is undefined
@@ -497,9 +497,9 @@ const CaseVisualizer = ({
                 // Use color ID if available, otherwise fall back to hex value
                 const colorId = panelColorIds?.[panelId];
                 if (colorId) {
-                  opacity = getColorOpacityById(colorId, material);
+                  opacity = colorService.getOpacity(colorId, material);
                 } else {
-                  opacity = getColorOpacityByValue(color, material);
+                  opacity = colorService.getOpacityByValue(color, material);
                 }
               } else {
                 // Default opacity for acrylic if material is undefined
@@ -574,10 +574,10 @@ const CaseVisualizer = ({
               if (material === 'acrylic' || material === '3dp') {
                 const colorId = panelColorIds?.[panelId];
                 if (colorId) {
-                  baseOpacity = getColorOpacityById(colorId, material);
+                  baseOpacity = colorService.getOpacity(colorId, material);
                 } else {
                   const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-                  baseOpacity = getColorOpacityByValue(color, material);
+                  baseOpacity = colorService.getOpacityByValue(color, material);
                 }
               } else {
                 baseOpacity = 0.8; // Default for acrylic if material is undefined

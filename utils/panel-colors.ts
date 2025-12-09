@@ -1,6 +1,7 @@
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, Material } from '@/types';
+import { colorService } from './color-service';
 
 interface PanelColors {
   [key: string]: string;
@@ -216,20 +217,7 @@ export const derivePanelColors = (
   material: Material | undefined,
 ): PanelColors => {
   if (!material) return {};
-
-  const panelColors: PanelColors = {};
-  const availableColors = colors[material];
-
-  if (!availableColors) return {};
-
-  Object.entries(panelColorIds).forEach(([panelId, colorId]) => {
-    const color = availableColors.find((c: Color) => c.id === colorId);
-    if (color) {
-      panelColors[panelId] = color.value;
-    }
-  });
-
-  return panelColors;
+  return colorService.derivePanelColors(panelColorIds, material);
 };
 
 // Generate background pattern SVG

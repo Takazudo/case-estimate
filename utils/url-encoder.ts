@@ -1,5 +1,5 @@
 // URL parameter encoding/decoding with short codes
-import type { Colors, Color, Material } from '@/types';
+import { colorService } from './color-service';
 
 // Case model mappings (1-2 chars)
 const CASE_MAP: { [key: string]: string } = {
@@ -220,34 +220,18 @@ export function decodeCase(encoded: string): string | null {
   return CASE_REVERSE_MAP[encoded] || null;
 }
 
-// Create color ID to value mapping from color data
-export function createColorIdMap(colors: Colors): { [colorValue: string]: string } {
-  const map: { [colorValue: string]: string } = {};
-
-  const materials: Material[] = ['acrylic', '3dp'];
-  materials.forEach((material) => {
-    if (colors[material]) {
-      colors[material].forEach((color: Color) => {
-        map[color.value] = color.id;
-      });
-    }
-  });
-
-  return map;
+// Re-export color service functions for backward compatibility
+// These are now handled by the centralized color service
+/**
+ * @deprecated Use colorService.createColorIdMap() instead
+ */
+export function createColorIdMap(): { [colorValue: string]: string } {
+  return colorService.createColorIdMap();
 }
 
-// Create color ID to value reverse mapping
-export function createColorValueMap(colors: Colors): { [colorId: string]: string } {
-  const map: { [colorId: string]: string } = {};
-
-  const materials: Material[] = ['acrylic', '3dp'];
-  materials.forEach((material) => {
-    if (colors[material]) {
-      colors[material].forEach((color: Color) => {
-        map[color.id] = color.value;
-      });
-    }
-  });
-
-  return map;
+/**
+ * @deprecated Use colorService.createColorValueMap() instead
+ */
+export function createColorValueMap(): { [colorId: string]: string } {
+  return colorService.createColorValueMap();
 }
