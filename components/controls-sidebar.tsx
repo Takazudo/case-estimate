@@ -93,7 +93,6 @@ export default function ControlsSidebar({
                   panelColors={panelColors}
                   onPanelClick={onPanelSelect}
                   colorMap={colorMap}
-                  material={material}
                 />
               )}
             </div>

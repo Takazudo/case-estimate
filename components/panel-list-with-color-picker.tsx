@@ -8,7 +8,6 @@ interface PanelListWithColorPickerProps {
   panelColors: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   colorMap: { [key: string]: string };
-  material: 'acrylic' | '3dp';
 }
 
 const PanelListWithColorPicker = ({

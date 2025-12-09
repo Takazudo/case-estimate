@@ -328,21 +328,38 @@ const CaseVisualizer = ({
         const svgText = await response.text();
 
         if (svgContainerRef.current) {
-          svgContainerRef.current.innerHTML = svgText;
+          // Use DOMParser for safer SVG injection
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+          const svg = svgDoc.querySelector('svg');
+
+          // Check for parsing errors
+          const parseError = svgDoc.querySelector('parsererror');
+          if (parseError || !svg) {
+            console.error('Failed to parse SVG:', parseError?.textContent || 'Invalid SVG');
+            onLoadingChange?.(false);
+            return;
+          }
+
+          // Clear container and append parsed SVG
+          svgContainerRef.current.innerHTML = '';
+          svgContainerRef.current.appendChild(document.importNode(svg, true));
+
+          // Get the SVG element from the container (now in the DOM)
+          const svgInDom = svgContainerRef.current.querySelector('svg');
 
           // Ensure the SVG scales properly and centers
-          const svg = svgContainerRef.current?.querySelector('svg');
-          if (svg) {
+          if (svgInDom) {
             // Remove width/height attributes to let viewBox handle sizing
-            svg.removeAttribute('width');
-            svg.removeAttribute('height');
+            svgInDom.removeAttribute('width');
+            svgInDom.removeAttribute('height');
             // Set proper styling for centering and scaling
-            svg.style.width = '100%';
-            svg.style.height = '100%';
-            svg.style.maxWidth = '100%';
-            svg.style.maxHeight = '100%';
-            svg.style.display = 'block';
-            svg.style.margin = 'auto';
+            svgInDom.style.width = '100%';
+            svgInDom.style.height = '100%';
+            svgInDom.style.maxWidth = '100%';
+            svgInDom.style.maxHeight = '100%';
+            svgInDom.style.display = 'block';
+            svgInDom.style.margin = 'auto';
 
             // For 10BOX model, 5BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
             if (is10BoxModel || is5BoxModel || isOpenModel || isStandModel) {
@@ -363,7 +380,7 @@ const CaseVisualizer = ({
               }
 
               // Get all paths (including the one without fill style for Panel 2)
-              const allPaths = svg.querySelectorAll('path');
+              const allPaths = svgInDom.querySelectorAll('path');
               // Include both paths with fill styles AND the path at position 3 (Panel 2 with no fill)
               const paths = Array.from(allPaths);
 
@@ -424,7 +441,7 @@ const CaseVisualizer = ({
               });
             } else {
               // Remove or override the style element that contains default colors
-              const styleElement = svg.querySelector('style');
+              const styleElement = svgInDom.querySelector('style');
               if (styleElement) {
                 // Override the CSS rules to use black as default
                 const classes = isX2Model
@@ -439,8 +456,8 @@ const CaseVisualizer = ({
           }
 
           // Add pattern definitions
-          if (svg) {
-            addPatternsToSvg(svg);
+          if (svgInDom) {
+            addPatternsToSvg(svgInDom);
           }
 
           setSvgLoaded(true);
