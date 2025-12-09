@@ -43,7 +43,29 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
   l: 'front2', // L フロント2
 };
 
-// For 10BOX Shallow model - maps fill colors to panel IDs
+// Common color mappings shared by both 10BOX variants
+const COLOR_TO_PANEL_10BOX_COMMON: { [key: string]: string } = {
+  '#00a99d': 'main-side1', // メイン: サイド1 (teal)
+  // main-side2 has no fill style, handled by position
+  '#ef4136': 'main-back1', // メイン: バック1 (red)
+  '#ed1c24': 'main-bottom1', // メイン: ボトム1 (darker red)
+  '#fff200': 'main-bottom2', // メイン: ボトム2 (yellow)
+  '#00a651': 'main-front', // メイン: フロント (green)
+  '#00aeef': 'main-side3', // メイン: サイド3 (cyan)
+  '#2e3192': 'main-side4', // メイン: サイド4 (dark blue)
+  '#662d91': 'lid-side1', // フタ: サイド1 (purple)
+  '#a97c50': 'lid-back', // フタ: バック (brown)
+  '#a7a9ac': 'lid-top1', // フタ: トップ1 (light gray)
+  '#939598': 'lid-top2', // フタ: トップ2 (gray)
+  '#58595b': 'lid-front', // フタ: フロント (dark gray)
+  '#808285': 'lid-side2', // フタ: サイド2 (gray)
+  '#ec008c': 'stand-angle1', // スタンド: アングル1 (bright magenta/pink)
+  '#9e1f63': 'stand-angle2', // スタンド: アングル2 (darker purple)
+  '#e179dd': 'stand-support1', // スタンド: サポート1 (light pink)
+  '#e1d57f': 'stand-support2', // スタンド: サポート2 (yellow/tan)
+};
+
+// For 10BOX Shallow model - uses common mappings (all 18 panels)
 // SVG path positions (after v3 update with new stand parts):
 // Position 1: #2e3192 (dark blue) -> Panel 8 (main-side4)
 // Position 2: #00aeef (cyan) -> Panel 7 (main-side3)
@@ -54,27 +76,10 @@ const CLASS_TO_PANEL_12: { [key: string]: string } = {
 // Position 7: #fff200 (yellow) -> Panel 5 (main-bottom2)
 // Position 8: #ed1c24 (darker red) -> Panel 4 (main-bottom1)
 const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
-  '#00a99d': 'main-side1', // Panel 1: メイン: サイド1 (teal)
-  // Panel 2 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1', // Panel 3: メイン: バック1 (red - top)
-  '#ed1c24': 'main-bottom1', // Panel 4: メイン: ボトム1 (darker red - center upper)
-  '#fff200': 'main-bottom2', // Panel 5: メイン: ボトム2 (yellow - center middle)
-  '#00a651': 'main-front', // Panel 6: メイン: フロント (green - bottom)
-  '#00aeef': 'main-side3', // Panel 7: メイン: サイド3 (cyan - right main side)
-  '#2e3192': 'main-side4', // Panel 8: メイン: サイド4 (dark blue - right bottom side)
-  '#662d91': 'lid-side1', // Panel 9: フタ: サイド1 (purple - left side)
-  '#a97c50': 'lid-back', // Panel 10: フタ: バック (brown - top)
-  '#a7a9ac': 'lid-top1', // Panel 11: フタ: トップ1 (gray - right center)
-  '#939598': 'lid-top2', // Panel 12: フタ: トップ2 (light gray - left center)
-  '#58595b': 'lid-front', // Panel 13: フタ: フロント (dark gray - bottom)
-  '#808285': 'lid-side2', // Panel 14: フタ: サイド2 (gray - right side)
-  '#ec008c': 'stand-angle1', // Panel 15: スタンド: アングル1 (bright magenta/pink)
-  '#9e1f63': 'stand-angle2', // Panel 16: スタンド: アングル2 (darker purple)
-  '#e179dd': 'stand-support1', // Panel 17: スタンド: サポート1 (light pink)
-  '#e1d57f': 'stand-support2', // Panel 18: スタンド: サポート2 (yellow/tan)
+  ...COLOR_TO_PANEL_10BOX_COMMON,
 };
 
-// For 10BOX Deep model - 18 panels (same as shallow, includes all lid panels and new stand parts)
+// For 10BOX Deep model - uses common mappings (all 18 panels)
 // SVG path order (0-indexed):
 // Path 0: #00aeef (cyan) -> main-side3
 // Path 1: #00a99d (teal) -> main-side1
@@ -95,24 +100,7 @@ const COLOR_TO_PANEL_10BOX_SHALLOW: { [key: string]: string } = {
 // Path 16: #ec008c (magenta) -> stand-angle1
 // Path 17: #9e1f63 (dark purple) -> stand-angle2
 const COLOR_TO_PANEL_10BOX_DEEP: { [key: string]: string } = {
-  '#00aeef': 'main-side3', // Path 0: メイン: サイド3 (cyan)
-  '#00a99d': 'main-side1', // Path 1: メイン: サイド1 (teal)
-  '#2e3192': 'main-side4', // Path 2: メイン: サイド4 (dark blue)
-  // Path 3 (main-side2) has no fill style, handled by position
-  '#ef4136': 'main-back1', // Path 4: メイン: バック1 (red)
-  '#00a651': 'main-front', // Path 5: メイン: フロント (green)
-  '#fff200': 'main-bottom2', // Path 6: メイン: ボトム2 (yellow)
-  '#ed1c24': 'main-bottom1', // Path 7: メイン: ボトム1 (darker red)
-  '#939598': 'lid-top2', // Path 8: フタ: トップ2 (gray)
-  '#a7a9ac': 'lid-top1', // Path 9: フタ: トップ1 (light gray)
-  '#808285': 'lid-side2', // Path 10: フタ: サイド2 (gray)
-  '#662d91': 'lid-side1', // Path 11: フタ: サイド1 (purple)
-  '#58595b': 'lid-front', // Path 12: フタ: フロント (dark gray)
-  '#a97c50': 'lid-back', // Path 13: フタ: バック (brown)
-  '#e179dd': 'stand-support1', // Path 14: スタンド: サポート1 (light pink)
-  '#e1d57f': 'stand-support2', // Path 15: スタンド: サポート2 (yellow/tan)
-  '#ec008c': 'stand-angle1', // Path 16: スタンド: アングル1 (magenta)
-  '#9e1f63': 'stand-angle2', // Path 17: スタンド: アングル2 (dark purple)
+  ...COLOR_TO_PANEL_10BOX_COMMON,
 };
 
 // For zudo-block-60-open Type A and B models - 2 panels
@@ -160,6 +148,14 @@ const DEFAULT_PANEL_COLOR = '#1f2937';
 
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
+
+// Validate color value to prevent CSS injection
+// Only allow hex colors (#RRGGBB or #RGB) or the special pattern fill
+function isValidColor(color: string): boolean {
+  if (color === 'pattern-red-green-stripe') return true;
+  // Validate hex color format: #RGB or #RRGGBB
+  return /^#([0-9A-Fa-f]{3}){1,2}$/.test(color);
+}
 
 const CaseVisualizer = ({
   caseType,
@@ -437,7 +433,13 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+
+            // Validate color to prevent CSS injection attacks (e.g., url() values)
+            if (!isValidColor(color)) {
+              console.warn(`Invalid color value detected: ${color}. Using default color.`);
+              color = DEFAULT_PANEL_COLOR;
+            }
 
             // Handle pattern fills
             const isPatternFill = color === 'pattern-red-green-stripe';
@@ -576,7 +578,13 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+
+            // Validate color to prevent CSS injection attacks (e.g., url() values)
+            if (!isValidColor(color)) {
+              console.warn(`Invalid color value detected: ${color}. Using default color.`);
+              color = DEFAULT_PANEL_COLOR;
+            }
 
             // Handle pattern fills
             const isPatternFill = color === 'pattern-red-green-stripe';
