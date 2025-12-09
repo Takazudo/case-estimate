@@ -44,7 +44,7 @@ interface UseGalleryDialogReturn {
  *
  * @example
  * ```tsx
- * const { imageLoaded, imageError, isLoading, imageRef } = useGalleryDialog({
+ * const { imageLoaded, imageError, isLoading, imageRef, handleImageLoad, handleImageError } = useGalleryDialog({
  *   currentSlug: 'zudo-block-40-01',
  *   getImageUrl: (slug) => `https://example.com/images/${slug}-2000w.webp`,
  *   slugsToPreload: ['zudo-block-40-02', 'zudo-block-40-03'],
@@ -56,8 +56,8 @@ interface UseGalleryDialogReturn {
  *     <img
  *       ref={imageRef}
  *       src={getImageUrl(currentSlug)}
- *       onLoad={() => {}}
- *       onError={() => {}}
+ *       onLoad={handleImageLoad}
+ *       onError={handleImageError}
  *       style={{ opacity: imageLoaded ? 1 : 0 }}
  *     />
  *   </>
@@ -90,6 +90,8 @@ export function useGalleryDialog({
 
   // Preload adjacent images
   useEffect(() => {
+    const images: HTMLImageElement[] = [];
+
     slugsToPreload.forEach((slug) => {
       const url = getImageUrl(slug);
       if (preloadedImagesRef.current.has(url)) {
@@ -104,7 +106,16 @@ export function useGalleryDialog({
       img.onerror = () => {
         preloadedImagesRef.current.delete(url);
       };
+      images.push(img);
     });
+
+    // Cleanup: remove event listeners to prevent memory leaks
+    return () => {
+      images.forEach((img) => {
+        img.onload = null;
+        img.onerror = null;
+      });
+    };
   }, [slugsToPreload, getImageUrl]);
 
   // Reset image loaded state when slug changes and check if already loaded
@@ -126,6 +137,7 @@ export function useGalleryDialog({
 
   // Additional effect to periodically check if image has loaded
   // This handles cases where onLoad doesn't fire properly
+  // Stops after 30 seconds to prevent unnecessary work
   useEffect(() => {
     if (imageLoaded || imageError) return;
 
@@ -137,7 +149,15 @@ export function useGalleryDialog({
       }
     }, 100);
 
-    return () => clearInterval(intervalId);
+    // Stop checking after 30 seconds
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 30000);
+
+    return () => {
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
   }, [imageLoaded, imageError, currentSlug]);
 
   return {
