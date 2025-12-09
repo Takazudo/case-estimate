@@ -227,6 +227,48 @@ const CaseVisualizer = ({
 
     const loadSVG = async () => {
       try {
+        // Validate caseType to prevent path traversal and ensure only known models are loaded
+        // This prevents loading arbitrary files via ../ or other path manipulation
+        const validCaseTypes = [
+          'zudo-block-40-ACR-A',
+          'zudo-block-40-ACR-B',
+          'zudo-block-40-3DP-A',
+          'zudo-block-40-3DP-B',
+          'zudo-block-60-ACR-A',
+          'zudo-block-60-ACR-B',
+          'zudo-block-60-3DP-A',
+          'zudo-block-60-3DP-B',
+          'zudo-block-40x2-ACR-A',
+          'zudo-block-40x2-ACR-B',
+          'zudo-block-40x2-3DP-A',
+          'zudo-block-40x2-3DP-B',
+          'zudo-block-60x2-ACR-A',
+          'zudo-block-60x2-ACR-B',
+          'zudo-block-60x2-3DP-A',
+          'zudo-block-60x2-3DP-B',
+          '10box-shallow-3dp',
+          '10box-deep-3dp',
+          '10box-3dp',
+          '5box-shallow-3dp',
+          '5box-deep-3dp',
+          'zudo-block-60-open-ACR-A',
+          'zudo-block-60-open-ACR-B',
+          'zudo-block-60-open-upgrade-ACR',
+          'zudo-block-60-open-3DP-A',
+          'zudo-block-60-open-3DP-B',
+          'zudo-block-60-open-upgrade-3DP',
+          'zudo-stand-40',
+          'zudo-stand-40x2',
+          'zudo-stand-60',
+          'zudo-stand-60x2',
+        ];
+
+        if (!validCaseTypes.includes(caseType)) {
+          console.error(`Invalid case type: ${caseType}`);
+          onLoadingChange?.(false);
+          return;
+        }
+
         // Dynamically select SVG path based on caseType
         const svgPath = `/svg/${caseType}.svg`;
 
