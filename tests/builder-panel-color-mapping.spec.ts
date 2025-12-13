@@ -13,6 +13,16 @@ import { getExpectedColorValue, rgbToHex, colorsMatch } from './helpers/color-ma
 
 test.describe('Builder: Panel Color Mapping Verification', () => {
   /**
+   * Helper function to navigate and wait for app to be ready
+   */
+  async function navigateAndWait(page: any, url: string) {
+    await page.goto(url);
+    await page.waitForLoadState('networkidle');
+    // Wait for React hydration and SVG to be fully rendered with data-panel-id attributes
+    await page.waitForSelector('[data-panel-id]', { timeout: 15000 });
+  }
+
+  /**
    * Helper function to verify panel color matches expected value
    */
   async function verifyPanelColor(
@@ -58,8 +68,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // p=1cb.2cr.3bg.4bw.5do.6lo.7dy.8dg
     const url = '/m?c=2a&p=1cb.2cr.3bg.4bw.5do.6lo.7dy.8dg';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Expected mapping: panel number -> color code
     const expectedColors: { [panelId: string]: string } = {
@@ -83,8 +92,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Only set colors for some panels, others should default to carbon-black
     const url = '/m?c=2a&p=1cr.3bg.7dy';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Verify specified panels
     await verifyPanelColor(page, 'side1', 'cr', 'Partial colors');
@@ -99,8 +107,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // KuroBeni pattern: carbon-black + crimson-red alternating
     const url = '/m?c=2a&p=1cb.2cb.7cr.8cr.5cb.6cr.3cb.4cr';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       side1: 'cb',
@@ -123,8 +130,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // c=6a: zudo-block-40x2-3DP-A
     const url = '/m?c=6a&p=1cb.2cr.9bg.abw.7do.8lo.5dy.6dg.bib.cg.3sg.4sw';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       side1: 'cb', // 1
@@ -150,8 +156,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Test 10BOX main body panels (m1-m8)
     const url = '/m?c=9a&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       'main-side1': 'cb',
@@ -173,8 +178,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Test 10BOX lid panels (l1-l6)
     const url = '/m?c=9a&p=l1cb.l2cr.l3bg.l4bw.l5do.l6lo';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       'lid-side1': 'cb',
@@ -194,8 +198,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Test 10BOX stand panels (sa1, sa2, ss1, ss2)
     const url = '/m?c=9a&p=sa1cb.sa2cr.ss1bg.ss2bw';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       'stand-angle1': 'cb',
@@ -213,8 +216,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Deep model has no stand panels, only main (8) + lid (6)
     const url = '/m?c=9b&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg.l1ib.l2g.l3sg.l4sw.l5pk.l6ca';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Verify main panels
     const mainColors: { [panelId: string]: string } = {
@@ -254,8 +256,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // 5BOX has 11 panels total
     const url = '/m?c=fa&p=m1cb.m2cr.m5bg.m6bw.m7do.m8lo.l1dy.l2dg.l7ib.l8g.l6sg';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       'main-side1': 'cb',
@@ -280,8 +281,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Test pattern color rendering
     const url = '/m?c=2a&p=1rg.3cb';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Verify pattern color
     await verifyPanelColor(page, 'side1', 'rg', 'Pattern color');
@@ -292,8 +292,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     const url = '/m?c=2a&p=1cb.2cr.3bg.4bw';
 
     // Initial load
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Verify initial colors
     await verifyPanelColor(page, 'side1', 'cb', 'Before reload');
@@ -317,8 +316,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // but different opacity (1.0 vs 0.6)
     const url = '/m?c=2a&p=1cr.2rd';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // Both should have the same fill hex value
     await verifyPanelColor(page, 'side1', 'cr', 'Opaque red');
@@ -342,8 +340,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Set color for only side1, verify other panels are NOT affected
     const url = '/m?c=2a&p=1cr';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     // side1 should be crimson-red
     await verifyPanelColor(page, 'side1', 'cr', 'Specified panel');
@@ -368,8 +365,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Use 3DP variant (pu) instead of acrylic (ou) to test with 3DP colors
     const url = '/m?c=pu&p=7cb.8cr.5bg.6bw.t1do.t2lo';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       back1: 'cb',
@@ -390,8 +386,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Use 3DP variant (pa) instead of acrylic (oa) to test with 3DP colors
     const url = '/m?c=pa&p=1cb.2cr';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     await verifyPanelColor(page, 'side1', 'cb', 'Open Basic side1');
     await verifyPanelColor(page, 'side2', 'cr', 'Open Basic side2');
@@ -401,8 +396,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Stand models have 4 panels
     const url = '/m?c=s4&p=n1cb.n2cr.p1bg.p2bw';
 
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
+    await navigateAndWait(page, url);
 
     const expectedColors: { [panelId: string]: string } = {
       angle1: 'cb',
