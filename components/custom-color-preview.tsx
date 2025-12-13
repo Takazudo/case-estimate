@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { cases } from '@/data/cases';
 import PanelColorSwatch from '@/components/panel-color-swatch';
 import { resolvePanelColorBackground } from '@/utils/panel-color-utils';
+import { DEFAULT_PANEL_COLOR } from '@/data/colors';
 
 interface CustomColorPreviewProps {
   caseType: string;
@@ -58,7 +59,7 @@ const CustomColorPreview = ({
         <div className="flex">
           {currentCase.panels.map((panel) => {
             const color = panelColors[panel.id];
-            const backgroundColor = resolvePanelColorBackground(color, '#1f2937');
+            const backgroundColor = resolvePanelColorBackground(color, DEFAULT_PANEL_COLOR);
 
             return (
               <button
@@ -80,7 +81,7 @@ const CustomColorPreview = ({
               >
                 <PanelColorSwatch
                   value={color}
-                  fallbackColor="#1f2937"
+                  fallbackColor={DEFAULT_PANEL_COLOR}
                   className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
                   dataTestId="custom-preview-swatch"
                 />

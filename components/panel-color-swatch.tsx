@@ -4,6 +4,7 @@ import type { CSSProperties, HTMLAttributes } from 'react';
 import PatternFill from '@/components/pattern-fill';
 import { isPanelPattern } from '@/utils/panel-patterns';
 import { resolvePanelColorBackground } from '@/utils/panel-color-utils';
+import { DEFAULT_PANEL_COLOR } from '@/data/colors';
 
 export interface PanelColorSwatchProps extends HTMLAttributes<HTMLSpanElement> {
   value?: string;
@@ -14,7 +15,7 @@ export interface PanelColorSwatchProps extends HTMLAttributes<HTMLSpanElement> {
 
 const PanelColorSwatch = ({
   value,
-  fallbackColor = '#1f2937',
+  fallbackColor = DEFAULT_PANEL_COLOR,
   patternViewBoxSize = 24,
   className = '',
   style,

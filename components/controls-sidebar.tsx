@@ -2,7 +2,7 @@
 
 import { cases } from '@/data/cases';
 import type { Preset } from '@/types';
-import PanelListWithColorPicker from './panel-list-with-color-picker';
+import PanelListUnified from './panel-list-unified';
 import CustomColorPreview from './custom-color-preview';
 import ModelSelector from './model-selector';
 import PresetSelector from './preset-selector';
@@ -88,12 +88,12 @@ export default function ControlsSidebar({
 
             <div className="space-y-vgap-sm">
               {material && (
-                <PanelListWithColorPicker
+                <PanelListUnified
                   panels={panels}
                   panelColors={panelColors}
-                  onPanelClick={onPanelSelect}
+                  onPanelSelect={onPanelSelect}
                   colorMap={colorMap}
-                  material={material}
+                  variant="color-picker"
                 />
               )}
             </div>

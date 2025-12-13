@@ -1,5 +1,8 @@
 import type { Colors, Material } from '@/types';
 
+// Default panel color constant
+export const DEFAULT_PANEL_COLOR = '#1f2937';
+
 // Helper function to get color opacity by hex value
 export const getColorOpacityByValue = (hexValue: string, material: Material): number => {
   // Handle pattern values

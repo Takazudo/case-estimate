@@ -1,6 +1,12 @@
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, Material } from '@/types';
+import {
+  isX2Model,
+  is10BoxModel,
+  isStandModel,
+  isSingleColorOnlyModel,
+} from '@/utils/case-model-type';
 
 interface PanelColors {
   [key: string]: string;
@@ -77,10 +83,6 @@ export const applyPresetColorsWithIds = (
   const newColors: PanelColors = {};
   const newColorIds: { [key: string]: string } = {};
 
-  const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType.startsWith('10box-');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-
   caseData.panels.forEach((panel) => {
     if (preset.colors.all) {
       const color = availableColors.find((c: Color) => c.id === preset.colors.all);
@@ -90,7 +92,7 @@ export const applyPresetColorsWithIds = (
       }
     } else {
       // 10BOX and Stand models only support YamiKage (all black), so skip primary/secondary logic
-      if (is10BoxModel || isStandModel) {
+      if (isSingleColorOnlyModel(caseType)) {
         const color = availableColors.find((c: Color) => c.id === 'carbon-black');
         if (color) {
           newColors[panel.id] = color.value;
@@ -99,7 +101,7 @@ export const applyPresetColorsWithIds = (
         return;
       }
 
-      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+      const isPrimary = isPrimaryPanel(panel.id, isX2Model(caseType));
       const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
       const color = availableColors.find((c: Color) => c.id === colorId);
       if (color) {
@@ -118,36 +120,7 @@ export const applyPresetColors = (
   caseType: string,
   material: Material,
 ): PanelColors => {
-  const caseData = cases[caseType];
-  const availableColors = colors[material];
-  const newColors: PanelColors = {};
-
-  const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType.startsWith('10box-');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-
-  caseData.panels.forEach((panel) => {
-    if (preset.colors.all) {
-      const color = availableColors.find((c: Color) => c.id === preset.colors.all);
-      if (color) newColors[panel.id] = color.value;
-    } else {
-      // 10BOX and Stand models only support YamiKage (all black), so skip primary/secondary logic
-      if (is10BoxModel || isStandModel) {
-        // This shouldn't happen since 10BOX and Stand only have YamiKage which has colors.all
-        // But as a fallback, use carbon-black for all panels
-        const color = availableColors.find((c: Color) => c.id === 'carbon-black');
-        if (color) newColors[panel.id] = color.value;
-        return;
-      }
-
-      const isPrimary = isPrimaryPanel(panel.id, isX2Model);
-      const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
-      const color = availableColors.find((c: Color) => c.id === colorId);
-      if (color) newColors[panel.id] = color.value;
-    }
-  });
-
-  return newColors;
+  return applyPresetColorsWithIds(preset, caseType, material).colors;
 };
 
 // Check if current panel colors match a preset
@@ -163,10 +136,6 @@ export const isPresetActive = (
   const caseData = cases[caseType];
   if (!caseData) return false;
 
-  const isX2Model = caseType.includes('x2');
-  const is10BoxModel = caseType.startsWith('10box-');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-
   for (const panel of caseData.panels) {
     // If we have color IDs, use those for comparison (more accurate)
     if (panelColorIds && panelColorIds[panel.id]) {
@@ -175,11 +144,11 @@ export const isPresetActive = (
         ? preset.colors.all
         : (() => {
             // 10BOX and Stand models only support YamiKage (all black)
-            if (is10BoxModel || isStandModel) {
+            if (is10BoxModel(caseType) || isStandModel(caseType)) {
               return 'carbon-black';
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model(caseType));
             return isPrimary ? preset.colors.primary : preset.colors.secondary;
           })();
 
@@ -192,11 +161,11 @@ export const isPresetActive = (
         ? colors[material].find((c: Color) => c.id === preset.colors.all)?.value
         : (() => {
             // 10BOX and Stand models only support YamiKage (all black)
-            if (is10BoxModel || isStandModel) {
+            if (is10BoxModel(caseType) || isStandModel(caseType)) {
               return colors[material].find((c: Color) => c.id === 'carbon-black')?.value;
             }
 
-            const isPrimary = isPrimaryPanel(panel.id, isX2Model);
+            const isPrimary = isPrimaryPanel(panel.id, isX2Model(caseType));
             const colorId = isPrimary ? preset.colors.primary : preset.colors.secondary;
             return colors[material].find((c: Color) => c.id === colorId)?.value;
           })();
