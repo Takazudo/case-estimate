@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { getColorOpacityByValue, getColorOpacityById } from '@/data/colors';
+import { getColorOpacityByValue, getColorOpacityById, DEFAULT_PANEL_COLOR } from '@/data/colors';
 import { CLASS_TO_PANEL_8, CLASS_TO_PANEL_12, getColorToPanelMapping } from '@/data/panel-mappings';
 import {
   isX2Model,
@@ -10,7 +10,7 @@ import {
   isOpenModel,
   isStandModel,
 } from '@/utils/case-model-type';
-import { DEFAULT_PANEL_COLOR } from '@/data/colors';
+import type { Material } from '@/types';
 
 interface CaseVisualizerProps {
   caseType: string;
@@ -18,7 +18,7 @@ interface CaseVisualizerProps {
   panelColorIds?: { [key: string]: string };
   onPanelClick: (panelId: string) => void;
   selectedPanel: string | null;
-  material?: string;
+  material?: Material;
   onLoadingChange?: (isLoading: boolean) => void;
 }
 

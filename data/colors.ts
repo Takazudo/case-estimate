@@ -1,41 +1,17 @@
 import type { Colors, Material } from '@/types';
+import { colorService } from '@/utils/color-service';
 
 // Default panel color constant
 export const DEFAULT_PANEL_COLOR = '#1f2937';
 
 // Helper function to get color opacity by hex value
 export const getColorOpacityByValue = (hexValue: string, material: Material): number => {
-  // Handle pattern values
-  if (hexValue.startsWith('pattern-')) {
-    return 1; // Patterns are always fully opaque
-  }
-
-  const colorList = colors[material];
-
-  // For 3dp materials, check if this is a semi-transparent color
-  // クリアレッド (#b71c1c) and クリアブルー (#0d47a1) should have 0.8 opacity
-  if (material === '3dp') {
-    // Find colors with explicit opacity < 1 (prefer semi-transparent versions)
-    const semiTransparentColor = colorList.find(
-      (c) => c.value === hexValue && c.opacity !== undefined && c.opacity < 1,
-    );
-    if (semiTransparentColor && semiTransparentColor.opacity !== undefined) {
-      return semiTransparentColor.opacity;
-    }
-  }
-
-  // Default lookup
-  const color = colorList.find((c) => c.value === hexValue);
-  const opacity = color?.opacity ?? 1; // Default to 1 (fully opaque) if not specified
-  return opacity;
+  return colorService.getOpacityByValue(hexValue, material);
 };
 
 // Helper function to get color opacity by color ID
 export const getColorOpacityById = (colorId: string, material: Material): number => {
-  const colorList = colors[material];
-  const color = colorList.find((c) => c.id === colorId);
-  const opacity = color?.opacity ?? 1; // Default to 1 (fully opaque) if not specified
-  return opacity;
+  return colorService.getOpacity(colorId, material);
 };
 
 export const colors: Colors = {

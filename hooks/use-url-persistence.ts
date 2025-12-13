@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { encodeCase, encodePanelColors } from '@/utils/url-encoder';
-
-interface PanelColorIds {
-  [key: string]: string; // Maps panel ID to color ID
-}
+import type { PanelColorIds } from '@/types';
 
 interface UseUrlPersistenceProps {
   selectedCase: string | null;

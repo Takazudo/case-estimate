@@ -187,7 +187,7 @@ function Configurator() {
       id: panelColorIds[targetPanelId] || 'default',
       name: colorName,
       value: colorValue || '#f3f4f6',
-      material: material === 'acrylic' ? 'Acrylic' : '3DP',
+      material: '', // Material display name not available in this context
     };
   };
 

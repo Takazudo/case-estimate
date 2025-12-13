@@ -26,7 +26,7 @@ export interface Color {
   id: string;
   name: string;
   value: string;
-  material: string;
+  material: string; // Material display name (e.g., 'Red', 'PLA', 'PETG')
   opacity?: number;
   imageUrl?: string;
 }
