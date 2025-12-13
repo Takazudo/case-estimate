@@ -97,6 +97,9 @@ jobs:
       - name: Run smoke tests
         run: pnpm run test:smoke
 
+      - name: Run panel color mapping tests
+        run: pnpm exec playwright test tests/builder-panel-color-mapping.spec.ts
+
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v4

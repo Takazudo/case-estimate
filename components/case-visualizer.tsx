@@ -537,6 +537,10 @@ const CaseVisualizer = ({
 
           paths.forEach((path: Element) => {
             const pathElement = path as SVGPathElement;
+
+            // Set data-panel-id for testing
+            pathElement.setAttribute('data-panel-id', panelId);
+
             // Set cursor style
             pathElement.style.cursor = 'pointer';
 
