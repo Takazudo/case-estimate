@@ -32,6 +32,8 @@
     "test:e2e:production": "playwright test --config playwright.config.production.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
+    "test:builder": "playwright test tests/builder-panel-color-mapping.spec.ts",
+    "test:builder:ui": "playwright test tests/builder-panel-color-mapping.spec.ts --ui",
     "b4push": "./scripts/b4push-quick.sh",
     "b4push:full": "./scripts/b4push.sh",
     "b4push:quick": "./scripts/b4push-quick.sh",

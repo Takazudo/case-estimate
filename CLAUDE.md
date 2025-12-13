@@ -162,6 +162,26 @@ The project includes Playwright smoke tests that ensure:
 - Case model switching works correctly
 - No console errors occur during usage
 
+### Panel Color Mapping Tests
+
+Comprehensive e2e tests verify panel-to-color URL parameter mapping:
+
+**What they test:**
+- All 16 case model types (8-panel, X2, 10BOX, 5BOX, Open, Stand)
+- URL parameters correctly control panel colors
+- Only targeted panels change color (no cross-contamination)
+- Pattern colors and opacity handling
+- URL persistence after reload
+
+**When to run:**
+```bash
+pnpm run test:builder        # Run all 16 panel color tests
+pnpm run test:builder:ui     # Run with UI for debugging
+pnpm run b4push:full         # Pre-push validation (includes these tests)
+```
+
+**Important:** These tests are NOT run in CI due to execution time (~10-15 minutes). Run them locally before pushing builder-related changes or before releases.
+
 ### CI/CD
 
 GitHub Actions runs automatically on:
