@@ -1,19 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { colorService } from '@/utils/color-service';
-import { isX2Model, isOpenModel, isUpgradeModel } from '@/utils/case-type-utils';
-import type { Material } from '@/types';
+import { getColorOpacityByValue, getColorOpacityById, DEFAULT_PANEL_COLOR } from '@/data/colors';
+import { CLASS_TO_PANEL_8, CLASS_TO_PANEL_12, getColorToPanelMapping } from '@/data/panel-mappings';
 import {
-  CLASS_TO_PANEL_8,
-  CLASS_TO_PANEL_12,
-  COLOR_TO_PANEL_10BOX_SHALLOW,
-  COLOR_TO_PANEL_10BOX_DEEP,
-  COLOR_TO_PANEL_OPEN_2,
-  COLOR_TO_PANEL_OPEN_UPGRADE,
-  COLOR_TO_PANEL_ZUDO_STAND,
-  COLOR_TO_PANEL_5BOX_SHALLOW,
-} from '@/data/panel-mappings';
+  isX2Model,
+  is10BoxModel,
+  is5BoxModel,
+  isOpenModel,
+  isStandModel,
+} from '@/utils/case-model-type';
+import type { Material } from '@/types';
 
 interface CaseVisualizerProps {
   caseType: string;
@@ -25,11 +22,39 @@ interface CaseVisualizerProps {
   onLoadingChange?: (isLoading: boolean) => void;
 }
 
-// Default black color for all panels
-const DEFAULT_PANEL_COLOR = '#1f2937';
-
 // Timing constant for SVG rendering delay
 const SVG_RENDER_DELAY_MS = 50;
+
+// Stroke width constants
+const STROKE_WIDTH = {
+  default: '1',
+  transparent: '4',
+  hoverNormal: '2',
+  hoverTransparent: '6',
+  selectedNormal: '4',
+  selectedTransparent: '8',
+} as const;
+
+// Selection and hover colors (oklch: lightness%, chroma, hue, alpha)
+const SELECTION_COLOR_SELECTED = 'oklch(54.6% 0.245 262.881 / 0.9)';
+const SELECTION_COLOR_HOVER = 'oklch(54.6% 0.245 262.881 / 0.6)';
+const DROP_SHADOW_SELECTED = `drop-shadow(0 0 12px ${SELECTION_COLOR_SELECTED})`;
+const DROP_SHADOW_HOVER = `drop-shadow(0 0 4px ${SELECTION_COLOR_HOVER})`;
+const BRIGHTNESS_FILTER_HOVER = `${DROP_SHADOW_HOVER} brightness(1.1)`;
+
+// Transparent acrylic color constants
+const TRANSPARENT_ACRYLIC_COLORS = {
+  clear: '#f8f9fa',
+  frostClear: '#4a9b9b',
+  frostClearEdge: '#117269', // ガラスシアン - glass-like edge
+} as const;
+
+// Stroke info returned by applyPanelStyles
+interface StrokeInfo {
+  strokeColor: string;
+  strokeWidth: string;
+  isTransparentAcrylic: boolean;
+}
 
 // Validate color value to prevent CSS injection
 // Only allow hex colors (#RRGGBB or #RGB) or the special pattern fill
@@ -39,17 +64,149 @@ function isValidColor(color: string): boolean {
   return /^#([0-9A-Fa-f]{3}){1,2}$/.test(color);
 }
 
-// Sanitize SVG content to prevent XSS attacks
-// Removes script tags and dangerous event handlers
-function sanitizeSvg(svgText: string): string {
-  // Remove script tags and their contents
-  let sanitized = svgText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+// Helper function to calculate base opacity for a panel
+function getBaseOpacity(
+  panelId: string,
+  material: string | undefined,
+  panelColors: { [key: string]: string },
+  panelColorIds?: { [key: string]: string },
+): number {
+  if (material === 'acrylic' || material === '3dp') {
+    const colorId = panelColorIds?.[panelId];
+    if (colorId) {
+      return getColorOpacityById(colorId, material);
+    }
+    const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+    return getColorOpacityByValue(color, material);
+  }
+  return 0.8; // Default opacity for acrylic if material is undefined
+}
 
-  // Remove event handler attributes (onclick, onload, onerror, etc.)
-  sanitized = sanitized.replace(/\s+on\w+\s*=\s*["'][^"']*["']/gi, '');
-  sanitized = sanitized.replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '');
+// Helper function to apply panel styles
+function applyPanelStyles(
+  pathElement: SVGPathElement,
+  color: string,
+  material: string | undefined,
+  panelColorIds: { [key: string]: string } | undefined,
+  panelId: string,
+  panelColors: { [key: string]: string },
+  useSetAttribute: boolean = false,
+): StrokeInfo {
+  // Handle pattern fills
+  const isPatternFill = color === 'pattern-red-green-stripe';
 
-  return sanitized;
+  // Handle transparent acrylic colors specially
+  const isTransparentAcrylic =
+    material === 'acrylic' &&
+    (color === TRANSPARENT_ACRYLIC_COLORS.clear || color === TRANSPARENT_ACRYLIC_COLORS.frostClear);
+
+  if (isPatternFill) {
+    // Use pattern fill for red-green silk
+    if (useSetAttribute) {
+      pathElement.setAttribute('fill', 'url(#red-green-stripe-pattern)');
+    }
+    pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
+    pathElement.style.setProperty('fill-opacity', '1', 'important');
+  } else if (isTransparentAcrylic) {
+    // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
+    if (useSetAttribute) {
+      pathElement.setAttribute('fill', 'transparent');
+    }
+    pathElement.style.setProperty('fill', 'transparent', 'important');
+    pathElement.style.setProperty('fill-opacity', '1', 'important');
+  } else {
+    // Use both setAttribute and style to ensure the color is applied
+    if (useSetAttribute) {
+      pathElement.setAttribute('fill', color);
+    }
+    pathElement.style.setProperty('fill', color, 'important');
+
+    // Get color-specific opacity from the color definition
+    const opacity = getBaseOpacity(panelId, material, panelColors, panelColorIds);
+    pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
+  }
+
+  // Set stroke color and width based on transparent acrylic type
+  let strokeColor = '#000000'; // default black
+  let strokeWidth: string = STROKE_WIDTH.default;
+
+  if (isTransparentAcrylic) {
+    strokeWidth = STROKE_WIDTH.transparent;
+    if (color === TRANSPARENT_ACRYLIC_COLORS.frostClear) {
+      strokeColor = TRANSPARENT_ACRYLIC_COLORS.frostClearEdge;
+    }
+    // Clear stays #000000 (default)
+  }
+
+  pathElement.style.stroke = strokeColor;
+  pathElement.style.strokeWidth = strokeWidth;
+  pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
+
+  return { strokeColor, strokeWidth, isTransparentAcrylic };
+}
+
+// Helper function to set up panel event handlers
+function setupPanelEventHandlers(
+  pathElement: SVGPathElement,
+  panelId: string,
+  selectedPanel: string | null,
+  material: string | undefined,
+  panelColors: { [key: string]: string },
+  panelColorIds: { [key: string]: string } | undefined,
+  strokeInfo: StrokeInfo,
+): void {
+  const { strokeColor, strokeWidth, isTransparentAcrylic } = strokeInfo;
+
+  // Add hover effect with better transitions
+  pathElement.style.transition = 'all 0.2s ease-out';
+
+  // Add selected state visual feedback
+  if (selectedPanel === panelId) {
+    pathElement.style.filter = DROP_SHADOW_SELECTED;
+    // Use thicker stroke for selected (4px for normal, 8px for transparent)
+    const selectedStrokeWidth = isTransparentAcrylic
+      ? STROKE_WIDTH.selectedTransparent
+      : STROKE_WIDTH.selectedNormal;
+    pathElement.style.strokeWidth = selectedStrokeWidth;
+    pathElement.style.stroke = SELECTION_COLOR_SELECTED;
+  } else {
+    pathElement.style.filter = 'none';
+    // Keep the border with appropriate color and width
+    pathElement.style.strokeWidth = strokeWidth;
+    pathElement.style.stroke = strokeColor;
+  }
+
+  // Hover effects - more visible for acrylic panels
+  pathElement.onmouseenter = () => {
+    if (selectedPanel !== panelId) {
+      // Add drop shadow and border for better visibility
+      pathElement.style.filter = DROP_SHADOW_HOVER;
+      // Use thicker stroke for hover (2px for normal, 6px for transparent)
+      const hoverStrokeWidth = isTransparentAcrylic
+        ? STROKE_WIDTH.hoverTransparent
+        : STROKE_WIDTH.hoverNormal;
+      pathElement.style.strokeWidth = hoverStrokeWidth;
+      pathElement.style.stroke = SELECTION_COLOR_HOVER;
+
+      // Subtle brightness adjustment instead of opacity
+      if (material === 'acrylic') {
+        pathElement.style.filter = BRIGHTNESS_FILTER_HOVER;
+      }
+    }
+  };
+
+  pathElement.onmouseleave = () => {
+    if (selectedPanel !== panelId) {
+      // Remove hover effects but keep border with appropriate color and width
+      pathElement.style.filter = 'none';
+      pathElement.style.strokeWidth = strokeWidth;
+      pathElement.style.stroke = strokeColor;
+    }
+
+    // Restore color-specific opacity
+    const baseOpacity = getBaseOpacity(panelId, material, panelColors, panelColorIds);
+    pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
+  };
 }
 
 const CaseVisualizer = ({
@@ -63,13 +220,10 @@ const CaseVisualizer = ({
 }: CaseVisualizerProps) => {
   const svgContainerRef = useRef<HTMLDivElement>(null);
   const [svgLoaded, setSvgLoaded] = useState(false);
+  const [svgError, setSvgError] = useState<string | null>(null);
 
-  // Determine which class mapping to use based on model type
-  const isX2 = isX2Model(caseType);
-  const is10BoxModel = caseType.startsWith('10box-');
-  const is5BoxModel = caseType.startsWith('5box-');
-  const isStandModel = caseType.startsWith('zudo-stand-');
-  const CLASS_TO_PANEL = isX2 ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
+  // Determine which class mapping to use based on model type (using type-safe utilities)
+  const CLASS_TO_PANEL = isX2Model(caseType) ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
   // Add pattern definitions to SVG
   const addPatternsToSvg = (svg: SVGElement) => {
@@ -113,6 +267,7 @@ const CaseVisualizer = ({
   // Load and inject the SVG
   useEffect(() => {
     setSvgLoaded(false);
+    setSvgError(null);
     onLoadingChange?.(true);
 
     const loadSVG = async () => {
@@ -164,45 +319,54 @@ const CaseVisualizer = ({
 
         const response = await fetch(svgPath);
         const svgText = await response.text();
-        const sanitizedSvg = sanitizeSvg(svgText);
 
         if (svgContainerRef.current) {
-          svgContainerRef.current.innerHTML = sanitizedSvg;
+          // Use DOMParser for safer SVG injection
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+          const svg = svgDoc.querySelector('svg');
+
+          // Check for parsing errors
+          const parseError = svgDoc.querySelector('parsererror');
+          if (parseError || !svg) {
+            console.error('Failed to parse SVG:', parseError?.textContent || 'Invalid SVG');
+            setSvgError('Failed to parse case visualization. The SVG file may be corrupted.');
+            onLoadingChange?.(false);
+            return;
+          }
+
+          // Clear container and append parsed SVG
+          svgContainerRef.current.innerHTML = '';
+          svgContainerRef.current.appendChild(document.importNode(svg, true));
+
+          // Get the SVG element from the container (now in the DOM)
+          const svgInDom = svgContainerRef.current.querySelector('svg');
 
           // Ensure the SVG scales properly and centers
-          const svg = svgContainerRef.current?.querySelector('svg');
-          if (svg) {
+          if (svgInDom) {
             // Remove width/height attributes to let viewBox handle sizing
-            svg.removeAttribute('width');
-            svg.removeAttribute('height');
+            svgInDom.removeAttribute('width');
+            svgInDom.removeAttribute('height');
             // Set proper styling for centering and scaling
-            svg.style.width = '100%';
-            svg.style.height = '100%';
-            svg.style.maxWidth = '100%';
-            svg.style.maxHeight = '100%';
-            svg.style.display = 'block';
-            svg.style.margin = 'auto';
+            svgInDom.style.width = '100%';
+            svgInDom.style.height = '100%';
+            svgInDom.style.maxWidth = '100%';
+            svgInDom.style.maxHeight = '100%';
+            svgInDom.style.display = 'block';
+            svgInDom.style.margin = 'auto';
 
             // For 10BOX model, 5BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
-            if (is10BoxModel || is5BoxModel || isOpenModel(caseType) || isStandModel) {
-              // Select the appropriate color mapping based on model type
-              let colorToPanelMap: { [key: string]: string };
-              if (caseType === '10box-shallow-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_10BOX_SHALLOW;
-              } else if (caseType === '10box-deep-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_10BOX_DEEP;
-              } else if (caseType === '5box-shallow-3dp' || caseType === '5box-deep-3dp') {
-                colorToPanelMap = COLOR_TO_PANEL_5BOX_SHALLOW;
-              } else if (isUpgradeModel(caseType)) {
-                colorToPanelMap = COLOR_TO_PANEL_OPEN_UPGRADE;
-              } else if (isStandModel) {
-                colorToPanelMap = COLOR_TO_PANEL_ZUDO_STAND;
-              } else {
-                colorToPanelMap = COLOR_TO_PANEL_OPEN_2;
-              }
+            if (
+              is10BoxModel(caseType) ||
+              is5BoxModel(caseType) ||
+              isOpenModel(caseType) ||
+              isStandModel(caseType)
+            ) {
+              // Get the appropriate color-to-panel mapping for this case type
+              const colorToPanelMap = getColorToPanelMapping(caseType);
 
               // Get all paths (including the one without fill style for Panel 2)
-              const allPaths = svg.querySelectorAll('path');
+              const allPaths = svgInDom.querySelectorAll('path');
               // Include both paths with fill styles AND the path at position 3 (Panel 2 with no fill)
               const paths = Array.from(allPaths);
 
@@ -217,7 +381,7 @@ const CaseVisualizer = ({
                 // Position varies between models: shallow (index 2) vs deep (index 3)
                 // This logic only applies to 10BOX models, not Open models
                 const isSide2NoFill =
-                  is10BoxModel &&
+                  is10BoxModel(caseType) &&
                   !fillMatch &&
                   ((caseType === '10box-shallow-3dp' && index === 2) ||
                     (caseType === '10box-deep-3dp' && index === 3));
@@ -246,13 +410,13 @@ const CaseVisualizer = ({
                 } else if (fillMatch) {
                   // This path has a fill color but no mapped panel ID
                   // This shouldn't happen if our mappings are complete, but leave path in DOM
-                  const modelType = is10BoxModel
+                  const modelType = is10BoxModel(caseType)
                     ? '10BOX'
-                    : is5BoxModel
+                    : is5BoxModel(caseType)
                       ? '5BOX'
                       : isOpenModel(caseType)
                         ? 'Open'
-                        : isStandModel
+                        : isStandModel(caseType)
                           ? 'Stand'
                           : 'unknown';
                   const unmappedColor = fillMatch[1].trim().toLowerCase();
@@ -263,10 +427,10 @@ const CaseVisualizer = ({
               });
             } else {
               // Remove or override the style element that contains default colors
-              const styleElement = svg.querySelector('style');
+              const styleElement = svgInDom.querySelector('style');
               if (styleElement) {
                 // Override the CSS rules to use black as default
-                const classes = isX2
+                const classes = isX2Model(caseType)
                   ? ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
                   : ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
                 const newStyles = classes
@@ -278,8 +442,8 @@ const CaseVisualizer = ({
           }
 
           // Add pattern definitions
-          if (svg) {
-            addPatternsToSvg(svg);
+          if (svgInDom) {
+            addPatternsToSvg(svgInDom);
           }
 
           setSvgLoaded(true);
@@ -287,12 +451,13 @@ const CaseVisualizer = ({
         }
       } catch (error) {
         console.error('Failed to load SVG:', error);
+        setSvgError('Failed to load case visualization. Please try refreshing the page.');
         onLoadingChange?.(false);
       }
     };
 
     loadSVG();
-  }, [caseType, isX2Model, is10BoxModel, is5BoxModel, isOpenModel, isStandModel, onLoadingChange]);
+  }, [caseType, onLoadingChange]);
 
   // Handle clicks and color updates
   useEffect(() => {
@@ -303,13 +468,18 @@ const CaseVisualizer = ({
       const svg = svgContainerRef.current?.querySelector('svg');
       if (!svg) return;
 
-      if (is10BoxModel || is5BoxModel || isOpenModel(caseType) || isStandModel) {
+      if (
+        is10BoxModel(caseType) ||
+        is5BoxModel(caseType) ||
+        isOpenModel(caseType) ||
+        isStandModel(caseType)
+      ) {
         // Handle 10BOX, 5BOX, Open, and Stand models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
         const paths = svg.querySelectorAll('path[data-panel-id]');
 
         paths.forEach((path: Element) => {
-          const pathElement = path as HTMLElement;
+          const pathElement = path as SVGPathElement;
 
           // Get the panel ID that was set during SVG load
           const panelId = pathElement.getAttribute('data-panel-id');
@@ -336,120 +506,27 @@ const CaseVisualizer = ({
               color = DEFAULT_PANEL_COLOR;
             }
 
-            // Handle pattern fills
-            const isPatternFill = color === 'pattern-red-green-stripe';
+            // Apply panel styles and get stroke info
+            const strokeInfo = applyPanelStyles(
+              pathElement,
+              color,
+              material,
+              panelColorIds,
+              panelId,
+              panelColors,
+              false, // Don't use setAttribute for inline-style models
+            );
 
-            // Handle transparent acrylic colors specially
-            const isTransparentAcrylic =
-              material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
-
-            if (isPatternFill) {
-              // Use pattern fill for red-green silk
-              pathElement.style.fill = 'url(#red-green-stripe-pattern)';
-              pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
-              pathElement.style.setProperty('fill-opacity', '1', 'important');
-            } else if (isTransparentAcrylic) {
-              // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
-              pathElement.style.fill = 'transparent';
-              pathElement.style.setProperty('fill', 'transparent', 'important');
-              pathElement.style.setProperty('fill-opacity', '1', 'important');
-            } else {
-              // Use both setAttribute and style to ensure the color is applied
-              pathElement.style.fill = color;
-              pathElement.style.setProperty('fill', color, 'important');
-
-              // Get color-specific opacity from the color definition
-              let opacity: number;
-              if (material === 'acrylic' || material === '3dp') {
-                // Use color ID if available, otherwise fall back to hex value
-                const colorId = panelColorIds?.[panelId];
-                if (colorId) {
-                  opacity = colorService.getOpacity(colorId, material);
-                } else {
-                  opacity = colorService.getOpacityByValue(color, material);
-                }
-              } else {
-                // Default opacity for acrylic if material is undefined
-                opacity = 0.8;
-              }
-
-              pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
-            }
-
-            // Set stroke color and width based on transparent acrylic type
-            let strokeColor = '#000000'; // default black
-            let strokeWidth = '1'; // default 1px for non-transparent
-
-            if (isTransparentAcrylic) {
-              strokeWidth = '4'; // 4px for transparent acrylics
-              if (color === '#4a9b9b') {
-                strokeColor = '#117269'; // ガラスシアン - glass-like edge
-              }
-              // クリア stays #000000 (default)
-            }
-
-            pathElement.style.stroke = strokeColor;
-            pathElement.style.strokeWidth = strokeWidth;
-            pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
-
-            // Add hover effect with better transitions
-            pathElement.style.transition = 'all 0.2s ease-out';
-
-            // Add selected state visual feedback
-            if (selectedPanel === panelId) {
-              pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
-              // Use thicker stroke for selected (4px for normal, 8px for transparent)
-              const selectedStrokeWidth = isTransparentAcrylic ? '8' : '4';
-              pathElement.style.strokeWidth = selectedStrokeWidth;
-              pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
-            } else {
-              pathElement.style.filter = 'none';
-              // Keep the border with appropriate color and width
-              pathElement.style.strokeWidth = strokeWidth;
-              pathElement.style.stroke = strokeColor;
-            }
-
-            // Hover effects - more visible for acrylic panels
-            pathElement.onmouseenter = () => {
-              if (selectedPanel !== panelId) {
-                // Add drop shadow and border for better visibility
-                pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
-                // Use thicker stroke for hover (2px for normal, 6px for transparent)
-                const hoverStrokeWidth = isTransparentAcrylic ? '6' : '2';
-                pathElement.style.strokeWidth = hoverStrokeWidth;
-                pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
-
-                // Subtle brightness adjustment instead of opacity
-                if (material === 'acrylic') {
-                  pathElement.style.filter =
-                    'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6)) brightness(1.1)';
-                }
-              }
-            };
-
-            pathElement.onmouseleave = () => {
-              if (selectedPanel !== panelId) {
-                // Remove hover effects but keep border with appropriate color and width
-                pathElement.style.filter = 'none';
-                pathElement.style.strokeWidth = strokeWidth;
-                pathElement.style.stroke = strokeColor;
-              }
-
-              // Restore color-specific opacity
-              let baseOpacity: number;
-              if (material === 'acrylic' || material === '3dp') {
-                const colorId = panelColorIds?.[panelId];
-                if (colorId) {
-                  baseOpacity = colorService.getOpacity(colorId, material);
-                } else {
-                  const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-                  baseOpacity = colorService.getOpacityByValue(color, material);
-                }
-              } else {
-                baseOpacity = 0.8; // Default for acrylic if material is undefined
-              }
-              pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
-            };
+            // Set up event handlers
+            setupPanelEventHandlers(
+              pathElement,
+              panelId,
+              selectedPanel,
+              material,
+              panelColors,
+              panelColorIds,
+              strokeInfo,
+            );
           }
         });
       } else {
@@ -459,7 +536,7 @@ const CaseVisualizer = ({
           const paths = svg.querySelectorAll(`.${className}`);
 
           paths.forEach((path: Element) => {
-            const pathElement = path as HTMLElement;
+            const pathElement = path as SVGPathElement;
             // Set cursor style
             pathElement.style.cursor = 'pointer';
 
@@ -481,124 +558,27 @@ const CaseVisualizer = ({
               color = DEFAULT_PANEL_COLOR;
             }
 
-            // Handle pattern fills
-            const isPatternFill = color === 'pattern-red-green-stripe';
+            // Apply panel styles and get stroke info
+            const strokeInfo = applyPanelStyles(
+              pathElement,
+              color,
+              material,
+              panelColorIds,
+              panelId,
+              panelColors,
+              true, // Use setAttribute for class-based models
+            );
 
-            // Handle transparent acrylic colors specially
-            const isTransparentAcrylic =
-              material === 'acrylic' && (color === '#f8f9fa' || color === '#4a9b9b'); // clear or frost-clear values
-
-            if (isPatternFill) {
-              // Use pattern fill for red-green silk
-              pathElement.style.fill = 'url(#red-green-stripe-pattern)';
-              pathElement.setAttribute('fill', 'url(#red-green-stripe-pattern)');
-              pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
-              pathElement.style.setProperty('fill-opacity', '1', 'important');
-            } else if (isTransparentAcrylic) {
-              // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
-              pathElement.style.fill = 'transparent';
-              pathElement.setAttribute('fill', 'transparent');
-              pathElement.style.setProperty('fill', 'transparent', 'important');
-              pathElement.style.setProperty('fill-opacity', '1', 'important');
-            } else {
-              // Use both setAttribute and style to ensure the color is applied
-              pathElement.setAttribute('fill', color);
-              pathElement.style.fill = color;
-              pathElement.style.setProperty('fill', color, 'important');
-
-              // Get color-specific opacity from the color definition
-              let opacity: number;
-              if (material === 'acrylic' || material === '3dp') {
-                // Use color ID if available, otherwise fall back to hex value
-                const colorId = panelColorIds?.[panelId];
-                if (colorId) {
-                  opacity = colorService.getOpacity(colorId, material);
-                } else {
-                  opacity = colorService.getOpacityByValue(color, material);
-                }
-              } else {
-                // Default opacity for acrylic if material is undefined
-                opacity = 0.8;
-              }
-
-              pathElement.style.setProperty('fill-opacity', opacity.toString(), 'important');
-            }
-
-            // Set stroke color and width based on transparent acrylic type
-            let strokeColor = '#000000'; // default black
-            let strokeWidth = '1'; // default 1px for non-transparent
-
-            if (isTransparentAcrylic) {
-              strokeWidth = '4'; // 4px for transparent acrylics
-              if (color === '#4a9b9b') {
-                strokeColor = '#117269'; // ガラスシアン - glass-like edge
-              }
-              // クリア stays #000000 (default)
-            }
-
-            pathElement.style.stroke = strokeColor;
-            pathElement.style.strokeWidth = strokeWidth;
-            pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
-
-            // Add hover effect with better transitions
-            pathElement.style.transition = 'all 0.2s ease-out';
-            pathElement.style.cursor = 'pointer';
-
-            // Add selected state visual feedback
-            if (selectedPanel === panelId) {
-              pathElement.style.filter = 'drop-shadow(0 0 12px oklch(54.6% 0.245 262.881 / 0.9))';
-              // Use thicker stroke for selected (4px for normal, 8px for transparent)
-              const selectedStrokeWidth = isTransparentAcrylic ? '8' : '4';
-              pathElement.style.strokeWidth = selectedStrokeWidth;
-              pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.9)';
-            } else {
-              pathElement.style.filter = 'none';
-              // Keep the border with appropriate color and width
-              pathElement.style.strokeWidth = strokeWidth;
-              pathElement.style.stroke = strokeColor;
-            }
-
-            // Hover effects - more visible for acrylic panels
-            pathElement.onmouseenter = () => {
-              if (selectedPanel !== panelId) {
-                // Add drop shadow and border for better visibility
-                pathElement.style.filter = 'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6))';
-                // Use thicker stroke for hover (2px for normal, 6px for transparent)
-                const hoverStrokeWidth = isTransparentAcrylic ? '6' : '2';
-                pathElement.style.strokeWidth = hoverStrokeWidth;
-                pathElement.style.stroke = 'oklch(54.6% 0.245 262.881 / 0.6)';
-
-                // Subtle brightness adjustment instead of opacity
-                if (material === 'acrylic') {
-                  pathElement.style.filter =
-                    'drop-shadow(0 0 4px oklch(54.6% 0.245 262.881 / 0.6)) brightness(1.1)';
-                }
-              }
-            };
-
-            pathElement.onmouseleave = () => {
-              if (selectedPanel !== panelId) {
-                // Remove hover effects but keep border with appropriate color and width
-                pathElement.style.filter = 'none';
-                pathElement.style.strokeWidth = strokeWidth;
-                pathElement.style.stroke = strokeColor;
-              }
-
-              // Restore color-specific opacity
-              let baseOpacity: number;
-              if (material === 'acrylic' || material === '3dp') {
-                const colorId = panelColorIds?.[panelId];
-                if (colorId) {
-                  baseOpacity = colorService.getOpacity(colorId, material);
-                } else {
-                  const color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
-                  baseOpacity = colorService.getOpacityByValue(color, material);
-                }
-              } else {
-                baseOpacity = 0.8; // Default for acrylic if material is undefined
-              }
-              pathElement.style.setProperty('fill-opacity', baseOpacity.toString(), 'important');
-            };
+            // Set up event handlers
+            setupPanelEventHandlers(
+              pathElement,
+              panelId,
+              selectedPanel,
+              material,
+              panelColors,
+              panelColorIds,
+              strokeInfo,
+            );
           });
         });
       }
@@ -613,14 +593,19 @@ const CaseVisualizer = ({
     onPanelClick,
     material,
     CLASS_TO_PANEL,
-    is10BoxModel,
-    is5BoxModel,
-    isOpenModel,
-    isStandModel,
+    caseType,
   ]);
 
   return (
     <div className="w-full h-full flex items-center justify-center relative">
+      {svgError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-zd-black/80 z-10">
+          <div className="max-w-md px-hgap-md py-vgap-md bg-zd-surface-2 rounded-lg border border-zd-gray">
+            <h3 className="text-lg font-semibold text-zd-white mb-vgap-2xs">Visualization Error</h3>
+            <p className="text-zd-gray">{svgError}</p>
+          </div>
+        </div>
+      )}
       <div ref={svgContainerRef} className="w-full h-full flex items-center justify-center" />
     </div>
   );

@@ -1,16 +1,15 @@
 import type { Colors, Material } from '@/types';
 import { colorService } from '@/utils/color-service';
 
-/**
- * @deprecated Use colorService.getOpacityByValue() instead
- */
+// Default panel color constant
+export const DEFAULT_PANEL_COLOR = '#1f2937';
+
+// Helper function to get color opacity by hex value
 export const getColorOpacityByValue = (hexValue: string, material: Material): number => {
   return colorService.getOpacityByValue(hexValue, material);
 };
 
-/**
- * @deprecated Use colorService.getOpacity() instead
- */
+// Helper function to get color opacity by color ID
 export const getColorOpacityById = (colorId: string, material: Material): number => {
   return colorService.getOpacity(colorId, material);
 };

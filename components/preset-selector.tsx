@@ -5,6 +5,7 @@ import { colors } from '@/data/colors';
 import { PresetSelectorModal } from '@/components/modal/preset-selector-modal';
 import { PresetIcon } from '@/components/icons/preset-icon';
 import type { Preset } from '@/types';
+import { isSingleColorOnlyModel, isOpenModel } from '@/utils/case-model-type';
 
 interface PresetSelectorProps {
   selectedCase: string | null;
@@ -29,14 +30,7 @@ const PresetSelector = ({
 
     // Filter presets based on case model (same logic as modal)
     const filteredPresets = availablePresets.filter((preset) => {
-      if (
-        selectedCase &&
-        (selectedCase.startsWith('10box-') ||
-          selectedCase.startsWith('5box-') ||
-          selectedCase.startsWith('zudo-stand-') ||
-          selectedCase === 'zudo-block-60-open-3DP-A' ||
-          selectedCase === 'zudo-block-60-open-3DP-B')
-      ) {
+      if (selectedCase && (isSingleColorOnlyModel(selectedCase) || isOpenModel(selectedCase))) {
         return preset.id === 'yamikage';
       }
       return true;
