@@ -61,6 +61,21 @@ echo
 echo "🎭 Running smoke tests..."
 PORT=3000 pnpm run test:smoke:production
 
+SMOKE_EXIT=$?
+
+if [ $SMOKE_EXIT -ne 0 ]; then
+  echo "❌ Smoke tests failed"
+  kill $SERVER_PID 2>/dev/null || true
+  exit 1
+fi
+
+echo "✅ Smoke tests passed"
+echo
+
+# Run panel color mapping tests
+echo "🎨 Running panel color mapping tests..."
+PORT=3000 pnpm exec playwright test tests/builder-panel-color-mapping.spec.ts --config playwright.config.production.ts
+
 TEST_EXIT=$?
 
 # Kill server

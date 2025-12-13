@@ -9,6 +9,20 @@ import { getExpectedColorValue, rgbToHex, colorsMatch } from './helpers/color-ma
  * 2. The correct panels are affected (no cross-panel bugs)
  * 3. Color encoding/decoding works correctly
  * 4. Panel mappings are accurate for all model types
+ *
+ * USAGE:
+ * These tests are NOT run in CI due to their complexity and execution time.
+ * Run them locally before pushing builder-related changes:
+ *
+ *   pnpm run test:builder           # Run all panel color tests
+ *   pnpm run test:builder:ui        # Run with UI for debugging
+ *   pnpm run b4push:full            # Includes these tests in pre-push validation
+ *
+ * WHEN TO RUN:
+ * - Before pushing changes to CaseVisualizer component
+ * - Before pushing changes to URL encoding/decoding
+ * - Before pushing changes to panel mappings
+ * - Before releases
  */
 
 test.describe('Builder: Panel Color Mapping Verification', () => {
