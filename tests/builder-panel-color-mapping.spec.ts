@@ -18,8 +18,26 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   async function navigateAndWait(page: any, url: string) {
     await page.goto(url);
     await page.waitForLoadState('networkidle');
-    // Wait for React hydration and SVG to be fully rendered with data-panel-id attributes
-    await page.waitForSelector('[data-panel-id]', { timeout: 15000 });
+
+    // Wait for SVG container to be present
+    await page.waitForSelector('svg', { timeout: 30000 });
+
+    // Wait a bit for React to add data-panel-id attributes via useEffect
+    // The CaseVisualizer sets these after SVG loads with a 50ms delay
+    await page.waitForTimeout(500);
+
+    // Verify data-panel-id is actually set
+    const hasPanelId = await page.locator('[data-panel-id]').count();
+    if (hasPanelId === 0) {
+      // Debug: check what's on the page
+      const svgHTML = await page.locator('svg').first().innerHTML();
+      console.log('SVG HTML sample:', svgHTML.substring(0, 500));
+      const hasClasses = await page.locator('svg path[class]').count();
+      console.log('Number of SVG paths with class:', hasClasses);
+      throw new Error(
+        `No elements with data-panel-id found. Found ${hasClasses} paths with classes.`,
+      );
+    }
   }
 
   /**
