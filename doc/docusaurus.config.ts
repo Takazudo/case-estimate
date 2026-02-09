@@ -41,7 +41,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          routeBasePath: '/',
+          routeBasePath: '/docs',
           // Disable edit links since this is private documentation
           editUrl: undefined,
           // Show last update time and author from git history
@@ -68,7 +68,7 @@ const config: Config = {
         language: ['ja'],
         hashed: true,
         highlightSearchTermsOnTargetPage: true,
-        docsRouteBasePath: '/',
+        docsRouteBasePath: '/docs',
         // Disable indexing for search engines
         indexDocs: true,
         indexBlog: false,

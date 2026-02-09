@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
+    "start": "pnpm run generate && docusaurus start",
+    "build": "pnpm run generate && docusaurus build",
+    "generate": "pnpm run generate:category-nav && pnpm run generate:doc-titles",
+    "generate:category-nav": "node scripts/generate-category-nav.js",
+    "generate:doc-titles": "node scripts/generate-doc-titles.js",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -25,6 +28,7 @@
     "prism-react-renderer": "^2.4.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "gray-matter": "^4.0.3",
     "remark-breaks": "^4.0.0"
   },
   "devDependencies": {

@@ -22,3 +22,9 @@ The INBOX serves as a documentation inbox for:
 - Miscellaneous guides
 
 Documents in this section may be moved to more specific categories as they mature or become part of the main documentation structure.
+
+## Documents in this category
+
+import CategoryNav from '@site/src/components/CategoryNav';
+
+<CategoryNav category="inbox" />

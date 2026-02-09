@@ -19,3 +19,9 @@ The Misc section contains:
 - Product information
 - General reference materials
 - Documentation that doesn't fit into other categories
+
+## Documents in this category
+
+import CategoryNav from '@site/src/components/CategoryNav';
+
+<CategoryNav category="misc" />

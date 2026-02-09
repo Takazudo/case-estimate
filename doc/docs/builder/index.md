@@ -100,8 +100,8 @@ case-estimate/
 
 Explore the sidebar for:
 
-- [Adding New Case Models](/builder/add-new-case-model-guide) - Complete implementation guide
-- [URL Format Specification](/builder/url-format-specification) - Technical details on URL encoding system
+- [Adding New Case Models](/docs/builder/add-new-case-model-guide) - Complete implementation guide
+- [URL Format Specification](/docs/builder/url-format-specification) - Technical details on URL encoding system
 
 ## Development Tools
 
@@ -116,3 +116,9 @@ The project uses:
 ---
 
 For detailed technical documentation, see the guides in the sidebar.
+
+## Documents in this category
+
+import CategoryNav from '@site/src/components/CategoryNav';
+
+<CategoryNav category="builder" />
