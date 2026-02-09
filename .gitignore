@@ -162,3 +162,6 @@ worktrees/
 
 # MCP
 .playwright-mcp/
+
+# Serena
+.serena/
