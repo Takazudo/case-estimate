@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 interface AProps {
@@ -12,9 +11,9 @@ export function A({ href, children }: AProps) {
   // Internal links
   if (href.startsWith('/') || href.startsWith('#')) {
     return (
-      <Link href={href} className="zd-invert-color-link">
+      <a href={href} className="zd-invert-color-link">
         {children}
-      </Link>
+      </a>
     );
   }
 
