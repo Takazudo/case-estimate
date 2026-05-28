@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import ArrowRight from './icons/arrow-right';
 import NavigationLink from './navigation-link';
 import MobileMenuToggle from './mobile-menu-toggle';
@@ -34,7 +33,18 @@ function NavItem({ href, label }: NavItemProps) {
 
 export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [currentPath, setCurrentPath] = useState('');
+
+  // Initialise and track pathname via browser APIs (SSR-safe)
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
@@ -46,7 +56,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
 
   useEffect(() => {
     closeMenu();
-  }, [pathname]);
+  }, [currentPath]);
 
   return (
     <>
@@ -101,7 +111,7 @@ export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
         isOpen={isMenuOpen}
         onClose={closeMenu}
         navigationItems={NAVIGATION_ITEMS}
-        currentPath={pathname}
+        currentPath={currentPath}
       />
     </>
   );

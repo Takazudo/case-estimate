@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from './navigation-context';
 
 interface PageContentProps {
@@ -9,10 +8,21 @@ interface PageContentProps {
 }
 
 export default function PageContent({ children }: PageContentProps) {
-  const pathname = usePathname();
+  const [currentPath, setCurrentPath] = useState('');
   const { pageAnimationClass } = useNavigation();
 
-  const isConfiguratorRoute = pathname === '/m';
+  // Read pathname from browser (SSR-safe)
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const isConfiguratorRoute = currentPath === '/m';
 
   // For /m route: fixed viewport height layout
   // For other routes: min-height layout with normal scrolling

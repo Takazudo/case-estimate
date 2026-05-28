@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { cases } from '@/data/cases';
 import type { Preset } from '@/types';
 import PanelListUnified from './panel-list-unified';
@@ -9,7 +10,6 @@ import PresetSelector from './preset-selector';
 import BackgroundColorPicker from './background-color-picker';
 import { OrderIcon } from './icons/order-icon';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
-import { usePathname } from 'next/navigation';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -48,8 +48,20 @@ export default function ControlsSidebar({
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const isStandalone = useIsStandalone();
-  const pathname = usePathname();
-  const shouldHideHeader = pathname === '/m' && isStandalone;
+  const [currentPath, setCurrentPath] = useState('');
+
+  // Read pathname from browser (SSR-safe)
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const shouldHideHeader = currentPath === '/m' && isStandalone;
 
   return (
     <div

@@ -1,9 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import CaseVisualizer from './case-visualizer';
 import { generateBackgroundPattern } from '@/utils/panel-colors';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
-import { usePathname } from 'next/navigation';
 
 interface VisualizationPanelProps {
   selectedCase: string | null;
@@ -29,8 +29,20 @@ export default function VisualizationPanel({
   onLoadingChange,
 }: VisualizationPanelProps) {
   const isStandalone = useIsStandalone();
-  const pathname = usePathname();
-  const shouldHideHeader = pathname === '/m' && isStandalone;
+  const [currentPath, setCurrentPath] = useState('');
+
+  // Read pathname from browser (SSR-safe)
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const shouldHideHeader = currentPath === '/m' && isStandalone;
 
   return (
     <div
