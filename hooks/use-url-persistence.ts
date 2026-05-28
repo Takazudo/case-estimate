@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 import { encodeCase, encodePanelColors } from '@/utils/url-encoder';
 import type { PanelColorIds } from '@/types';
 
@@ -9,15 +8,15 @@ interface UseUrlPersistenceProps {
 }
 
 export function useUrlPersistence({ selectedCase, panelColorIds }: UseUrlPersistenceProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-
   // We no longer load from URL here since the component handles initial state itself
   // This hook now only handles URL updates when state changes
 
   // Update URL when state changes (only on /m/ route)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     // Only update URL if we're on the /m route
+    const pathname = window.location.pathname;
     if (!pathname.startsWith('/m')) return;
 
     const params = new URLSearchParams();
@@ -34,6 +33,7 @@ export function useUrlPersistence({ selectedCase, panelColorIds }: UseUrlPersist
     }
 
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
-    router.replace(newUrl, { scroll: false });
-  }, [selectedCase, panelColorIds, router, pathname]);
+    // Use native History API instead of Next.js router — framework-agnostic, works in zfb islands too
+    window.history.replaceState(window.history.state, '', newUrl);
+  }, [selectedCase, panelColorIds]);
 }
