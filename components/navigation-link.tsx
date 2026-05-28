@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from './navigation-context';
 
 interface NavigationLinkProps {
@@ -11,6 +9,8 @@ interface NavigationLinkProps {
   activeClassName?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  /** Current path for active-state detection. When omitted, read from window.location.pathname at mount. */
+  currentPath?: string;
 }
 
 export default function NavigationLink({
@@ -19,10 +19,26 @@ export default function NavigationLink({
   activeClassName,
   children,
   onClick,
+  currentPath,
 }: NavigationLinkProps) {
   const { triggerNavigation } = useNavigation();
-  const pathname = usePathname();
-  const isActive = pathname === href;
+  const [resolvedPath, setResolvedPath] = useState(currentPath ?? '');
+
+  // When no currentPath prop is provided, read from browser at mount (SSR-safe)
+  useEffect(() => {
+    if (currentPath === undefined) {
+      setResolvedPath(window.location.pathname);
+    }
+  }, [currentPath]);
+
+  // Keep in sync if prop changes (e.g. parent re-renders with new route)
+  useEffect(() => {
+    if (currentPath !== undefined) {
+      setResolvedPath(currentPath);
+    }
+  }, [currentPath]);
+
+  const isActive = resolvedPath === href;
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Don't trigger if it's a cmd/ctrl+click (opens in new tab)
@@ -45,15 +61,14 @@ export default function NavigationLink({
     isActive && activeClassName ? `${className} ${activeClassName}` : className;
 
   return (
-    <Link
+    <a
       href={href}
       className={combinedClassName}
       onClick={handleClick}
       tabIndex={isActive ? -1 : 0}
       aria-current={isActive ? 'page' : undefined}
-      prefetch={false}
     >
       {children}
-    </Link>
+    </a>
   );
 }
