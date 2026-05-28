@@ -1,7 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 // Animation timing constants for consistency and maintainability
 const ANIMATION_DURATIONS = {
@@ -18,23 +17,43 @@ interface NavigationContextType {
 const NavigationContext = createContext<NavigationContextType | null>(null);
 
 export function NavigationProvider({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  // Read initial pathname safely (SSR returns '' — client useEffect corrects it)
+  const [pathname, setPathname] = useState('');
   const [isPageLoading, setIsPageLoading] = useState(false);
-  const [pageAnimationClass, setPageAnimationClass] = useState(() =>
-    pathname === '/m' ? '' : 'page-fade-in',
-  );
-  const failsafeTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const previousPathnameRef = React.useRef(pathname);
+  const [pageAnimationClass, setPageAnimationClass] = useState('');
+  const failsafeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const previousPathnameRef = useRef('');
+  // Track whether initial animation has been set up to avoid double-running
+  const initializedRef = useRef(false);
+
+  // Initialise pathname from browser and subscribe to popstate for SPA navigation
+  useEffect(() => {
+    const current = window.location.pathname;
+    setPathname(current);
+    previousPathnameRef.current = current;
+
+    // Set initial animation class
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      setPageAnimationClass(current === '/m' ? '' : 'page-fade-in');
+    }
+
+    const handlePopState = () => {
+      setPathname(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Reset loading state when pathname changes (not search params)
   useEffect(() => {
+    if (!pathname) return; // Skip empty initial state
+
     // Only trigger animations when the pathname actually changes
-    // Ignore search param changes to support in-page navigation (like gallery dialog)
     const isPathnameChange = previousPathnameRef.current !== pathname;
 
     if (!isPathnameChange) {
-      // Search params changed but pathname didn't - skip animations
       return;
     }
 
@@ -65,7 +84,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }, ANIMATION_DURATIONS.FADE_IN);
 
     return () => clearTimeout(timer);
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   const triggerNavigation = (path: string) => {
     // Clear any existing failsafe timeout before starting new navigation
@@ -94,7 +113,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     };
 
     // Failsafe: reset loading state after maximum expected navigation time
-    // This prevents getting stuck if useEffect doesn't fire for any reason
+    // This prevents getting stuck if popstate doesn't fire for any reason
     failsafeTimeoutRef.current = setTimeout(() => {
       // Check the target path (not current pathname) to determine animations
       // path is the destination we're navigating to
