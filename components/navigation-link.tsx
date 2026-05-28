@@ -24,17 +24,13 @@ export default function NavigationLink({
   const { triggerNavigation } = useNavigation();
   const [resolvedPath, setResolvedPath] = useState(currentPath ?? '');
 
-  // When no currentPath prop is provided, read from browser at mount (SSR-safe)
-  useEffect(() => {
-    if (currentPath === undefined) {
-      setResolvedPath(window.location.pathname);
-    }
-  }, [currentPath]);
-
-  // Keep in sync if prop changes (e.g. parent re-renders with new route)
   useEffect(() => {
     if (currentPath !== undefined) {
+      // Prop-driven: use whatever the parent passed in
       setResolvedPath(currentPath);
+    } else {
+      // Fallback: read from browser at mount (SSR-safe, minor active-state flash is acceptable)
+      setResolvedPath(window.location.pathname);
     }
   }, [currentPath]);
 

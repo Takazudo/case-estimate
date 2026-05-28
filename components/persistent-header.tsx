@@ -1,23 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import AppHeader from './app-header';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 export default function PersistentHeader() {
-  const [currentPath, setCurrentPath] = useState('');
+  const currentPath = useCurrentPath();
   const isStandalone = useIsStandalone();
-
-  // Read pathname from browser (SSR-safe)
-  useEffect(() => {
-    setCurrentPath(window.location.pathname);
-
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   const isFullWidth = currentPath === '/m';
 

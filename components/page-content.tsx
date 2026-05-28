@@ -1,26 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigation } from './navigation-context';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 interface PageContentProps {
   children: React.ReactNode;
 }
 
 export default function PageContent({ children }: PageContentProps) {
-  const [currentPath, setCurrentPath] = useState('');
+  const currentPath = useCurrentPath();
   const { pageAnimationClass } = useNavigation();
-
-  // Read pathname from browser (SSR-safe)
-  useEffect(() => {
-    setCurrentPath(window.location.pathname);
-
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   const isConfiguratorRoute = currentPath === '/m';
 

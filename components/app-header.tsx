@@ -8,6 +8,7 @@ import MobileMenuDrawer from './mobile-menu-drawer';
 import BuildButton from './build-button';
 import LogoLink from './logo-link';
 import { NAVIGATION_ITEMS } from '@/data/navigation';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 interface AppHeaderProps {
   fullWidth?: boolean;
@@ -33,18 +34,7 @@ function NavItem({ href, label }: NavItemProps) {
 
 export default function AppHeader({ fullWidth = false }: AppHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentPath, setCurrentPath] = useState('');
-
-  // Initialise and track pathname via browser APIs (SSR-safe)
-  useEffect(() => {
-    setCurrentPath(window.location.pathname);
-
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  const currentPath = useCurrentPath();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
