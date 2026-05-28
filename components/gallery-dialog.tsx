@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import {
   getGalleryItemBySlug,
   getPreviousGalleryItem,
@@ -16,9 +15,6 @@ interface GalleryDialogProps {
 }
 
 export default function GalleryDialog({ slug }: GalleryDialogProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
   const currentItem = getGalleryItemBySlug(slug);
   const previousItem = getPreviousGalleryItem(slug);
   const nextItem = getNextGalleryItem(slug);
@@ -30,20 +26,20 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   }, [slug]);
 
   const handleClose = useCallback(() => {
-    const params = new URLSearchParams(searchParams);
+    // Read current search params from browser (SSR-safe: this component only mounts client-side)
+    const params = new URLSearchParams(window.location.search);
     params.delete('id');
     const newUrl = params.toString() ? `/gallery?${params.toString()}` : '/gallery';
-    router.replace(newUrl, { scroll: false });
-  }, [router, searchParams]);
+    // Next.js patches replaceState to keep useSearchParams in sync
+    window.history.replaceState(null, '', newUrl);
+  }, []);
 
-  const handleNavigate = useCallback(
-    (newSlug: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set('id', newSlug);
-      router.replace(`/gallery?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
+  const handleNavigate = useCallback((newSlug: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('id', newSlug);
+    // Next.js patches replaceState to keep useSearchParams in sync
+    window.history.replaceState(null, '', `/gallery?${params.toString()}`);
+  }, []);
 
   const handlePrevious = useCallback(() => {
     if (previousItem) {
