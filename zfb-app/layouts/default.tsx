@@ -1,30 +1,98 @@
 import type { ReactNode } from 'react';
+import { Island } from '@takazudo/zfb';
 
+import SiteHeader from '../components/site-header';
+import SiteFooter from '../components/site-footer';
 import '../styles/global.css';
 
-type Props = {
+export interface DefaultLayoutProps {
+  /** Page title emitted into <title>. Defaults to the site name. */
   title?: string;
+  /** Page meta description. */
+  description?: string;
+  /**
+   * Current route path (e.g. "/" or "/gallery").
+   *
+   * Pages pass this via getStaticProps so the active nav highlight is
+   * correct in the static HTML — no client flash. T4+ pages will provide
+   * real values; the default makes the layout self-contained.
+   */
+  currentPath?: string;
+  /**
+   * When true, emits apple-mobile-web-app-capable and related PWA meta
+   * tags in <head>. Set by the /m configurator page, mirroring the Next
+   * app/(configurator)/m/layout.tsx metadata.
+   */
+  pwaCapable?: boolean;
   children: ReactNode;
-};
+}
+
+const SITE_NAME = 'Takazudo Modular: Panels';
+const DEFAULT_DESCRIPTION =
+  'Interactive tool for customizing Takazudo Modular synthesizer cases with real-time price estimates';
 
 /**
- * Minimal shared layout for the zfb scaffold (T1).
+ * Full-chrome layout for content pages in the zfb build.
  *
- * Intentionally bare — full chrome (PersistentHeader, navigation, page
- * transitions, etc.) is ported by T3. This establishes the html/head/body
- * shell and pulls in the global stylesheet so every page renders through one
- * place.
+ * Emits the complete <html> shell: head (charset, viewport, title, meta,
+ * PWA tags, manifest link), self-hosted Noto Sans @font-face is in
+ * global.css, interactive header island, page content, footer island.
+ *
+ * The configurator page (/m) uses this same layout but the header's
+ * fullWidth and standalone-hide logic is handled inside SiteHeader's
+ * island (via useIsStandalone on the client).
+ *
+ * T4 will feed real per-page titles / descriptions through the props;
+ * this file provides the prop interface + sensible defaults.
  */
-export default function DefaultLayout({ title = 'Takazudo Modular: Panels', children }: Props) {
+export default function DefaultLayout({
+  title = SITE_NAME,
+  description = DEFAULT_DESCRIPTION,
+  currentPath = '/',
+  pwaCapable = false,
+  children,
+}: DefaultLayoutProps) {
+  // Pad top of page content so it clears the fixed header (96px matches the
+  // pt-[96px] in the Next app/(content)/layout.tsx).
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
+        <meta name="description" content={description} />
+
+        {/* PWA manifest — mirrors the Next app/manifest.ts metadata route */}
+        <link rel="manifest" href="/manifest.webmanifest" />
+
+        {/* PWA apple-mobile-web-app meta — mirroring app/(configurator)/m/layout.tsx
+            appleWebApp metadata. Emitted on all pages here (safe to include
+            globally; only has an effect when saved to home screen on iOS). */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-title" content="TM Panels" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        {/* Theme color for browser chrome */}
+        <meta name="theme-color" content="#000000" />
       </head>
-      <body className="font-noto">
-        <main>{children}</main>
+      <body>
+        {/* Interactive header island — hydrates immediately on load.
+            currentPath is serialized into data-props so the active nav
+            highlight renders correctly in the static HTML. */}
+        <Island when="load">
+          <SiteHeader currentPath={currentPath} />
+        </Island>
+
+        {/* Page content — padded to clear the fixed header */}
+        <div className="min-h-screen flex flex-col">
+          <main className="flex-1 pt-[96px]">{children}</main>
+
+          {/* Footer island — deferred until visible to avoid blocking initial paint */}
+          <Island when="visible">
+            <SiteFooter />
+          </Island>
+        </div>
       </body>
     </html>
   );
