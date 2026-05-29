@@ -101,8 +101,10 @@ export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProp
 
   const handleThumbnailClick = useCallback((slug: string) => {
     // Use native History API — Next.js patches pushState/replaceState to keep
-    // usePathname/useSearchParams in sync, so this works in both Next and zfb islands
-    window.history.pushState(null, '', `/gallery?id=${slug}`);
+    // usePathname/useSearchParams in sync, so this works in both Next and zfb islands.
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
+    window.history.pushState(null, '', `/gallery/?id=${slug}`);
   }, []);
 
   const handleImageLoad = useCallback((image: HTMLImageElement, src: string) => {

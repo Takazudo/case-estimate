@@ -29,7 +29,9 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     // Read current search params from browser (SSR-safe: this component only mounts client-side)
     const params = new URLSearchParams(window.location.search);
     params.delete('id');
-    const newUrl = params.toString() ? `/gallery?${params.toString()}` : '/gallery';
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
+    const newUrl = params.toString() ? `/gallery/?${params.toString()}` : '/gallery/';
     // Next.js patches replaceState to keep useSearchParams in sync
     window.history.replaceState(null, '', newUrl);
   }, []);
@@ -37,8 +39,10 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   const handleNavigate = useCallback((newSlug: string) => {
     const params = new URLSearchParams(window.location.search);
     params.set('id', newSlug);
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
     // Next.js patches replaceState to keep useSearchParams in sync
-    window.history.replaceState(null, '', `/gallery?${params.toString()}`);
+    window.history.replaceState(null, '', `/gallery/?${params.toString()}`);
   }, []);
 
   const handlePrevious = useCallback(() => {
