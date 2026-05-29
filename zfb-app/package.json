@@ -1,0 +1,23 @@
+{
+  "name": "zfb-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "zfb dev",
+    "build": "zfb build",
+    "preview": "zfb preview"
+  },
+  "dependencies": {
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "@takazudo/zfb": "0.1.0-next.16",
+    "@takazudo/zfb-runtime": "0.1.0-next.16"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  }
+}

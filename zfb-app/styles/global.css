@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+/*
+ * Self-hosted Noto Sans.
+ *
+ * The Next app loaded Noto Sans via `next/font/google` (the `--font-noto-sans`
+ * CSS var in app/layout.tsx). zfb has no next/font equivalent, so we self-host:
+ * drop the woff2 files under `public/fonts/` and reference them here. The
+ * weights mirror the next/font config (300/400/500/700).
+ *
+ * NOTE (T1): the woff2 files are NOT yet committed. The @font-face wiring is
+ * complete; a later task must add public/fonts/noto-sans-*.woff2 (or the build
+ * will serve the fallback stack defined in `--font-noto` below). See the
+ * scaffold log for details.
+ */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/noto-sans-300.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/noto-sans-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/noto-sans-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/noto-sans-700.woff2') format('woff2');
+}
+
+/*
+ * Tailwind v4 CSS-first theme. Migrates the fontFamily extensions from the
+ * Next app's tailwind.config.js so `font-noto` / `font-futura` / `font-sans` /
+ * `font-mono` utilities resolve identically. The next/font `--font-noto-sans`
+ * var is replaced by the literal self-hosted "Noto Sans" family above.
+ */
+@theme {
+  --font-noto: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-futura: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
+  --font-sans: 'Helvetica', sans-serif;
+  --font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+}

@@ -2,6 +2,7 @@ packages:
   - .
   - doc
   - sub-packages/*
+  - zfb-app
 
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
