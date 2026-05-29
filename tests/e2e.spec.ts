@@ -61,7 +61,7 @@ test.describe('Smoke Test', () => {
     });
 
     // Navigate to the configurator with a case parameter
-    const response = await page.goto('/m?c=1a');
+    const response = await page.goto('/m/?c=1a');
 
     // Check that the page loads successfully
     expect(response?.status()).toBeLessThan(400);
@@ -72,9 +72,14 @@ test.describe('Smoke Test', () => {
     // Check that the main title is visible (in header link)
     await expect(page.getByRole('link', { name: /Takazudo Modular: Panels/i })).toBeVisible();
 
-    // Check that case selector is present (HeadlessUI Listbox renders as button)
-    // Wait for hydration to complete
-    await page.waitForLoadState('networkidle');
+    // Wait for the Configurator island to mount. On zfb static builds the
+    // configurator is client-only (data-zfb-island-skip-ssr="Configurator");
+    // networkidle fires before React finishes mounting the island tree.
+    // Waiting for the SVG inside the island is the reliable hydration signal.
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
+    // Case selector is a <button> rendered by ModelSelector inside the island.
     await expect(
       page.getByRole('button', { name: /Select a case model|zudo-block|10box/i }),
     ).toBeVisible({ timeout: 10000 });
@@ -115,14 +120,18 @@ test.describe('Smoke Test', () => {
 
   test('should have interactive elements working in configurator', async ({ page }) => {
     // Navigate directly to configurator with a case
-    await page.goto('/m?c=1a');
+    await page.goto('/m/?c=1a');
 
-    // Wait for the page to be fully loaded
-    await page.waitForLoadState('networkidle');
+    // Wait for the Configurator island to mount and render.
+    // On zfb static builds the configurator is a client-only island
+    // (data-zfb-island-skip-ssr="Configurator"); networkidle fires before
+    // React finishes mounting the island tree, so we wait for the SVG
+    // (rendered by VisualizationPanel inside the island) as the hydration signal.
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
 
-    // Check case selector is visible (HeadlessUI Listbox renders as button)
-    // Wait for hydration to complete
-    await page.waitForLoadState('networkidle');
+    // Check case selector is visible (ModelSelector renders a <button>)
     const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
     await expect(caseSelector).toBeVisible({ timeout: 10000 });
 
@@ -140,13 +149,12 @@ test.describe('Smoke Test', () => {
 
   test('should switch between different case models', async ({ page }) => {
     // Start with a specific case
-    await page.goto('/m?c=1a');
+    await page.goto('/m/?c=1a');
 
-    // Wait for initial load
-    await page.waitForLoadState('networkidle');
-
-    // Wait for hydration to complete
-    await page.waitForLoadState('networkidle');
+    // Wait for the Configurator island to mount (see note in previous test).
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
 
     // Click the case selector button to open modal
     const caseSelector = page.getByRole('button', { name: /zudo-block-40-ACR-A/i });
@@ -175,16 +183,16 @@ test.describe('Smoke Test', () => {
 
   test('should persist URL parameters at /m route', async ({ page }) => {
     // Navigate directly with URL parameters
-    await page.goto('/m?c=3a&p=1cb.2cb');
+    await page.goto('/m/?c=3a&p=1cb.2cb');
 
-    // Wait for the page to load
-    await page.waitForLoadState('networkidle');
+    // Wait for the Configurator island to mount (see note in previous test).
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
 
     // Check that the case selector shows the correct case
     // c=3a corresponds to zudo-block-60-ACR-A
-    // HeadlessUI Listbox shows selected value as button text
-    // Wait for hydration to complete
-    await page.waitForLoadState('networkidle');
+    // ModelSelector renders a <button> with the selected case name
     await expect(page.getByRole('button', { name: /zudo-block-60-ACR-A/i })).toBeVisible({
       timeout: 10000,
     });
@@ -195,7 +203,7 @@ test.describe('Smoke Test', () => {
 
   test('header logo should navigate to home view', async ({ page }) => {
     // Start with the configurator with a case selected
-    await page.goto('/m?c=1a');
+    await page.goto('/m/?c=1a');
 
     // Wait for case to load
     await expect(page.locator('svg').first()).toBeVisible();

@@ -19,6 +19,14 @@ export function useUrlPersistence({ selectedCase, panelColorIds }: UseUrlPersist
     const pathname = window.location.pathname;
     if (!pathname.startsWith('/m')) return;
 
+    // Do not overwrite the URL while the configurator is still initialising.
+    // On zfb static builds the Configurator island mounts before `getInitialStateFromUrl`
+    // runs (both are inside the same client-only island), so `selectedCase` is null on
+    // the very first effect execution. Calling replaceState here would wipe the incoming
+    // `?c=…` query string before the init effect can read it, causing the configurator to
+    // fall back to the default first case instead of the URL-specified one.
+    if (selectedCase === null) return;
+
     const params = new URLSearchParams();
     if (selectedCase) {
       params.set('c', encodeCase(selectedCase));
