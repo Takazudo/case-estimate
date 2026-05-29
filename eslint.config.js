@@ -31,6 +31,7 @@ export default [
       'out/**',
       'worktrees/**',
       'sub-packages/**',
+      'zfb-app/**',
     ],
     languageOptions: {
       ecmaVersion: 2020,
