@@ -151,11 +151,6 @@ sub-packages/*/node_modules/
 test-results/
 playwright-report/
 playwright/.cache/
-# Next.js
-.next/
-out/
-next-env.d.ts
-
 # git worktree
 worktrees/
 

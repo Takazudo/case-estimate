@@ -7,10 +7,6 @@ import eslintReactHooks from 'eslint-plugin-react-hooks';
 import eslintReactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-const nextPlugin = require('@next/eslint-plugin-next');
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
@@ -21,8 +17,6 @@ export default [
       'dist/**',
       'node_modules/**',
       '.git/**',
-      '.next/**',
-      'next-env.d.ts',
       'coverage/**',
       'playwright.config.ts',
       'tests/**',
@@ -46,7 +40,6 @@ export default [
     settings: { react: { version: '19.0' } },
     plugins: {
       '@typescript-eslint': typescript,
-      '@next/next': nextPlugin,
       react: eslintReact,
       'react-hooks': eslintReactHooks,
       'react-refresh': eslintReactRefresh,
@@ -58,33 +51,25 @@ export default [
       ...eslintReact.configs.recommended.rules,
       ...eslintReact.configs['jsx-runtime'].rules,
       ...eslintReactHooks.configs.recommended.rules,
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-refresh/only-export-components': [
         'warn',
         {
           allowConstantExport: true,
-          allowExportNames: [
-            'metadata',
-            'generateMetadata',
-            'generateStaticParams',
-            'useNavigation',
-          ],
+          allowExportNames: ['useNavigation'],
         },
       ],
       'prettier/prettier': 'error',
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@next/next/no-img-element': 'off',
       ...eslintConfigPrettier.rules,
     },
   },
   // Configuration for Node.js config files
   {
-    files: ['*.config.js', '*.config.ts', 'next.config.js'],
+    files: ['*.config.js', '*.config.ts'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: { ...globals.node },
