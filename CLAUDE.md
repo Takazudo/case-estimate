@@ -15,7 +15,7 @@
 
 When given a URL like `https://panels.takazudomodular.com/path` or `https://panels.takazudomodular.com/doc/path`, check the corresponding local files:
 
-- `https://panels.takazudomodular.com/` → Root of the project (Vite app)
+- `https://panels.takazudomodular.com/` → Root of the project (zfb app under `zfb-app/`)
 - `https://panels.takazudomodular.com/doc/` → `/doc/` directory (Docusaurus site)
 
 ## GitHub Integration
@@ -55,7 +55,7 @@ Use this project as reference for:
 - Component structure and naming conventions
 - MDX configuration and usage patterns
 - Styling approaches with Tailwind CSS
-- Next.js app router patterns
+- zfb framework patterns and file-based routing
 - TypeScript patterns and types
 
 ## Project Overview
@@ -64,7 +64,7 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 
 ## Tech Stack
 
-- React 19 with Next.js
+- React 19 with zfb (Takazudo Framework Builder)
 - TypeScript
 - Tailwind CSS 4
 - pnpm workspace (monorepo with doc and sub-packages)
@@ -72,15 +72,16 @@ An interactive web application for customizing Takazudo Modular synthesizer case
 ## Available Scripts
 
 ```bash
-pnpm run dev      # Start development server
-pnpm run build    # Build for production
-pnpm run preview  # Preview production build
-pnpm run lint     # Run ESLint
-pnpm run typecheck # Run TypeScript type checking
-pnpm run test     # Run all Playwright tests
-pnpm run test:smoke # Run smoke tests only
-pnpm run test:ui  # Run tests with UI mode
-pnpm run test:debug # Debug tests interactively
+pnpm run dev             # Start zfb development server
+pnpm run build           # Build zfb app to dist/
+pnpm run build:with-docs # Build app + docs to dist/ (dist/doc/ for docs)
+pnpm run preview         # Preview zfb production build
+pnpm run lint            # Run ESLint
+pnpm run typecheck       # Run TypeScript type checking
+pnpm run test            # Run all Playwright tests
+pnpm run test:smoke      # Run smoke tests only
+pnpm run test:ui         # Run tests with UI mode
+pnpm run test:debug      # Debug tests interactively
 ```
 
 ## Code Style Guidelines
