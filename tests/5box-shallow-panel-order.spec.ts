@@ -1,4 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { cases } from '../data/cases';
+
+// Source-of-truth panel order for this case model. The panel list must render
+// in this exact order. Derived from data so the test stays correct if the
+// case definition is revised (the old hardcoded list went stale after a
+// data refactor that reordered/renamed panels).
+const expectedPanels = cases['5box-shallow-3dp'].panels.map((p) => p.name);
 
 /**
  * 5BOX-shallow-3DP Panel Order Test
@@ -77,29 +84,16 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
   });
 
   test('should have all 11 panels in correct order', async ({ page }) => {
-    // Get all panel buttons in the order they appear
-    const panelButtons = await page
-      .locator('button:has-text("メイン:"), button:has-text("フタ:")')
-      .all();
+    // Scope to the panel-list buttons only. The bare text selector also matched
+    // the SVG "Select …" buttons (22 total); the panel-list buttons carry a
+    // data-testid="panel-button-<id>" and are <button> elements (the swatch
+    // children are <span data-testid="panel-button-swatch-…">, excluded here).
+    const panelButtons = await page.locator('button[data-testid^="panel-button-"]').all();
 
     // Should have exactly 11 panels
     expect(panelButtons.length).toBe(11);
 
-    // Verify the order matches the expected panel names
-    const expectedPanels = [
-      'メイン: サイド1',
-      'メイン: バック',
-      'メイン: ボトム',
-      'メイン: フロント',
-      'メイン: サイド2',
-      'フタ: サイド1',
-      'フタ: バック',
-      'フタ: トップ1',
-      'フタ: トップ2',
-      'フタ: フロント',
-      'フタ: サイド2',
-    ];
-
+    // Verify the order matches the source-of-truth panel definitions.
     for (let i = 0; i < expectedPanels.length; i++) {
       const buttonText = await panelButtons[i].textContent();
       expect(buttonText).toContain(expectedPanels[i]);
@@ -134,8 +128,8 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
   });
 
   test('should maintain panel order after color changes', async ({ page }) => {
-    // Change color of panel 1
-    await page.click('button:has-text("メイン: サイド1")');
+    // Change color of the first panel (main-side1)
+    await page.click('[data-testid="panel-button-main-side1"]');
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
     await page.click('[role="dialog"] button:has-text("ボーンホワイト")', {
       force: true,
@@ -143,8 +137,8 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     await page.waitForTimeout(300);
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
-    // Change color of panel 3
-    await page.click('button:has-text("メイン: ボトム")');
+    // Change color of the third panel (main-back1 — "メイン: バック")
+    await page.click('[data-testid="panel-button-main-back1"]');
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
     await page.click('[role="dialog"] button:has-text("グリーン")', {
       force: true,
@@ -152,17 +146,22 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     await page.waitForTimeout(300);
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
-    // Verify panel order is still correct
-    const panelButtons = await page
-      .locator('button:has-text("メイン:"), button:has-text("フタ:")')
-      .all();
+    // Verify panel order is still the source-of-truth order, and that the two
+    // edited panels carry their new colors at their unchanged positions.
+    const panelButtons = await page.locator('button[data-testid^="panel-button-"]').all();
+    expect(panelButtons.length).toBe(expectedPanels.length);
+
+    for (let i = 0; i < expectedPanels.length; i++) {
+      const buttonText = await panelButtons[i].textContent();
+      expect(buttonText).toContain(expectedPanels[i]);
+    }
 
     const firstPanelText = await panelButtons[0].textContent();
     const thirdPanelText = await panelButtons[2].textContent();
 
     expect(firstPanelText).toContain('メイン: サイド1');
     expect(firstPanelText).toContain('ボーンホワイト');
-    expect(thirdPanelText).toContain('メイン: ボトム');
+    expect(thirdPanelText).toContain('メイン: バック');
     expect(thirdPanelText).toContain('グリーン');
   });
 });

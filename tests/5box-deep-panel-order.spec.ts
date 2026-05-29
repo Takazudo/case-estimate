@@ -1,4 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { cases } from '../data/cases';
+
+// Source-of-truth panel order for this case model (derived from data so the
+// test stays correct if the case definition is revised).
+const expectedPanels = cases['5box-deep-3dp'].panels.map((p) => p.name);
 
 /**
  * 5BOX-deep-3DP Panel Order Test
@@ -44,29 +49,14 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
   });
 
   test('should have all 11 panels in correct order', async ({ page }) => {
-    // Get all panel buttons in the order they appear
-    const panelButtons = await page
-      .locator('button:has-text("メイン:"), button:has-text("フタ:")')
-      .all();
+    // Scope to the panel-list <button> elements (data-testid="panel-button-<id>");
+    // the bare text selector also matched the SVG "Select …" buttons (22 total).
+    const panelButtons = await page.locator('button[data-testid^="panel-button-"]').all();
 
     // Should have exactly 11 panels
     expect(panelButtons.length).toBe(11);
 
-    // Verify the order matches the expected panel names
-    const expectedPanels = [
-      'メイン: サイド1',
-      'メイン: バック',
-      'メイン: ボトム',
-      'メイン: フロント',
-      'メイン: サイド2',
-      'フタ: サイド1',
-      'フタ: バック',
-      'フタ: トップ1',
-      'フタ: トップ2',
-      'フタ: フロント',
-      'フタ: サイド2',
-    ];
-
+    // Verify the order matches the source-of-truth panel definitions.
     for (let i = 0; i < expectedPanels.length; i++) {
       const buttonText = await panelButtons[i].textContent();
       expect(buttonText).toContain(expectedPanels[i]);
@@ -153,7 +143,7 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
 
   test('should maintain visual consistency after panel color changes', async ({ page }) => {
     // Change color of メイン: サイド1 (previously rotated)
-    await page.click('button:has-text("メイン: サイド1")');
+    await page.click('[data-testid="panel-button-main-side1"]');
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
     await page.click('[role="dialog"] button:has-text("ボーンホワイト")', {
       force: true,
@@ -162,7 +152,7 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
     // Change color of メイン: サイド2 (previously rotated)
-    await page.click('button:has-text("メイン: サイド2")');
+    await page.click('[data-testid="panel-button-main-side2"]');
     await page.waitForSelector('[role="dialog"]', { state: 'visible' });
     await page.click('[role="dialog"] button:has-text("グリーン")', {
       force: true,
@@ -170,17 +160,16 @@ test.describe('5BOX-deep-3DP Panel Order (Fixed SVG)', () => {
     await page.waitForTimeout(300);
     await page.waitForSelector('[role="dialog"]', { state: 'hidden' });
 
-    // Verify panel buttons show updated colors
-    const panelButtons = await page
-      .locator('button:has-text("メイン:"), button:has-text("フタ:")')
-      .all();
+    // Verify panel buttons show updated colors. In the source-of-truth order,
+    // main-side1 is position 1 and main-side2 is position 2.
+    const panelButtons = await page.locator('button[data-testid^="panel-button-"]').all();
 
     const firstPanelText = await panelButtons[0].textContent();
-    const fifthPanelText = await panelButtons[4].textContent();
+    const secondPanelText = await panelButtons[1].textContent();
 
     expect(firstPanelText).toContain('メイン: サイド1');
     expect(firstPanelText).toContain('ボーンホワイト');
-    expect(fifthPanelText).toContain('メイン: サイド2');
-    expect(fifthPanelText).toContain('グリーン');
+    expect(secondPanelText).toContain('メイン: サイド2');
+    expect(secondPanelText).toContain('グリーン');
   });
 });

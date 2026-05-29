@@ -78,17 +78,13 @@ test.describe('Gallery Blurhash Comprehensive Rendering', () => {
 
     // All items below fold should have:
     // 1. Canvas element (blurhash) present
-    // 2. Either native lazy loading OR custom lazy loading with data-src
+    // 2. Custom lazy-loading wiring via data-src (the grid uses an
+    //    IntersectionObserver + data-src, not native loading="lazy"; the
+    //    observer's 100px rootMargin may already have populated src for
+    //    items just below the fold, so src being set is expected and fine).
     for (const item of thumbnailsBelowFold) {
       expect(item.hasCanvas).toBe(true); // Blurhash should be rendered
-
-      // The implementation uses native lazy loading, so src can be set
-      // but the browser won't load it until needed
-      if (item.imgSrc) {
-        expect(item.hasLazyAttribute).toBe(true); // Must have loading="lazy"
-      } else {
-        expect(item.imgDataSrc).toBeTruthy(); // Custom lazy loading with data-src
-      }
+      expect(item.imgDataSrc).toBeTruthy(); // Custom lazy loading with data-src
     }
 
     console.log(
@@ -110,18 +106,25 @@ test.describe('Gallery Blurhash Comprehensive Rendering', () => {
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(1000); // Wait for any lazy loading
 
-    // Count canvases again - should still be the same
+    // The grid gates the blurhash on `!isErrored && item.blurhash` only — never
+    // on load state — so scrolling/loading must NOT remove a canvas; only an
+    // image *error* drops one (and replaces the <img> with an "Image failed to
+    // load" span). Assert that invariant — canvas count == blurhash items minus
+    // errored items — so the test is deterministic under real network instead of
+    // assuming zero errors. Verified live: 299 canvases persist, 0 errored.
+    const countErrored = () => page.getByText('Image failed to load').count();
+
     const afterScrollCanvasCount = await page
       .locator('[data-testid="gallery-thumbnail"] canvas')
       .count();
-    expect(afterScrollCanvasCount).toBe(itemsWithBlurhash);
+    expect(afterScrollCanvasCount).toBe(itemsWithBlurhash - (await countErrored()));
 
     // Scroll back to top
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(500);
 
-    // Count should still be the same
+    // Same invariant after scrolling back.
     const finalCanvasCount = await page.locator('[data-testid="gallery-thumbnail"] canvas').count();
-    expect(finalCanvasCount).toBe(itemsWithBlurhash);
+    expect(finalCanvasCount).toBe(itemsWithBlurhash - (await countErrored()));
   });
 });

@@ -4,7 +4,7 @@ test.describe('Gallery Dialog Navigation', () => {
   test('should update URL without triggering page animations', async ({ page }) => {
     // Navigate to gallery page
     await page.goto('/gallery');
-    await page.waitForSelector('[data-testid^="gallery-item-"]');
+    await page.waitForSelector('[data-testid="gallery-thumbnail"]');
 
     // Wait for the client-only GalleryDialogHost island to be attached before interacting
     await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
@@ -13,7 +13,7 @@ test.describe('Gallery Dialog Navigation', () => {
     });
 
     // Open first dialog
-    const firstItem = page.locator('[data-testid^="gallery-item-"]').first();
+    const firstItem = page.locator('[data-testid="gallery-thumbnail"]').first();
     await firstItem.click();
     await page.waitForSelector('[data-testid="gallery-dialog"]');
 
@@ -58,7 +58,7 @@ test.describe('Gallery Dialog Navigation', () => {
   test('should still trigger animations on actual page navigation', async ({ page }) => {
     // Navigate to gallery page
     await page.goto('/gallery');
-    await page.waitForSelector('[data-testid^="gallery-item-"]');
+    await page.waitForSelector('[data-testid="gallery-thumbnail"]');
 
     // Navigate to a different page (modules)
     await page.goto('/modules');
