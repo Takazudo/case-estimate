@@ -33,6 +33,11 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     await page.goto(url);
     await page.waitForLoadState('networkidle');
 
+    // Wait for the client-only Configurator island to mount (skip-ssr island)
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
+
     // Wait for SVG container to be present
     await page.waitForSelector('svg', { timeout: 30000 });
 
@@ -98,7 +103,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // URL with all 8 panels having different colors
     // c=2a: zudo-block-40-3DP-A
     // p=1cb.2cr.3bg.4bw.5do.6lo.7dy.8dg
-    const url = '/m?c=2a&p=1cb.2cr.3bg.4bw.5do.6lo.7dy.8dg';
+    const url = '/m/?c=2a&p=1cb.2cr.3bg.4bw.5do.6lo.7dy.8dg';
 
     await navigateAndWait(page, url);
 
@@ -122,7 +127,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('Standard 8-panel model: Partial panel colors (some panels default)', async ({ page }) => {
     // Only set colors for some panels, others should default to carbon-black
-    const url = '/m?c=2a&p=1cr.3bg.7dy';
+    const url = '/m/?c=2a&p=1cr.3bg.7dy';
 
     await navigateAndWait(page, url);
 
@@ -137,7 +142,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('Standard 8-panel model: KuroBeni preset pattern', async ({ page }) => {
     // KuroBeni pattern: carbon-black + crimson-red alternating
-    const url = '/m?c=2a&p=1cb.2cb.7cr.8cr.5cb.6cr.3cb.4cr';
+    const url = '/m/?c=2a&p=1cb.2cb.7cr.8cr.5cb.6cr.3cb.4cr';
 
     await navigateAndWait(page, url);
 
@@ -160,7 +165,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   test('X2 12-panel model (zudo-block-40x2-3DP-A): Full panel mapping', async ({ page }) => {
     // URL with all 12 panels
     // c=6a: zudo-block-40x2-3DP-A
-    const url = '/m?c=6a&p=1cb.2cr.9bg.abw.7do.8lo.5dy.6dg.bib.cg.3sg.4sw';
+    const url = '/m/?c=6a&p=1cb.2cr.9bg.abw.7do.8lo.5dy.6dg.bib.cg.3sg.4sw';
 
     await navigateAndWait(page, url);
 
@@ -186,7 +191,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('10BOX Shallow model: Main body panels', async ({ page }) => {
     // Test 10BOX main body panels (m1-m8)
-    const url = '/m?c=9a&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg';
+    const url = '/m/?c=9a&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg';
 
     await navigateAndWait(page, url);
 
@@ -208,7 +213,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('10BOX Shallow model: Lid panels', async ({ page }) => {
     // Test 10BOX lid panels (l1-l6)
-    const url = '/m?c=9a&p=l1cb.l2cr.l3bg.l4bw.l5do.l6lo';
+    const url = '/m/?c=9a&p=l1cb.l2cr.l3bg.l4bw.l5do.l6lo';
 
     await navigateAndWait(page, url);
 
@@ -228,7 +233,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('10BOX Shallow model: Stand panels', async ({ page }) => {
     // Test 10BOX stand panels (sa1, sa2, ss1, ss2)
-    const url = '/m?c=9a&p=sa1cb.sa2cr.ss1bg.ss2bw';
+    const url = '/m/?c=9a&p=sa1cb.sa2cr.ss1bg.ss2bw';
 
     await navigateAndWait(page, url);
 
@@ -246,7 +251,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('10BOX Deep model: No stand panels (14 panels total)', async ({ page }) => {
     // Deep model has no stand panels, only main (8) + lid (6)
-    const url = '/m?c=9b&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg.l1ib.l2g.l3sg.l4sw.l5pk.l6ca';
+    const url = '/m/?c=9b&p=m1cb.m2cr.m3bg.m4bw.m5do.m6lo.m7dy.m8dg.l1ib.l2g.l3sg.l4sw.l5pk.l6ca';
 
     await navigateAndWait(page, url);
 
@@ -286,7 +291,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('5BOX model: 11 panels (5 main + 6 lid)', async ({ page }) => {
     // 5BOX has 11 panels total
-    const url = '/m?c=fa&p=m1cb.m2cr.m5bg.m6bw.m7do.m8lo.l1dy.l2dg.l7ib.l8g.l6sg';
+    const url = '/m/?c=fa&p=m1cb.m2cr.m5bg.m6bw.m7do.m8lo.l1dy.l2dg.l7ib.l8g.l6sg';
 
     await navigateAndWait(page, url);
 
@@ -311,7 +316,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('Pattern color: red-green-silk (special pattern fill)', async ({ page }) => {
     // Test pattern color rendering
-    const url = '/m?c=2a&p=1rg.3cb';
+    const url = '/m/?c=2a&p=1rg.3cb';
 
     await navigateAndWait(page, url);
 
@@ -321,7 +326,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   });
 
   test('URL persistence: Colors remain after page reload', async ({ page }) => {
-    const url = '/m?c=2a&p=1cb.2cr.3bg.4bw';
+    const url = '/m/?c=2a&p=1cb.2cr.3bg.4bw';
 
     // Initial load
     await navigateAndWait(page, url);
@@ -333,6 +338,11 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
     // Reload page
     await page.reload();
     await page.waitForLoadState('networkidle');
+
+    // Wait for the client-only Configurator island to remount after reload
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
+    });
 
     // Verify colors persist after reload
     await verifyPanelColor(page, 'side1', 'cb', 'After reload');
@@ -346,7 +356,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   }) => {
     // Both crimson-red (cr) and clear-red (rd) have hex #b71c1c
     // but different opacity (1.0 vs 0.6)
-    const url = '/m?c=2a&p=1cr.2rd';
+    const url = '/m/?c=2a&p=1cr.2rd';
 
     await navigateAndWait(page, url);
 
@@ -370,7 +380,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('Error prevention: Only specified panels should change color', async ({ page }) => {
     // Set color for only side1, verify other panels are NOT affected
-    const url = '/m?c=2a&p=1cr';
+    const url = '/m/?c=2a&p=1cr';
 
     await navigateAndWait(page, url);
 
@@ -395,7 +405,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   test('Open Frame Upgrade model: 6 panels with top panels', async ({ page }) => {
     // Open upgrade has back1, back2, bottom1, bottom2, top1, top2
     // Use 3DP variant (pu) instead of acrylic (ou) to test with 3DP colors
-    const url = '/m?c=pu&p=7cb.8cr.5bg.6bw.t1do.t2lo';
+    const url = '/m/?c=pu&p=7cb.8cr.5bg.6bw.t1do.t2lo';
 
     await navigateAndWait(page, url);
 
@@ -416,7 +426,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
   test('Open Frame Basic model: 2 panels only', async ({ page }) => {
     // Basic open frame has only side1 and side2
     // Use 3DP variant (pa) instead of acrylic (oa) to test with 3DP colors
-    const url = '/m?c=pa&p=1cb.2cr';
+    const url = '/m/?c=pa&p=1cb.2cr';
 
     await navigateAndWait(page, url);
 
@@ -426,7 +436,7 @@ test.describe('Builder: Panel Color Mapping Verification', () => {
 
   test('Stand model: 4 panels (angle1, angle2, support1, support2)', async ({ page }) => {
     // Stand models have 4 panels
-    const url = '/m?c=s4&p=n1cb.n2cr.p1bg.p2bw';
+    const url = '/m/?c=s4&p=n1cb.n2cr.p1bg.p2bw';
 
     await navigateAndWait(page, url);
 

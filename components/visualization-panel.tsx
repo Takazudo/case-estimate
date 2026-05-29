@@ -3,7 +3,7 @@
 import CaseVisualizer from './case-visualizer';
 import { generateBackgroundPattern } from '@/utils/panel-colors';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
-import { usePathname } from 'next/navigation';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 interface VisualizationPanelProps {
   selectedCase: string | null;
@@ -29,8 +29,8 @@ export default function VisualizationPanel({
   onLoadingChange,
 }: VisualizationPanelProps) {
   const isStandalone = useIsStandalone();
-  const pathname = usePathname();
-  const shouldHideHeader = pathname === '/m' && isStandalone;
+  const currentPath = useCurrentPath();
+  const shouldHideHeader = currentPath === '/m' && isStandalone;
 
   return (
     <div

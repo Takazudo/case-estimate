@@ -1,18 +1,18 @@
 'use client';
 
 import React from 'react';
-import { usePathname } from 'next/navigation';
 import { useNavigation } from './navigation-context';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 interface PageContentProps {
   children: React.ReactNode;
 }
 
 export default function PageContent({ children }: PageContentProps) {
-  const pathname = usePathname();
+  const currentPath = useCurrentPath();
   const { pageAnimationClass } = useNavigation();
 
-  const isConfiguratorRoute = pathname === '/m';
+  const isConfiguratorRoute = currentPath === '/m';
 
   // For /m route: fixed viewport height layout
   // For other routes: min-height layout with normal scrolling

@@ -3,12 +3,15 @@ import TakazudoLogo from './icons/takazudo-logo';
 
 interface LogoLinkProps {
   onClick?: () => void;
+  /** Optional current path for prop-driven active state (no flash on SSR). */
+  currentPath?: string;
 }
 
-export default function LogoLink({ onClick }: LogoLinkProps) {
+export default function LogoLink({ onClick, currentPath }: LogoLinkProps) {
   return (
     <NavigationLink
       href="/"
+      currentPath={currentPath}
       className="text-[1.2rem] lg:text-xl text-zd-white flex items-center gap-hgap-xs hover:opacity-80 transition-opacity no-underline zd-invert-color-link"
       activeClassName="pointer-events-none opacity-100 hover:opacity-100"
       onClick={onClick}

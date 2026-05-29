@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { TakazudoLogoSmall } from '@/components/icons/takazudo-logo-small';
 
 interface BuildButtonProps {
@@ -27,12 +26,12 @@ export default function BuildButton({ href, size = 'md', className = '' }: Build
   };
 
   return (
-    <Link
+    <a
       href={href}
       className={`inline-flex items-center ${sizeClasses[size]} rounded text-zd-white whitespace-nowrap zd-button-gradient transition-all no-underline ${className}`}
     >
       <TakazudoLogoSmall className={`${iconSizes[size]} flex-shrink-0`} fill="white" />
       <span className="font-medium no-underline pt-[.1em]">Build!</span>
-    </Link>
+    </a>
   );
 }

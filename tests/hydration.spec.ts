@@ -1,6 +1,7 @@
 import { test, expect, Page, ConsoleMessage } from '@playwright/test';
 
-test.describe('Hydration Tests', () => {
+// QUARANTINED: asserts pre-modal-UI (native select/combobox/tabs/home-config) that no longer exists; rewrite tracked in Takazudo/case-estimate#94
+test.describe.skip('Hydration Tests', () => {
   // Helper to detect hydration errors
   const setupHydrationErrorDetection = (page: Page) => {
     const hydrationErrors: string[] = [];

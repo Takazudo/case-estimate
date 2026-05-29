@@ -29,8 +29,18 @@ test.describe('Gallery Blurhash Loading', () => {
     expect(canvasSize.height).toBeGreaterThan(0);
   });
 
-  test('should show blurhash in dialog immediately when opened', async ({ page }) => {
+  // QUARANTINED (issue #94): the enlarged-image dialog no longer renders a
+  // blurhash canvas. base/zfb-migration intentionally removed it — commit
+  // "replace blurhash with standard loading spinner in gallery dialog". This
+  // test asserts removed UI; it is not a migration regression. Revisit under #94.
+  test.skip('should show blurhash in dialog immediately when opened', async ({ page }) => {
     await page.goto('/gallery');
+
+    // Wait for the client-only GalleryDialogHost island to be attached before interacting
+    await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+      state: 'attached',
+      timeout: 15000,
+    });
 
     // Click on the first thumbnail
     const firstThumbnail = page.locator('[data-testid="gallery-thumbnail"]').first();
@@ -75,11 +85,8 @@ test.describe('Gallery Blurhash Loading', () => {
     const initialOpacity = await image.evaluate((el) => window.getComputedStyle(el).opacity);
     expect(parseFloat(initialOpacity)).toBe(0);
 
-    // Wait for image to load
-    await page.waitForTimeout(2500);
-
-    // After loading, image should have opacity 1
-    const finalOpacity = await image.evaluate((el) => window.getComputedStyle(el).opacity);
-    expect(parseFloat(finalOpacity)).toBe(1);
+    // After loading, the image fades to opacity 1 (transition-opacity
+    // duration-300). Use a retrying assertion so we don't sample mid-transition.
+    await expect(image).toHaveCSS('opacity', '1');
   });
 });

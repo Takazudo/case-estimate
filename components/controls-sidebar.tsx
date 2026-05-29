@@ -9,7 +9,7 @@ import PresetSelector from './preset-selector';
 import BackgroundColorPicker from './background-color-picker';
 import { OrderIcon } from './icons/order-icon';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
-import { usePathname } from 'next/navigation';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 interface ControlsSidebarProps {
   selectedCase: string | null;
@@ -48,8 +48,8 @@ export default function ControlsSidebar({
 }: ControlsSidebarProps) {
   const currentCase = selectedCase ? cases[selectedCase] : null;
   const isStandalone = useIsStandalone();
-  const pathname = usePathname();
-  const shouldHideHeader = pathname === '/m' && isStandalone;
+  const currentPath = useCurrentPath();
+  const shouldHideHeader = currentPath === '/m' && isStandalone;
 
   return (
     <div

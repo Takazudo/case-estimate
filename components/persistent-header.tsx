@@ -1,16 +1,17 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import AppHeader from './app-header';
 import { useIsStandalone } from '@/hooks/use-is-standalone';
+import { useCurrentPath } from '@/hooks/use-current-path';
 
 export default function PersistentHeader() {
-  const pathname = usePathname();
+  const currentPath = useCurrentPath();
   const isStandalone = useIsStandalone();
-  const isFullWidth = pathname === '/m';
+
+  const isFullWidth = currentPath === '/m';
 
   // Hide header only on /m route when in iOS standalone mode
-  const shouldHideHeader = pathname === '/m' && isStandalone;
+  const shouldHideHeader = currentPath === '/m' && isStandalone;
 
   if (shouldHideHeader) {
     return null;

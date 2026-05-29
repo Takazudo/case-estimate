@@ -1,7 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright configuration for testing production builds
+ * Playwright configuration for testing production zfb builds.
+ *
+ * Serves the zfb static output via `zfb preview`. Keeps the PORT env-var
+ * override so the caller can bind an arbitrary port when needed (e.g. to
+ * avoid collision with a running dev instance). Defaults to 3200 to match
+ * the hardcoded URLs in tests/gallery.spec.ts.
+ *
+ * Usage:
+ *   pnpm run test:smoke:production          # build + preview on 3200
+ *   PORT=4321 pnpm run test:smoke:production  # alternate port
  */
 export default defineConfig({
   testDir: './tests',
@@ -17,8 +26,8 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3000',
+    /* Base URL honours PORT env var (default 3200 to match gallery.spec.ts hardcodes). */
+    baseURL: process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3200',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     /* Take screenshot on failure */
@@ -33,5 +42,14 @@ export default defineConfig({
     },
   ],
 
-  /* Production build should be served separately - no webServer config here */
+  /* Build and serve the zfb production output.
+   * reuseExistingServer is always false here so the production config always
+   * starts with a clean, freshly-built artifact — no stale preview risk. */
+  webServer: {
+    command: `pnpm --filter zfb-app run build && pnpm --filter zfb-app exec zfb preview --port ${process.env.PORT ?? '3200'}`,
+    url: process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3200',
+    reuseExistingServer: false,
+    /* Generous timeout: zfb build (~5-10s) + preview boot. */
+    timeout: 240 * 1000,
+  },
 });

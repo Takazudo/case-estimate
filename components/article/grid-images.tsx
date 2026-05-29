@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { encodeCase } from '@/utils/url-encoder';
 import { BlurhashLoader } from '@/components/blurhash-loader';
 
@@ -36,7 +35,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
       `}
     >
       {items.map((item) => (
-        <Link
+        <a
           key={item.id}
           href={getHref(item)}
           onClick={() => onItemClick?.(item.caseId || '')}
@@ -71,7 +70,7 @@ const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className =
               {item.caption}
             </p>
           </div>
-        </Link>
+        </a>
       ))}
     </div>
   );

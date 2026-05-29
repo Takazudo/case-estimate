@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('10BOX URL Persistence - Simple', () => {
+// QUARANTINED: asserts pre-modal-UI (native select/combobox/tabs/home-config) that no longer exists; rewrite tracked in Takazudo/case-estimate#94
+test.describe.skip('10BOX URL Persistence - Simple', () => {
   test('should save 10BOX case selection in URL', async ({ page }) => {
     // Navigate to the app
     await page.goto('/');

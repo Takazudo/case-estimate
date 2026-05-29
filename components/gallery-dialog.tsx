@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import {
   getGalleryItemBySlug,
   getPreviousGalleryItem,
@@ -16,9 +15,6 @@ interface GalleryDialogProps {
 }
 
 export default function GalleryDialog({ slug }: GalleryDialogProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
   const currentItem = getGalleryItemBySlug(slug);
   const previousItem = getPreviousGalleryItem(slug);
   const nextItem = getNextGalleryItem(slug);
@@ -30,20 +26,26 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
   }, [slug]);
 
   const handleClose = useCallback(() => {
-    const params = new URLSearchParams(searchParams);
+    // Read current search params from browser (SSR-safe: this component only mounts client-side)
+    const params = new URLSearchParams(window.location.search);
     params.delete('id');
-    const newUrl = params.toString() ? `/gallery?${params.toString()}` : '/gallery';
-    router.replace(newUrl, { scroll: false });
-  }, [router, searchParams]);
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
+    const newUrl = params.toString() ? `/gallery/?${params.toString()}` : '/gallery/';
+    // gallery-dialog-host.tsx patches replaceState to emit "locationchange",
+    // keeping the dialog's ?id= in sync after this programmatic URL change.
+    window.history.replaceState(null, '', newUrl);
+  }, []);
 
-  const handleNavigate = useCallback(
-    (newSlug: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set('id', newSlug);
-      router.replace(`/gallery?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
+  const handleNavigate = useCallback((newSlug: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('id', newSlug);
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
+    // gallery-dialog-host.tsx patches replaceState to emit "locationchange",
+    // keeping the dialog's ?id= in sync after this programmatic URL change.
+    window.history.replaceState(null, '', `/gallery/?${params.toString()}`);
+  }, []);
 
   const handlePrevious = useCallback(() => {
     if (previousItem) {

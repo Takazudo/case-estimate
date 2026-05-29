@@ -314,8 +314,13 @@ const CaseVisualizer = ({
           return;
         }
 
-        // Dynamically select SVG path based on caseType
-        const svgPath = `/svg/${caseType}.svg`;
+        // Dynamically select SVG path based on caseType.
+        // caseType identifiers are mixed-case (e.g. "zudo-block-40-ACR-A") but the
+        // files in public/svg/ are all lowercase. macOS' case-insensitive filesystem
+        // hid the mismatch locally; Linux CI (case-sensitive) 404s the request,
+        // producing an empty body and a "Failed to parse SVG" error. Lowercase the
+        // identifier to match the on-disk filenames on every platform.
+        const svgPath = `/svg/${caseType.toLowerCase()}.svg`;
 
         const response = await fetch(svgPath);
         const svgText = await response.text();

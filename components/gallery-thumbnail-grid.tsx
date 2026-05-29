@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import type { GalleryItem } from '@/data/gallery-data';
 import { getThumbnailUrl } from '@/data/gallery-data';
 import { Blurhash } from '@/components/blurhash';
@@ -95,18 +94,18 @@ function GalleryThumbnailButton({
 }
 
 export default function GalleryThumbnailGrid({ items }: GalleryThumbnailGridProps) {
-  const router = useRouter();
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [erroredImages, setErroredImages] = useState<Set<string>>(new Set());
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pendingImagesRef = useRef(new Set<HTMLImageElement>());
 
-  const handleThumbnailClick = useCallback(
-    (slug: string) => {
-      router.push(`/gallery?id=${slug}`, { scroll: false });
-    },
-    [router],
-  );
+  const handleThumbnailClick = useCallback((slug: string) => {
+    // Use native History API — gallery-dialog-host.tsx patches pushState to emit
+    // "locationchange", so the dialog host re-reads ?id= after this push.
+    // Trailing slash is required: the zfb static host 301-redirects /gallery to
+    // /gallery/ and drops the query string, which would break shared deep-links.
+    window.history.pushState(null, '', `/gallery/?id=${slug}`);
+  }, []);
 
   const handleImageLoad = useCallback((image: HTMLImageElement, src: string) => {
     image.dataset.loaded = 'true';

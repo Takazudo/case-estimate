@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { Blurhash } from '@/components/blurhash';
 import { getStaticImageUrl } from '@/utils/cdn-urls';
 import ArrowRight from '@/components/icons/arrow-right';
@@ -115,7 +114,7 @@ interface NavCardProps {
 
 function NavCard({ item }: NavCardProps) {
   return (
-    <Link href={item.href} className="group flex zd-invert-color-link no-underline">
+    <a href={item.href} className="group flex zd-invert-color-link no-underline">
       <div
         className="
           relative overflow-hidden
@@ -140,7 +139,7 @@ function NavCard({ item }: NavCardProps) {
           description={item.description}
         />
       </div>
-    </Link>
+    </a>
   );
 }
 

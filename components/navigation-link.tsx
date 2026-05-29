@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from './navigation-context';
+import { normalizePath } from '@/utils/normalize-path';
 
 interface NavigationLinkProps {
   href: string;
@@ -11,6 +10,8 @@ interface NavigationLinkProps {
   activeClassName?: string;
   children: React.ReactNode;
   onClick?: () => void;
+  /** Current path for active-state detection. When omitted, read from window.location.pathname at mount. */
+  currentPath?: string;
 }
 
 export default function NavigationLink({
@@ -19,10 +20,24 @@ export default function NavigationLink({
   activeClassName,
   children,
   onClick,
+  currentPath,
 }: NavigationLinkProps) {
   const { triggerNavigation } = useNavigation();
-  const pathname = usePathname();
-  const isActive = pathname === href;
+  const [resolvedPath, setResolvedPath] = useState(currentPath ?? '');
+
+  useEffect(() => {
+    if (currentPath !== undefined) {
+      // Prop-driven: use whatever the parent passed in
+      setResolvedPath(currentPath);
+    } else {
+      // Fallback: read from browser at mount (SSR-safe, minor active-state flash is acceptable)
+      setResolvedPath(window.location.pathname);
+    }
+  }, [currentPath]);
+
+  // Normalize both sides so a trailing slash from Netlify Pretty URLs (post-301
+  // window.location.pathname) still matches slash-free nav hrefs after hydration.
+  const isActive = normalizePath(resolvedPath) === normalizePath(href);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Don't trigger if it's a cmd/ctrl+click (opens in new tab)
@@ -45,15 +60,14 @@ export default function NavigationLink({
     isActive && activeClassName ? `${className} ${activeClassName}` : className;
 
   return (
-    <Link
+    <a
       href={href}
       className={combinedClassName}
       onClick={handleClick}
       tabIndex={isActive ? -1 : 0}
       aria-current={isActive ? 'page' : undefined}
-      prefetch={false}
     >
       {children}
-    </Link>
+    </a>
   );
 }

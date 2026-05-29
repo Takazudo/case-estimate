@@ -65,6 +65,12 @@ const openFirstGalleryItem = async (page: Page) => {
   await page.goto('/gallery');
   await page.waitForSelector('[data-testid="gallery-thumbnail"]');
 
+  // Wait for the client-only GalleryDialogHost island to be attached before interacting
+  await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+    state: 'attached',
+    timeout: 15000,
+  });
+
   const thumbnails = page.locator('[data-testid="gallery-thumbnail"]');
   const firstThumbnail = thumbnails.first();
   const slug = await firstThumbnail.getAttribute('data-slug');
@@ -79,8 +85,16 @@ const openFirstGalleryItem = async (page: Page) => {
   return { slug };
 };
 
-const waitForDialogVisible = (page: Page) =>
-  page.locator('[data-testid="gallery-dialog"]').waitFor({ state: 'visible', timeout: 10000 });
+const waitForDialogVisible = async (page: Page) => {
+  // Wait for the client-only GalleryDialogHost island to be attached before checking dialog state
+  await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+    state: 'attached',
+    timeout: 15000,
+  });
+  await page
+    .locator('[data-testid="gallery-dialog"]')
+    .waitFor({ state: 'visible', timeout: 10000 });
+};
 
 const waitForDialogHidden = (page: Page) =>
   page.locator('[data-testid="gallery-dialog"]').waitFor({ state: 'hidden', timeout: 10000 });
@@ -166,12 +180,12 @@ test.describe('Gallery Page', () => {
     // Check URL contains the image ID
     const url = page.url();
     if (slug) {
-      expect(url).toContain(`/gallery?id=${slug}`);
+      expect(url).toContain(`/gallery/?id=${slug}`);
     }
   });
 
   test('should navigate with prev/next buttons', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -204,7 +218,9 @@ test.describe('Gallery Page', () => {
   });
 
   test('should hide prev button on first item', async ({ page }) => {
-    await page.goto('/gallery?id=panel-variations');
+    // Derive the first slug from the dataset so the test stays correct as gallery data changes.
+    const firstSlug = galleryData[0].slug;
+    await page.goto(`/gallery/?id=${firstSlug}`);
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -217,7 +233,9 @@ test.describe('Gallery Page', () => {
   });
 
   test('should hide next button on last item', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-093');
+    // Derive the last slug from the dataset so the test stays correct as gallery data changes.
+    const lastSlug = galleryData[galleryData.length - 1].slug;
+    await page.goto(`/gallery/?id=${lastSlug}`);
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -230,7 +248,7 @@ test.describe('Gallery Page', () => {
   });
 
   test('should close dialog when clicking close button', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -241,7 +259,8 @@ test.describe('Gallery Page', () => {
     // Wait for URL update first, then confirm dialog hidden
     await page.waitForFunction(() => !window.location.search.includes('id='));
     await waitForDialogHidden(page);
-    expect(page.url()).toBe('http://localhost:3200/gallery');
+    // zfb serves /gallery with a trailing slash; tolerate optional slash, no query.
+    expect(page.url()).toMatch(/^http:\/\/localhost:3200\/gallery\/?$/);
   });
 
   test('closing dialog from grid should not reopen when navigating back', async ({ page }) => {
@@ -254,11 +273,12 @@ test.describe('Gallery Page', () => {
     await page.goBack();
 
     await expect(page.locator('[data-testid="gallery-dialog"]')).not.toBeVisible();
-    expect(page.url()).toBe('http://localhost:3200/gallery');
+    // zfb serves /gallery with a trailing slash; tolerate optional slash, no query.
+    expect(page.url()).toMatch(/^http:\/\/localhost:3200\/gallery\/?$/);
   });
 
   test('should close dialog when pressing ESC key', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -271,11 +291,12 @@ test.describe('Gallery Page', () => {
 
     // Dialog should be hidden
     await waitForDialogHidden(page);
-    expect(page.url()).toBe('http://localhost:3200/gallery');
+    // zfb serves /gallery with a trailing slash; tolerate optional slash, no query.
+    expect(page.url()).toMatch(/^http:\/\/localhost:3200\/gallery\/?$/);
   });
 
   test('should navigate with keyboard arrow keys', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
@@ -313,7 +334,7 @@ test.describe('Gallery Page', () => {
     });
 
     // Navigate directly to a specific image
-    const response = await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    const response = await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Check that the page loads successfully
     expect(response?.status()).toBeLessThan(400);
@@ -342,7 +363,14 @@ test.describe('Gallery Page', () => {
     });
 
     // Navigate to gallery with invalid ID
-    await page.goto('/gallery?id=non-existent-image');
+    await page.goto('/gallery/?id=non-existent-image');
+
+    // Wait for the client-only GalleryDialogHost island to be attached
+    // (ensures the not.toBeVisible assertion below is a real check, not a trivial pass)
+    await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+      state: 'attached',
+      timeout: 15000,
+    });
 
     // Should show gallery page without dialog
     await expect(page.locator('[data-testid="gallery-thumbnail-grid"]')).toBeVisible();
@@ -353,15 +381,18 @@ test.describe('Gallery Page', () => {
   });
 
   test('should close dialog when clicking outside', async ({ page }) => {
-    await page.goto('/gallery?id=panels-gallery-zudo-blocks-025');
+    await page.goto('/gallery/?id=panels-gallery-zudo-blocks-025');
 
     // Wait for dialog to be visible
     await waitForDialogVisible(page);
 
-    // Click on the backdrop/overlay at a safe coordinate
+    // The dialog closes when the click target is the <dialog> element itself
+    // (the backdrop region) — see handleDialogClick in base-image-dialog.tsx.
+    // There is no separate backdrop element, so dispatch the click directly on
+    // the dialog with target === the dialog node.
     await page.evaluate(() => {
-      const backdrop = document.querySelector('[data-testid="gallery-dialog-backdrop"]');
-      if (!backdrop) throw new Error('Backdrop not found');
+      const dialog = document.querySelector('[data-testid="gallery-dialog"]');
+      if (!dialog) throw new Error('Dialog not found');
       const event = new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
@@ -369,12 +400,13 @@ test.describe('Gallery Page', () => {
         clientX: 1,
         clientY: 1,
       });
-      backdrop.dispatchEvent(event);
+      dialog.dispatchEvent(event);
     });
 
     // Wait for URL change then ensure dialog hidden
     await page.waitForFunction(() => !window.location.search.includes('id='));
     await waitForDialogHidden(page);
-    expect(page.url()).toBe('http://localhost:3200/gallery');
+    // zfb serves /gallery with a trailing slash; tolerate optional slash, no query.
+    expect(page.url()).toMatch(/^http:\/\/localhost:3200\/gallery\/?$/);
   });
 });
