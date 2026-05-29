@@ -1,6 +1,43 @@
 @import 'tailwindcss';
 
 /*
+ * Tailwind v4 explicit source for the shared React components.
+ *
+ * Tailwind's automatic content detection only sees classes that appear in
+ * SSR-rendered output. The /m configurator is mounted as a skip-ssr island
+ * (`<Island ssrFallback>`), so its entire subtree is NEVER server-rendered —
+ * its utility classes (grid-cols-1, p-[10px], text-zd-gray3, the loading
+ * overlay, modal styling, …) would otherwise be absent from the compiled CSS
+ * and the configurator would render unstyled. Regular islands (header/footer)
+ * ARE server-rendered, which is why their sibling components in this same
+ * directory scan fine — so the gap is render-participation-based, not a path
+ * issue, and every future client-only (skip-ssr) island hits it.
+ *
+ * Pointing `@source` at the shared components dir makes Tailwind scan the
+ * source files directly, independent of SSR participation. zfb resolves
+ * `@source` relative to the project root (zfb-app/), so the shared dir is
+ * `../components`.
+ */
+@source "../components";
+
+/*
+ * Height for skip-ssr island wrappers.
+ *
+ * The Island wrapper emits a plain <div data-zfb-island-skip-ssr> (no height
+ * class, and zfb does not set display:contents on it). On /m this div sits
+ * between `main.h-screen` and the configurator's root `h-full`, so without a
+ * height it collapses to auto and the configurator's percentage-height chain
+ * breaks (the page would not fill the viewport).
+ *
+ * Scoped to skip-ssr ONLY — regular `when="visible"` islands (e.g. the footer)
+ * rely on a real layout box for their IntersectionObserver, so this must not
+ * blanket all islands.
+ */
+[data-zfb-island-skip-ssr] {
+  height: 100%;
+}
+
+/*
  * Self-hosted Noto Sans (latin subset).
  *
  * The Next app loaded Noto Sans via `next/font/google`. zfb has no
