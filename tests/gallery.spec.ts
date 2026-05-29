@@ -65,6 +65,12 @@ const openFirstGalleryItem = async (page: Page) => {
   await page.goto('/gallery');
   await page.waitForSelector('[data-testid="gallery-thumbnail"]');
 
+  // Wait for the client-only GalleryDialogHost island to be attached before interacting
+  await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+    state: 'attached',
+    timeout: 15000,
+  });
+
   const thumbnails = page.locator('[data-testid="gallery-thumbnail"]');
   const firstThumbnail = thumbnails.first();
   const slug = await firstThumbnail.getAttribute('data-slug');
@@ -79,8 +85,16 @@ const openFirstGalleryItem = async (page: Page) => {
   return { slug };
 };
 
-const waitForDialogVisible = (page: Page) =>
-  page.locator('[data-testid="gallery-dialog"]').waitFor({ state: 'visible', timeout: 10000 });
+const waitForDialogVisible = async (page: Page) => {
+  // Wait for the client-only GalleryDialogHost island to be attached before checking dialog state
+  await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+    state: 'attached',
+    timeout: 15000,
+  });
+  await page
+    .locator('[data-testid="gallery-dialog"]')
+    .waitFor({ state: 'visible', timeout: 10000 });
+};
 
 const waitForDialogHidden = (page: Page) =>
   page.locator('[data-testid="gallery-dialog"]').waitFor({ state: 'hidden', timeout: 10000 });
@@ -343,6 +357,13 @@ test.describe('Gallery Page', () => {
 
     // Navigate to gallery with invalid ID
     await page.goto('/gallery?id=non-existent-image');
+
+    // Wait for the client-only GalleryDialogHost island to be attached
+    // (ensures the not.toBeVisible assertion below is a real check, not a trivial pass)
+    await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+      state: 'attached',
+      timeout: 15000,
+    });
 
     // Should show gallery page without dialog
     await expect(page.locator('[data-testid="gallery-thumbnail-grid"]')).toBeVisible();

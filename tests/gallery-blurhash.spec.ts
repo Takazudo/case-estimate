@@ -32,6 +32,12 @@ test.describe('Gallery Blurhash Loading', () => {
   test('should show blurhash in dialog immediately when opened', async ({ page }) => {
     await page.goto('/gallery');
 
+    // Wait for the client-only GalleryDialogHost island to be attached before interacting
+    await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+      state: 'attached',
+      timeout: 15000,
+    });
+
     // Click on the first thumbnail
     const firstThumbnail = page.locator('[data-testid="gallery-thumbnail"]').first();
     await firstThumbnail.click();

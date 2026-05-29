@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Auto-Select Feature', () => {
+// QUARANTINED: asserts pre-modal-UI (native select/combobox/tabs/home-config) that no longer exists; rewrite tracked in Takazudo/case-estimate#94
+test.describe.skip('Auto-Select Feature', () => {
   test.beforeEach(async ({ page }) => {
     // Track console errors
     const consoleErrors: string[] = [];
@@ -196,7 +197,8 @@ test.describe('Auto-Select Feature', () => {
   });
 });
 
-test.describe('Auto-Select Edge Cases', () => {
+// QUARANTINED: asserts pre-modal-UI (native select/combobox/tabs/home-config) that no longer exists; rewrite tracked in Takazudo/case-estimate#94
+test.describe.skip('Auto-Select Edge Cases', () => {
   test('should not throw errors when rapidly switching cases', async ({ page }) => {
     const consoleErrors: string[] = [];
     page.on('console', (msg) => {

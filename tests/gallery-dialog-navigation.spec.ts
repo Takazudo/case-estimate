@@ -6,6 +6,12 @@ test.describe('Gallery Dialog Navigation', () => {
     await page.goto('/gallery');
     await page.waitForSelector('[data-testid^="gallery-item-"]');
 
+    // Wait for the client-only GalleryDialogHost island to be attached before interacting
+    await page.waitForSelector('[data-zfb-island-skip-ssr="GalleryDialogHost"]', {
+      state: 'attached',
+      timeout: 15000,
+    });
+
     // Open first dialog
     const firstItem = page.locator('[data-testid^="gallery-item-"]').first();
     await firstItem.click();

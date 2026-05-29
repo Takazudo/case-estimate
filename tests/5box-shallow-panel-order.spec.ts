@@ -25,8 +25,13 @@ test.describe('5BOX-shallow-3DP Panel Order', () => {
     // Navigate to 5box-shallow-3dp with all panels in different colors
     // c=fa (5box-shallow-3dp)
     // Using diverse colors to make each panel visually distinct
-    await page.goto('/m?c=fa&p=m1bw.m2rg.m5cb.m6lo.m7ib.m8bg.l1sg.l2sw.l7p.l8cr.l6g', {
+    await page.goto('/m/?c=fa&p=m1bw.m2rg.m5cb.m6lo.m7ib.m8bg.l1sg.l2sw.l7p.l8cr.l6g', {
       waitUntil: 'networkidle',
+    });
+
+    // Wait for the client-only Configurator island to mount (skip-ssr island)
+    await page.waitForSelector('[data-zfb-island-skip-ssr="Configurator"] svg', {
+      timeout: 15000,
     });
 
     // Wait for the builder to load

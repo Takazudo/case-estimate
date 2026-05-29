@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Manual Tab Switching Fix', () => {
+// QUARANTINED: asserts pre-modal-UI (native select/combobox/tabs/home-config) that no longer exists; rewrite tracked in Takazudo/case-estimate#94
+test.describe.skip('Manual Tab Switching Fix', () => {
   test('should allow manual tab switching regardless of color configuration', async ({ page }) => {
     // Load a case with default colors
     await page.goto('/m?c=1a');
