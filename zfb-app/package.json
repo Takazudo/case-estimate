@@ -11,8 +11,8 @@
   "dependencies": {
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@takazudo/zfb": "0.1.0-next.15",
-    "@takazudo/zfb-runtime": "0.1.0-next.15"
+    "@takazudo/zfb": "0.1.0-next.16",
+    "@takazudo/zfb-runtime": "0.1.0-next.16"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
