@@ -5,32 +5,27 @@ import { ArticleContent } from '~/components/article-content';
 import { contentComponents } from './_mdx-components';
 
 /**
- * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
+ * FAQ page — renders content/faq.mdx.
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
- *
- * getStaticProps passes the build-time route to the layout so the active nav
- * highlight renders correctly in the static HTML (no client flash).
+ * Currently a stub ("Coming soon"). No islands — static HTML only.
  */
 export async function getStaticProps() {
   return {
     props: {
-      currentPath: '/',
+      currentPath: '/faq',
     },
   };
 }
 
-interface HomePageProps {
+interface FaqPageProps {
   currentPath?: string;
 }
 
-export default function HomePage({ currentPath }: HomePageProps) {
+export default function FaqPage({ currentPath }: FaqPageProps) {
   const entries = getCollection<{ title: string; description?: string }>('content');
-  const entry = entries.find((e) => e.slug === 'index');
+  const entry = entries.find((e) => e.slug === 'faq');
 
-  const title = entry?.data.title ?? 'Takazudo Modular: Panels';
+  const title = entry?.data.title ?? 'よくあるご質問 / FAQ - Takazudo Modular: Panels';
   const description = entry?.data.description;
 
   return (

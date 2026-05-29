@@ -5,32 +5,27 @@ import { ArticleContent } from '~/components/article-content';
 import { contentComponents } from './_mdx-components';
 
 /**
- * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
+ * Price page — renders content/price.mdx.
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
- *
- * getStaticProps passes the build-time route to the layout so the active nav
- * highlight renders correctly in the static HTML (no client flash).
+ * The MDX body references PriceTable (static component — no 'use client').
  */
 export async function getStaticProps() {
   return {
     props: {
-      currentPath: '/',
+      currentPath: '/price',
     },
   };
 }
 
-interface HomePageProps {
+interface PricePageProps {
   currentPath?: string;
 }
 
-export default function HomePage({ currentPath }: HomePageProps) {
+export default function PricePage({ currentPath }: PricePageProps) {
   const entries = getCollection<{ title: string; description?: string }>('content');
-  const entry = entries.find((e) => e.slug === 'index');
+  const entry = entries.find((e) => e.slug === 'price');
 
-  const title = entry?.data.title ?? 'Takazudo Modular: Panels';
+  const title = entry?.data.title ?? '価格 | Takazudo Modular Case Estimate';
   const description = entry?.data.description;
 
   return (

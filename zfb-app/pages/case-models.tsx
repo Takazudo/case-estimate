@@ -5,32 +5,30 @@ import { ArticleContent } from '~/components/article-content';
 import { contentComponents } from './_mdx-components';
 
 /**
- * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
+ * Case models page — renders content/case-models.mdx.
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
- *
- * getStaticProps passes the build-time route to the layout so the active nav
- * highlight renders correctly in the static HTML (no client flash).
+ * The MDX body references ModelSection, ModelSectionGallery, ModelGallery,
+ * CaseModelsToc, BuilderNav, PromoText, and H2 — all wired via contentComponents.
+ * ModelGallery and ModelSection are 'use client' islands that emit
+ * data-zfb-island markers in built HTML.
  */
 export async function getStaticProps() {
   return {
     props: {
-      currentPath: '/',
+      currentPath: '/case-models',
     },
   };
 }
 
-interface HomePageProps {
+interface CaseModelsPageProps {
   currentPath?: string;
 }
 
-export default function HomePage({ currentPath }: HomePageProps) {
+export default function CaseModelsPage({ currentPath }: CaseModelsPageProps) {
   const entries = getCollection<{ title: string; description?: string }>('content');
-  const entry = entries.find((e) => e.slug === 'index');
+  const entry = entries.find((e) => e.slug === 'case-models');
 
-  const title = entry?.data.title ?? 'Takazudo Modular: Panels';
+  const title = entry?.data.title ?? 'Case Models - Takazudo Modular: Panels';
   const description = entry?.data.description;
 
   return (

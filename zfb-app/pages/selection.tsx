@@ -5,32 +5,27 @@ import { ArticleContent } from '~/components/article-content';
 import { contentComponents } from './_mdx-components';
 
 /**
- * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
+ * Panel selection guide page — renders content/selection.mdx.
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
- *
- * getStaticProps passes the build-time route to the layout so the active nav
- * highlight renders correctly in the static HTML (no client flash).
+ * Static article content with heading/paragraph overrides. No islands.
  */
 export async function getStaticProps() {
   return {
     props: {
-      currentPath: '/',
+      currentPath: '/selection',
     },
   };
 }
 
-interface HomePageProps {
+interface SelectionPageProps {
   currentPath?: string;
 }
 
-export default function HomePage({ currentPath }: HomePageProps) {
+export default function SelectionPage({ currentPath }: SelectionPageProps) {
   const entries = getCollection<{ title: string; description?: string }>('content');
-  const entry = entries.find((e) => e.slug === 'index');
+  const entry = entries.find((e) => e.slug === 'selection');
 
-  const title = entry?.data.title ?? 'Takazudo Modular: Panels';
+  const title = entry?.data.title ?? 'パネルの選択方法 | Takazudo Modular: Panels';
   const description = entry?.data.description;
 
   return (

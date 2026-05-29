@@ -5,32 +5,29 @@ import { ArticleContent } from '~/components/article-content';
 import { contentComponents } from './_mdx-components';
 
 /**
- * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
+ * Panel materials page — renders content/panel.mdx.
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
- *
- * getStaticProps passes the build-time route to the layout so the active nav
- * highlight renders correctly in the static HTML (no client flash).
+ * The MDX body references ImgFloatRight (client island), AcrylicPanelList,
+ * and PrintedPanelList (both client islands wrapping ArticleGridImageList).
+ * These emit data-zfb-island markers in built HTML.
  */
 export async function getStaticProps() {
   return {
     props: {
-      currentPath: '/',
+      currentPath: '/panel',
     },
   };
 }
 
-interface HomePageProps {
+interface PanelPageProps {
   currentPath?: string;
 }
 
-export default function HomePage({ currentPath }: HomePageProps) {
+export default function PanelPage({ currentPath }: PanelPageProps) {
   const entries = getCollection<{ title: string; description?: string }>('content');
-  const entry = entries.find((e) => e.slug === 'index');
+  const entry = entries.find((e) => e.slug === 'panel');
 
-  const title = entry?.data.title ?? 'Takazudo Modular: Panels';
+  const title = entry?.data.title ?? 'Panel Materials | Takazudo Modular: Panels';
   const description = entry?.data.description;
 
   return (
