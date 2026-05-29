@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { normalizePath } from '@/utils/normalize-path';
 
 // Animation timing constants for consistency and maintainability
 const ANIMATION_DURATIONS = {
@@ -28,7 +29,8 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
 
   // Initialise pathname from browser and subscribe to popstate for SPA navigation
   useEffect(() => {
-    const current = window.location.pathname;
+    // Normalize so a post-301 trailing slash ('/m/') still matches '/m' below.
+    const current = normalizePath(window.location.pathname);
     setPathname(current);
     previousPathnameRef.current = current;
 
@@ -39,7 +41,7 @@ export function NavigationProvider({ children }: { children: React.ReactNode }) 
     }
 
     const handlePopState = () => {
-      setPathname(window.location.pathname);
+      setPathname(normalizePath(window.location.pathname));
     };
 
     window.addEventListener('popstate', handlePopState);

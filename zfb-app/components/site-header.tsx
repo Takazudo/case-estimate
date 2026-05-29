@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import AppHeader from '@/components/app-header';
 import { NavigationProvider } from '@/components/navigation-context';
+import { normalizePath } from '@/utils/normalize-path';
 
 interface SiteHeaderProps {
   /** Build-time route path (e.g. "/", "/gallery"). Passed from the layout
@@ -41,7 +42,8 @@ export default function SiteHeader({ currentPath = '' }: SiteHeaderProps) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  const isFullWidth = resolvedPath === '/m';
+  // Normalize so a post-301 trailing slash ('/m/') still matches '/m'.
+  const isFullWidth = normalizePath(resolvedPath) === '/m';
 
   return (
     <NavigationProvider>

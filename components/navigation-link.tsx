@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from './navigation-context';
+import { normalizePath } from '@/utils/normalize-path';
 
 interface NavigationLinkProps {
   href: string;
@@ -34,7 +35,9 @@ export default function NavigationLink({
     }
   }, [currentPath]);
 
-  const isActive = resolvedPath === href;
+  // Normalize both sides so a trailing slash from Netlify Pretty URLs (post-301
+  // window.location.pathname) still matches slash-free nav hrefs after hydration.
+  const isActive = normalizePath(resolvedPath) === normalizePath(href);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Don't trigger if it's a cmd/ctrl+click (opens in new tab)
