@@ -24,6 +24,23 @@ export interface DefaultLayoutProps {
    * app/(configurator)/m/layout.tsx metadata.
    */
   pwaCapable?: boolean;
+  /**
+   * When true, switches the page body into the full-viewport configurator
+   * variant used by /m: the <main> fills the viewport (h-screen +
+   * overflow-hidden) with NO top padding, and the footer island is
+   * suppressed.
+   *
+   * This mirrors the old Next render chain for /m, where the
+   * app/(configurator)/layout.tsx wrapped children in a bare
+   * `h-full overflow-hidden` div with no footer — the configurator's own
+   * VisualizationPanel adds its `pt-[96px]` to clear the fixed header, so
+   * the layout must NOT also pad the top (that would double the gap). The
+   * fixed SiteHeader floats over this full-height container.
+   *
+   * Defaults to false (the standard content-page chrome: padded main +
+   * footer), so other pages are unaffected.
+   */
+  configurator?: boolean;
   children: ReactNode;
 }
 
@@ -50,6 +67,7 @@ export default function DefaultLayout({
   description = DEFAULT_DESCRIPTION,
   currentPath = '/',
   pwaCapable = false,
+  configurator = false,
   children,
 }: DefaultLayoutProps) {
   // Pad top of page content so it clears the fixed header (96px matches the
@@ -84,15 +102,26 @@ export default function DefaultLayout({
           <SiteHeader currentPath={currentPath} />
         </Island>
 
-        {/* Page content — padded to clear the fixed header */}
-        <div className="min-h-screen flex flex-col">
-          <main className="flex-1 pt-[96px]">{children}</main>
+        {configurator ? (
+          // Configurator variant (/m): full-viewport, no top padding, no
+          // footer — mirrors the old (configurator)/layout.tsx. h-screen gives
+          // the configurator's `h-full` tree a definite height to resolve
+          // against; overflow-hidden prevents page scroll behind the fixed
+          // header. VisualizationPanel adds its own pt-[96px] to clear the
+          // header, so the layout must not pad here.
+          <main className="h-screen overflow-hidden">{children}</main>
+        ) : (
+          // Standard content-page chrome: padded main (clears fixed header) +
+          // deferred footer island.
+          <div className="min-h-screen flex flex-col">
+            <main className="flex-1 pt-[96px]">{children}</main>
 
-          {/* Footer island — deferred until visible to avoid blocking initial paint */}
-          <Island when="visible">
-            <SiteFooter />
-          </Island>
-        </div>
+            {/* Footer island — deferred until visible to avoid blocking initial paint */}
+            <Island when="visible">
+              <SiteFooter />
+            </Island>
+          </div>
+        )}
       </body>
     </html>
   );
