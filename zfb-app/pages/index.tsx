@@ -7,9 +7,8 @@ import { contentComponents } from './_mdx-components';
 /**
  * Home page — renders the "index" content collection entry (zfb-app/content/index.mdx).
  *
- * Replaces the T1–T3 SanityIsland placeholder. The MDX body references
- * TopNavGrid (a 'use client' island) so the page emits a data-zfb-island
- * marker in built HTML and hydrates on the client.
+ * The MDX body references TopNavGrid (a 'use client' island) so the page emits
+ * a data-zfb-island marker in built HTML and hydrates on the client.
  *
  * getStaticProps passes the build-time route to the layout so the active nav
  * highlight renders correctly in the static HTML (no client flash).

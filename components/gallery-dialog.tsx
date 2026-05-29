@@ -32,7 +32,8 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     // Trailing slash is required: the zfb static host 301-redirects /gallery to
     // /gallery/ and drops the query string, which would break shared deep-links.
     const newUrl = params.toString() ? `/gallery/?${params.toString()}` : '/gallery/';
-    // Next.js patches replaceState to keep useSearchParams in sync
+    // gallery-dialog-host.tsx patches replaceState to emit "locationchange",
+    // keeping the dialog's ?id= in sync after this programmatic URL change.
     window.history.replaceState(null, '', newUrl);
   }, []);
 
@@ -41,7 +42,8 @@ export default function GalleryDialog({ slug }: GalleryDialogProps) {
     params.set('id', newSlug);
     // Trailing slash is required: the zfb static host 301-redirects /gallery to
     // /gallery/ and drops the query string, which would break shared deep-links.
-    // Next.js patches replaceState to keep useSearchParams in sync
+    // gallery-dialog-host.tsx patches replaceState to emit "locationchange",
+    // keeping the dialog's ?id= in sync after this programmatic URL change.
     window.history.replaceState(null, '', `/gallery/?${params.toString()}`);
   }, []);
 
