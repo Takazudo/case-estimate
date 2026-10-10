@@ -1,42 +1,26 @@
-'use client';
-
-import React from 'react';
-import { useNavigation } from './navigation-context';
+import { computed, type Child } from '@takazudo/zfb/zudo-react';
 import { useCurrentPath } from '@/hooks/use-current-path';
-
-interface PageContentProps {
-  children: React.ReactNode;
-}
-
-export default function PageContent({ children }: PageContentProps) {
-  const currentPath = useCurrentPath();
-  const { pageAnimationClass } = useNavigation();
-
-  const isConfiguratorRoute = currentPath === '/m';
-
-  // For /m route: fixed viewport height layout
-  // For other routes: min-height layout with normal scrolling
-  const containerClassName = isConfiguratorRoute
-    ? 'h-screen flex flex-col'
-    : 'min-h-screen flex flex-col';
-
+import type { NavigationController } from './navigation-context';
+export default function PageContent({
+  children,
+  navigation,
+}: {
+  children: Child;
+  navigation?: NavigationController;
+}) {
+  const path = useCurrentPath();
+  const isConfigurator = computed(() => path.value === '/m');
+  const containerClass = computed(
+    () => `${isConfigurator.value ? 'h-screen' : 'min-h-screen'} flex flex-col`,
+  );
+  const mainClass = computed(
+    () =>
+      `${isConfigurator.value ? 'flex-1 overflow-hidden ' : ''}${navigation?.pageAnimationClass.value ?? ''}`,
+  );
+  const items = Array.isArray(children) ? children : [children];
   return (
-    <div className={containerClassName}>
-      {React.Children.map(children, (child, index) => {
-        // First child is PersistentHeader
-        if (index === 0) return child;
-
-        // Second child is the page content
-        if (index === 1) {
-          const mainClassName = isConfiguratorRoute
-            ? `flex-1 overflow-hidden ${pageAnimationClass}`
-            : pageAnimationClass;
-
-          return <main className={mainClassName}>{child}</main>;
-        }
-
-        return child;
-      })}
+    <div class={containerClass}>
+      {items.map((child, index) => (index === 1 ? <main class={mainClass}>{child}</main> : child))}
     </div>
   );
 }
