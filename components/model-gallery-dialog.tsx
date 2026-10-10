@@ -1,89 +1,54 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import { computed, signal } from '@takazudo/zfb/zudo-react';
 import { getGalleryItemBySlug } from '@/data/gallery-data';
 import { getEnlargedImageUrl } from '@/utils/cdn-urls';
 import BaseImageDialog from './base-image-dialog';
 
 interface ModelGalleryDialogProps {
   slug: string;
-  allSlugs: string[]; // [main, ...subs] - the complete list for navigation
+  allSlugs: string[];
   onClose: () => void;
 }
 
-/**
- * ModelGalleryDialog - Scoped gallery dialog for model images
- *
- * Similar to GalleryDialog but navigates only within the provided slug list.
- * Features:
- * - Enlarged image view (2000w.webp)
- * - Navigation limited to allSlugs array
- * - Keyboard navigation (arrow keys, ESC)
- * - Click backdrop to close
- * - Image preloading for smooth navigation
- *
- * Usage:
- * <ModelGalleryDialog
- *   slug="current-slug"
- *   allSlugs={["main-slug", "sub1", "sub2"]}
- *   onClose={() => setDialogOpen(false)}
- * />
- */
 export default function ModelGalleryDialog({ slug, allSlugs, onClose }: ModelGalleryDialogProps) {
-  const [currentSlug, setCurrentSlug] = useState(slug);
-
-  // Find current index and adjacent slugs within the scoped list
-  const currentIndex = allSlugs.indexOf(currentSlug);
-  const hasPrevious = currentIndex > 0;
-  const hasNext = currentIndex < allSlugs.length - 1;
-  const previousSlug = hasPrevious ? allSlugs[currentIndex - 1] : null;
-  const nextSlug = hasNext ? allSlugs[currentIndex + 1] : null;
-
-  // Get current item data
-  const currentItem = getGalleryItemBySlug(currentSlug);
-
-  // Get slugs to preload (memoized to prevent unnecessary effect re-runs)
-  const slugsToPreload = useMemo(() => {
-    const slugs: string[] = [];
-    if (previousSlug) slugs.push(previousSlug);
-    if (nextSlug) slugs.push(nextSlug);
-    return slugs;
-  }, [previousSlug, nextSlug]);
-
-  const handlePrevious = useCallback(() => {
-    if (previousSlug) {
-      setCurrentSlug(previousSlug);
-    }
-  }, [previousSlug]);
-
-  const handleNext = useCallback(() => {
-    if (nextSlug) {
-      setCurrentSlug(nextSlug);
-    }
-  }, [nextSlug]);
-
-  if (!currentItem) {
-    return null;
-  }
-
+  const currentSlug = signal(slug);
+  const index = computed(() => allSlugs.indexOf(currentSlug.value));
+  const current = computed(() => getGalleryItemBySlug(currentSlug.value));
+  const previous = computed(() => (index.value > 0 ? allSlugs[index.value - 1] : null));
+  const next = computed(() =>
+    index.value >= 0 && index.value < allSlugs.length - 1 ? allSlugs[index.value + 1] : null,
+  );
+  const preload = computed(() =>
+    [previous.value, next.value].filter((value): value is string => Boolean(value)),
+  );
   return (
     <BaseImageDialog
       testId="model-gallery-dialog"
       dialogId="model-gallery-dialog"
       currentSlug={currentSlug}
-      imageUrl={getEnlargedImageUrl(currentSlug)}
-      imageAlt={currentItem.imageAlt || `Model gallery image ${currentSlug}`}
+      imageUrl={computed(() => getEnlargedImageUrl(currentSlug.value))}
+      imageAlt={computed(
+        () => current.value?.imageAlt || `Model gallery image ${currentSlug.value}`,
+      )}
       getImageUrl={getEnlargedImageUrl}
-      slugsToPreload={slugsToPreload}
+      slugsToPreload={preload}
       onClose={onClose}
-      onPrevious={handlePrevious}
-      onNext={handleNext}
-      hasPrevious={hasPrevious}
-      hasNext={hasNext}
-      screenReaderDescription={`Image ${currentIndex + 1} of ${allSlugs.length}. Use the arrow keys to navigate through images. Press Escape to close.`}
+      onPrevious={() => {
+        if (previous.value) currentSlug.value = previous.value;
+      }}
+      onNext={() => {
+        if (next.value) currentSlug.value = next.value;
+      }}
+      hasPrevious={computed(() => Boolean(previous.value))}
+      hasNext={computed(() => Boolean(next.value))}
+      screenReaderDescription={computed(
+        () =>
+          `Image ${index.value + 1} of ${allSlugs.length}. Use the arrow keys to navigate through images. Press Escape to close.`,
+      )}
       additionalContent={
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur px-3 py-1 rounded-full text-white text-sm">
-          {currentIndex + 1} / {allSlugs.length}
+        <div class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur px-3 py-1 rounded-full text-white text-sm">
+          {computed(() => `${index.value + 1} / ${allSlugs.length}`)}
         </div>
       }
     />

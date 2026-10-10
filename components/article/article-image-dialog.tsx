@@ -1,17 +1,9 @@
 'use client';
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  useMemo,
-  type MouseEvent as ReactMouseEvent,
-} from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
-import { useFocusTrap } from '@/hooks/use-focus-trap';
-import { CloseIcon } from '@/components/icons/close-icon';
+import { computed, Show } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
+import BaseImageDialog from '@/components/base-image-dialog';
 
 interface ImageItem {
   thumbUrl: string;
@@ -21,323 +13,64 @@ interface ImageItem {
   subHeading?: string;
   blurhash?: string;
 }
-
-interface ArticleImageDialogProps {
+interface Props {
   items: ImageItem[];
-  currentIndex: number | null;
+  currentIndex: Reactive<number | null>;
   onClose: () => void;
   onNavigate: (index: number) => void;
 }
 
-export default function ArticleImageDialog({
-  items,
-  currentIndex,
-  onClose,
-  onNavigate,
-}: ArticleImageDialogProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const preloadedImagesRef = useRef(new Set<string>());
-
-  // Get current item based on index
-  const currentItem =
-    currentIndex !== null && currentIndex >= 0 && currentIndex < items.length
-      ? items[currentIndex]
-      : null;
-
-  const hasPrevious = currentIndex !== null && currentIndex > 0;
-  const hasNext = currentIndex !== null && currentIndex < items.length - 1;
-
-  const dialogTitleId = useMemo(() => `article-image-dialog-title-${currentIndex}`, [currentIndex]);
-  const dialogDescriptionId = useMemo(
-    () => `article-image-dialog-description-${currentIndex}`,
-    [currentIndex],
-  );
-
-  const handleClose = useCallback(() => {
-    // Close the dialog first
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-    onClose();
-  }, [onClose]);
-
-  const handlePrevious = useCallback(() => {
-    if (currentIndex !== null && currentIndex > 0) {
-      onNavigate(currentIndex - 1);
-    }
-  }, [onNavigate, currentIndex]);
-
-  const handleNext = useCallback(() => {
-    if (currentIndex !== null && currentIndex < items.length - 1) {
-      onNavigate(currentIndex + 1);
-    }
-  }, [onNavigate, currentIndex, items.length]);
-
-  const { containerRef } = useFocusTrap({
-    isActive: Boolean(currentItem),
-    onClose: handleClose,
+export default function ArticleImageDialog({ items, currentIndex, onClose, onNavigate }: Props) {
+  const valid = computed(() => {
+    const index = read(currentIndex);
+    return index !== null && index >= 0 && index < items.length;
   });
-
-  useGalleryKeyboardNavigation({
-    isActive: Boolean(currentItem),
-    onClose: handleClose,
-    onPrevious: hasPrevious ? handlePrevious : undefined,
-    onNext: hasNext ? handleNext : undefined,
-  });
-
-  // Open/close dialog based on currentItem
-  useEffect(() => {
-    if (currentItem && dialogRef.current) {
-      // Use showModal for proper dialog behavior with backdrop
-      if (!dialogRef.current.open) {
-        dialogRef.current.showModal();
-      }
-    } else if (!currentItem && dialogRef.current && dialogRef.current.open) {
-      dialogRef.current.close();
-    }
-  }, [currentItem]);
-
-  // Handle backdrop click
-  const handleDialogClick = useCallback(
-    (event: ReactMouseEvent<HTMLDialogElement>) => {
-      // Check if click is on the backdrop (dialog element itself, not its children)
-      const rect = dialogRef.current?.getBoundingClientRect();
-      if (rect) {
-        const clickedInDialog =
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom;
-
-        // If clicked outside the dialog content area (on the backdrop)
-        if (!clickedInDialog || event.target === dialogRef.current) {
-          handleClose();
-        }
-      }
-    },
-    [handleClose],
-  );
-
-  // Handle native dialog cancel event (ESC key)
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const handleCancel = (event: Event) => {
-      event.preventDefault(); // Prevent default close behavior
-      handleClose();
-    };
-
-    dialog.addEventListener('cancel', handleCancel);
-    return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-    };
-  }, [handleClose]);
-
-  // Preload adjacent images
-  useEffect(() => {
-    if (currentIndex === null) return;
-
-    const indicesToPreload: number[] = [];
-
-    // Add previous image
-    if (currentIndex > 0) {
-      indicesToPreload.push(currentIndex - 1);
-    }
-
-    // Add next image
-    if (currentIndex < items.length - 1) {
-      indicesToPreload.push(currentIndex + 1);
-    }
-
-    // Add two images ahead if possible
-    if (currentIndex < items.length - 2) {
-      indicesToPreload.push(currentIndex + 2);
-    }
-
-    // Add two images behind if possible
-    if (currentIndex > 1) {
-      indicesToPreload.push(currentIndex - 2);
-    }
-
-    indicesToPreload.forEach((index) => {
-      const item = items[index];
-      if (!item) return;
-
-      const url = item.enlargeUrl;
-      if (preloadedImagesRef.current.has(url)) {
-        return;
-      }
-
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        preloadedImagesRef.current.add(url);
-      };
-      img.onerror = () => {
-        preloadedImagesRef.current.delete(url);
-      };
-    });
-  }, [currentIndex, items]);
-
-  // Reset image loaded state when index changes
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-    setIsLoading(true);
-
-    // Use a small delay to ensure the img element is properly set up
-    const timeoutId = setTimeout(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setIsLoading(false);
-      }
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
-  }, [currentIndex]);
-
-  // Additional effect to periodically check if image has loaded
-  useEffect(() => {
-    if (imageLoaded || imageError) return;
-
-    const intervalId = setInterval(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setImageError(false);
-        setIsLoading(false);
-      }
-    }, 100);
-
-    return () => clearInterval(intervalId);
-  }, [imageLoaded, imageError, currentIndex]);
-
-  if (!currentItem) {
-    return null;
-  }
-
+  const item = computed(() => items[read(currentIndex) ?? -1]);
+  const index = computed(() => read(currentIndex) ?? -1);
   return (
-    <dialog
-      ref={dialogRef}
-      data-testid="article-image-dialog"
-      id="article-image-dialog"
-      className="fixed inset-0 z-[60] m-0 max-h-screen h-screen max-w-screen w-screen bg-transparent p-0 backdrop:bg-zd-black/70"
-      onClick={handleDialogClick}
-      aria-labelledby={dialogTitleId}
-      aria-describedby={dialogDescriptionId}
-    >
-      <div
-        ref={containerRef as React.RefObject<HTMLDivElement>}
-        className="relative flex h-full w-full items-center justify-center"
-      >
-        {/* Close button - positioned at top-right of viewport */}
-        <button
-          data-testid="article-image-dialog-close"
-          onClick={handleClose}
-          className="fixed top-4 right-4 z-[100] p-2 text-white hover:text-gray-300 transition-colors"
-          aria-label="Close dialog"
-        >
-          <CloseIcon className="w-6 h-6" />
-        </button>
-
-        {/* Navigation buttons - properly centered at viewport edges */}
-        {hasPrevious && (
-          <button
-            data-testid="article-image-dialog-prev"
-            onClick={handlePrevious}
-            className="fixed left-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
-            aria-label="Previous image"
-          >
-            <ChevronLeftIcon className="h-[50px] w-[50px]" />
-          </button>
-        )}
-
-        {hasNext && (
-          <button
-            data-testid="article-image-dialog-next"
-            onClick={handleNext}
-            className="fixed right-[10px] top-[50vh] z-[100] -translate-y-1/2 rounded-full text-white backdrop-blur transition-colors hover:bg-white/20 p-[10px]"
-            aria-label="Next image"
-          >
-            <ChevronRightIcon className="h-10 w-10" />
-          </button>
-        )}
-
-        {/* Screen reader announcements */}
-        <h2 id={dialogTitleId} className="sr-only">
-          {currentItem.imageAlt ||
-            `Image ${currentIndex !== null ? currentIndex + 1 : '?'} of ${items.length}`}
-        </h2>
-        <p id={dialogDescriptionId} className="sr-only">
-          {currentItem.heading}
-          {currentItem.subHeading ? ` - ${currentItem.subHeading}` : ''}. Use the arrow keys to move
-          through images. Press Escape to close.
-        </p>
-
-        {/* Image container */}
-        <div className="relative flex h-full w-full items-center justify-center">
-          <div className="relative flex h-full w-full items-center justify-center">
-            {/* Loading spinner - shows while image is loading */}
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="loader" />
-              </div>
-            )}
-
-            {/* Main image - centered in dialog */}
-            <img
-              ref={imageRef}
-              src={currentItem.enlargeUrl}
-              alt={
-                currentItem.imageAlt ||
-                `Image ${currentIndex !== null ? currentIndex + 1 : '?'} of ${items.length}`
-              }
-              className="relative max-h-[95vh] max-w-[calc(100vw-200px)] object-contain transition-opacity duration-300 border border-zd-white"
-              onLoad={() => {
-                setImageLoaded(true);
-                setImageError(false);
-                setIsLoading(false);
-              }}
-              onError={() => {
-                setImageLoaded(false);
-                setImageError(true);
-                setIsLoading(false);
-              }}
-              style={{
-                opacity: imageLoaded ? 1 : 0,
-              }}
-              aria-busy={!imageLoaded && !imageError}
-            />
-          </div>
-
-          {imageError && (
-            <div
-              role="alert"
-              className="absolute inset-0 flex items-center justify-center bg-black/80 px-4 text-center text-sm text-gray-200"
-            >
-              Unable to load this image. Please try another item.
-            </div>
+    <Show when={valid}>
+      {() => (
+        <BaseImageDialog
+          testId="article-image-dialog"
+          dialogId="article-image-dialog"
+          currentSlug={computed(() => String(index.value))}
+          imageUrl={computed(() => item.value.enlargeUrl)}
+          imageAlt={computed(
+            () => item.value.imageAlt || `Image ${index.value + 1} of ${items.length}`,
           )}
-
-          {/* Image info overlay - shows heading and subheading */}
-          {imageLoaded && (
-            <div className="absolute bottom-4 left-4 right-4 flex justify-center pointer-events-none">
-              <div className="bg-black/70 backdrop-blur px-4 py-2 rounded-lg max-w-2xl">
-                <p className="text-white text-center">
-                  <span className="font-semibold">{currentItem.heading}</span>
-                  {currentItem.subHeading && (
-                    <span className="text-gray-300 ml-2">({currentItem.subHeading})</span>
-                  )}
+          getImageUrl={(value) => items[Number(value)]?.enlargeUrl || ''}
+          slugsToPreload={computed(() =>
+            [index.value - 2, index.value - 1, index.value + 1, index.value + 2]
+              .filter((value) => value >= 0 && value < items.length)
+              .map(String),
+          )}
+          onClose={onClose}
+          onPrevious={() => {
+            if (index.value > 0) onNavigate(index.value - 1);
+          }}
+          onNext={() => {
+            if (index.value < items.length - 1) onNavigate(index.value + 1);
+          }}
+          hasPrevious={computed(() => index.value > 0)}
+          hasNext={computed(() => index.value < items.length - 1)}
+          screenReaderDescription={computed(
+            () =>
+              `${item.value.heading}${item.value.subHeading ? ` - ${item.value.subHeading}` : ''}. Use the arrow keys to move through images. Press Escape to close.`,
+          )}
+          additionalContent={
+            <div class="fixed bottom-4 left-4 right-4 flex justify-center pointer-events-none">
+              <div class="bg-black/70 backdrop-blur px-4 py-2 rounded-lg max-w-2xl">
+                <p class="text-white text-center">
+                  <span class="font-semibold">{computed(() => item.value.heading)}</span>{' '}
+                  <span class="text-gray-300">
+                    {computed(() => (item.value.subHeading ? `(${item.value.subHeading})` : ''))}
+                  </span>
                 </p>
               </div>
             </div>
-          )}
-        </div>
-      </div>
-    </dialog>
+          }
+        />
+      )}
+    </Show>
   );
 }
