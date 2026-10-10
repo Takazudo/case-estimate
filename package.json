@@ -50,8 +50,8 @@
     "blurhash": "^2.0.5",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "@takazudo/zfb": "0.1.0-next.16",
-    "@takazudo/zfb-runtime": "0.1.0-next.16"
+    "@takazudo/zfb": "4.3.0",
+    "@takazudo/zfb-runtime": "4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -94,5 +94,10 @@
     "*.{md,mdx}": [
       "node sub-packages/md-formatter/src/cli.js --write"
     ]
+  },
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
   }
 }

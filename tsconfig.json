@@ -22,7 +22,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "jsxImportSource": "react",
+    "jsxImportSource": "@takazudo/zfb/zudo-react",
     "baseUrl": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],

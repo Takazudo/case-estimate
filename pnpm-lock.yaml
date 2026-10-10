@@ -7,12 +7,6 @@ settings:
 importers:
   .:
     dependencies:
-      '@takazudo/zfb':
-        specifier: 0.1.0-next.16
-        version: 0.1.0-next.16
-      '@takazudo/zfb-runtime':
-        specifier: 0.1.0-next.16
-        version: 0.1.0-next.16(@takazudo/zfb@0.1.0-next.16)
       '@headlessui/react':
         specifier: ^2.2.9
         version: 2.2.9(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -25,6 +19,12 @@ importers:
       '@mdx-js/react':
         specifier: ^3.1.1
         version: 3.1.1(@types/react@19.2.8)(react@19.2.3)
+      '@takazudo/zfb':
+        specifier: 4.3.0
+        version: 4.3.0
+      '@takazudo/zfb-runtime':
+        specifier: 4.3.0
+        version: 4.3.0(@takazudo/zfb@4.3.0)
       blurhash:
         specifier: ^2.0.5
         version: 2.0.5
@@ -3387,59 +3387,66 @@ packages:
       }
     engines: { node: '>=14.16' }
 
-  '@takazudo/zfb-darwin-arm64@0.1.0-next.16':
+  '@takazudo/zfb-darwin-arm64@4.3.0':
     resolution:
       {
-        integrity: sha512-X0rSsouPdUvyCYasfTZ1itvqdELThOHFl9atly4PTpq5FU8TMvFnUa5CpHoGdwaMvW6V4WVkMfPwFf3V5UVLpQ==,
+        integrity: sha512-DboIy0U+WBeqCFzsrDRk9OfdkRXQazgk/JDb+qPUO6281TJNPtP8y3g5p3iLzozHiGDcdGV2y9wnzoErtIK8CQ==,
       }
     cpu: [arm64]
     os: [darwin]
 
-  '@takazudo/zfb-darwin-x64@0.1.0-next.16':
+  '@takazudo/zfb-darwin-x64@4.3.0':
     resolution:
       {
-        integrity: sha512-GXZDDT0DIKNvpjqYt6P/uX/875fvRx7JMunFZ+53uo28+y0fo+P37hVfJdSX/u9U9zS0Q+xtKdLuVCmObhDQ6A==,
+        integrity: sha512-qoQt51ncaqHtXCZ5zBGypAsE5RNbr8z29rJJZZ2tiQsv4Ak7CI6Ht33s70sG61uhcUWTFe80ECby/2NCxbMrBg==,
       }
     cpu: [x64]
     os: [darwin]
 
-  '@takazudo/zfb-linux-arm64-gnu@0.1.0-next.16':
+  '@takazudo/zfb-linux-arm64-gnu@4.3.0':
     resolution:
       {
-        integrity: sha512-BbDfldmBdy3XNkvwkC0RPfpdtp1ERia2Fwg4vbi6uxAfx/a+3RVaWnSRTkYr5LzQl9y+TDMNUVb60Wyqh+T1Iw==,
+        integrity: sha512-6V/e6GVLPEoeMKDWwX6K+SGeGUhlR/RXgSKu44b/Ib0W/sht5HI5RbZS2GGzJDvhQo/rtZLtd77FATMoCcgV3w==,
       }
     cpu: [arm64]
     os: [linux]
 
-  '@takazudo/zfb-linux-x64-gnu@0.1.0-next.16':
+  '@takazudo/zfb-linux-x64-gnu@4.3.0':
     resolution:
       {
-        integrity: sha512-1mjIWi1d736DdNU7txd2kA1iUaM4YYlsDTjohB7AQjVqlflta2n6ViHmr/cBJ4FhfZTtwffr0tN91JT+H/JGqA==,
+        integrity: sha512-BT0962HLzULFmmWMakx91tdbPUD0dfxWt1u9pCaGJSReZ7rCmmTYA1oZJYif5GPUxlI/6bgd9Y8yDZWcN8CvEg==,
       }
     cpu: [x64]
     os: [linux]
 
-  '@takazudo/zfb-runtime@0.1.0-next.16':
+  '@takazudo/zfb-runtime@4.3.0':
     resolution:
       {
-        integrity: sha512-asV5bVvFonyt8OWh2VUyzQAUIsLnY3nRphy/WLmDjA+sBLcAtss2uwUwVa2z8nsnjgUnQFhfQ20Ky851sM62hg==,
+        integrity: sha512-YNTxnG8h6YCfnlF5nWYSrEMQuHO/gz2GpOecbbSCOeASYB04cKeIG4IYfDXPq/t4lDkfhU/qjaOoytqFMcNr7g==,
       }
     engines: { node: '>=22.0.0', pnpm: '>=10.0.0' }
     peerDependencies:
-      '@takazudo/zfb': 0.1.0-next.16
+      '@takazudo/zfb': 4.3.0
 
-  '@takazudo/zfb-win32-x64-msvc@0.1.0-next.16':
+  '@takazudo/zfb-slugify@4.3.0':
     resolution:
       {
-        integrity: sha512-uwRA+YWYWaUxtumFmUObd/8V1zEnPywgNEuayKTtfT1wiBATOLB401oeG6wCD4jySh8KP3Iw6AyPzBmpDhY9Mw==,
+        integrity: sha512-22aya2bziPogEJBPv9lDsvKjUnb7W7y7+LU3+Wu4hIDYtltJdpGVciAG9Hno6Esx7DyXyaW5obonwSm93YBnag==,
+      }
+    engines: { node: '>=22.0.0', pnpm: '>=10.0.0' }
+
+  '@takazudo/zfb-win32-x64-msvc@4.3.0':
+    resolution:
+      {
+        integrity: sha512-caOXt6dzWnxoIFxXmg9Aw5nFQWBJKti3J8ABy4SXAU1bp5aZKvpGwzmFfCEyWkewwTOaBz9MVfZ6ZJceaXJkZw==,
       }
     cpu: [x64]
     os: [win32]
 
-  '@takazudo/zfb@0.1.0-next.16':
+  '@takazudo/zfb@4.3.0':
     resolution:
       {
-        integrity: sha512-Yhe1yAotXwjmi3enF+jqJ58yM3pyfhrxrYMH4+mys2Bu3/bKzxvl11hP75Lw4NOX5/5rLMOnRWAXNXmJSdf36Q==,
+        integrity: sha512-kMGZThSgvDMPrRyed+0BkERrYrUe63E+J5XuWMq5+i0gNVIxVsckzkx6Os9htyps5fKB3X1r/sttQe65Kkd3bA==,
       }
     engines: { node: '>=22.0.0', pnpm: '>=10.0.0' }
     hasBin: true
@@ -3895,12 +3902,6 @@ packages:
     resolution:
       {
         integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==,
-      }
-
-  '@types/node@22.19.19':
-    resolution:
-      {
-        integrity: sha512-dyh/xO2Fh5bYrfWaaqGrRQQGkNdmYw6AmaAUvYeUMNTWQtvb796ikLdmTchRmOlOiIJ1TDXfWgVx1QkUlQ6Hew==,
       }
 
   '@types/node@24.10.7':
@@ -7494,10 +7495,10 @@ packages:
         integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==,
       }
 
-  hono@4.12.23:
+  hono@4.13.13:
     resolution:
       {
-        integrity: sha512-eIaZ9qDgu7XV0pxOCrg7/WhnQ6Ivm22UcxhXx/A3dcbqbbYgBEkc6e/J/s7j2tS96zoB0S9VBdLwQNCWwUo4LA==,
+        integrity: sha512-CQ46U0ZkAGmbT/4UxdzzGJpacP2IeKgY4a5/tOI9AABbpOMfK739wfDXmv1usCk+3RkKj1hQy4/fjhiwa2xlrA==,
       }
     engines: { node: '>=16.9.0' }
 
@@ -12273,12 +12274,6 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
-  undici-types@6.21.0:
-    resolution:
-      {
-        integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==,
-      }
-
   undici-types@7.16.0:
     resolution:
       {
@@ -15870,33 +15865,37 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@takazudo/zfb-darwin-arm64@0.1.0-next.16':
+  '@takazudo/zfb-darwin-arm64@4.3.0':
     optional: true
 
-  '@takazudo/zfb-darwin-x64@0.1.0-next.16':
+  '@takazudo/zfb-darwin-x64@4.3.0':
     optional: true
 
-  '@takazudo/zfb-linux-arm64-gnu@0.1.0-next.16':
+  '@takazudo/zfb-linux-arm64-gnu@4.3.0':
     optional: true
 
-  '@takazudo/zfb-linux-x64-gnu@0.1.0-next.16':
+  '@takazudo/zfb-linux-x64-gnu@4.3.0':
     optional: true
 
-  '@takazudo/zfb-runtime@0.1.0-next.16(@takazudo/zfb@0.1.0-next.16)':
+  '@takazudo/zfb-runtime@4.3.0(@takazudo/zfb@4.3.0)':
     dependencies:
-      '@takazudo/zfb': 0.1.0-next.16
-      hono: 4.12.23
+      '@takazudo/zfb': 4.3.0
+      hono: 4.13.13
 
-  '@takazudo/zfb-win32-x64-msvc@0.1.0-next.16':
+  '@takazudo/zfb-slugify@4.3.0': {}
+
+  '@takazudo/zfb-win32-x64-msvc@4.3.0':
     optional: true
 
-  '@takazudo/zfb@0.1.0-next.16':
+  '@takazudo/zfb@4.3.0':
+    dependencies:
+      '@takazudo/zfb-slugify': 4.3.0
     optionalDependencies:
-      '@takazudo/zfb-darwin-arm64': 0.1.0-next.16
-      '@takazudo/zfb-darwin-x64': 0.1.0-next.16
-      '@takazudo/zfb-linux-arm64-gnu': 0.1.0-next.16
-      '@takazudo/zfb-linux-x64-gnu': 0.1.0-next.16
-      '@takazudo/zfb-win32-x64-msvc': 0.1.0-next.16
+      '@takazudo/zfb-darwin-arm64': 4.3.0
+      '@takazudo/zfb-darwin-x64': 4.3.0
+      '@takazudo/zfb-linux-arm64-gnu': 4.3.0
+      '@takazudo/zfb-linux-x64-gnu': 4.3.0
+      '@takazudo/zfb-win32-x64-msvc': 4.3.0
 
   '@tanstack/react-virtual@3.13.12(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
@@ -16174,10 +16173,6 @@ snapshots:
       '@types/node': 24.10.7
 
   '@types/node@17.0.45': {}
-
-  '@types/node@22.19.19':
-    dependencies:
-      undici-types: 6.21.0
 
   '@types/node@24.10.7':
     dependencies:
@@ -18689,7 +18684,7 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  hono@4.12.23: {}
+  hono@4.13.13: {}
 
   hpack.js@2.1.6:
     dependencies:
@@ -21991,8 +21986,6 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
-
-  undici-types@6.21.0: {}
 
   undici-types@7.16.0: {}
 
