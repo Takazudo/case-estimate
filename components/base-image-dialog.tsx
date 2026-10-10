@@ -4,6 +4,7 @@ import type { Reactive } from '@/utils/reactive';
 import { read } from '@/utils/reactive';
 import { useGalleryKeyboardNavigation } from '@/hooks/use-gallery-keyboard-navigation';
 import { useGalleryDialog } from '@/hooks/use-gallery-dialog';
+import { useLockBodyScroll } from '@/hooks/use-lock-body-scroll';
 
 interface BaseImageDialogProps {
   testId: string;
@@ -38,6 +39,7 @@ export default function BaseImageDialog({
   additionalContent,
   screenReaderDescription = 'Use the arrow keys to move through images. Press Escape to close.',
 }: BaseImageDialogProps) {
+  useLockBodyScroll(true);
   const dialogRef: { current: HTMLDialogElement | null } = { current: null };
   const image = useGalleryDialog({ currentSlug, getImageUrl, slugsToPreload });
   const titleId = `${dialogId}-title`;

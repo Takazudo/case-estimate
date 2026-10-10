@@ -1,3 +1,5 @@
+'use client';
+
 import { ArticleGridImageList } from '@/components/article/article-grid-image-list';
 
 // Acrylic panel data - baked into this component so it can be used from MDX

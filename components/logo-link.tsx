@@ -17,7 +17,7 @@ export default function LogoLink({ onClick, currentPath, navigation }: Props) {
       activeClassName="pointer-events-none opacity-100 hover:opacity-100"
       onClick={onClick}
     >
-      <TakazudoLogo className="w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]" />
+      <TakazudoLogo class="w-[30px] h-[30px] lg:w-[50px] lg:h-[50px]" />
       <span class="whitespace-nowrap font-normal font-futura">Takazudo Modular: Panels</span>
     </NavigationLink>
   );

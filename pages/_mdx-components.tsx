@@ -81,21 +81,21 @@ function ImgFloatRightIsland(props: Parameters<typeof ImgFloatRight>[0]) {
   );
 }
 
-function AcrylicPanelListIsland(props: Parameters<typeof AcrylicPanelList>[0]) {
+function AcrylicPanelListIsland() {
   return (
     <>
       <Island when="visible">
-        <AcrylicPanelList {...props} />
+        <AcrylicPanelList />
       </Island>
     </>
   );
 }
 
-function PrintedPanelListIsland(props: Parameters<typeof PrintedPanelList>[0]) {
+function PrintedPanelListIsland() {
   return (
     <>
       <Island when="visible">
-        <PrintedPanelList {...props} />
+        <PrintedPanelList />
       </Island>
     </>
   );

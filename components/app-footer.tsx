@@ -20,8 +20,8 @@ export default function AppFooter({
       <div class="px-hgap-sm py-vgap-xs">
         <div class="flex items-center justify-between">
           <BackgroundColorPicker
-            bgColor={bgColor as string}
-            gridColor={gridColor as string}
+            bgColor={bgColor}
+            gridColor={gridColor}
             onBgColorChange={onBgColorChange}
             onGridColorChange={onGridColorChange}
           />

@@ -1,3 +1,5 @@
+'use client';
+
 import { GridImagesAndNotes } from './article/grid-images-and-notes';
 import type { GridItem } from './article/grid-images-and-notes';
 

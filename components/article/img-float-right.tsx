@@ -1,3 +1,5 @@
+'use client';
+
 import { BlurhashLoader } from '@/components/blurhash-loader';
 
 interface ImgFloatRightProps {

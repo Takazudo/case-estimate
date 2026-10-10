@@ -514,3 +514,156 @@
 .origin-top-right {
   transform-origin: top right;
 }
+
+/* Legacy utility spellings kept by components during the Wind migration. */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.break-keep {
+  word-break: keep-all;
+}
+.float-right {
+  float: right;
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 580px) {
+  .container {
+    max-width: 580px;
+  }
+}
+@media (min-width: 740px) {
+  .container {
+    max-width: 740px;
+  }
+}
+@media (min-width: 980px) {
+  .container {
+    max-width: 980px;
+  }
+  [class~='lg:float-right'] {
+    float: right;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1630px) {
+  .container {
+    max-width: 1630px;
+  }
+  [class~='2xl:mx-[-100px]'] {
+    margin-inline: -100px;
+  }
+}
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1800px;
+  }
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+}
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+.bg-opacity-20 {
+  background-color: rgb(0 0 0 / 20%);
+}
+.brightness-0 {
+  filter: brightness(0);
+}
+.invert {
+  filter: invert(1);
+}
+.brightness-0.invert {
+  filter: brightness(0) invert(1);
+}
+[class~='from-zd-black/70'] {
+  --zd-gradient-from: rgb(28 25 23 / 70%);
+}
+[class~='to-zd-black'] {
+  --zd-gradient-to: var(--zd-color-black);
+}
+[class~='bg-gradient-to-b'] {
+  background-image: linear-gradient(
+    to bottom,
+    var(--zd-gradient-from, transparent),
+    var(--zd-gradient-to, transparent)
+  );
+}
+[class~='animate-fade-in'] {
+  animation: fadeIn 300ms ease-in-out;
+}
+.scale-95 {
+  transform: scale(0.95);
+}
+.scale-100 {
+  transform: scale(1);
+}
+
+/* Preserve the old focus and hover rings, including their offset gaps. */
+[class~='focus:ring-2']:focus,
+[class~='hover:ring-2']:hover,
+[class~='hover:ring-3']:hover {
+  box-shadow:
+    0 0 0 var(--zd-ring-offset-width, 0px) var(--zd-ring-offset-color, transparent),
+    0 0 0 calc(var(--zd-ring-width, 2px) + var(--zd-ring-offset-width, 0px))
+      var(--zd-ring-color, currentColor);
+}
+[class~='hover:ring-2']:hover {
+  --zd-ring-width: 2px;
+}
+[class~='hover:ring-3']:hover {
+  --zd-ring-width: 3px;
+}
+[class~='hover:ring-zd-link']:hover {
+  --zd-ring-color: var(--zd-color-link);
+}
+[class~='focus:ring-2']:focus {
+  --zd-ring-width: 2px;
+}
+[class~='focus:ring-white']:focus {
+  --zd-ring-color: #fff;
+}
+[class~='focus:ring-zd-link']:focus {
+  --zd-ring-color: var(--zd-color-link);
+}
+[class~='focus:ring-zd-link/20']:focus {
+  --zd-ring-color: rgb(255 255 255 / 20%);
+}
+[class~='focus:ring-offset-1']:focus {
+  --zd-ring-offset-width: 1px;
+}
+[class~='focus:ring-offset-2']:focus {
+  --zd-ring-offset-width: 2px;
+}
+[class~='focus:ring-offset-black']:focus {
+  --zd-ring-offset-color: #000;
+}
+
+[class~='bottom-[-2px]'] {
+  bottom: -2px;
+}
+[class~='mb-[-2px]'] {
+  margin-bottom: -2px;
+}
+[class~='outline-offset-[-10px]'] {
+  outline-offset: -10px;
+}
+[class~='h-[calc(100%-80px)]'] {
+  height: calc(100% - 80px);
+}
+[class~='max-h-[calc(85vh-80px)]'] {
+  max-height: calc(85vh - 80px);
+}
+[class~='max-w-[calc(100vw-200px)]'] {
+  max-width: calc(100vw - 200px);
+}

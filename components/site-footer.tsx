@@ -1,3 +1,5 @@
+'use client';
+
 import Footer from '@/components/footer';
 import { createNavigationController } from '@/components/navigation-context';
 

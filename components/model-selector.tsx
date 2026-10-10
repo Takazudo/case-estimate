@@ -30,7 +30,11 @@ export default function ModelSelector({ selectedCase, onCaseSelect }: ModelSelec
           }}
           class="relative w-full rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray hover:border-zd-link/60 focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white transition-colors text-sm"
         >
-          <span class="block truncate">
+          <span
+            class={computed(
+              () => `block truncate ${selectedCaseData.value ? 'font-medium' : 'text-zd-gray'}`,
+            )}
+          >
             {computed(() =>
               selectedCaseData.value ? selectedCaseData.value.name : 'Select a case model',
             )}
