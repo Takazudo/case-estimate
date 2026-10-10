@@ -1,88 +1,72 @@
 'use client';
 
-import { useState } from 'react';
+import { computed, signal } from '@takazudo/zfb/zudo-react';
 import { colors } from '@/data/colors';
 import { PresetSelectorModal } from '@/components/modal/preset-selector-modal';
 import { PresetIcon } from '@/components/icons/preset-icon';
 import type { Preset } from '@/types';
 import { isSingleColorOnlyModel, isOpenModel } from '@/utils/case-model-type';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface PresetSelectorProps {
-  selectedCase: string | null;
-  material: 'acrylic' | '3dp' | undefined;
+  selectedCase: Reactive<string | null>;
+  material: Reactive<'acrylic' | '3dp' | undefined>;
   onPresetSelect: (preset: Preset) => void;
   isPresetActive: (preset: Preset) => boolean;
 }
 
-const PresetSelector = ({
+export default function PresetSelector({
   selectedCase,
   material,
   onPresetSelect,
   isPresetActive,
-}: PresetSelectorProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Detect the currently active preset
-  const getActivePreset = (): Preset | null => {
-    if (!material) return null;
-
-    const availablePresets = colors.presets[material] || [];
-
-    // Filter presets based on case model (same logic as modal)
-    const filteredPresets = availablePresets.filter((preset) => {
-      if (selectedCase && (isSingleColorOnlyModel(selectedCase) || isOpenModel(selectedCase))) {
-        return preset.id === 'yamikage';
-      }
-      return true;
-    });
-
-    // Find the active preset
-    const activePreset = filteredPresets.find((preset) => isPresetActive(preset));
-    return activePreset || null;
-  };
-
-  const activePreset = getActivePreset();
-
-  // Determine display text
-  let displayText: string;
-  if (activePreset) {
-    // For 3DP models, show YamiKage with description
-    if (material === '3dp' && activePreset.id === 'yamikage') {
-      displayText = 'YamiKage（デフォルト黒一色）';
-    } else {
-      displayText = activePreset.name;
-    }
-  } else {
-    displayText = 'カスタム';
-  }
-
+}: PresetSelectorProps) {
+  const isModalOpen = signal(false);
+  const displayText = computed(() => {
+    const type = read(material),
+      caseType = read(selectedCase);
+    if (!type) return 'カスタム';
+    const activePreset = (colors.presets[type] || [])
+      .filter(
+        (preset) =>
+          !caseType ||
+          (!isSingleColorOnlyModel(caseType) && !isOpenModel(caseType)) ||
+          preset.id === 'yamikage',
+      )
+      .find(isPresetActive);
+    if (!activePreset) return 'カスタム';
+    return type === '3dp' && activePreset.id === 'yamikage'
+      ? 'YamiKage（デフォルト黒一色）'
+      : activePreset.name;
+  });
   return (
     <>
-      <div className="space-y-vgap-xs pb-vgap-sm">
-        <h3 className="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
+      <div class="space-y-vgap-xs pb-vgap-sm">
+        <h3 class="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
           <PresetIcon className="w-[30px] h-[30px] text-zd-white mr-[2px]" />
-          プリセット <span className="text-sm">/ Preset</span>
+          プリセット <span class="text-sm">/ Preset</span>
         </h3>
         <button
-          onClick={() => setIsModalOpen(true)}
-          className="relative w-full rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray hover:border-zd-link/60 focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white transition-colors text-sm"
+          on:click={() => {
+            isModalOpen.value = true;
+          }}
+          class="relative w-full rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray hover:border-zd-link/60 focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white transition-colors text-sm"
         >
-          <span className="block truncate">
-            <span className="font-medium">{displayText}</span>
+          <span class="block truncate">
+            <span class="font-medium">{displayText}</span>
           </span>
         </button>
       </div>
-
       <PresetSelectorModal
         isOpen={isModalOpen}
         selectedCase={selectedCase}
         material={material}
         onPresetSelect={onPresetSelect}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          isModalOpen.value = false;
+        }}
         isPresetActive={isPresetActive}
       />
     </>
   );
-};
-
-export default PresetSelector;
+}

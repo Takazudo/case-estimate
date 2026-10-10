@@ -1,63 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { computed, signal, Show } from '@takazudo/zfb/zudo-react';
 import type { Color } from '@/types';
 import PanelColorSwatch from '@/components/panel-color-swatch';
 import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface ColorPickerProps {
-  material: 'acrylic' | '3dp';
-  selectedColor: Color | null;
+  material: Reactive<'acrylic' | '3dp'>;
+  selectedColor: Reactive<Color | null>;
   onColorSelect: (color: Color) => void;
 }
-
-const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const materialLabel = material === 'acrylic' ? 'アクリル' : '3Dプリント';
-
+export default function ColorPicker({ material, selectedColor, onColorSelect }: ColorPickerProps) {
+  const isModalOpen = signal(false);
+  const color = computed(() => read(selectedColor));
   return (
     <>
-      <div className="space-y-vgap-xs">
-        <h3 className="font-semibold text-zd-white pb-vgap-xs">Colors</h3>
-
+      <div class="space-y-vgap-xs">
+        <h3 class="font-semibold text-zd-white pb-vgap-xs">Colors</h3>
         <button
-          onClick={() => setIsModalOpen(true)}
-          className={`
-            w-full flex items-center gap-hgap-sm
-            rounded-lg border-2 transition-all text-left
-            py-vgap-sm px-hgap-sm
-            border-zd-gray hover:border-zd-link
-            bg-zd-surface-2
-          `}
+          on:click={() => {
+            isModalOpen.value = true;
+          }}
+          class="w-full flex items-center gap-hgap-sm rounded-lg border-2 transition-all text-left py-vgap-sm px-hgap-sm border-zd-gray hover:border-zd-link bg-zd-surface-2"
           data-testid="color-picker-button"
         >
-          {selectedColor ? (
-            <>
-              <PanelColorSwatch
-                value={selectedColor.value}
-                className="relative overflow-hidden w-8 h-8 rounded border border-zd-gray flex-shrink-0"
-                dataTestId="color-picker-current-swatch"
-              />
-              <span className="flex flex-1 flex-col">
-                <span className="font-medium text-zd-white">{selectedColor.name}</span>
-                <span className="text-sm text-zd-gray">{selectedColor.material}</span>
+          <Show
+            when={computed(() => !!color.value)}
+            fallback={() => (
+              <span class="flex flex-1 flex-col">
+                <span class="font-medium text-zd-white">カラーを選択</span>
+                <span class="text-sm text-zd-gray">
+                  {computed(() => (read(material) === 'acrylic' ? 'アクリル' : '3Dプリント'))}
+                </span>
               </span>
-            </>
-          ) : (
-            <span className="flex flex-1 flex-col">
-              <span className="font-medium text-zd-white">カラーを選択</span>
-              <span className="text-sm text-zd-gray">{materialLabel}</span>
-            </span>
-          )}
-
-          {/* Arrow icon */}
+            )}
+          >
+            {() => (
+              <>
+                <PanelColorSwatch
+                  value={computed(() => color.value?.value)}
+                  ownerKey="color-picker-current"
+                  className="relative overflow-hidden w-8 h-8 rounded border border-zd-gray flex-shrink-0"
+                  dataTestId="color-picker-current-swatch"
+                />
+                <span class="flex flex-1 flex-col">
+                  <span class="font-medium text-zd-white">{computed(() => color.value?.name)}</span>
+                  <span class="text-sm text-zd-gray">{computed(() => color.value?.material)}</span>
+                </span>
+              </>
+            )}
+          </Show>
           <svg
-            className="w-5 h-5 text-zd-gray flex-shrink-0"
+            class="w-5 h-5 text-zd-gray flex-shrink-0"
             fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
@@ -65,16 +64,15 @@ const ColorPicker = ({ material, selectedColor, onColorSelect }: ColorPickerProp
           </svg>
         </button>
       </div>
-
       <ColorSelectorModal
         isOpen={isModalOpen}
         material={material}
         selectedColor={selectedColor}
         onColorSelect={onColorSelect}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          isModalOpen.value = false;
+        }}
       />
     </>
   );
-};
-
-export default ColorPicker;
+}

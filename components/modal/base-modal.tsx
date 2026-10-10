@@ -1,131 +1,98 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { computed, getScope, Show, signal, type Child } from '@takazudo/zfb/zudo-react';
 import { CloseIcon } from '@/components/icons/close-icon';
 import { useLockBodyScroll } from '@/hooks/use-lock-body-scroll';
+import { useFocusTrap } from '@/hooks/use-focus-trap';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface BaseModalProps {
-  isOpen: boolean;
+  isOpen: Reactive<boolean>;
   onClose: () => void;
-  title: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
+  title: Reactive<string>;
+  icon?: Child;
+  children: Child;
   ariaLabelledBy?: string;
 }
 
-const BaseModal: React.FC<BaseModalProps> = ({
+export function BaseModal({
   isOpen,
   onClose,
   title,
   icon,
   children,
   ariaLabelledBy = 'base-modal-title',
-}) => {
-  const [shouldRender, setShouldRender] = useState(false);
-
-  // Use the existing hook for scroll locking
-  useLockBodyScroll(isOpen);
-
-  useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
+}: BaseModalProps) {
+  const shouldRender = signal(false);
+  const open = computed(() => read(isOpen));
+  useLockBodyScroll(open);
+  const { containerRef } = useFocusTrap({ isActive: open });
+  getScope().effect(() => {
+    if (open.value) {
+      shouldRender.value = true;
       return;
     }
-
-    if (!shouldRender) return;
-
-    // Delay unmounting to allow fade-out animation
-    const timer = setTimeout(() => setShouldRender(false), 300);
-    return () => clearTimeout(timer);
-  }, [isOpen, shouldRender]);
-
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+    if (!shouldRender.value) return;
+    const timer = window.setTimeout(() => {
+      shouldRender.value = false;
+    }, 300);
+    return () => window.clearTimeout(timer);
+  });
+  getScope().effect(() => {
+    if (!open.value) return;
+    const keydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
         onClose();
       }
     };
-
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  if (!shouldRender) return null;
-
+    document.addEventListener('keydown', keydown);
+    return () => document.removeEventListener('keydown', keydown);
+  });
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={ariaLabelledBy}
-      className={`
-        fixed inset-0 z-50 flex items-center justify-center
-        transition-opacity duration-300
-        bg-zd-black/70
-        ${isOpen ? 'opacity-100' : 'opacity-0'}
-      `}
-      onClick={handleBackdropClick}
-    >
-      <div
-        className={`
-          relative bg-zd-black shadow-xl border border-zd-white
-          w-full md:w-[90vw] max-w-[1400px]
-          h-full md:h-[85vh]
-          overflow-hidden
-          transition-transform duration-300
-          ${isOpen ? 'scale-100' : 'scale-95'}
-        `}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
+    <Show when={shouldRender}>
+      {() => (
         <div
-          className={`
-            px-hgap-sm py-vgap-sm
-            md:px-hgap-md md:py-vgap-md
-            flex items-center justify-between
-            border-b border-zd-white
-          `}
+          ref={containerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={ariaLabelledBy}
+          class={computed(
+            () =>
+              `fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 bg-zd-black/70 ${open.value ? 'opacity-100' : 'opacity-0'}`,
+          )}
+          on:click={(event) => {
+            if (event.target === event.currentTarget) onClose();
+          }}
         >
-          <h2
-            id={ariaLabelledBy}
-            className={`
-              font-bold text-zd-white
-              flex items-baseline gap-hgap-xs
-            `}
+          <div
+            class={computed(
+              () =>
+                `relative bg-zd-black shadow-xl border border-zd-white w-full md:w-[90vw] max-w-[1400px] h-full md:h-[85vh] overflow-hidden transition-transform duration-300 ${open.value ? 'scale-100' : 'scale-95'}`,
+            )}
           >
-            {icon}
-            <span className="text-base lg:text-xl">{title}</span>
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-zd-white zd-invert-color-link"
-            aria-label="Close modal"
-          >
-            <CloseIcon className="w-[30px] md:w-[44px] aspect-square" />
-          </button>
+            <div class="px-hgap-sm py-vgap-sm md:px-hgap-md md:py-vgap-md flex items-center justify-between border-b border-zd-white">
+              <h2
+                id={ariaLabelledBy}
+                class="font-bold text-zd-white flex items-baseline gap-hgap-xs"
+              >
+                {icon}
+                <span class="text-base lg:text-xl">{computed(() => read(title))}</span>
+              </h2>
+              <button
+                on:click={onClose}
+                class="text-zd-white zd-invert-color-link"
+                aria-label="Close modal"
+              >
+                <CloseIcon className="w-[30px] md:w-[44px] aspect-square" />
+              </button>
+            </div>
+            <div class="overflow-y-auto h-[calc(100%-80px)] px-hgap-md pt-vgap-md pb-[100px]">
+              {children}
+            </div>
+          </div>
         </div>
-
-        {/* Content */}
-        <div
-          className={`
-            overflow-y-auto
-            h-[calc(100%-80px)]
-            px-hgap-md
-            pt-vgap-md
-            pb-[100px]
-          `}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
+      )}
+    </Show>
   );
-};
-
-export { BaseModal };
+}

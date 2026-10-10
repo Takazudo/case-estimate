@@ -1,51 +1,40 @@
 'use client';
 
+import { getScope, type Ref } from '@takazudo/zfb/zudo-react';
 import { cases } from '@/data/cases';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface CaseSelectorProps {
-  selectedCase: string;
+  selectedCase: Reactive<string>;
   onCaseSelect: (caseType: string) => void;
 }
-
-const CaseSelector = ({ selectedCase, onCaseSelect }: CaseSelectorProps) => {
-  // Group cases by their base model
-  const caseGroups = {
-    'zudo-block-40': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    'zudo-block-60': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-    '10BOX': [] as Array<[string, (typeof cases)[keyof typeof cases]]>,
-  };
-
-  // Sort cases into groups
-  Object.entries(cases).forEach(([key, caseData]) => {
-    if (key.startsWith('zudo-block-40')) {
-      caseGroups['zudo-block-40'].push([key, caseData]);
-    } else if (key.startsWith('zudo-block-60')) {
-      caseGroups['zudo-block-60'].push([key, caseData]);
-    } else if (key.startsWith('10box')) {
-      caseGroups['10BOX'].push([key, caseData]);
-    }
+const caseGroups = {
+  'zudo-block-40': Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-40')),
+  'zudo-block-60': Object.entries(cases).filter(([key]) => key.startsWith('zudo-block-60')),
+  '10BOX': Object.entries(cases).filter(([key]) => key.startsWith('10box')),
+};
+export default function CaseSelector({ selectedCase, onCaseSelect }: CaseSelectorProps) {
+  const selectRef: Ref<HTMLSelectElement> = { current: null };
+  getScope().effect(() => {
+    if (selectRef.current) selectRef.current.value = read(selectedCase);
   });
-
   return (
-    <div className="space-y-vgap-xs">
-      <h3 className="font-semibold text-zd-white">Case Model</h3>
+    <div class="space-y-vgap-xs">
+      <h3 class="font-semibold text-zd-white">Case Model</h3>
       <select
-        value={selectedCase}
-        onChange={(e) => onCaseSelect(e.target.value)}
-        className="w-full px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
+        ref={selectRef}
+        defaultValue={read(selectedCase)}
+        on:change={(event) => onCaseSelect((event.currentTarget as HTMLSelectElement).value)}
+        class="w-full px-hgap-xs py-vgap-2xs border border-zd-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-zd-link bg-zd-gray2 text-zd-white"
       >
         {Object.entries(caseGroups).map(([groupName, groupCases]) => (
-          <optgroup key={groupName} label={groupName}>
+          <optgroup label={groupName}>
             {groupCases.map(([key, caseData]) => (
-              <option key={key} value={key}>
-                {caseData.name}
-              </option>
+              <option value={key}>{caseData.name}</option>
             ))}
           </optgroup>
         ))}
       </select>
     </div>
   );
-};
-
-export default CaseSelector;
+}
