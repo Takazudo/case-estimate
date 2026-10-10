@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  esbuild: { jsx: 'automatic', jsxImportSource: '@takazudo/zfb/zudo-react' },
   test: {
     environment: 'jsdom',
     globals: true,

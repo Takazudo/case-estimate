@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface AProps {
   href?: string;
-  children: ReactNode;
+  children: Child;
 }
 
 export function A({ href, children }: AProps) {
@@ -11,7 +11,7 @@ export function A({ href, children }: AProps) {
   // Internal links
   if (href.startsWith('/') || href.startsWith('#')) {
     return (
-      <a href={href} className="zd-invert-color-link">
+      <a href={href} class="zd-invert-color-link">
         {children}
       </a>
     );
@@ -19,7 +19,7 @@ export function A({ href, children }: AProps) {
 
   // External links
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="zd-invert-color-link">
+    <a href={href} target="_blank" rel="noopener noreferrer" class="zd-invert-color-link">
       {children}
     </a>
   );

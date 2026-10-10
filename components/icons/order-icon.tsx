@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface OrderIconProps {
   className?: string;
   fill?: string;
@@ -9,10 +7,10 @@ interface OrderIconProps {
  * Order icon - Document with pencil
  * Represents order information display functionality
  */
-export const OrderIcon: React.FC<OrderIconProps> = ({ className = '', fill = 'currentColor' }) => {
+export const OrderIcon = ({ className = '', fill = 'currentColor' }: OrderIconProps) => {
   return (
     <svg
-      className={className}
+      class={className}
       fill={fill}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 743.202 722.294"

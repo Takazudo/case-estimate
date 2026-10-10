@@ -1,8 +1,6 @@
-import * as React from 'react';
+import type { SVGAttributes } from '@takazudo/zfb/zudo-react';
 
-const TakazudoLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
-  // Read the SVG content from the file and wrap it in a component
-  // Using dangerouslySetInnerHTML to inject the SVG paths
+const TakazudoLogo = (props: SVGAttributes<SVGSVGElement>) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" fill="currentColor" {...props}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">

@@ -1,9 +1,7 @@
-'use client';
-
-import React from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface ModelSectionBodyProps {
-  children: React.ReactNode;
+  children: Child;
 }
 
 /**
@@ -24,9 +22,9 @@ interface ModelSectionBodyProps {
  */
 export default function ModelSectionBody({ children }: ModelSectionBodyProps) {
   return (
-    <div className="w-full">
+    <div class="w-full">
       {/* Prose styling for better readability of documentation content */}
-      <div className="prose prose-gray dark:prose-invert max-w-none">{children}</div>
+      <div class="prose prose-gray max-w-none">{children}</div>
     </div>
   );
 }

@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface OLProps {
-  children: ReactNode;
+  children: Child;
 }
 
 export function OL({ children }: OLProps) {
   return (
     <ol
-      className={`
+      class={`
         list-decimal ml-[1.9em] pb-vgap-md
-        [&_li]:pt-vgap-xs
+        article-list
       `}
     >
       {children}

@@ -1,156 +1,77 @@
-'use client';
-
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { getScope, signal, type ReadonlySignal } from '@takazudo/zfb/zudo-react';
 import { normalizePath } from '@/utils/normalize-path';
 
-// Animation timing constants for consistency and maintainability
-const ANIMATION_DURATIONS = {
-  FADE_IN: 400, // ms - matches CSS animation duration in globals.css
-  NAVIGATION_TIMEOUT: 2000, // ms - maximum expected navigation time
-} as const;
+const FADE_IN = 400;
+const NAVIGATION_TIMEOUT = 2000;
 
-interface NavigationContextType {
-  isPageLoading: boolean;
-  pageAnimationClass: string;
-  triggerNavigation: (path: string) => void;
-}
+/** One controller per mounted chrome island. Timers and listeners belong to its scope. */
+export function createNavigationController(initialPath = '') {
+  const scope = getScope();
+  const currentPath = signal(normalizePath(initialPath));
+  const isPageLoading = signal(false);
+  const pageAnimationClass = signal('');
+  let navigationTimer: ReturnType<typeof setTimeout> | undefined;
+  let fadeTimer: ReturnType<typeof setTimeout> | undefined;
+  let previousPath = normalizePath(initialPath);
 
-const NavigationContext = createContext<NavigationContextType | null>(null);
-
-export function NavigationProvider({ children }: { children: React.ReactNode }) {
-  // Read initial pathname safely (SSR returns '' — client useEffect corrects it)
-  const [pathname, setPathname] = useState('');
-  const [isPageLoading, setIsPageLoading] = useState(false);
-  const [pageAnimationClass, setPageAnimationClass] = useState('');
-  const failsafeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const previousPathnameRef = useRef('');
-  // Track whether initial animation has been set up to avoid double-running
-  const initializedRef = useRef(false);
-
-  // Initialise pathname from browser and subscribe to popstate for SPA navigation
-  useEffect(() => {
-    // Normalize so a post-301 trailing slash ('/m/') still matches '/m' below.
-    const current = normalizePath(window.location.pathname);
-    setPathname(current);
-    previousPathnameRef.current = current;
-
-    // Set initial animation class
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      setPageAnimationClass(current === '/m' ? '' : 'page-fade-in');
-    }
-
-    const handlePopState = () => {
-      setPathname(normalizePath(window.location.pathname));
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  // Reset loading state when pathname changes (not search params)
-  useEffect(() => {
-    if (!pathname) return; // Skip empty initial state
-
-    // Only trigger animations when the pathname actually changes
-    const isPathnameChange = previousPathnameRef.current !== pathname;
-
-    if (!isPathnameChange) {
-      return;
-    }
-
-    // Update the previous pathname reference
-    previousPathnameRef.current = pathname;
-
-    setIsPageLoading(false);
-
-    // Clear any pending failsafe timeout to prevent race conditions
-    if (failsafeTimeoutRef.current) {
-      clearTimeout(failsafeTimeoutRef.current);
-      failsafeTimeoutRef.current = null;
-    }
-
-    // Skip page transition animations for /m route (case selection mini app)
-    // Users interacting with colors/models/panels shouldn't see fade animations
-    if (pathname === '/m') {
-      setPageAnimationClass('');
-      return;
-    }
-
-    // Trigger fade-in animation for other page loads
-    setPageAnimationClass('page-fade-in');
-
-    // Reset animation class after animation completes
-    const timer = setTimeout(() => {
-      setPageAnimationClass('');
-    }, ANIMATION_DURATIONS.FADE_IN);
-
-    return () => clearTimeout(timer);
-  }, [pathname]);
-
-  const triggerNavigation = (path: string) => {
-    // Clear any existing failsafe timeout before starting new navigation
-    if (failsafeTimeoutRef.current) {
-      clearTimeout(failsafeTimeoutRef.current);
-      failsafeTimeoutRef.current = null;
-    }
-
-    // Skip loading animations when navigating to /m route
-    // The case selection mini app should feel instant and responsive
-    if (path === '/m') {
-      setIsPageLoading(false);
-      setPageAnimationClass('');
-      return;
-    }
-
-    setIsPageLoading(true);
-    // Set loading state for page content
-    setPageAnimationClass('page-loading');
-
-    // Helper function to handle fade-in animation cleanup
-    const scheduleFadeInCleanup = () => {
-      setTimeout(() => {
-        setPageAnimationClass('');
-      }, ANIMATION_DURATIONS.FADE_IN);
-    };
-
-    // Failsafe: reset loading state after maximum expected navigation time
-    // This prevents getting stuck if popstate doesn't fire for any reason
-    failsafeTimeoutRef.current = setTimeout(() => {
-      // Check the target path (not current pathname) to determine animations
-      // path is the destination we're navigating to
-      if (path !== '/m') {
-        setPageAnimationClass('page-fade-in');
-        scheduleFadeInCleanup();
-      } else {
-        // If navigating to /m, ensure no animation class
-        setPageAnimationClass('');
-      }
-      setIsPageLoading(false);
-      failsafeTimeoutRef.current = null;
-    }, ANIMATION_DURATIONS.NAVIGATION_TIMEOUT);
+  const clearTimers = () => {
+    if (navigationTimer) clearTimeout(navigationTimer);
+    if (fadeTimer) clearTimeout(fadeTimer);
+    navigationTimer = fadeTimer = undefined;
   };
-
-  // Cleanup on unmount
-  React.useEffect(() => {
+  const setPath = (path: string) => {
+    const next = normalizePath(path);
+    currentPath.value = next;
+    if (next === previousPath) return;
+    previousPath = next;
+    clearTimers();
+    isPageLoading.value = false;
+    pageAnimationClass.value = next === '/m' ? '' : 'page-fade-in';
+    if (next !== '/m')
+      fadeTimer = setTimeout(() => {
+        pageAnimationClass.value = '';
+      }, FADE_IN);
+  };
+  scope.onActivate(() => {
+    const initial = normalizePath(window.location.pathname);
+    previousPath = initial;
+    currentPath.value = initial;
+    pageAnimationClass.value = initial === '/m' ? '' : 'page-fade-in';
+    if (initial !== '/m')
+      fadeTimer = setTimeout(() => {
+        pageAnimationClass.value = '';
+      }, FADE_IN);
+    const onPopState = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', onPopState);
     return () => {
-      if (failsafeTimeoutRef.current) {
-        clearTimeout(failsafeTimeoutRef.current);
-      }
+      window.removeEventListener('popstate', onPopState);
+      clearTimers();
     };
-  }, []);
-
-  return (
-    <NavigationContext.Provider value={{ isPageLoading, pageAnimationClass, triggerNavigation }}>
-      {children}
-    </NavigationContext.Provider>
-  );
+  });
+  const triggerNavigation = (path: string) => {
+    clearTimers();
+    if (normalizePath(path) === '/m') {
+      isPageLoading.value = false;
+      pageAnimationClass.value = '';
+      return;
+    }
+    isPageLoading.value = true;
+    pageAnimationClass.value = 'page-loading';
+    navigationTimer = setTimeout(() => {
+      isPageLoading.value = false;
+      pageAnimationClass.value = 'page-fade-in';
+      fadeTimer = setTimeout(() => {
+        pageAnimationClass.value = '';
+      }, FADE_IN);
+      navigationTimer = undefined;
+    }, NAVIGATION_TIMEOUT);
+  };
+  return {
+    currentPath: currentPath as ReadonlySignal<string>,
+    isPageLoading: isPageLoading as ReadonlySignal<boolean>,
+    pageAnimationClass: pageAnimationClass as ReadonlySignal<string>,
+    triggerNavigation,
+  };
 }
 
-export function useNavigation() {
-  const context = useContext(NavigationContext);
-  if (!context) {
-    throw new Error('useNavigation must be used within NavigationProvider');
-  }
-  return context;
-}
+export type NavigationController = ReturnType<typeof createNavigationController>;

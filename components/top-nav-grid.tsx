@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { computed, signal } from '@takazudo/zfb/zudo-react';
 import { Blurhash } from '@/components/blurhash';
 import { getStaticImageUrl } from '@/utils/cdn-urls';
 import ArrowRight from '@/components/icons/arrow-right';
@@ -24,15 +24,21 @@ interface NavImageProps {
 }
 
 function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const imageLoaded = signal(false);
+  const placeholderClass = computed(
+    () =>
+      `absolute inset-0 transition-opacity duration-500 ${imageLoaded.value ? 'opacity-0' : 'opacity-100'}`,
+  );
+  const imageClass = computed(
+    () =>
+      `w-full h-full object-contain transition-opacity duration-500 ${imageLoaded.value ? 'opacity-100' : 'opacity-0'}`,
+  );
   const imageUrl = getStaticImageUrl(imageSlug, '1200w');
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ paddingBottom: '63.35%' }}>
-      <div className="absolute inset-0">
-        <div
-          className={`absolute inset-0 transition-opacity duration-500 ${imageLoaded ? 'opacity-0' : 'opacity-100'}`}
-        >
+    <div class="relative w-full overflow-hidden" style={{ 'padding-bottom': '63.35%' }}>
+      <div class="absolute inset-0">
+        <div class={placeholderClass}>
           <Blurhash
             hash={blurhash}
             width="100%"
@@ -45,10 +51,14 @@ function NavImage({ imageSlug, blurhash, alt }: NavImageProps) {
         <img
           src={imageUrl}
           alt={alt}
-          className={`w-full h-full object-contain transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          class={imageClass}
           loading="lazy"
-          onLoad={() => setImageLoaded(true)}
-          onError={() => setImageLoaded(true)}
+          on:load={() => {
+            imageLoaded.value = true;
+          }}
+          on:error={() => {
+            imageLoaded.value = true;
+          }}
         />
       </div>
     </div>
@@ -64,9 +74,9 @@ interface NavTextSectionProps {
 
 function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectionProps) {
   return (
-    <div className="relative grid grid-rows-[1fr]">
+    <div class="relative grid grid-rows-[1fr]">
       {/* Blurhash background */}
-      <div className="absolute inset-0">
+      <div class="absolute inset-0">
         <Blurhash
           hash={blurhash}
           width="100%"
@@ -77,11 +87,11 @@ function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectio
         />
       </div>
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zd-black/70 to-zd-black" />
+      <div class="absolute inset-0 bg-gradient-to-b from-zd-black/70 to-zd-black" />
 
       {/* Content */}
       <div
-        className="
+        class="
           relative flex flex-col
           px-hgap-md py-vgap-md
           md:px-hgap-md md:py-vgap-sm
@@ -92,15 +102,15 @@ function NavTextSection({ blurhash, title, titleEn, description }: NavTextSectio
           group-active:text-zd-black
         "
       >
-        <h2 className="flex items-center gap-hgap-xs text-lg md:text-base lg:text-lg font-bold underline leading-tight font-futura">
+        <h2 class="flex items-center gap-hgap-xs text-lg md:text-base lg:text-lg font-bold underline leading-tight font-futura">
           <ArrowRight className="w-[18px] lg:w-[24px] shrink-0 transition-colors mt-[.1em]" />
-          <span className="flex-1">
+          <span class="flex-1">
             <span>{title}</span>{' '}
-            <span className="text-base md:text-sm lg:text-base opacity-80">/ {titleEn}</span>
+            <span class="text-base md:text-sm lg:text-base opacity-80">/ {titleEn}</span>
           </span>
         </h2>
 
-        <p className="text-sm lg:text-base pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm pb-vgap-xs font-normal text-shadow-none">
+        <p class="text-sm lg:text-base pt-vgap-sm md:py-vgap-sm lg:pt-vgap-sm pb-vgap-xs font-normal text-shadow-none">
           {description}
         </p>
       </div>
@@ -114,9 +124,9 @@ interface NavCardProps {
 
 function NavCard({ item }: NavCardProps) {
   return (
-    <a href={item.href} className="group flex zd-invert-color-link no-underline">
+    <a href={item.href} class="group flex zd-invert-color-link no-underline">
       <div
-        className="
+        class="
           relative overflow-hidden
           transition-all duration-300 ease-out
           hover:underline
@@ -146,7 +156,7 @@ function NavCard({ item }: NavCardProps) {
 export default function TopNavGrid({ className = '' }: TopNavGridProps) {
   return (
     <div
-      className={`
+      class={`
         grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3
         2xl:mx-[-100px]
         gap-x-hgap-sm gap-y-vgap-sm

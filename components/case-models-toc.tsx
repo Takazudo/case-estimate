@@ -1,4 +1,3 @@
-import React from 'react';
 import { BookmarkIcon } from '@/components/icons/bookmark-icon';
 import { ArrowDownIcon } from '@/components/icons/arrow-down-icon';
 
@@ -11,13 +10,13 @@ interface CaseModelsTocProps {
   items: TocItem[];
 }
 
-export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
+export const CaseModelsToc = ({ items }: CaseModelsTocProps) => {
   const iconClassName = `
     absolute
     top-[10px] md:top-[15px] lg:top-0
     scale-50 md:scale-75 lg:scale-100
     origin-top-right
-    right-[20px] lg:right-auto lg:left-[-60px]
+    right-[20px] lg:right-auto lg:-left-[60px]
     text-zd-white
   `;
 
@@ -28,7 +27,7 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
     lg:border lg:pl-hgap-md
     list-none pl-0
     sm:text-base leading-tight
-    [&_li+li]:mt-vgap-xs
+    case-models-toc-list
   `;
 
   const arrowClassName = `
@@ -40,16 +39,16 @@ export const CaseModelsToc: React.FC<CaseModelsTocProps> = ({ items }) => {
   `;
 
   return (
-    <div className="mt-vgap-lg lg:pl-[60px]">
-      <div className="mx-auto max-w-[1000px]">
-        <div className="relative text-zd-white">
+    <div class="mt-vgap-lg lg:pl-[60px]">
+      <div class="mx-auto max-w-[1000px]">
+        <div class="relative text-zd-white">
           <BookmarkIcon className={iconClassName} />
         </div>
-        <ul className={listClassName}>
+        <ul class={listClassName}>
           {items.map((item) => (
-            <li key={item.id} className="pb-vgap-xs">
+            <li key={item.id} class="pb-vgap-xs">
               <ArrowDownIcon className={arrowClassName} />
-              <a href={`#${item.id}`} className="zd-invert-color-link">
+              <a href={`#${item.id}`} class="zd-invert-color-link">
                 {item.label}
               </a>
             </li>
