@@ -1,50 +1,36 @@
 'use client';
 
-import { useId } from 'react';
+import { computed } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 import type { PanelPatternKey } from '@/utils/panel-patterns';
 import { getPanelPatternDefinition } from '@/utils/panel-patterns';
 
 interface PatternFillProps {
-  pattern: PanelPatternKey;
-  className?: string;
-  viewBoxSize?: number;
+  pattern: Reactive<PanelPatternKey>;
+  className?: Reactive<string>;
+  viewBoxSize?: Reactive<number>;
+  ownerKey: string;
 }
 
-const PatternFill = ({ pattern, className = '', viewBoxSize = 24 }: PatternFillProps) => {
-  const internalId = useId();
-  const definition = getPanelPatternDefinition(pattern);
-  const patternId = `${definition.svgId}-${internalId}`;
-
+const PatternFill = ({ pattern, className = '', viewBoxSize = 24, ownerKey }: PatternFillProps) => {
+  // An SVG image is its own document. Its fragment ID cannot collide with any
+  // other swatch, and the data URI is identical during SSR and hydration.
+  const image = computed(() => {
+    const definition = getPanelPatternDefinition(read(pattern));
+    const size = read(viewBoxSize);
+    const id = `stripe-${Array.from(ownerKey, (char) => char.codePointAt(0)!.toString(16)).join('-')}`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><defs><pattern id="${id}" patternUnits="userSpaceOnUse" width="${definition.patternSize}" height="${definition.patternSize}" patternTransform="rotate(${definition.rotation})"><rect width="${definition.patternSize}" height="${definition.patternSize}" fill="${definition.baseColor}"/><rect width="${definition.stripeWidth}" height="${definition.patternSize}" fill="${definition.accentColor}"/></pattern></defs><rect width="100%" height="100%" fill="url(#${id})"/></svg>`;
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  });
   return (
     <svg
-      className={className}
-      viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
+      class={className}
+      viewBox={computed(() => `0 0 ${read(viewBoxSize)} ${read(viewBoxSize)}`)}
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <defs>
-        <pattern
-          id={patternId}
-          patternUnits="userSpaceOnUse"
-          width={definition.patternSize}
-          height={definition.patternSize}
-          patternTransform={`rotate(${definition.rotation})`}
-        >
-          <rect
-            width={definition.patternSize}
-            height={definition.patternSize}
-            fill={definition.baseColor}
-          />
-          <rect
-            x="0"
-            y="0"
-            width={definition.stripeWidth}
-            height={definition.patternSize}
-            fill={definition.accentColor}
-          />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#${patternId})`} />
+      <image width="100%" height="100%" href={image} preserveAspectRatio="none" />
     </svg>
   );
 };
