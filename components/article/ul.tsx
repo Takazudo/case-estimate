@@ -1,15 +1,15 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface ULProps {
-  children: ReactNode;
+  children: Child;
 }
 
 export function UL({ children }: ULProps) {
   return (
     <ul
-      className={`
+      class={`
         list-disc ml-[1.5em] pb-vgap-md
-        [&_li]:pt-vgap-xs
+        article-list
       `}
     >
       {children}

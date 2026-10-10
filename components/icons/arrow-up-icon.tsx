@@ -1,18 +1,16 @@
-import React from 'react';
-
 interface ArrowUpIconProps {
   className?: string;
 }
 
-export const ArrowUpIcon: React.FC<ArrowUpIconProps> = ({ className = '' }) => {
+export const ArrowUpIcon = ({ className = '' }: ArrowUpIconProps) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className={className}>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class={className}>
       <path
         d="M12 19V5M12 5L5 12M12 5L19 12"
         stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );

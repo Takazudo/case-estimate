@@ -1,25 +1,3 @@
-@import 'tailwindcss';
-
-/*
- * Tailwind v4 explicit source for the shared React components.
- *
- * Tailwind's automatic content detection only sees classes that appear in
- * SSR-rendered output. The /m configurator is mounted as a skip-ssr island
- * (`<Island ssrFallback>`), so its entire subtree is NEVER server-rendered —
- * its utility classes (grid-cols-1, p-[10px], text-zd-gray3, the loading
- * overlay, modal styling, …) would otherwise be absent from the compiled CSS
- * and the configurator would render unstyled. Regular islands (header/footer)
- * ARE server-rendered, which is why their sibling components in this same
- * directory scan fine — so the gap is render-participation-based, not a path
- * issue, and every future client-only (skip-ssr) island hits it.
- *
- * Pointing `@source` at the shared components dir makes Tailwind scan the
- * source files directly, independent of SSR participation. zfb resolves
- * `@source` relative to the project root (zfb-app/), so the shared dir is
- * `../components`.
- */
-@source "../components";
-
 /*
  * Height for skip-ssr island wrappers.
  *
@@ -92,6 +70,9 @@
 
 /* CSS Variables - Zudo Design System */
 :root {
+  --shadow-text-md: 0.05em 0.05em 0 #000;
+  --shadow-text-lg: 0.1em 0.1em 0 #000;
+
   /* Colors */
   --zd-color-black: #1c1917;
   --zd-color-white: #d6d3d1;
@@ -156,206 +137,187 @@
   --zd-lineHeight-loose: 2.3;
 }
 
-/*
- * Tailwind v4 CSS-first theme. Migrated from the Next app's
- * tailwind.config.js + globals.css @theme block so all Tailwind utility
- * classes resolve identically in the zfb build.
- */
-@theme {
-  /* Font families */
-  --font-noto: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-futura: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
-  --font-sans: 'Helvetica', sans-serif;
-  --font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-
-  /* Custom spacing using CSS variables */
-  --spacing-0: 0;
-  --spacing-1px: 1px;
-  --spacing-hgap-2xs: var(--zd-spacing-hgap-2xs);
-  --spacing-hgap-xs: var(--zd-spacing-hgap-xs);
-  --spacing-hgap-sm: var(--zd-spacing-hgap-sm);
-  --spacing-hgap-md: var(--zd-spacing-hgap-md);
-  --spacing-hgap-md-x2: var(--zd-spacing-hgap-md-x2);
-  --spacing-hgap-lg: var(--zd-spacing-hgap-lg);
-  --spacing-hgap-lg-x2: var(--zd-spacing-hgap-lg-x2);
-  --spacing-hgap-xl: var(--zd-spacing-hgap-xl);
-  --spacing-hgap-2xl: var(--zd-spacing-hgap-2xl);
-
-  --spacing-vgap-2xs: var(--zd-spacing-vgap-2xs);
-  --spacing-vgap-xs: var(--zd-spacing-vgap-xs);
-  --spacing-vgap-sm: var(--zd-spacing-vgap-sm);
-  --spacing-vgap-md: var(--zd-spacing-vgap-md);
-  --spacing-vgap-lg: var(--zd-spacing-vgap-lg);
-  --spacing-vgap-xl: var(--zd-spacing-vgap-xl);
-  --spacing-vgap-2xl: var(--zd-spacing-vgap-2xl);
-
-  /* Custom colors */
-  --color-debug: #ff0000;
-  --color-zd-black: var(--zd-color-black);
-  --color-zd-white: var(--zd-color-white);
-  --color-zd-link: var(--zd-color-link);
-  --color-zd-active: var(--zd-color-active);
-  --color-zd-gray: var(--zd-color-gray);
-  --color-zd-gray2: var(--zd-color-gray2);
-  --color-zd-strong: var(--zd-color-strong);
-  --color-zd-notify: var(--zd-color-notify);
-  --color-zd-error: var(--zd-color-error);
-  --color-zd-price: var(--zd-color-price);
-
-  /* Custom font sizes */
-  --text-xs: var(--zd-font-xs-size);
-  --text-xs--line-height: var(--zd-font-xs-lineHeight);
-  --text-sm: var(--zd-font-sm-size);
-  --text-sm--line-height: var(--zd-font-sm-lineHeight);
-  --text-base: var(--zd-font-base-size);
-  --text-base--line-height: var(--zd-font-base-lineHeight);
-  --text-lg: var(--zd-font-lg-size);
-  --text-lg--line-height: var(--zd-font-lg-lineHeight);
-  --text-xl: var(--zd-font-xl-size);
-  --text-xl--line-height: var(--zd-font-xl-lineHeight);
-  --text-2xl: var(--zd-font-2xl-size);
-  --text-2xl--line-height: var(--zd-font-2xl-lineHeight);
-  --text-3xl: var(--zd-font-3xl-size);
-  --text-3xl--line-height: var(--zd-font-3xl-lineHeight);
-  --text-4xl: var(--zd-font-4xl-size);
-  --text-4xl--line-height: var(--zd-font-4xl-lineHeight);
-  --text-5xl: var(--zd-font-5xl-size);
-  --text-5xl--line-height: var(--zd-font-5xl-lineHeight);
-
-  /* Custom line heights */
-  --leading-none: var(--zd-lineHeight-none);
-  --leading-tight: var(--zd-lineHeight-tight);
-  --leading-snug: var(--zd-lineHeight-snug);
-  --leading-normal: var(--zd-lineHeight-normal);
-  --leading-relaxed: var(--zd-lineHeight-relaxed);
-  --leading-loose: var(--zd-lineHeight-loose);
-
-  /* Custom screens (breakpoints) */
-  --screen-sm: 580px;
-  --screen-md: 740px;
-  --screen-lg: 980px;
-  --screen-xl: 1280px;
-  --screen-2xl: 1630px;
-  --screen-3xl: 1800px;
-
-  /* Custom border widths */
-  --border-width-0: 0px;
-  --border-width-1: 1px;
-  --border-width-2: 2px;
-  --border-width-3: 3px;
-  --border-width-4: 4px;
-  --border-width-5: 5px;
-  --border-width-10: 10px;
-
-  /* Custom shadows */
-  --shadow-text-md: 0.05em 0.05em 0 #000;
-  --shadow-text-lg: 0.1em 0.1em 0 #000;
-
-  /* Custom animations */
-  --animation-loading-bar: loading-bar 2s ease-in-out infinite;
+/* Custom utilities. Keep these unlayered so their state selectors can override Wind utilities. */
+/* Text shadow utilities */
+.text-shadow-md {
+  text-shadow: var(--shadow-text-md);
+}
+.text-shadow-lg {
+  text-shadow: var(--shadow-text-lg);
+}
+.text-shadow-none {
+  text-shadow: none;
 }
 
-/* Custom utilities */
-@layer utilities {
-  /* Text shadow utilities */
-  .text-shadow-md {
-    text-shadow: var(--shadow-text-md);
-  }
-  .text-shadow-lg {
-    text-shadow: var(--shadow-text-lg);
-  }
-  .text-shadow-none {
+/* Inverted color link style */
+.zd-invert-color-link {
+  text-shadow: var(--shadow-text-md);
+  outline-offset: 4px;
+  &:hover {
     text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-white);
+    text-decoration-line: none;
+    outline-width: 2px;
+    border-radius: 0.125rem;
+    outline-color: #ea580c;
   }
+  &:focus {
+    text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-white);
+    text-decoration-line: none;
+    outline-width: 2px;
+    border-radius: 0.125rem;
+    outline-color: #ea580c;
+  }
+  &:active {
+    text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-active);
+  }
+}
 
-  /* Inverted color link style */
-  .zd-invert-color-link {
-    text-shadow: var(--shadow-text-md);
-    @apply outline-offset-4;
-    &:hover {
-      text-shadow: none;
-      @apply text-zd-black bg-zd-white no-underline;
-      @apply outline-2 rounded-sm outline-orange-600;
-    }
-    &:focus {
-      text-shadow: none;
-      @apply text-zd-black bg-zd-white no-underline;
-      @apply outline-2 rounded-sm outline-orange-600;
-    }
-    &:active {
-      text-shadow: none;
-      @apply text-zd-black;
-      @apply bg-zd-active;
-    }
-  }
+/* Gradient utilities */
+.zd-gradient-black-to-transparent {
+  background: linear-gradient(to bottom, rgb(28 25 23) 30%, transparent);
+  background-repeat: repeat-x;
+}
 
-  /* Gradient utilities */
-  .zd-gradient-black-to-transparent {
-    background: linear-gradient(to bottom, rgb(28 25 23) 30%, transparent);
-    background-repeat: repeat-x;
-  }
+/* Header container transition */
+.header-container-transition {
+  transition:
+    max-width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  /* Header container transition */
-  .header-container-transition {
-    transition:
-      max-width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      padding 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+/* Red gradient button */
+.zd-button-gradient {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: white;
+  font-weight: 500;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+.zd-button-gradient:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+.zd-button-gradient:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
 
-  /* Red gradient button */
-  .zd-button-gradient {
-    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-    color: white;
-    font-weight: 500;
-    box-shadow:
-      0 1px 3px 0 rgba(0, 0, 0, 0.1),
-      0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    transition: all 0.2s ease;
-  }
-  .zd-button-gradient:hover {
-    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-  }
-  .zd-button-gradient:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  }
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
 
-  .clearfix::after {
-    content: '';
-    clear: both;
-    display: table;
-  }
+/* Page fade transition utilities */
+.page-fade-in {
+  animation: pageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
 
-  /* Page fade transition utilities */
-  .page-fade-in {
-    animation: pageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  }
-
-  .page-loading {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+.page-loading {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 @layer base {
+  /* Tailwind preflight details used by the site and its form controls. */
+  :root {
+    --font-sans: 'Helvetica', sans-serif;
+    --font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+  small {
+    font-size: 80%;
+  }
+  sub,
+  sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub {
+    bottom: -0.25em;
+  }
+  sup {
+    top: -0.5em;
+  }
+  hr {
+    color: inherit;
+  }
+  button,
+  input:where([type='button'], [type='reset'], [type='submit']) {
+    appearance: button;
+  }
+  button,
+  input,
+  select,
+  optgroup,
+  textarea {
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  ::placeholder {
+    opacity: 1;
+    color: color-mix(in oklab, currentcolor 50%, transparent);
+  }
+  ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    margin-inline-end: 4px;
+    padding: 0;
+    border: 0 solid;
+    border-radius: 0;
+    background-color: transparent;
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    opacity: 1;
+    appearance: button;
+  }
+  [hidden]:where(:not([hidden='until-found'])) {
+    display: none !important;
+  }
   /* Base styles */
   html {
-    @apply font-noto underline-offset-4 bg-zd-black;
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+    text-underline-offset: 4px;
+    background-color: var(--zd-color-black);
     scroll-behavior: smooth;
   }
   body {
-    @apply text-base text-zd-white font-light;
+    font-size: var(--zd-font-base-size);
+    line-height: var(--zd-font-base-lineHeight);
+    color: var(--zd-color-white);
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-wrap: pretty;
   }
   button {
-    @apply font-futura;
+    font-family: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
     cursor: pointer;
   }
 
@@ -373,14 +335,22 @@
 
   /* Links */
   a {
-    @apply underline text-zd-link text-shadow-md font-futura;
+    text-decoration-line: underline;
+    color: var(--zd-color-link);
+    text-shadow: var(--shadow-text-md);
+    font-family: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
   }
   a:focus,
   a:active {
-    @apply outline-2 outline-orange-600 rounded-xs text-zd-active text-shadow-none;
+    outline-width: 2px;
+    outline-color: #ea580c;
+    border-radius: 0.125rem;
+    color: var(--zd-color-active);
+    text-shadow: none;
   }
   a:active {
-    @apply text-zd-black bg-zd-active;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-active);
   }
 
   /* Scrollbar styles (webkit browsers) */
@@ -484,4 +454,63 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Utility spellings outside the Wind v1 catalog, retained for existing markup. */
+.clear-both {
+  clear: both;
+}
+.flow-root {
+  display: flow-root;
+}
+.will-change-\[transform\] {
+  will-change: transform;
+}
+.article-list > li {
+  padding-top: var(--zd-spacing-vgap-xs);
+}
+.case-models-toc-list > li + li {
+  margin-top: var(--zd-spacing-vgap-xs);
+}
+@media (min-width: 980px) {
+  .model-section-grid {
+    grid-template-rows: auto 1fr;
+  }
+  .lg\:scale-100 {
+    scale: 1;
+  }
+}
+.scale-50 {
+  scale: 0.5;
+}
+@media (min-width: 740px) {
+  .md\:scale-75 {
+    scale: 0.75;
+  }
+}
+.prose {
+  line-height: 1.75;
+}
+.prose p {
+  margin-block: 1.25em;
+}
+.prose h2,
+.prose h3 {
+  margin-block: 1.5em 0.75em;
+  font-weight: 700;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.5em;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+.prose-gray {
+  color: var(--zd-color-white);
+}
+
+.origin-top-right {
+  transform-origin: top right;
 }

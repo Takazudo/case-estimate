@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface PProps {
-  children: ReactNode;
+  children: Child;
 }
 
 export function P({ children }: PProps) {
-  return <p className="pb-vgap-md text-white">{children}</p>;
+  return <p class="pb-vgap-md text-white">{children}</p>;
 }

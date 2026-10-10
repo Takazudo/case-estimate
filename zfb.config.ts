@@ -1,23 +1,106 @@
 import { defineConfig } from '@takazudo/zfb/config';
 
-/**
- * zfb project config for the zpanels Next.js -> zfb migration.
- *
- * Lives under `zfb-app/` (not the repo root) because a populated root
- * `pages/` collides with Next's app-router during the coexistence phase
- * ("Conflicting app and page file"). Once the migration completes and Next
- * is retired, this can move to the repo root.
- *
- * `site` is the production origin (see CLAUDE.md deployment section); the
- * app deploys at the domain root so `base` stays the default "/".
- */
 export default defineConfig({
-  framework: 'react',
   outDir: 'dist',
   publicDir: 'public',
   site: 'https://panels.takazudomodular.com',
-  tailwind: {
-    enabled: true,
+  wind: {
+    spec: 1,
+    reset: 'owned-v1',
+    strict: true,
+    defaultTransitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    utilities: { placement: 'before-authored' },
+    tokens: {
+      spacingUnit: '0.25rem',
+      spacing: {
+        '1px': '1px',
+        'hgap-2xs': 'var(--zd-spacing-hgap-2xs)',
+        'hgap-xs': 'var(--zd-spacing-hgap-xs)',
+        'hgap-sm': 'var(--zd-spacing-hgap-sm)',
+        'hgap-md': 'var(--zd-spacing-hgap-md)',
+        'hgap-md-x2': 'var(--zd-spacing-hgap-md-x2)',
+        'hgap-lg': 'var(--zd-spacing-hgap-lg)',
+        'hgap-lg-x2': 'var(--zd-spacing-hgap-lg-x2)',
+        'hgap-xl': 'var(--zd-spacing-hgap-xl)',
+        'hgap-2xl': 'var(--zd-spacing-hgap-2xl)',
+        'vgap-2xs': 'var(--zd-spacing-vgap-2xs)',
+        'vgap-xs': 'var(--zd-spacing-vgap-xs)',
+        'vgap-sm': 'var(--zd-spacing-vgap-sm)',
+        'vgap-md': 'var(--zd-spacing-vgap-md)',
+        'vgap-lg': 'var(--zd-spacing-vgap-lg)',
+        'vgap-xl': 'var(--zd-spacing-vgap-xl)',
+        'vgap-2xl': 'var(--zd-spacing-vgap-2xl)',
+      },
+      colors: {
+        'zd-black': 'var(--zd-color-black)',
+        'zd-white': 'var(--zd-color-white)',
+        'zd-link': 'var(--zd-color-link)',
+        'zd-active': 'var(--zd-color-active)',
+        'zd-gray': 'var(--zd-color-gray)',
+        'zd-gray2': 'var(--zd-color-gray2)',
+        'zd-strong': 'var(--zd-color-strong)',
+        'zd-notify': 'var(--zd-color-notify)',
+        'zd-error': 'var(--zd-color-error)',
+        'zd-price': 'var(--zd-color-price)',
+        debug: '#ff0000',
+        white: '#ffffff',
+        black: '#000000',
+        'gray-300': '#d1d5db',
+        'orange-600': '#ea580c',
+      },
+      fontFamilies: {
+        noto: "'Noto Sans', ui-sans-serif, system-ui, sans-serif",
+        futura: "'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif",
+        sans: "'Helvetica', sans-serif",
+        mono: "'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
+      },
+      fontSizes: {
+        xs: { size: 'var(--zd-font-xs-size)', lineHeight: 'var(--zd-font-xs-lineHeight)' },
+        sm: { size: 'var(--zd-font-sm-size)', lineHeight: 'var(--zd-font-sm-lineHeight)' },
+        base: { size: 'var(--zd-font-base-size)', lineHeight: 'var(--zd-font-base-lineHeight)' },
+        lg: { size: 'var(--zd-font-lg-size)', lineHeight: 'var(--zd-font-lg-lineHeight)' },
+        xl: { size: 'var(--zd-font-xl-size)', lineHeight: 'var(--zd-font-xl-lineHeight)' },
+        '2xl': { size: 'var(--zd-font-2xl-size)', lineHeight: 'var(--zd-font-2xl-lineHeight)' },
+        '3xl': { size: 'var(--zd-font-3xl-size)', lineHeight: 'var(--zd-font-3xl-lineHeight)' },
+        '4xl': { size: 'var(--zd-font-4xl-size)', lineHeight: 'var(--zd-font-4xl-lineHeight)' },
+        '5xl': { size: 'var(--zd-font-5xl-size)', lineHeight: 'var(--zd-font-5xl-lineHeight)' },
+      },
+      fontWeights: { light: '300', normal: '400', medium: '500', semibold: '600', bold: '700' },
+      lineHeights: {
+        none: 'var(--zd-lineHeight-none)',
+        tight: 'var(--zd-lineHeight-tight)',
+        snug: 'var(--zd-lineHeight-snug)',
+        normal: 'var(--zd-lineHeight-normal)',
+        relaxed: 'var(--zd-lineHeight-relaxed)',
+        loose: 'var(--zd-lineHeight-loose)',
+      },
+      radii: { default: '0.25rem', xs: '0.125rem', sm: '0.125rem', md: '0.375rem', lg: '0.5rem' },
+      shadows: { xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' },
+    },
+    breakpoints: {
+      sm: { minWidthPx: 580 },
+      md: { minWidthPx: 740 },
+      lg: { minWidthPx: 980 },
+      xl: { minWidthPx: 1280 },
+      '2xl': { minWidthPx: 1630 },
+      '3xl': { minWidthPx: 1800 },
+    },
+    authoredClasses: {
+      'text-shadow-md': true,
+      'text-shadow-lg': true,
+      'text-shadow-none': true,
+      'zd-invert-color-link': true,
+      'zd-button-gradient': true,
+      prose: true,
+      'prose-gray': true,
+      'clear-both': true,
+      'flow-root': true,
+      'will-change-[transform]': true,
+      'origin-top-right': true,
+      'scale-50': true,
+      'md:scale-75': true,
+      'lg:scale-100': true,
+    },
   },
   collections: [
     {
