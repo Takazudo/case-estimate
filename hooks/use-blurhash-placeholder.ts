@@ -1,64 +1,40 @@
-import { useEffect, useState } from 'react';
+import { computed, getScope, signal } from '@takazudo/zfb/zudo-react';
 import { decode } from 'blurhash';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 
-const CANVAS_DIMENSION = 32;
-const blurhashCache = new Map<string, string>();
-let sharedCanvas: HTMLCanvasElement | null = null;
+const SIZE = 32;
+const cache = new Map<string, string>();
+let canvas: HTMLCanvasElement | null = null;
 
-const getSharedCanvas = () => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  if (!sharedCanvas) {
-    sharedCanvas = document.createElement('canvas');
-    sharedCanvas.width = CANVAS_DIMENSION;
-    sharedCanvas.height = CANVAS_DIMENSION;
-  }
-
-  return sharedCanvas;
-};
-
-export const useBlurhashPlaceholder = (blurhash?: string | null) => {
-  const [placeholder, setPlaceholder] = useState('');
-
-  useEffect(() => {
-    if (!blurhash) {
-      setPlaceholder('');
+export function useBlurhashPlaceholder(blurhash?: Reactive<string | null | undefined>) {
+  const placeholder = signal('');
+  const hash = computed(() => read(blurhash));
+  getScope().effect(() => {
+    const value = hash.value;
+    placeholder.value = '';
+    if (!value) return;
+    const cached = cache.get(value);
+    if (cached) {
+      placeholder.value = cached;
       return;
     }
-
-    const cachedValue = blurhashCache.get(blurhash);
-    if (cachedValue) {
-      setPlaceholder(cachedValue);
-      return;
-    }
-
-    const canvas = getSharedCanvas();
-    if (!canvas) {
-      setPlaceholder('');
-      return;
-    }
-
+    canvas ??= document.createElement('canvas');
+    canvas.width = SIZE;
+    canvas.height = SIZE;
     const context = canvas.getContext('2d');
-    if (!context) {
-      setPlaceholder('');
-      return;
-    }
-
+    if (!context) return;
     try {
-      const pixels = decode(blurhash, CANVAS_DIMENSION, CANVAS_DIMENSION);
-      const imageData = context.createImageData(CANVAS_DIMENSION, CANVAS_DIMENSION);
+      const pixels = decode(value, SIZE, SIZE);
+      const imageData = context.createImageData(SIZE, SIZE);
       imageData.data.set(pixels);
-      context.clearRect(0, 0, CANVAS_DIMENSION, CANVAS_DIMENSION);
       context.putImageData(imageData, 0, 0);
-      const dataUrl = canvas.toDataURL();
-      blurhashCache.set(blurhash, dataUrl);
-      setPlaceholder(dataUrl);
+      const url = canvas.toDataURL();
+      cache.set(value, url);
+      placeholder.value = url;
     } catch {
-      setPlaceholder('');
+      placeholder.value = '';
     }
-  }, [blurhash]);
-
+  });
   return placeholder;
-};
+}

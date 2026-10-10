@@ -1,175 +1,82 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { computed, getScope, signal } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 
-// Loading check constants
-const IMAGE_CHECK_INITIAL_DELAY = 0; // ms - small delay to ensure img element is set up
-const IMAGE_CHECK_INTERVAL = 100; // ms - periodic check if image has loaded
-const IMAGE_CHECK_TIMEOUT = 30000; // ms - stop checking after 30 seconds
-
-/**
- * Options for useGalleryDialog hook
- */
-interface UseGalleryDialogOptions {
-  /** Current slug to display */
-  currentSlug: string;
-  /** Function to get the enlarged image URL for a slug */
+interface Options {
+  currentSlug: Reactive<string>;
   getImageUrl: (slug: string) => string;
-  /** Optional list of slugs to preload (adjacent images) */
-  slugsToPreload?: string[];
+  slugsToPreload?: Reactive<string[]>;
 }
 
-/**
- * Return type for useGalleryDialog hook
- */
-interface UseGalleryDialogReturn {
-  /** Whether the current image has loaded */
-  imageLoaded: boolean;
-  /** Whether there was an error loading the image */
-  imageError: boolean;
-  /** Whether the image is currently loading */
-  isLoading: boolean;
-  /** Ref to attach to the image element */
-  imageRef: React.RefObject<HTMLImageElement | null>;
-  /** Callback for image onLoad event */
-  handleImageLoad: () => void;
-  /** Callback for image onError event */
-  handleImageError: () => void;
-}
+export function useGalleryDialog(options: Options) {
+  const imageLoaded = signal(false);
+  const imageError = signal(false);
+  const isLoading = signal(true);
+  const imageRef: { current: HTMLImageElement | null } = { current: null };
+  const preloaded = new Set<string>();
+  const imageUrl = computed(() => options.getImageUrl(read(options.currentSlug)));
+  const scope = getScope();
 
-/**
- * Custom hook for managing gallery dialog image loading and preloading
- *
- * Handles:
- * - Image loading state management
- * - Loading state tracking with fallback checks
- * - Preloading of adjacent images for smooth navigation
- * - Automatic cleanup on unmount
- *
- * @param options - Configuration options
- * @returns Image state and ref
- *
- * @example
- * ```tsx
- * const { imageLoaded, imageError, isLoading, imageRef, handleImageLoad, handleImageError } = useGalleryDialog({
- *   currentSlug: 'zudo-block-40-01',
- *   getImageUrl: (slug) => `https://example.com/images/${slug}-2000w.webp`,
- *   slugsToPreload: ['zudo-block-40-02', 'zudo-block-40-03'],
- * });
- *
- * return (
- *   <>
- *     {isLoading && <div className="loader" />}
- *     <img
- *       ref={imageRef}
- *       src={getImageUrl(currentSlug)}
- *       onLoad={handleImageLoad}
- *       onError={handleImageError}
- *       style={{ opacity: imageLoaded ? 1 : 0 }}
- *     />
- *   </>
- * );
- * ```
- */
-export function useGalleryDialog({
-  currentSlug,
-  getImageUrl,
-  slugsToPreload = [],
-}: UseGalleryDialogOptions): UseGalleryDialogReturn {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const preloadedImagesRef = useRef(new Set<string>());
+  scope.effect(() => {
+    const url = imageUrl.value;
+    imageLoaded.value = false;
+    imageError.value = false;
+    isLoading.value = true;
+    const check = () => {
+      const image = imageRef.current;
+      if (!image || !image.complete || !url) return;
+      if (image.naturalWidth > 0) {
+        imageLoaded.value = true;
+        imageError.value = false;
+      } else if (image.src) {
+        imageError.value = true;
+      }
+      if (imageLoaded.value || imageError.value) isLoading.value = false;
+    };
+    const timeout = window.setTimeout(check, 0);
+    const interval = window.setInterval(check, 100);
+    const stop = window.setTimeout(() => window.clearInterval(interval), 30000);
+    return () => {
+      window.clearTimeout(timeout);
+      window.clearInterval(interval);
+      window.clearTimeout(stop);
+    };
+  });
 
-  // Callbacks for image load events
-  const handleImageLoad = useCallback(() => {
-    setImageLoaded(true);
-    setImageError(false);
-    setIsLoading(false);
-  }, []);
-
-  const handleImageError = useCallback(() => {
-    setImageLoaded(false);
-    setImageError(true);
-    setIsLoading(false);
-  }, []);
-
-  // Preload adjacent images
-  useEffect(() => {
+  scope.effect(() => {
+    const slugs = read(options.slugsToPreload ?? []);
     const images: HTMLImageElement[] = [];
-
-    slugsToPreload.forEach((slug) => {
-      const url = getImageUrl(slug);
-      if (preloadedImagesRef.current.has(url)) {
-        return;
-      }
-
-      const img = new Image();
-      img.src = url;
-      img.onload = () => {
-        preloadedImagesRef.current.add(url);
-      };
-      img.onerror = () => {
-        preloadedImagesRef.current.delete(url);
-      };
-      images.push(img);
-    });
-
-    // Cleanup: remove event listeners to prevent memory leaks
+    for (const slug of slugs) {
+      const url = options.getImageUrl(slug);
+      if (preloaded.has(url)) continue;
+      const image = new Image();
+      image.onload = () => preloaded.add(url);
+      image.onerror = () => preloaded.delete(url);
+      image.src = url;
+      images.push(image);
+    }
     return () => {
-      images.forEach((img) => {
-        img.onload = null;
-        img.onerror = null;
-      });
-    };
-  }, [slugsToPreload, getImageUrl]);
-
-  // Reset image loaded state when slug changes and check if already loaded
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-    setIsLoading(true);
-
-    // Use a small delay to ensure the img element is properly set up
-    const timeoutId = setTimeout(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setIsLoading(false);
+      for (const image of images) {
+        image.onload = null;
+        image.onerror = null;
       }
-    }, IMAGE_CHECK_INITIAL_DELAY);
-
-    return () => clearTimeout(timeoutId);
-  }, [currentSlug]);
-
-  // Additional effect to periodically check if image has loaded
-  // This handles cases where onLoad doesn't fire properly
-  useEffect(() => {
-    if (imageLoaded || imageError) return;
-
-    const intervalId = setInterval(() => {
-      if (imageRef.current && imageRef.current.complete && imageRef.current.naturalWidth > 0) {
-        setImageLoaded(true);
-        setImageError(false);
-        setIsLoading(false);
-      }
-    }, IMAGE_CHECK_INTERVAL);
-
-    // Stop checking after timeout
-    const timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
-    }, IMAGE_CHECK_TIMEOUT);
-
-    return () => {
-      clearInterval(intervalId);
-      clearTimeout(timeoutId);
     };
-  }, [imageLoaded, imageError, currentSlug]);
+  });
 
   return {
     imageLoaded,
     imageError,
     isLoading,
     imageRef,
-    handleImageLoad,
-    handleImageError,
+    handleImageLoad: () => {
+      imageLoaded.value = true;
+      imageError.value = false;
+      isLoading.value = false;
+    },
+    handleImageError: () => {
+      imageLoaded.value = false;
+      imageError.value = true;
+      isLoading.value = false;
+    },
   };
 }

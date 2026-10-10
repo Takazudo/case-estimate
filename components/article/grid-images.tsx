@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { For, signal } from '@takazudo/zfb/zudo-react';
 import { encodeCase } from '@/utils/url-encoder';
 import { BlurhashLoader } from '@/components/blurhash-loader';
 
@@ -9,71 +9,60 @@ interface GridImageItem {
   href?: string;
   caseId?: string;
   caption: string;
-  imgSrc?: string; // Optional for future real images
+  imgSrc?: string;
   blurhash?: string;
 }
-
 interface GridImagesProps {
   items: GridImageItem[];
   onItemClick?: (caseId: string) => void;
   className?: string;
 }
 
-const GridImages: React.FC<GridImagesProps> = ({ items, onItemClick, className = '' }) => {
-  const getHref = (item: GridImageItem): string => {
-    if (item.href) return item.href;
-    if (item.caseId) return `/m?c=${encodeCase(item.caseId)}`;
-    return '#';
-  };
-
+export default function GridImages({ items, onItemClick, className = '' }: GridImagesProps) {
+  const href = (item: GridImageItem) =>
+    item.href || (item.caseId ? `/m?c=${encodeCase(item.caseId)}` : '#');
   return (
-    <div
-      className={`
-        grid grid-cols-2 md:grid-cols-4
-        gap-hgap-sm md:gap-hgap-sm
-        ${className}
-      `}
-    >
-      {items.map((item) => (
-        <a
-          key={item.id}
-          href={getHref(item)}
-          onClick={() => onItemClick?.(item.caseId || '')}
-          className="group block cursor-pointer border-[3px] border-zd-link rounded-md p-[3px]"
-        >
-          <div className="space-y-vgap-xs">
-            {/* Image placeholder - white square */}
-            <div className="aspect-square bg-white rounded-sm overflow-hidden">
-              {item.imgSrc ? (
-                item.blurhash ? (
-                  <BlurhashLoader
-                    blurHash={item.blurhash}
-                    imgUrl={item.imgSrc}
-                    alt={item.caption}
-                    className="w-full h-full"
-                    loading="lazy"
-                  />
-                ) : (
-                  <img
-                    src={item.imgSrc}
-                    alt={item.caption}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                )
-              ) : (
-                <div className="w-full h-full" />
-              )}
-            </div>
-            {/* Caption */}
-            <p className="py-vgap-sm text-center group-hover:text-zd-link transition-colors">
-              {item.caption}
-            </p>
-          </div>
-        </a>
-      ))}
+    <div class={`grid grid-cols-2 md:grid-cols-4 gap-hgap-sm md:gap-hgap-sm ${className}`}>
+      <For each={signal(items)} by={(item) => item.id}>
+        {(entry) => {
+          const item = entry.value;
+          return (
+            <a
+              href={href(item)}
+              on:click={() => onItemClick?.(item.caseId || '')}
+              class="group block cursor-pointer border-[3px] border-zd-link rounded-md p-[3px]"
+            >
+              <div class="space-y-vgap-xs">
+                <div class="aspect-square bg-white rounded-sm overflow-hidden">
+                  {item.imgSrc ? (
+                    item.blurhash ? (
+                      <BlurhashLoader
+                        blurHash={item.blurhash}
+                        imgUrl={item.imgSrc}
+                        alt={item.caption}
+                        className="w-full h-full"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <img
+                        src={item.imgSrc}
+                        alt={item.caption}
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    )
+                  ) : (
+                    <div class="w-full h-full" />
+                  )}
+                </div>
+                <p class="py-vgap-sm text-center group-hover:text-zd-link transition-colors">
+                  {item.caption}
+                </p>
+              </div>
+            </a>
+          );
+        }}
+      </For>
     </div>
   );
-};
-
-export default GridImages;
+}
