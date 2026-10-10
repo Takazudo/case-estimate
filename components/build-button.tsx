@@ -28,10 +28,10 @@ export default function BuildButton({ href, size = 'md', className = '' }: Build
   return (
     <a
       href={href}
-      className={`inline-flex items-center ${sizeClasses[size]} rounded text-zd-white whitespace-nowrap zd-button-gradient transition-all no-underline ${className}`}
+      class={`inline-flex items-center ${sizeClasses[size]} rounded text-zd-white whitespace-nowrap zd-button-gradient transition-all no-underline ${className}`}
     >
       <TakazudoLogoSmall className={`${iconSizes[size]} flex-shrink-0`} fill="white" />
-      <span className="font-medium no-underline pt-[.1em]">Build!</span>
+      <span class="font-medium no-underline pt-[.1em]">Build!</span>
     </a>
   );
 }
