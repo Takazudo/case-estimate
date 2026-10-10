@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { computed, getScope, Show, signal } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 import { getColorOpacityByValue, getColorOpacityById, DEFAULT_PANEL_COLOR } from '@/data/colors';
 import { CLASS_TO_PANEL_8, CLASS_TO_PANEL_12, getColorToPanelMapping } from '@/data/panel-mappings';
 import {
@@ -13,12 +15,12 @@ import {
 import type { Material } from '@/types';
 
 interface CaseVisualizerProps {
-  caseType: string;
-  panelColors: { [key: string]: string };
-  panelColorIds?: { [key: string]: string };
+  caseType: Reactive<string>;
+  panelColors: Reactive<{ [key: string]: string }>;
+  panelColorIds?: Reactive<{ [key: string]: string } | undefined>;
   onPanelClick: (panelId: string) => void;
-  selectedPanel: string | null;
-  material?: Material;
+  selectedPanel: Reactive<string | null>;
+  material?: Reactive<Material | undefined>;
   onLoadingChange?: (isLoading: boolean) => void;
 }
 
@@ -91,6 +93,7 @@ function applyPanelStyles(
   panelId: string,
   panelColors: { [key: string]: string },
   useSetAttribute: boolean = false,
+  patternId: string,
 ): StrokeInfo {
   // Handle pattern fills
   const isPatternFill = color === 'pattern-red-green-stripe';
@@ -103,9 +106,9 @@ function applyPanelStyles(
   if (isPatternFill) {
     // Use pattern fill for red-green silk
     if (useSetAttribute) {
-      pathElement.setAttribute('fill', 'url(#red-green-stripe-pattern)');
+      pathElement.setAttribute('fill', `url(#${patternId})`);
     }
-    pathElement.style.setProperty('fill', 'url(#red-green-stripe-pattern)', 'important');
+    pathElement.style.setProperty('fill', `url(#${patternId})`, 'important');
     pathElement.style.setProperty('fill-opacity', '1', 'important');
   } else if (isTransparentAcrylic) {
     // For transparent acrylic, use transparent fill (not "none" to keep it clickable)
@@ -218,17 +221,19 @@ const CaseVisualizer = ({
   material,
   onLoadingChange,
 }: CaseVisualizerProps) => {
-  const svgContainerRef = useRef<HTMLDivElement>(null);
-  const [svgLoaded, setSvgLoaded] = useState(false);
-  const [svgError, setSvgError] = useState<string | null>(null);
-
-  // Determine which class mapping to use based on model type (using type-safe utilities)
-  const CLASS_TO_PANEL = isX2Model(caseType) ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
+  const scope = getScope();
+  const svgContainerRef: { current: HTMLDivElement | null } = { current: null };
+  const svgLoaded = signal(false);
+  const svgError = signal<string | null>(null);
+  let patternId = '';
+  scope.onActivate(() => {
+    patternId = `panel-stripe-${crypto.randomUUID()}`;
+  });
 
   // Add pattern definitions to SVG
   const addPatternsToSvg = (svg: SVGElement) => {
     // Check if patterns already exist
-    if (svg.querySelector('#red-green-stripe-pattern')) return;
+    if (svg.querySelector(`#${patternId}`)) return;
 
     // Create defs element if it doesn't exist
     let defs = svg.querySelector('defs');
@@ -239,7 +244,7 @@ const CaseVisualizer = ({
 
     // Create red/green diagonal stripe pattern
     const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
-    pattern.setAttribute('id', 'red-green-stripe-pattern');
+    pattern.setAttribute('id', patternId);
     pattern.setAttribute('patternUnits', 'userSpaceOnUse');
     pattern.setAttribute('width', '20');
     pattern.setAttribute('height', '20');
@@ -265,14 +270,18 @@ const CaseVisualizer = ({
   };
 
   // Load and inject the SVG
-  useEffect(() => {
-    setSvgLoaded(false);
-    setSvgError(null);
+  scope.effect(() => {
+    const currentCase = read(caseType);
+    const controller = new AbortController();
+    let active = true;
+    svgLoaded.value = false;
+    svgError.value = null;
+    svgContainerRef.current?.replaceChildren();
     onLoadingChange?.(true);
 
     const loadSVG = async () => {
       try {
-        // Validate caseType to prevent path traversal and ensure only known models are loaded
+        // Validate currentCase to prevent path traversal and ensure only known models are loaded
         // This prevents loading arbitrary files via ../ or other path manipulation
         const validCaseTypes = [
           'zudo-block-40-ACR-A',
@@ -308,22 +317,24 @@ const CaseVisualizer = ({
           'zudo-stand-60x2',
         ];
 
-        if (!validCaseTypes.includes(caseType)) {
-          console.error(`Invalid case type: ${caseType}`);
+        if (!validCaseTypes.includes(currentCase)) {
+          console.error(`Invalid case type: ${currentCase}`);
           onLoadingChange?.(false);
           return;
         }
 
-        // Dynamically select SVG path based on caseType.
-        // caseType identifiers are mixed-case (e.g. "zudo-block-40-ACR-A") but the
+        // Dynamically select SVG path based on currentCase.
+        // currentCase identifiers are mixed-case (e.g. "zudo-block-40-ACR-A") but the
         // files in public/svg/ are all lowercase. macOS' case-insensitive filesystem
         // hid the mismatch locally; Linux CI (case-sensitive) 404s the request,
         // producing an empty body and a "Failed to parse SVG" error. Lowercase the
         // identifier to match the on-disk filenames on every platform.
-        const svgPath = `/svg/${caseType.toLowerCase()}.svg`;
+        const svgPath = `/svg/${currentCase.toLowerCase()}.svg`;
 
-        const response = await fetch(svgPath);
+        const response = await fetch(svgPath, { signal: controller.signal });
+        if (!response.ok) throw new Error(`SVG request failed: ${response.status}`);
         const svgText = await response.text();
+        if (!active || controller.signal.aborted) return;
 
         if (svgContainerRef.current) {
           // Use DOMParser for safer SVG injection
@@ -335,13 +346,13 @@ const CaseVisualizer = ({
           const parseError = svgDoc.querySelector('parsererror');
           if (parseError || !svg) {
             console.error('Failed to parse SVG:', parseError?.textContent || 'Invalid SVG');
-            setSvgError('Failed to parse case visualization. The SVG file may be corrupted.');
+            svgError.value = 'Failed to parse case visualization. The SVG file may be corrupted.';
             onLoadingChange?.(false);
             return;
           }
 
           // Clear container and append parsed SVG
-          svgContainerRef.current.innerHTML = '';
+          svgContainerRef.current.replaceChildren();
           svgContainerRef.current.appendChild(document.importNode(svg, true));
 
           // Get the SVG element from the container (now in the DOM)
@@ -362,13 +373,13 @@ const CaseVisualizer = ({
 
             // For 10BOX model, 5BOX model, Open models, and Stand models, immediately set all panels to black to prevent color flash
             if (
-              is10BoxModel(caseType) ||
-              is5BoxModel(caseType) ||
-              isOpenModel(caseType) ||
-              isStandModel(caseType)
+              is10BoxModel(currentCase) ||
+              is5BoxModel(currentCase) ||
+              isOpenModel(currentCase) ||
+              isStandModel(currentCase)
             ) {
               // Get the appropriate color-to-panel mapping for this case type
-              const colorToPanelMap = getColorToPanelMapping(caseType);
+              const colorToPanelMap = getColorToPanelMapping(currentCase);
 
               // Get all paths (including the one without fill style for Panel 2)
               const allPaths = svgInDom.querySelectorAll('path');
@@ -386,10 +397,10 @@ const CaseVisualizer = ({
                 // Position varies between models: shallow (index 2) vs deep (index 3)
                 // This logic only applies to 10BOX models, not Open models
                 const isSide2NoFill =
-                  is10BoxModel(caseType) &&
+                  is10BoxModel(currentCase) &&
                   !fillMatch &&
-                  ((caseType === '10box-shallow-3dp' && index === 2) ||
-                    (caseType === '10box-deep-3dp' && index === 3));
+                  ((currentCase === '10box-shallow-3dp' && index === 2) ||
+                    (currentCase === '10box-deep-3dp' && index === 3));
 
                 if (isSide2NoFill) {
                   panelId = 'main-side2'; // Panel 2: メイン: サイド2
@@ -415,13 +426,13 @@ const CaseVisualizer = ({
                 } else if (fillMatch) {
                   // This path has a fill color but no mapped panel ID
                   // This shouldn't happen if our mappings are complete, but leave path in DOM
-                  const modelType = is10BoxModel(caseType)
+                  const modelType = is10BoxModel(currentCase)
                     ? '10BOX'
-                    : is5BoxModel(caseType)
+                    : is5BoxModel(currentCase)
                       ? '5BOX'
-                      : isOpenModel(caseType)
+                      : isOpenModel(currentCase)
                         ? 'Open'
-                        : isStandModel(caseType)
+                        : isStandModel(currentCase)
                           ? 'Stand'
                           : 'unknown';
                   const unmappedColor = fillMatch[1].trim().toLowerCase();
@@ -435,7 +446,7 @@ const CaseVisualizer = ({
               const styleElement = svgInDom.querySelector('style');
               if (styleElement) {
                 // Override the CSS rules to use black as default
-                const classes = isX2Model(caseType)
+                const classes = isX2Model(currentCase)
                   ? ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
                   : ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
                 const newStyles = classes
@@ -451,22 +462,35 @@ const CaseVisualizer = ({
             addPatternsToSvg(svgInDom);
           }
 
-          setSvgLoaded(true);
+          svgLoaded.value = true;
           onLoadingChange?.(false);
         }
       } catch (error) {
+        if (!active || controller.signal.aborted) return;
         console.error('Failed to load SVG:', error);
-        setSvgError('Failed to load case visualization. Please try refreshing the page.');
+        svgError.value = 'Failed to load case visualization. Please try refreshing the page.';
         onLoadingChange?.(false);
       }
     };
 
-    loadSVG();
-  }, [caseType, onLoadingChange]);
+    void loadSVG();
+    return () => {
+      active = false;
+      controller.abort();
+      svgContainerRef.current?.replaceChildren();
+      onLoadingChange?.(false);
+    };
+  });
 
   // Handle clicks and color updates
-  useEffect(() => {
-    if (!svgLoaded || !svgContainerRef.current) return;
+  scope.effect(() => {
+    if (!svgLoaded.value || !svgContainerRef.current) return;
+    const currentCase = read(caseType);
+    const currentColors = read(panelColors);
+    const currentIds = panelColorIds === undefined ? undefined : read(panelColorIds);
+    const currentPanel = read(selectedPanel);
+    const currentMaterial = material === undefined ? undefined : read(material);
+    const classToPanel = isX2Model(currentCase) ? CLASS_TO_PANEL_12 : CLASS_TO_PANEL_8;
 
     // Small delay to ensure SVG is fully rendered
     const timeoutId = setTimeout(() => {
@@ -474,10 +498,10 @@ const CaseVisualizer = ({
       if (!svg) return;
 
       if (
-        is10BoxModel(caseType) ||
-        is5BoxModel(caseType) ||
-        isOpenModel(caseType) ||
-        isStandModel(caseType)
+        is10BoxModel(currentCase) ||
+        is5BoxModel(currentCase) ||
+        isOpenModel(currentCase) ||
+        isStandModel(currentCase)
       ) {
         // Handle 10BOX, 5BOX, Open, and Stand models which use inline styles
         // Select all paths with data-panel-id (which were set during SVG load)
@@ -503,7 +527,7 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = currentColors[panelId] || DEFAULT_PANEL_COLOR;
 
             // Validate color to prevent CSS injection attacks (e.g., url() values)
             if (!isValidColor(color)) {
@@ -515,21 +539,22 @@ const CaseVisualizer = ({
             const strokeInfo = applyPanelStyles(
               pathElement,
               color,
-              material,
-              panelColorIds,
+              currentMaterial,
+              currentIds,
               panelId,
-              panelColors,
+              currentColors,
               false, // Don't use setAttribute for inline-style models
+              patternId,
             );
 
             // Set up event handlers
             setupPanelEventHandlers(
               pathElement,
               panelId,
-              selectedPanel,
-              material,
-              panelColors,
-              panelColorIds,
+              currentPanel,
+              currentMaterial,
+              currentColors,
+              currentIds,
               strokeInfo,
             );
           }
@@ -537,7 +562,7 @@ const CaseVisualizer = ({
       } else {
         // Handle regular models with class-based mappings
         // Add click handlers to all paths
-        Object.entries(CLASS_TO_PANEL).forEach(([className, panelId]) => {
+        Object.entries(classToPanel).forEach(([className, panelId]) => {
           const paths = svg.querySelectorAll(`.${className}`);
 
           paths.forEach((path: Element) => {
@@ -559,7 +584,7 @@ const CaseVisualizer = ({
             };
 
             // Update color if specified, otherwise use default black
-            let color = panelColors[panelId] || DEFAULT_PANEL_COLOR;
+            let color = currentColors[panelId] || DEFAULT_PANEL_COLOR;
 
             // Validate color to prevent CSS injection attacks (e.g., url() values)
             if (!isValidColor(color)) {
@@ -571,21 +596,22 @@ const CaseVisualizer = ({
             const strokeInfo = applyPanelStyles(
               pathElement,
               color,
-              material,
-              panelColorIds,
+              currentMaterial,
+              currentIds,
               panelId,
-              panelColors,
+              currentColors,
               true, // Use setAttribute for class-based models
+              patternId,
             );
 
             // Set up event handlers
             setupPanelEventHandlers(
               pathElement,
               panelId,
-              selectedPanel,
-              material,
-              panelColors,
-              panelColorIds,
+              currentPanel,
+              currentMaterial,
+              currentColors,
+              currentIds,
               strokeInfo,
             );
           });
@@ -594,28 +620,21 @@ const CaseVisualizer = ({
     }, SVG_RENDER_DELAY_MS); // Delay to ensure DOM is ready
 
     return () => clearTimeout(timeoutId);
-  }, [
-    svgLoaded,
-    panelColors,
-    panelColorIds,
-    selectedPanel,
-    onPanelClick,
-    material,
-    CLASS_TO_PANEL,
-    caseType,
-  ]);
+  });
 
   return (
-    <div className="w-full h-full flex items-center justify-center relative">
-      {svgError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-zd-black/80 z-10">
-          <div className="max-w-md px-hgap-md py-vgap-md bg-zd-surface-2 rounded-lg border border-zd-gray">
-            <h3 className="text-lg font-semibold text-zd-white mb-vgap-2xs">Visualization Error</h3>
-            <p className="text-zd-gray">{svgError}</p>
+    <div class="w-full h-full flex items-center justify-center relative">
+      <Show when={computed(() => svgError.value !== null)}>
+        {() => (
+          <div class="absolute inset-0 flex items-center justify-center bg-zd-black/80 z-10">
+            <div class="max-w-md px-hgap-md py-vgap-md bg-zd-surface-2 rounded-lg border border-zd-gray">
+              <h3 class="text-lg font-semibold text-zd-white mb-vgap-2xs">Visualization Error</h3>
+              <p class="text-zd-gray">{svgError}</p>
+            </div>
           </div>
-        </div>
-      )}
-      <div ref={svgContainerRef} className="w-full h-full flex items-center justify-center" />
+        )}
+      </Show>
+      <div ref={svgContainerRef} class="w-full h-full flex items-center justify-center" />
     </div>
   );
 };
