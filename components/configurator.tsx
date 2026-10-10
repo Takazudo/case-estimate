@@ -1,48 +1,29 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { batch, computed, getScope, Show, signal } from '@takazudo/zfb/zudo-react';
 import { cases } from '@/data/cases';
 import { colors } from '@/data/colors';
 import type { Color, Preset, PanelColorIds } from '@/types';
 import { decodeCase, decodePanelColors } from '@/utils/url-encoder';
-
-// Components
 import VisualizationPanel from '@/components/visualization-panel';
 import ControlsSidebar from '@/components/controls-sidebar';
 import { ColorSelectorModal } from '@/components/modal/color-selector-modal';
 import { OrderInfoModal } from '@/components/modal/order-info-modal';
-
-// Hooks
-import { useLocalStorageColor } from '@/hooks/use-local-storage-color';
 import { useUrlPersistence } from '@/hooks/use-url-persistence';
-
-// Utils
 import {
   applyPresetColorsWithIds,
   isPresetActive as checkPresetActive,
   derivePanelColors,
 } from '@/utils/panel-colors';
 
-// localStorage keys
-const STORAGE_KEYS = {
-  BG_COLOR: 'takazudo_bg_color',
-  GRID_COLOR: 'takazudo_grid_color',
-} as const;
+const STORAGE_KEYS = { BG_COLOR: 'takazudo_bg_color', GRID_COLOR: 'takazudo_grid_color' } as const;
+const DEFAULT_COLORS = { BG_COLOR: '#a8a8a8', GRID_COLOR: '#969696' } as const;
 
-// Default colors (Line: 59%, Background: 66%)
-const DEFAULT_COLORS = {
-  BG_COLOR: '#a8a8a8',
-  GRID_COLOR: '#969696',
-} as const;
-
-// Helper to initialize default color IDs for a case
 function initializeDefaultColorIds(caseType: string): PanelColorIds {
   const caseData = cases[caseType];
   if (!caseData?.material) return {};
-
   const defaultColorId = colors[caseData.material]?.[0]?.id;
   if (!defaultColorId) return {};
-
   const colorIds: PanelColorIds = {};
   caseData.panels.forEach((panel) => {
     colorIds[panel.id] = defaultColorId;
@@ -50,283 +31,215 @@ function initializeDefaultColorIds(caseType: string): PanelColorIds {
   return colorIds;
 }
 
-// Helper to get initial state from URL
 function getInitialStateFromUrl(): { selectedCase: string | null; panelColorIds: PanelColorIds } {
-  if (typeof window === 'undefined') {
-    return { selectedCase: null, panelColorIds: {} };
-  }
-
   const params = new URLSearchParams(window.location.search);
   const caseParam = params.get('c');
-  const colorsParam = params.get('p');
-
-  // Default to first available case if no case param
-  if (!caseParam) {
-    // Get the first case from the cases object
-    const firstCaseKey = Object.keys(cases)[0];
-    return {
-      selectedCase: firstCaseKey || null,
-      panelColorIds: initializeDefaultColorIds(firstCaseKey),
-    };
-  }
-
-  const decodedCase = decodeCase(caseParam);
-  if (!decodedCase || !cases[decodedCase]) {
-    // Fall back to first case if invalid case param
-    const firstCaseKey = Object.keys(cases)[0];
-    return {
-      selectedCase: firstCaseKey || null,
-      panelColorIds: initializeDefaultColorIds(firstCaseKey),
-    };
-  }
-
-  // Load default color IDs for the case
-  let panelColorIds: PanelColorIds = initializeDefaultColorIds(decodedCase);
-
-  // If we have panel colors in URL, decode and apply them
-  if (colorsParam) {
+  const decodedCase = caseParam ? decodeCase(caseParam) : null;
+  const selectedCase =
+    decodedCase && cases[decodedCase] ? decodedCase : Object.keys(cases)[0] || null;
+  let panelColorIds = initializeDefaultColorIds(selectedCase || '');
+  if (selectedCase === decodedCase && params.get('p')) {
     try {
-      const decodedColorIds = decodePanelColors(colorsParam);
-      panelColorIds = { ...panelColorIds, ...decodedColorIds };
-    } catch (e) {
-      console.error('Failed to decode panel colors from URL', e);
+      panelColorIds = { ...panelColorIds, ...decodePanelColors(params.get('p')!) };
+    } catch (error) {
+      console.error('Failed to decode panel colors from URL', error);
     }
   }
+  return { selectedCase, panelColorIds };
+}
 
-  return { selectedCase: decodedCase, panelColorIds };
+function readStoredColor(key: string, fallback: string): string {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored && /^#[0-9a-f]{6}$/i.test(stored) ? stored : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function Configurator() {
-  // Initialize with null/empty state for consistent SSR
-  const [selectedCase, setSelectedCase] = useState<string | null>(null);
-  const [selectedPanel, setSelectedPanel] = useState<string | null>(null);
-  const [panelColorIds, setPanelColorIds] = useState<PanelColorIds>({}); // Primary state - color IDs
-  const [isLoadingSvg, setIsLoadingSvg] = useState(false);
-  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
-  const [isOrderInfoModalOpen, setIsOrderInfoModalOpen] = useState(false);
-  // Use a ref to track the panel ID associated with the color selector modal.
-  // We use a ref instead of state to ensure we always have the latest panel ID
-  // when the modal opens, and to avoid stale closure issues in asynchronous
-  // callbacks or event handlers that may reference this value after state updates.
-  const modalPanelIdRef = useRef<string | null>(null);
-
-  // Derive panel colors (hex values) from color IDs for rendering
-  const currentCase = selectedCase ? cases[selectedCase] : null;
-  const material = currentCase?.material;
-  const panelColors = useMemo(
-    () => derivePanelColors(panelColorIds, material),
-    [panelColorIds, material],
-  );
-
-  // Use localStorage hooks for background colors
-  const [bgColor, setBgColor] = useLocalStorageColor(
-    STORAGE_KEYS.BG_COLOR,
-    DEFAULT_COLORS.BG_COLOR,
-  );
-  const [gridColor, setGridColor] = useLocalStorageColor(
-    STORAGE_KEYS.GRID_COLOR,
-    DEFAULT_COLORS.GRID_COLOR,
-  );
-
-  // Hydrate state from URL after mount to avoid SSR mismatches
-  useEffect(() => {
-    const initialState = getInitialStateFromUrl();
-    setSelectedCase(initialState.selectedCase);
-    setPanelColorIds(initialState.panelColorIds);
-  }, []);
-
-  // Handle URL persistence for client-side state (only updates URL when state changes)
-  useUrlPersistence({
-    selectedCase,
-    panelColorIds, // Pass color IDs instead of hex values
-  });
-
-  const handlePanelClick = useCallback((panelId: string) => {
-    setSelectedPanel(panelId);
-    // Store the panel ID for the modal to use immediately
-    modalPanelIdRef.current = panelId;
-    // Open color selection modal when SVG panel is clicked
-    setIsColorModalOpen(true);
-  }, []);
-
-  // Handle panel selection from sidebar (panel list or color preview)
-  const handleSidebarPanelSelect = useCallback((panelId: string | null) => {
-    if (panelId) {
-      setSelectedPanel(panelId);
-      // Store the panel ID for the modal to use immediately
-      modalPanelIdRef.current = panelId;
-      // Open color selection modal
-      setIsColorModalOpen(true);
-    } else {
-      setSelectedPanel(null);
-    }
-  }, []);
-
-  const handleModalColorSelect = (color: Color) => {
-    // Use the panel ID from ref, which was set when modal was opened
-    const targetPanelId = modalPanelIdRef.current || selectedPanel;
-    if (targetPanelId) {
-      setPanelColorIds((prev) => ({
-        ...prev,
-        [targetPanelId]: color.id,
-      }));
-    }
-    setIsColorModalOpen(false);
-  };
-
-  const getSelectedColor = (panelId?: string): Color | null => {
-    // Use provided panelId or fall back to selectedPanel state
-    const targetPanelId = panelId || selectedPanel;
-
-    if (!targetPanelId || !material) return null;
-
-    const colorValue = panelColors[targetPanelId];
-    const colorName = colorMap[colorValue] || 'Default';
-
-    return {
-      id: panelColorIds[targetPanelId] || 'default',
-      name: colorName,
-      value: colorValue || '#f3f4f6',
-      material: '', // Material display name not available in this context
-    };
-  };
-
-  const handleCaseSelect = useCallback((caseType: string) => {
-    // Always require a case to be selected
-    if (!caseType) return;
-    setSelectedCase(caseType);
-    setSelectedPanel(null);
-
-    // Auto-select first preset
-    const caseData = cases[caseType];
-    if (caseData?.material) {
-      const presetList = colors.presets[caseData.material];
-      if (presetList && presetList.length > 0) {
-        const firstPreset = presetList[0];
-        const result = applyPresetColorsWithIds(firstPreset, caseType, caseData.material);
-        setPanelColorIds(result.colorIds);
-      } else {
-        // Set default color IDs for all panels using helper
-        setPanelColorIds(initializeDefaultColorIds(caseType));
-      }
-    } else {
-      setPanelColorIds({});
-    }
-  }, []);
-
-  const handlePresetSelect = useCallback(
-    (preset: Preset) => {
-      if (!selectedCase || !material) return;
-      const result = applyPresetColorsWithIds(preset, selectedCase, material);
-      setPanelColorIds(result.colorIds);
-    },
-    [selectedCase, material],
-  );
-
-  const isPresetActive = useCallback(
-    (preset: Preset): boolean => {
-      return checkPresetActive(preset, panelColors, selectedCase, material, panelColorIds);
-    },
-    [panelColors, selectedCase, material, panelColorIds],
-  );
-
-  const handleOrderInfoClick = useCallback(() => {
-    setIsOrderInfoModalOpen(true);
-  }, []);
-
-  const handleColorModalClose = useCallback(() => {
-    setIsColorModalOpen(false);
-    modalPanelIdRef.current = null;
-  }, []);
-
-  const handleOrderInfoModalClose = useCallback(() => {
-    setIsOrderInfoModalOpen(false);
-  }, []);
-
-  // Create color map for display (memoized to prevent unnecessary re-renders)
-  const colorMap = useMemo(() => {
-    const map: { [key: string]: string } = {};
-    if (material) {
-      colors[material]?.forEach((color) => {
+  const scope = getScope();
+  const selectedCase = signal<string | null>(null);
+  const selectedPanel = signal<string | null>(null);
+  const panelColorIds = signal<PanelColorIds>({});
+  const isLoadingSvg = signal(false);
+  const isColorModalOpen = signal(false);
+  const isOrderInfoModalOpen = signal(false);
+  const bgColor = signal<string>(DEFAULT_COLORS.BG_COLOR);
+  const gridColor = signal<string>(DEFAULT_COLORS.GRID_COLOR);
+  let modalPanelId: string | null = null;
+  const currentCase = computed(() => (selectedCase.value ? cases[selectedCase.value] : null));
+  const material = computed(() => currentCase.value?.material);
+  const panelColors = computed(() => derivePanelColors(panelColorIds.value, material.value));
+  const colorMap = computed(() => {
+    const map: Record<string, string> = {};
+    if (material.value)
+      colors[material.value]?.forEach((color) => {
         map[color.value] = color.name;
       });
-    }
     return map;
-  }, [material]);
+  });
+  const selectedColor = computed((): Color | null => {
+    const targetPanelId = modalPanelId || selectedPanel.value;
+    if (!targetPanelId || !material.value) return null;
+    const colorValue = panelColors.value[targetPanelId];
+    return {
+      id: panelColorIds.value[targetPanelId] || 'default',
+      name: colorMap.value[colorValue] || 'Default',
+      value: colorValue || '#f3f4f6',
+      material: '',
+    };
+  });
+
+  scope.onActivate(() => {
+    const initialState = getInitialStateFromUrl();
+    batch(() => {
+      selectedCase.value = initialState.selectedCase;
+      panelColorIds.value = initialState.panelColorIds;
+      bgColor.value = readStoredColor(STORAGE_KEYS.BG_COLOR, DEFAULT_COLORS.BG_COLOR);
+      gridColor.value = readStoredColor(STORAGE_KEYS.GRID_COLOR, DEFAULT_COLORS.GRID_COLOR);
+    });
+  });
+  useUrlPersistence({ selectedCase, panelColorIds });
+
+  const setBgColor = (value: string) => {
+    bgColor.value = value;
+    if (/^#[0-9a-f]{6}$/i.test(value))
+      try {
+        localStorage.setItem(STORAGE_KEYS.BG_COLOR, value);
+      } catch {
+        /* storage unavailable */
+      }
+  };
+  const setGridColor = (value: string) => {
+    gridColor.value = value;
+    if (/^#[0-9a-f]{6}$/i.test(value))
+      try {
+        localStorage.setItem(STORAGE_KEYS.GRID_COLOR, value);
+      } catch {
+        /* storage unavailable */
+      }
+  };
+  const handlePanelClick = (panelId: string) => {
+    modalPanelId = panelId;
+    selectedPanel.value = panelId;
+    isColorModalOpen.value = true;
+  };
+  const handleModalColorSelect = (color: Color) => {
+    const targetPanelId = modalPanelId || selectedPanel.value;
+    if (targetPanelId) panelColorIds.value = { ...panelColorIds.value, [targetPanelId]: color.id };
+    isColorModalOpen.value = false;
+  };
+  const handleCaseSelect = (caseType: string) => {
+    if (!caseType || !cases[caseType]) return;
+    const caseData = cases[caseType];
+    const firstPreset = caseData.material ? colors.presets[caseData.material]?.[0] : null;
+    const colorIds =
+      firstPreset && caseData.material
+        ? applyPresetColorsWithIds(firstPreset, caseType, caseData.material).colorIds
+        : initializeDefaultColorIds(caseType);
+    batch(() => {
+      selectedCase.value = caseType;
+      selectedPanel.value = null;
+      panelColorIds.value = colorIds;
+      isColorModalOpen.value = false;
+    });
+  };
+  const handlePresetSelect = (preset: Preset) => {
+    if (!selectedCase.value || !material.value) return;
+    panelColorIds.value = applyPresetColorsWithIds(
+      preset,
+      selectedCase.value,
+      material.value,
+    ).colorIds;
+  };
+  const isPresetActive = (preset: Preset) =>
+    checkPresetActive(
+      preset,
+      panelColors.value,
+      selectedCase.value,
+      material.value,
+      panelColorIds.value,
+    );
 
   return (
-    <div className="h-full relative">
-      {/* Loading overlay */}
-      {isLoadingSvg && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black opacity-50" />
-          <div className="loader relative z-10" />
-        </div>
-      )}
-
-      {selectedCase && (
-        <div
-          className={`
-            h-full grid grid-cols-1
-            md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_480px]
-            xl:grid-cols-[1fr_600px]
-          `}
-        >
-          {/* Left Column - Visualization */}
-          <VisualizationPanel
-            selectedCase={selectedCase}
-            panelColors={panelColors}
+    <div class="h-full relative">
+      <Show when={isLoadingSvg}>
+        {() => (
+          <div class="absolute inset-0 z-50 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black opacity-50" />
+            <div class="loader relative z-10" />
+          </div>
+        )}
+      </Show>
+      <Show when={computed(() => !!selectedCase.value)}>
+        {() => (
+          <div class="h-full grid grid-cols-1 md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_480px] xl:grid-cols-[1fr_600px]">
+            <VisualizationPanel
+              selectedCase={selectedCase}
+              panelColors={panelColors}
+              panelColorIds={panelColorIds}
+              onPanelClick={handlePanelClick}
+              selectedPanel={selectedPanel}
+              material={material}
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onLoadingChange={(loading) => {
+                isLoadingSvg.value = loading;
+              }}
+            />
+            <ControlsSidebar
+              selectedCase={selectedCase}
+              material={material}
+              onPresetSelect={handlePresetSelect}
+              isPresetActive={isPresetActive}
+              panels={computed(() => currentCase.value?.panels || [])}
+              panelColors={panelColors}
+              selectedPanel={selectedPanel}
+              onPanelSelect={(id) => {
+                if (id) handlePanelClick(id);
+                else selectedPanel.value = null;
+              }}
+              colorMap={colorMap}
+              onCaseSelect={handleCaseSelect}
+              bgColor={bgColor}
+              gridColor={gridColor}
+              onBgColorChange={setBgColor}
+              onGridColorChange={setGridColor}
+              onOrderInfoClick={() => {
+                isOrderInfoModalOpen.value = true;
+              }}
+            />
+          </div>
+        )}
+      </Show>
+      <Show when={computed(() => !!material.value)}>
+        {() => (
+          <ColorSelectorModal
+            isOpen={isColorModalOpen}
+            material={computed(() => material.value!)}
+            selectedColor={selectedColor}
+            onColorSelect={handleModalColorSelect}
+            onClose={() => {
+              isColorModalOpen.value = false;
+              modalPanelId = null;
+            }}
+          />
+        )}
+      </Show>
+      <Show when={computed(() => !!selectedCase.value && !!material.value)}>
+        {() => (
+          <OrderInfoModal
+            isOpen={isOrderInfoModalOpen}
+            selectedCase={computed(() => selectedCase.value!)}
             panelColorIds={panelColorIds}
-            onPanelClick={handlePanelClick}
-            selectedPanel={selectedPanel}
-            material={material}
-            bgColor={bgColor}
-            gridColor={gridColor}
-            onLoadingChange={setIsLoadingSvg}
+            material={computed(() => material.value!)}
+            onClose={() => {
+              isOrderInfoModalOpen.value = false;
+            }}
           />
-
-          {/* Right Column - Controls */}
-          <ControlsSidebar
-            selectedCase={selectedCase}
-            material={material}
-            onPresetSelect={handlePresetSelect}
-            isPresetActive={isPresetActive}
-            panels={currentCase?.panels || []}
-            panelColors={panelColors}
-            selectedPanel={selectedPanel}
-            onPanelSelect={handleSidebarPanelSelect}
-            colorMap={colorMap}
-            onCaseSelect={handleCaseSelect}
-            bgColor={bgColor}
-            gridColor={gridColor}
-            onBgColorChange={setBgColor}
-            onGridColorChange={setGridColor}
-            onOrderInfoClick={handleOrderInfoClick}
-          />
-        </div>
-      )}
-
-      {/* Color Selection Modal */}
-      {material && (
-        <ColorSelectorModal
-          isOpen={isColorModalOpen}
-          material={material}
-          selectedColor={getSelectedColor(modalPanelIdRef.current || undefined)}
-          onColorSelect={handleModalColorSelect}
-          onClose={handleColorModalClose}
-        />
-      )}
-
-      {/* Order Info Modal */}
-      {selectedCase && material && (
-        <OrderInfoModal
-          isOpen={isOrderInfoModalOpen}
-          selectedCase={selectedCase}
-          panelColorIds={panelColorIds}
-          material={material}
-          onClose={handleOrderInfoModalClose}
-        />
-      )}
+        )}
+      </Show>
     </div>
   );
 }
