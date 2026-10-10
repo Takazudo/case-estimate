@@ -1,0 +1,669 @@
+/*
+ * Height for skip-ssr island wrappers.
+ *
+ * The Island wrapper emits a plain <div data-zfb-island-skip-ssr> (no height
+ * class, and zfb does not set display:contents on it). On /m this div sits
+ * between `main.h-screen` and the configurator's root `h-full`, so without a
+ * height it collapses to auto and the configurator's percentage-height chain
+ * breaks (the page would not fill the viewport).
+ *
+ * Scoped to skip-ssr ONLY — regular `when="visible"` islands (e.g. the footer)
+ * rely on a real layout box for their IntersectionObserver, so this must not
+ * blanket all islands.
+ */
+[data-zfb-island-skip-ssr] {
+  height: 100%;
+}
+
+/*
+ * Self-hosted Noto Sans (latin subset).
+ *
+ * The Next app loaded Noto Sans via `next/font/google`. zfb has no
+ * next/font equivalent, so we self-host the latin subset woff2 files.
+ * The files live at `public/fonts/noto-sans-<weight>.woff2` (public/ is a
+ * symlink to the repo-root public/ directory).
+ *
+ * All four weight files are the same latin variable-font subset from
+ * Google Fonts (v42). The browser applies the declared `font-weight` via
+ * the variable font's weight axis.
+ */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/noto-sans-300.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/noto-sans-400.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/noto-sans-500.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/noto-sans-700.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* CSS Variables - Zudo Design System */
+:root {
+  --shadow-text-md: 0.05em 0.05em 0 #000;
+  --shadow-text-lg: 0.1em 0.1em 0 #000;
+
+  /* Colors */
+  --zd-color-black: #1c1917;
+  --zd-color-white: #d6d3d1;
+  --zd-color-link: #fff;
+  --zd-color-active: #713f12;
+  --zd-color-gray: #78716c;
+  --zd-color-gray2: #201f1f;
+  --zd-color-strong: #d97706;
+  --zd-color-notify: #22c55e;
+  --zd-color-error: #f43f5e;
+  --zd-color-price: #fbbf24;
+
+  /* Spacing - Horizontal gaps */
+  --zd-spacing-1px: 1px;
+  --zd-spacing-hgap-2xs: 5px;
+  --zd-spacing-hgap-xs: 12px;
+  --zd-spacing-hgap-sm: 20px;
+  --zd-spacing-hgap-md: 40px;
+  --zd-spacing-hgap-md-x2: 80px;
+  --zd-spacing-hgap-lg: 60px;
+  --zd-spacing-hgap-lg-x2: 120px;
+  --zd-spacing-hgap-xl: 100px;
+  --zd-spacing-hgap-2xl: 140px;
+
+  /* Spacing - Vertical gaps */
+  --zd-spacing-vgap-2xs: 4px;
+  --zd-spacing-vgap-xs: 8px;
+  --zd-spacing-vgap-sm: 20px;
+  --zd-spacing-vgap-md: 35px;
+  --zd-spacing-vgap-lg: 50px;
+  --zd-spacing-vgap-xl: 65px;
+  --zd-spacing-vgap-2xl: 80px;
+
+  /* Font sizes */
+  --zd-font-xs-size: 1rem;
+  --zd-font-sm-size: 1.1rem;
+  --zd-font-base-size: 1.4rem;
+  --zd-font-lg-size: 1.6rem;
+  --zd-font-xl-size: 1.9rem;
+  --zd-font-2xl-size: 2.8rem;
+  --zd-font-3xl-size: 3.2rem;
+  --zd-font-4xl-size: 4rem;
+  --zd-font-5xl-size: 4.8rem;
+
+  /* Font line heights */
+  --zd-font-xs-lineHeight: 1.4;
+  --zd-font-sm-lineHeight: 1.5;
+  --zd-font-base-lineHeight: 1.7;
+  --zd-font-lg-lineHeight: 1.5;
+  --zd-font-xl-lineHeight: 1.4;
+  --zd-font-2xl-lineHeight: 1.35;
+  --zd-font-3xl-lineHeight: 1.3;
+  --zd-font-4xl-lineHeight: 1.3;
+  --zd-font-5xl-lineHeight: 1.3;
+
+  /* Line heights (standalone) */
+  --zd-lineHeight-none: 1;
+  --zd-lineHeight-tight: 1.4;
+  --zd-lineHeight-snug: 1.6;
+  --zd-lineHeight-normal: 1.8;
+  --zd-lineHeight-relaxed: 1;
+  --zd-lineHeight-loose: 2.3;
+}
+
+/* Custom utilities. Keep these unlayered so their state selectors can override Wind utilities. */
+/* Text shadow utilities */
+.text-shadow-md {
+  text-shadow: var(--shadow-text-md);
+}
+.text-shadow-lg {
+  text-shadow: var(--shadow-text-lg);
+}
+.text-shadow-none {
+  text-shadow: none;
+}
+
+/* Inverted color link style */
+.zd-invert-color-link {
+  text-shadow: var(--shadow-text-md);
+  outline-offset: 4px;
+  &:hover {
+    text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-white);
+    text-decoration-line: none;
+    outline-width: 2px;
+    border-radius: 0.125rem;
+    outline-color: #ea580c;
+  }
+  &:focus {
+    text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-white);
+    text-decoration-line: none;
+    outline-width: 2px;
+    border-radius: 0.125rem;
+    outline-color: #ea580c;
+  }
+  &:active {
+    text-shadow: none;
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-active);
+  }
+}
+
+/* Gradient utilities */
+.zd-gradient-black-to-transparent {
+  background: linear-gradient(to bottom, rgb(28 25 23) 30%, transparent);
+  background-repeat: repeat-x;
+}
+
+/* Header container transition */
+.header-container-transition {
+  transition:
+    max-width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Red gradient button */
+.zd-button-gradient {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: white;
+  font-weight: 500;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+.zd-button-gradient:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+.zd-button-gradient:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
+}
+
+/* Page fade transition utilities */
+.page-fade-in {
+  animation: pageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.page-loading {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+@layer base {
+  /* Tailwind preflight details used by the site and its form controls. */
+  :root {
+    --font-sans: 'Helvetica', sans-serif;
+    --font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+  }
+  small {
+    font-size: 80%;
+  }
+  sub,
+  sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub {
+    bottom: -0.25em;
+  }
+  sup {
+    top: -0.5em;
+  }
+  hr {
+    color: inherit;
+  }
+  button,
+  input:where([type='button'], [type='reset'], [type='submit']) {
+    appearance: button;
+  }
+  button,
+  input,
+  select,
+  optgroup,
+  textarea {
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  ::placeholder {
+    opacity: 1;
+    color: color-mix(in oklab, currentcolor 50%, transparent);
+  }
+  ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    margin-inline-end: 4px;
+    padding: 0;
+    border: 0 solid;
+    border-radius: 0;
+    background-color: transparent;
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    opacity: 1;
+    appearance: button;
+  }
+  [hidden]:where(:not([hidden='until-found'])) {
+    display: none !important;
+  }
+  /* Base styles */
+  html {
+    font-family: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+    text-underline-offset: 4px;
+    background-color: var(--zd-color-black);
+    scroll-behavior: smooth;
+  }
+  body {
+    font-size: var(--zd-font-base-size);
+    line-height: var(--zd-font-base-lineHeight);
+    color: var(--zd-color-white);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-wrap: pretty;
+  }
+  button {
+    font-family: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
+    cursor: pointer;
+  }
+
+  /* Scroll offset for anchor navigation with fixed header */
+  [id] {
+    scroll-margin-top: 100px;
+  }
+
+  /* Reset box-sizing */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* Links */
+  a {
+    text-decoration-line: underline;
+    color: var(--zd-color-link);
+    text-shadow: var(--shadow-text-md);
+    font-family: 'Futura', 'Jost', 'Century Gothic', 'Noto Sans', sans-serif;
+  }
+  a:focus,
+  a:active {
+    outline-width: 2px;
+    outline-color: #ea580c;
+    border-radius: 0.125rem;
+    color: var(--zd-color-active);
+    text-shadow: none;
+  }
+  a:active {
+    color: var(--zd-color-black);
+    background-color: var(--zd-color-active);
+  }
+
+  /* Scrollbar styles (webkit browsers) */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Loading spinner */
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+/* Responsive loader sizes */
+@media (min-width: 740px) {
+  .loader {
+    width: 64px;
+    height: 64px;
+    border-width: 6px;
+  }
+}
+
+@media (min-width: 980px) {
+  .loader {
+    width: 80px;
+    height: 80px;
+    border-width: 7px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .loader {
+    width: 96px;
+    height: 96px;
+    border-width: 8px;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Page loading bar animation */
+@keyframes loading-bar {
+  0% {
+    width: 0%;
+    left: 0%;
+  }
+  50% {
+    width: 40%;
+    left: 30%;
+  }
+  100% {
+    width: 40%;
+    left: 60%;
+  }
+}
+
+/* Tab content fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Quick fade animation for panel selector */
+@keyframes quickFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Page fade-in animation */
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utility spellings outside the Wind v1 catalog, retained for existing markup. */
+.clear-both {
+  clear: both;
+}
+.flow-root {
+  display: flow-root;
+}
+.will-change-\[transform\] {
+  will-change: transform;
+}
+.article-list > li {
+  padding-top: var(--zd-spacing-vgap-xs);
+}
+.case-models-toc-list > li + li {
+  margin-top: var(--zd-spacing-vgap-xs);
+}
+@media (min-width: 980px) {
+  .model-section-grid {
+    grid-template-rows: auto 1fr;
+  }
+  .lg\:scale-100 {
+    scale: 1;
+  }
+}
+.scale-50 {
+  scale: 0.5;
+}
+@media (min-width: 740px) {
+  .md\:scale-75 {
+    scale: 0.75;
+  }
+}
+.prose {
+  line-height: 1.75;
+}
+.prose p {
+  margin-block: 1.25em;
+}
+.prose h2,
+.prose h3 {
+  margin-block: 1.5em 0.75em;
+  font-weight: 700;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.5em;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+.prose-gray {
+  color: var(--zd-color-white);
+}
+
+.origin-top-right {
+  transform-origin: top right;
+}
+
+/* Legacy utility spellings kept by components during the Wind migration. */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.break-keep {
+  word-break: keep-all;
+}
+.float-right {
+  float: right;
+}
+.container {
+  width: 100%;
+}
+@media (min-width: 580px) {
+  .container {
+    max-width: 580px;
+  }
+}
+@media (min-width: 740px) {
+  .container {
+    max-width: 740px;
+  }
+}
+@media (min-width: 980px) {
+  .container {
+    max-width: 980px;
+  }
+  [class~='lg:float-right'] {
+    float: right;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+@media (min-width: 1630px) {
+  .container {
+    max-width: 1630px;
+  }
+  [class~='2xl:mx-[-100px]'] {
+    margin-inline: -100px;
+  }
+}
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1800px;
+  }
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(8px);
+}
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+.bg-opacity-20 {
+  background-color: rgb(0 0 0 / 20%);
+}
+.brightness-0 {
+  filter: brightness(0);
+}
+.invert {
+  filter: invert(1);
+}
+.brightness-0.invert {
+  filter: brightness(0) invert(1);
+}
+[class~='from-zd-black/70'] {
+  --zd-gradient-from: rgb(28 25 23 / 70%);
+}
+[class~='to-zd-black'] {
+  --zd-gradient-to: var(--zd-color-black);
+}
+[class~='bg-gradient-to-b'] {
+  background-image: linear-gradient(
+    to bottom,
+    var(--zd-gradient-from, transparent),
+    var(--zd-gradient-to, transparent)
+  );
+}
+[class~='animate-fade-in'] {
+  animation: fadeIn 300ms ease-in-out;
+}
+.scale-95 {
+  transform: scale(0.95);
+}
+.scale-100 {
+  transform: scale(1);
+}
+
+/* Preserve the old focus and hover rings, including their offset gaps. */
+[class~='focus:ring-2']:focus,
+[class~='hover:ring-2']:hover,
+[class~='hover:ring-3']:hover {
+  box-shadow:
+    0 0 0 var(--zd-ring-offset-width, 0px) var(--zd-ring-offset-color, transparent),
+    0 0 0 calc(var(--zd-ring-width, 2px) + var(--zd-ring-offset-width, 0px))
+      var(--zd-ring-color, currentColor);
+}
+[class~='hover:ring-2']:hover {
+  --zd-ring-width: 2px;
+}
+[class~='hover:ring-3']:hover {
+  --zd-ring-width: 3px;
+}
+[class~='hover:ring-zd-link']:hover {
+  --zd-ring-color: var(--zd-color-link);
+}
+[class~='focus:ring-2']:focus {
+  --zd-ring-width: 2px;
+}
+[class~='focus:ring-white']:focus {
+  --zd-ring-color: #fff;
+}
+[class~='focus:ring-zd-link']:focus {
+  --zd-ring-color: var(--zd-color-link);
+}
+[class~='focus:ring-zd-link/20']:focus {
+  --zd-ring-color: rgb(255 255 255 / 20%);
+}
+[class~='focus:ring-offset-1']:focus {
+  --zd-ring-offset-width: 1px;
+}
+[class~='focus:ring-offset-2']:focus {
+  --zd-ring-offset-width: 2px;
+}
+[class~='focus:ring-offset-black']:focus {
+  --zd-ring-offset-color: #000;
+}
+
+[class~='bottom-[-2px]'] {
+  bottom: -2px;
+}
+[class~='mb-[-2px]'] {
+  margin-bottom: -2px;
+}
+[class~='outline-offset-[-10px]'] {
+  outline-offset: -10px;
+}
+[class~='h-[calc(100%-80px)]'] {
+  height: calc(100% - 80px);
+}
+[class~='max-h-[calc(85vh-80px)]'] {
+  max-height: calc(85vh - 80px);
+}
+[class~='max-w-[calc(100vw-200px)]'] {
+  max-width: calc(100vw - 200px);
+}

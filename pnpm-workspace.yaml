@@ -2,10 +2,8 @@ packages:
   - .
   - doc
   - sub-packages/*
-  - zfb-app
 
 onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
   - core-js
   - core-js-pure
   - esbuild

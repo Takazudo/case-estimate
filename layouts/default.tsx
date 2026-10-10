@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 import { Island } from '@takazudo/zfb';
 
 import SiteHeader from '../components/site-header';
@@ -41,7 +41,7 @@ export interface DefaultLayoutProps {
    * footer), so other pages are unaffected.
    */
   configurator?: boolean;
-  children: ReactNode;
+  children: Child;
 }
 
 const SITE_NAME = 'Takazudo Modular: Panels';
@@ -66,7 +66,6 @@ export default function DefaultLayout({
   title = SITE_NAME,
   description = DEFAULT_DESCRIPTION,
   currentPath = '/',
-  pwaCapable = false,
   configurator = false,
   children,
 }: DefaultLayoutProps) {
@@ -75,7 +74,7 @@ export default function DefaultLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        <meta charSet="utf-8" />
+        <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -109,12 +108,12 @@ export default function DefaultLayout({
           // against; overflow-hidden prevents page scroll behind the fixed
           // header. VisualizationPanel adds its own pt-[96px] to clear the
           // header, so the layout must not pad here.
-          <main className="h-screen overflow-hidden">{children}</main>
+          <main class="h-screen overflow-hidden">{children}</main>
         ) : (
           // Standard content-page chrome: padded main (clears fixed header) +
           // deferred footer island.
-          <div className="min-h-screen flex flex-col">
-            <main className="flex-1 pt-[96px]">{children}</main>
+          <div class="min-h-screen flex flex-col">
+            <main class="flex-1 pt-[96px]">{children}</main>
 
             {/* Footer island — deferred until visible to avoid blocking initial paint */}
             <Island when="visible">

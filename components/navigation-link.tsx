@@ -1,71 +1,58 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from './navigation-context';
+import { computed, type Child } from '@takazudo/zfb/zudo-react';
+import { useCurrentPath } from '@/hooks/use-current-path';
 import { normalizePath } from '@/utils/normalize-path';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
+import type { NavigationController } from './navigation-context';
 
 interface NavigationLinkProps {
   href: string;
-  className?: string;
+  className?: Reactive<string>;
   activeClassName?: string;
-  children: React.ReactNode;
+  children: Child;
   onClick?: () => void;
-  /** Current path for active-state detection. When omitted, read from window.location.pathname at mount. */
-  currentPath?: string;
+  currentPath?: Reactive<string>;
+  navigation?: NavigationController;
 }
 
 export default function NavigationLink({
   href,
-  className,
+  className = '',
   activeClassName,
   children,
   onClick,
   currentPath,
+  navigation,
 }: NavigationLinkProps) {
-  const { triggerNavigation } = useNavigation();
-  const [resolvedPath, setResolvedPath] = useState(currentPath ?? '');
-
-  useEffect(() => {
-    if (currentPath !== undefined) {
-      // Prop-driven: use whatever the parent passed in
-      setResolvedPath(currentPath);
-    } else {
-      // Fallback: read from browser at mount (SSR-safe, minor active-state flash is acceptable)
-      setResolvedPath(window.location.pathname);
-    }
-  }, [currentPath]);
-
-  // Normalize both sides so a trailing slash from Netlify Pretty URLs (post-301
-  // window.location.pathname) still matches slash-free nav hrefs after hydration.
-  const isActive = normalizePath(resolvedPath) === normalizePath(href);
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Don't trigger if it's a cmd/ctrl+click (opens in new tab)
-    if (e.metaKey || e.ctrlKey) return;
-
-    // Prevent navigation if link is active
-    if (isActive) {
-      e.preventDefault();
+  // The local hook keeps MDX/static links useful without an island controller.
+  const browserPath = currentPath === undefined && !navigation ? useCurrentPath() : undefined;
+  const active = computed(
+    () =>
+      normalizePath(read(currentPath ?? navigation?.currentPath ?? browserPath ?? '')) ===
+      normalizePath(href),
+  );
+  const css = computed(
+    () => `${read(className)}${active.value && activeClassName ? ` ${activeClassName}` : ''}`,
+  );
+  const tabindex = computed(() => (active.value ? -1 : 0));
+  const ariaCurrent = computed(() => (active.value ? 'page' : undefined));
+  const handleClick = (event: MouseEvent) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+      return;
+    if (active.value) {
+      event.preventDefault();
       return;
     }
-
-    // Trigger navigation immediately
-    triggerNavigation(href);
-
-    // Call any additional onClick handler
+    navigation?.triggerNavigation(href);
     onClick?.();
   };
-
-  const combinedClassName =
-    isActive && activeClassName ? `${className} ${activeClassName}` : className;
-
   return (
     <a
       href={href}
-      className={combinedClassName}
-      onClick={handleClick}
-      tabIndex={isActive ? -1 : 0}
-      aria-current={isActive ? 'page' : undefined}
+      class={css}
+      on:click={handleClick}
+      tabindex={tabindex}
+      aria-current={ariaCurrent}
     >
       {children}
     </a>

@@ -11,17 +11,20 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "~/*": ["./*"]
     },
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "jsxImportSource": "@takazudo/zfb/zudo-react",
+    "baseUrl": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "__inbox/**/*", "doc/**/*", "worktrees/**/*", "zfb-app/**/*"]
+  "exclude": ["node_modules", "__inbox/**/*", "doc/**/*", "worktrees/**/*"]
 }

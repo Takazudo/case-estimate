@@ -14,12 +14,11 @@
  *
  * Interactive ('use client') components are wrapped with <Island when="load">
  * so the built HTML emits data-zfb-island markers and the runtime hydrates
- * them on page load via react-dom/client. The Island wrapper is transparent
+ * them on page load via the owned runtime. The Island wrapper is transparent
  * to the MDX body — components are referenced by name as usual.
  */
 
-import { Island } from '@takazudo/zfb';
-import type { ComponentPropsWithoutRef } from 'react';
+import { Island, defaultComponents } from '@takazudo/zfb';
 
 // Article element overrides
 import { H1 } from '@/components/article/h1';
@@ -52,47 +51,58 @@ import { PrintedPanelList } from '~/components/panel-printed-list';
 // Island wrappers for interactive ('use client') components.
 // These emit data-zfb-island markers in built HTML and hydrate on page load.
 
-function TopNavGridIsland(props: ComponentPropsWithoutRef<typeof TopNavGrid>) {
+function TopNavGridIsland(props: Parameters<typeof TopNavGrid>[0]) {
   return (
-    <Island when="load">
-      <TopNavGrid {...props} />
-    </Island>
+    <>
+      <Island when="load">
+        <TopNavGrid {...props} />
+      </Island>
+    </>
   );
 }
 
-function ModelGalleryIsland(props: ComponentPropsWithoutRef<typeof ModelGallery>) {
+function ModelGalleryIsland(props: Parameters<typeof ModelGallery>[0]) {
   return (
-    <Island when="visible">
-      <ModelGallery {...props} />
-    </Island>
+    <>
+      <Island when="visible">
+        <ModelGallery {...props} />
+      </Island>
+    </>
   );
 }
 
-function ImgFloatRightIsland(props: ComponentPropsWithoutRef<typeof ImgFloatRight>) {
+function ImgFloatRightIsland(props: Parameters<typeof ImgFloatRight>[0]) {
   return (
-    <Island when="visible">
-      <ImgFloatRight {...props} />
-    </Island>
+    <>
+      <Island when="visible">
+        <ImgFloatRight {...props} />
+      </Island>
+    </>
   );
 }
 
-function AcrylicPanelListIsland(props: ComponentPropsWithoutRef<typeof AcrylicPanelList>) {
+function AcrylicPanelListIsland() {
   return (
-    <Island when="visible">
-      <AcrylicPanelList {...props} />
-    </Island>
+    <>
+      <Island when="visible">
+        <AcrylicPanelList />
+      </Island>
+    </>
   );
 }
 
-function PrintedPanelListIsland(props: ComponentPropsWithoutRef<typeof PrintedPanelList>) {
+function PrintedPanelListIsland() {
   return (
-    <Island when="visible">
-      <PrintedPanelList {...props} />
-    </Island>
+    <>
+      <Island when="visible">
+        <PrintedPanelList />
+      </Island>
+    </>
   );
 }
 
 export const contentComponents = {
+  ...defaultComponents,
   // HTML element overrides
   h1: H1,
   h2: H2,

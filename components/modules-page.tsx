@@ -1,6 +1,5 @@
 'use client';
 
-import { H2 } from './article/h2';
 import { GridImagesAndNotes } from './article/grid-images-and-notes';
 import type { GridItem } from './article/grid-images-and-notes';
 
@@ -58,22 +57,24 @@ export default function ModulesPage() {
   ];
 
   return (
-    <div className="h-full overflow-y-auto bg-zd-black">
-      <div className="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
+    <div class="h-full overflow-y-auto bg-zd-black">
+      <div class="container mx-auto px-hgap-md py-vgap-lg max-w-[1400px]">
         {/* Header */}
-        <h1 className="text-3xl font-bold text-white text-center mb-vgap-md font-futura">
+        <h1 class="text-3xl font-bold text-white text-center mb-vgap-md font-futura">
           Module List / コンポーネントリスト
         </h1>
 
-        <p className="mb-vgap-lg text-white">
+        <p class="mb-vgap-lg text-white">
           This page is a component list for development purposes. Below you can see various UI
           components used throughout the application.
         </p>
 
         {/* GridImagesAndNotes Component Demo */}
-        <H2>GridImagesAndNotes Component</H2>
+        <h2 class="text-base md:text-lg lg:text-xl pb-vgap-md lg:pb-vgap-lg font-bold font-futura border-t border-zd-white pt-vgap-md">
+          GridImagesAndNotes Component
+        </h2>
 
-        <p className="mb-vgap-lg text-white">
+        <p class="mb-vgap-lg text-white">
           This component displays a grid of items with images, headings, subheadings, and content.
           Each image is enlargeable when clicked. This component is currently preserved for
           potential future use.

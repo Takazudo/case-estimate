@@ -41,9 +41,9 @@ export default function GalleryPage({ currentPath }: GalleryPageProps) {
       description="ケース関連の写真です。Gallery of Takazudo Modular synthesizer case configurations and color combinations."
       currentPath={currentPath}
     >
-      <div className="py-8">
+      <div class="py-8">
         <H1>ギャラリー / Gallery</H1>
-        <div className="text-center -mt-vgap-md">
+        <div class="text-center -mt-vgap-md">
           <P>
             ケース関連の写真です。色々ありすぎて分からんという場合、
             <br />

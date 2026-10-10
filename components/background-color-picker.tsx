@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { CloseIcon } from '@/components/icons/close-icon';
+import { computed, getScope, Show, signal } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 
 interface BackgroundColorPickerProps {
-  bgColor: string;
-  gridColor: string;
+  bgColor: Reactive<string>;
+  gridColor: Reactive<string>;
   onBgColorChange: (color: string) => void;
   onGridColorChange: (color: string) => void;
 }
@@ -16,9 +17,12 @@ function BackgroundColorPicker({
   onBgColorChange,
   onGridColorChange,
 }: BackgroundColorPickerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const popupRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const scope = getScope();
+  const isOpen = signal(false);
+  const popupRef: { current: HTMLDivElement | null } = { current: null };
+  const buttonRef: { current: HTMLButtonElement | null } = { current: null };
+  const gridInputRef: { current: HTMLInputElement | null } = { current: null };
+  const bgInputRef: { current: HTMLInputElement | null } = { current: null };
 
   // Convert hex color to grayscale value (0-255)
   const hexToGrayscale = (hex: string): number => {
@@ -38,138 +42,147 @@ function BackgroundColorPicker({
   };
 
   // Get current grayscale values
-  const bgGrayscale = hexToGrayscale(bgColor);
-  const gridGrayscale = hexToGrayscale(gridColor);
+  const bgGrayscale = computed(() => hexToGrayscale(read(bgColor)));
+  const gridGrayscale = computed(() => hexToGrayscale(read(gridColor)));
 
-  // Handle clicks outside the popup
-  useEffect(() => {
-    if (!isOpen) return;
-
+  scope.effect(() => {
+    if (!isOpen.value) return;
     const handleClickOutside = (event: MouseEvent) => {
       if (
         popupRef.current &&
         !popupRef.current.contains(event.target as Node) &&
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
+      )
+        isOpen.value = false;
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
-  // Handle ESC key to close popup
-  useEffect(() => {
-    if (!isOpen) return;
-
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
+      if (event.key === 'Escape') isOpen.value = false;
     };
-
+    document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEsc);
     return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEsc);
     };
-  }, [isOpen]);
+  });
+  scope.effect(() => {
+    const bg = bgGrayscale.value;
+    const grid = gridGrayscale.value;
+    if (bgInputRef.current) bgInputRef.current.value = String(bg);
+    if (gridInputRef.current) gridInputRef.current.value = String(grid);
+  });
 
   return (
-    <div className="relative">
+    <div class="relative">
       {/* Button showing both colors */}
       <button
         ref={buttonRef}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex rounded overflow-hidden border-2 border-zd-gray hover:border-zd-link transition-colors cursor-pointer"
+        on:click={() => {
+          isOpen.value = !isOpen.value;
+        }}
+        class="flex rounded overflow-hidden border-2 border-zd-gray hover:border-zd-link transition-colors cursor-pointer"
         title="Adjust background colors"
       >
-        <div className="w-8 h-8" style={{ backgroundColor: gridColor }} />
-        <div className="w-8 h-8" style={{ backgroundColor: bgColor }} />
+        <div class="w-8 h-8" style={computed(() => ({ 'background-color': read(gridColor) }))} />
+        <div class="w-8 h-8" style={computed(() => ({ 'background-color': read(bgColor) }))} />
       </button>
 
       {/* Popup with sliders */}
-      {isOpen && (
-        <div
-          ref={popupRef}
-          className="absolute bottom-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-hgap-xs z-20"
-          style={{ minWidth: '280px' }}
-        >
-          {/* Close button */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute top-2 right-2 text-zd-gray hover:text-zd-link transition-colors"
-            aria-label="Close"
+      <Show when={isOpen}>
+        {() => (
+          <div
+            ref={popupRef}
+            class="absolute bottom-12 left-0 bg-zd-gray2 rounded-lg shadow-xl border border-zd-gray p-hgap-xs z-20"
+            style={{ 'min-width': '280px' }}
           >
-            <CloseIcon className="w-5 h-5" />
-          </button>
+            {/* Close button */}
+            <button
+              on:click={() => {
+                isOpen.value = false;
+              }}
+              class="absolute top-2 right-2 text-zd-gray hover:text-zd-link transition-colors"
+              aria-label="Close"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
 
-          <h3 className="font-semibold text-zd-white mb-vgap-xs">Background Settings</h3>
+            <h3 class="font-semibold text-zd-white mb-vgap-xs">Background Settings</h3>
 
-          {/* Grid/Line Color Slider */}
-          <div className="mb-vgap-xs">
-            <div className="flex items-center justify-between mb-vgap-2xs">
-              <label className="text-zd-gray font-medium">Line</label>
-              <div className="flex items-center gap-hgap-2xs">
-                <div
-                  className="w-6 h-6 rounded border border-zd-gray"
-                  style={{ backgroundColor: gridColor }}
-                />
-                <span className="text-sm text-zd-gray font-mono w-12">
-                  {Math.round((gridGrayscale / 255) * 100)}%
-                </span>
+            {/* Grid/Line Color Slider */}
+            <div class="mb-vgap-xs">
+              <div class="flex items-center justify-between mb-vgap-2xs">
+                <label class="text-zd-gray font-medium">Line</label>
+                <div class="flex items-center gap-hgap-2xs">
+                  <div
+                    class="w-6 h-6 rounded border border-zd-gray"
+                    style={computed(() => ({ 'background-color': read(gridColor) }))}
+                  />
+                  <span class="text-sm text-zd-gray font-mono w-12">
+                    {computed(() => Math.round((gridGrayscale.value / 255) * 100))}%
+                  </span>
+                </div>
               </div>
+              <input
+                type="range"
+                min="0"
+                max="255"
+                ref={gridInputRef}
+                value={String(gridGrayscale.value)}
+                on:input={(e) => {
+                  const value = parseInt(e.currentTarget.value);
+                  onGridColorChange(grayscaleToHex(value));
+                }}
+                class="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
+                style={{
+                  background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
+                }}
+              />
             </div>
-            <input
-              type="range"
-              min="0"
-              max="255"
-              value={gridGrayscale}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                onGridColorChange(grayscaleToHex(value));
-              }}
-              className="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
-              style={{
-                background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
-              }}
-            />
-          </div>
 
-          {/* Background Color Slider */}
-          <div className="mb-vgap-2xs">
-            <div className="flex items-center justify-between mb-vgap-2xs">
-              <label className="text-zd-gray font-medium">Background</label>
-              <div className="flex items-center gap-hgap-2xs">
-                <div
-                  className="w-6 h-6 rounded border border-zd-gray"
-                  style={{ backgroundColor: bgColor }}
-                />
-                <span className="text-sm text-zd-gray font-mono w-12">
-                  {Math.round((bgGrayscale / 255) * 100)}%
-                </span>
+            {/* Background Color Slider */}
+            <div class="mb-vgap-2xs">
+              <div class="flex items-center justify-between mb-vgap-2xs">
+                <label class="text-zd-gray font-medium">Background</label>
+                <div class="flex items-center gap-hgap-2xs">
+                  <div
+                    class="w-6 h-6 rounded border border-zd-gray"
+                    style={computed(() => ({ 'background-color': read(bgColor) }))}
+                  />
+                  <span class="text-sm text-zd-gray font-mono w-12">
+                    {computed(() => Math.round((bgGrayscale.value / 255) * 100))}%
+                  </span>
+                </div>
               </div>
+              <input
+                type="range"
+                min="0"
+                max="255"
+                ref={bgInputRef}
+                value={String(bgGrayscale.value)}
+                on:input={(e) => {
+                  const value = parseInt(e.currentTarget.value);
+                  onBgColorChange(grayscaleToHex(value));
+                }}
+                class="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
+                style={{
+                  background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
+                }}
+              />
             </div>
-            <input
-              type="range"
-              min="0"
-              max="255"
-              value={bgGrayscale}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                onBgColorChange(grayscaleToHex(value));
-              }}
-              className="w-full h-2 bg-zd-gray rounded-lg appearance-none cursor-pointer slider"
-              style={{
-                background: `linear-gradient(to right, #000000 0%, #ffffff 100%)`,
-              }}
-            />
           </div>
-        </div>
-      )}
+        )}
+      </Show>
     </div>
   );
 }

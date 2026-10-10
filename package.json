@@ -4,16 +4,16 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "pnpm --filter zfb-app run dev",
-    "build": "rm -rf dist && pnpm --filter zfb-app run build && cp -r zfb-app/dist dist",
+    "dev": "zfb dev",
+    "build": "zfb build",
     "build:with-docs": "pnpm run build && (cd doc && pnpm run build) && cp -r doc/build dist/doc",
-    "preview": "pnpm --filter zfb-app run preview",
+    "preview": "zfb preview",
     "doc:dev": "cd doc && pnpm run start",
     "doc:build": "cd doc && pnpm run build",
     "doc:serve": "cd doc && pnpm run serve",
     "doc:clear": "cd doc && pnpm run clear",
-    "lint": "eslint components hooks utils data types --ext .ts,.tsx",
-    "lint:fix": "eslint components hooks utils data types --ext .ts,.tsx --fix",
+    "lint": "eslint components hooks utils data types pages layouts zfb.config.ts --ext .ts,.tsx",
+    "lint:fix": "eslint components hooks utils data types pages layouts zfb.config.ts --ext .ts,.tsx --fix",
     "typecheck": "tsc --noEmit",
     "format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css}\" \"!**/*.{md,mdx}\" \"!node_modules/**\" \"!out/**\" \"!dist/**\" \"!public/**\" \"!__inbox/**\" \"!doc/**\" \"!worktrees/**\" \"!sub-packages/**\" \"!zfb-app/**\"",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css}\" \"!**/*.{md,mdx}\" \"!node_modules/**\" \"!out/**\" \"!dist/**\" \"!public/**\" \"!__inbox/**\" \"!doc/**\" \"!worktrees/**\" \"!sub-packages/**\" \"!zfb-app/**\"",
@@ -36,39 +36,30 @@
     "b4push": "./scripts/b4push-quick.sh",
     "b4push:full": "./scripts/b4push.sh",
     "b4push:quick": "./scripts/b4push-quick.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "zfb:check": "zfb check",
+    "wind:audit": "zfb wind audit --plan build --fail-on error"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@headlessui/react": "^2.2.9",
-    "@heroicons/react": "^2.2.0",
-    "@mdx-js/loader": "^3.1.1",
-    "@mdx-js/react": "^3.1.1",
     "blurhash": "^2.0.5",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "@takazudo/zfb": "4.3.0",
+    "@takazudo/zfb-runtime": "4.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.57.0",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.1",
-    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.10.7",
-    "@types/react": "^19.2.8",
-    "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
     "@vitest/ui": "^4.0.16",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.26",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "jsdom": "^27.4.0",
@@ -92,5 +83,10 @@
     "*.{md,mdx}": [
       "node sub-packages/md-formatter/src/cli.js --write"
     ]
+  },
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
   }
 }

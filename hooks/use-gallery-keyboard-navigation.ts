@@ -1,56 +1,32 @@
-import { useEffect } from 'react';
+import { getScope } from '@takazudo/zfb/zudo-react';
+import type { Reactive } from '@/utils/reactive';
+import { read } from '@/utils/reactive';
 
-interface UseGalleryKeyboardNavigationProps {
-  isActive: boolean;
+interface Options {
+  isActive: Reactive<boolean>;
   onClose?: () => void;
   onNext?: () => void;
   onPrevious?: () => void;
 }
 
-export const useGalleryKeyboardNavigation = ({
-  isActive,
-  onClose,
-  onNext,
-  onPrevious,
-}: UseGalleryKeyboardNavigationProps) => {
-  useEffect(() => {
-    if (!isActive) {
-      return;
-    }
-
+export function useGalleryKeyboardNavigation(options: Options) {
+  getScope().effect(() => {
+    if (!read(options.isActive)) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.defaultPrevented) {
-        return;
-      }
-
-      switch (event.key) {
-        case 'Escape':
-          if (onClose) {
-            event.preventDefault();
-            onClose();
-          }
-          break;
-        case 'ArrowLeft':
-          if (onPrevious) {
-            event.preventDefault();
-            onPrevious();
-          }
-          break;
-        case 'ArrowRight':
-          if (onNext) {
-            event.preventDefault();
-            onNext();
-          }
-          break;
-        default:
-          break;
-      }
+      if (event.defaultPrevented) return;
+      const action =
+        event.key === 'Escape'
+          ? options.onClose
+          : event.key === 'ArrowLeft'
+            ? options.onPrevious
+            : event.key === 'ArrowRight'
+              ? options.onNext
+              : undefined;
+      if (!action) return;
+      event.preventDefault();
+      action();
     };
-
     window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isActive, onClose, onNext, onPrevious]);
-};
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
+}

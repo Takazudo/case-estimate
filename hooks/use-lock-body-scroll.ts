@@ -1,30 +1,17 @@
-import { useEffect } from 'react';
+import { getScope } from '@takazudo/zfb/zudo-react';
+import { read, type Reactive } from '@/utils/reactive';
 
-/**
- * Custom hook for preventing body scroll when modals/drawers are open
- * Manages scroll locking to prevent background content from scrolling
- */
-export const useLockBodyScroll = (isLocked: boolean) => {
-  useEffect(() => {
-    if (!isLocked) return;
-
-    // Store original overflow style
+export function useLockBodyScroll(isLocked: Reactive<boolean>) {
+  getScope().effect(() => {
+    if (!read(isLocked)) return;
     const originalOverflow = document.body.style.overflow;
     const originalPaddingRight = document.body.style.paddingRight;
-
-    // Calculate scrollbar width to prevent layout shift
     const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-
-    // Lock scroll and compensate for scrollbar removal
     document.body.style.overflow = 'hidden';
-    if (scrollBarWidth > 0) {
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
-    }
-
-    // Cleanup function to restore original styles
+    if (scrollBarWidth > 0) document.body.style.paddingRight = `${scrollBarWidth}px`;
     return () => {
       document.body.style.overflow = originalOverflow;
       document.body.style.paddingRight = originalPaddingRight;
     };
-  }, [isLocked]);
-};
+  });
+}

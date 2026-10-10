@@ -160,3 +160,5 @@ worktrees/
 
 # Serena
 .serena/
+# ZFB build scratch
+.zfb-build/

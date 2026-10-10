@@ -1,48 +1,54 @@
 'use client';
 
-import { useState } from 'react';
+import { computed, signal } from '@takazudo/zfb/zudo-react';
 import { cases } from '@/data/cases';
 import { CaseSelectorModal } from '@/components/modal/case-selector-modal';
 import { ModelBoxIcon } from '@/components/icons/model-box-icon';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface ModelSelectorProps {
-  selectedCase: string | null;
+  selectedCase: Reactive<string | null>;
   onCaseSelect: (caseType: string) => void;
 }
 
-const ModelSelector = ({ selectedCase, onCaseSelect }: ModelSelectorProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const selectedCaseData = selectedCase ? cases[selectedCase] : null;
-
+export default function ModelSelector({ selectedCase, onCaseSelect }: ModelSelectorProps) {
+  const isModalOpen = signal(false);
+  const selectedCaseData = computed(() => {
+    const key = read(selectedCase);
+    return key ? cases[key] : null;
+  });
   return (
     <>
-      <div className="space-y-vgap-xs pb-vgap-sm">
-        <h3 className="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
+      <div class="space-y-vgap-xs pb-vgap-sm">
+        <h3 class="font-semibold text-zd-white pb-vgap-xs flex items-center gap-hgap-2xs">
           <ModelBoxIcon className="w-[30px] h-[30px] text-zd-white mr-[2px]" />
-          ケースモデル <span className="text-sm">/ Case Model</span>
+          ケースモデル <span class="text-sm">/ Case Model</span>
         </h3>
         <button
-          onClick={() => setIsModalOpen(true)}
-          className="relative w-full rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray hover:border-zd-link/60 focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white transition-colors text-sm"
+          on:click={() => {
+            isModalOpen.value = true;
+          }}
+          class="relative w-full rounded-lg bg-zd-gray2 py-vgap-sm pl-hgap-xs pr-hgap-sm text-left border-2 border-zd-gray hover:border-zd-link/60 focus:outline-none focus:border-zd-link focus:ring-2 focus:ring-zd-link/20 text-zd-white transition-colors text-sm"
         >
-          <span className="block truncate">
-            {selectedCaseData ? (
-              <span className="font-medium">{selectedCaseData.name}</span>
-            ) : (
-              <span className="text-zd-gray">Select a case model</span>
+          <span
+            class={computed(
+              () => `block truncate ${selectedCaseData.value ? 'font-medium' : 'text-zd-gray'}`,
+            )}
+          >
+            {computed(() =>
+              selectedCaseData.value ? selectedCaseData.value.name : 'Select a case model',
             )}
           </span>
         </button>
       </div>
-
       <CaseSelectorModal
         isOpen={isModalOpen}
         selectedCase={selectedCase}
         onCaseSelect={onCaseSelect}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          isModalOpen.value = false;
+        }}
       />
     </>
   );
-};
-
-export default ModelSelector;
+}

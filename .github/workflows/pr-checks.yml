@@ -25,12 +25,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.34.6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24.19.0'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -38,6 +38,12 @@ jobs:
 
       - name: Run type checking
         run: pnpm run typecheck
+
+      - name: Validate ZFB project
+        run: pnpm exec zfb check
+
+      - name: Audit Wind styles
+        run: pnpm exec zfb wind audit --plan build --fail-on error
 
       - name: Run linting
         run: pnpm run lint
@@ -69,12 +75,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.34.6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24.19.0'
           cache: 'pnpm'
 
       - name: Cache Playwright browsers
@@ -94,8 +100,8 @@ jobs:
       - name: Build application
         run: pnpm run build
 
-      - name: Run smoke tests
-        run: pnpm run test:smoke
+      - name: Run smoke and panel mapping tests
+        run: pnpm exec playwright test tests/e2e.spec.ts tests/builder-panel-color-mapping.spec.ts tests/zfb-migration.spec.ts
 
       - name: Upload test results
         if: failure()
@@ -117,7 +123,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: quality-checks
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+    # This migration is intentionally reviewed without publishing a preview.
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.head_ref != 'topic/95/zfb-4-3-core-20261010'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -125,12 +132,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 10.34.6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24.19.0'
           cache: 'pnpm'
 
       - name: Install dependencies

@@ -1,4 +1,3 @@
-import React from 'react';
 import { H3 } from './article/h3';
 
 type PriceRowWithRails = {
@@ -130,26 +129,26 @@ export function PriceTable() {
   };
 
   return (
-    <div className="space-y-vgap-xl pb-vgap-lg">
+    <div class="space-y-vgap-xl pb-vgap-lg">
       {/* Main Case Models Table */}
       <div>
         <H3 subText="Basic Lineup">基本ラインナップ</H3>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
             <thead>
               <tr>
-                <th rowSpan={2} className={headerCellStyle.center}>
+                <th rowspan={2} class={headerCellStyle.center}>
                   モデル
                 </th>
-                <th colSpan={4} className={`${headerCellStyle.center} border-b-0`}>
+                <th colspan={4} class={`${headerCellStyle.center} border-b-0`}>
                   レールの種類
                 </th>
               </tr>
               <tr>
-                <th className={headerCellStyle.center}>Lite</th>
-                <th className={headerCellStyle.center}>Nuts</th>
-                <th className={headerCellStyle.center}>Dual</th>
-                <th className={headerCellStyle.center}>Metal</th>
+                <th class={headerCellStyle.center}>Lite</th>
+                <th class={headerCellStyle.center}>Nuts</th>
+                <th class={headerCellStyle.center}>Dual</th>
+                <th class={headerCellStyle.center}>Metal</th>
               </tr>
             </thead>
             <tbody>
@@ -157,11 +156,11 @@ export function PriceTable() {
                 const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
                 return (
                   <tr key={row.model}>
-                    <td className={styles.modelCell}>{row.model}</td>
-                    <td className={styles.right}>{formatPrice(row.lite)}</td>
-                    <td className={styles.right}>{formatPrice(row.nuts)}</td>
-                    <td className={styles.right}>{formatPrice(row.dual)}</td>
-                    <td className={styles.right}>{formatPrice(row.metal)}</td>
+                    <td class={styles.modelCell}>{row.model}</td>
+                    <td class={styles.right}>{formatPrice(row.lite)}</td>
+                    <td class={styles.right}>{formatPrice(row.nuts)}</td>
+                    <td class={styles.right}>{formatPrice(row.dual)}</td>
+                    <td class={styles.right}>{formatPrice(row.metal)}</td>
                   </tr>
                 );
               })}
@@ -173,15 +172,15 @@ export function PriceTable() {
       {/* Upgrade Kits Table */}
       <div>
         <H3 subText="Upgrade Kits">アップグレードキット</H3>
-        <p className="mb-vgap-sm text-sm text-zd-gray3">
+        <p class="mb-vgap-sm text-sm text-zd-white">
           ※ パネルのみの販売です。レールは付属しません。
         </p>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
             <thead>
               <tr>
-                <th className={headerCellStyle.center}>モデル</th>
-                <th className={headerCellStyle.center}>価格</th>
+                <th class={headerCellStyle.center}>モデル</th>
+                <th class={headerCellStyle.center}>価格</th>
               </tr>
             </thead>
             <tbody>
@@ -189,8 +188,8 @@ export function PriceTable() {
                 const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
                 return (
                   <tr key={row.model}>
-                    <td className={styles.modelCell}>{row.model}</td>
-                    <td className={styles.right}>{formatPrice(row.price)}</td>
+                    <td class={styles.modelCell}>{row.model}</td>
+                    <td class={styles.right}>{formatPrice(row.price)}</td>
                   </tr>
                 );
               })}
@@ -202,12 +201,12 @@ export function PriceTable() {
       {/* Accessories Table */}
       <div>
         <H3 subText="Accessories">アクセサリー</H3>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
             <thead>
               <tr>
-                <th className={headerCellStyle.center}>モデル</th>
-                <th className={headerCellStyle.center}>価格</th>
+                <th class={headerCellStyle.center}>モデル</th>
+                <th class={headerCellStyle.center}>価格</th>
               </tr>
             </thead>
             <tbody>
@@ -215,8 +214,8 @@ export function PriceTable() {
                 const styles = index % 2 === 0 ? bodyCellStyle.even : bodyCellStyle.odd;
                 return (
                   <tr key={row.model}>
-                    <td className={styles.modelCell}>{row.model}</td>
-                    <td className={styles.right}>{formatPrice(row.price)}</td>
+                    <td class={styles.modelCell}>{row.model}</td>
+                    <td class={styles.right}>{formatPrice(row.price)}</td>
                   </tr>
                 );
               })}

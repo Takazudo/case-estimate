@@ -43,8 +43,7 @@ export default defineConfig({
    * Locally, reuseExistingServer skips the build+boot if port 3200 is
    * already occupied (e.g. a manually-started preview). */
   webServer: {
-    command:
-      'pnpm --filter zfb-app run build && pnpm --filter zfb-app exec zfb preview --port 3200',
+    command: 'pnpm run build && pnpm exec zfb preview --port 3200',
     url: 'http://localhost:3200',
     reuseExistingServer: !process.env.CI,
     /* Generous timeout: zfb build (~5-10s) + preview boot. 240s covers CI. */

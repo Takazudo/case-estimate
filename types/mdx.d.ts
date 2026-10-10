@@ -1,5 +1,5 @@
 declare module 'mdx/types' {
-  import type { ComponentType } from 'react';
+  import type { Component } from '@takazudo/zfb/zudo-react';
 
   export type MDXProps = {
     components?: MDXComponents;
@@ -8,12 +8,12 @@ declare module 'mdx/types' {
 
   export type MDXComponents = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: ComponentType<any>;
+    [key: string]: Component<any>;
   };
 }
 
 declare module '*.mdx' {
   import type { MDXProps } from 'mdx/types';
-  import type { JSX } from 'react';
+  import type { JSX } from '@takazudo/zfb/zudo-react/jsx-runtime';
   export default function MDXContent(props: MDXProps): JSX.Element;
 }

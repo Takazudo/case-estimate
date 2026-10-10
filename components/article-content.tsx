@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface ArticleContentProps {
-  children: ReactNode;
+  children: Child;
 }
 
 /**
@@ -13,7 +13,7 @@ interface ArticleContentProps {
 export function ArticleContent({ children }: ArticleContentProps) {
   return (
     <div
-      className="
+      class="
         box-content mx-auto max-w-[1280px]
         px-hgap-sm md:px-hgap-md
         py-vgap-lg

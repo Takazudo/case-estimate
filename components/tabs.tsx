@@ -1,89 +1,74 @@
 'use client';
 
-import { useState, useEffect, ReactNode } from 'react';
+import { computed, For, signal, type Child } from '@takazudo/zfb/zudo-react';
+import { read, type Reactive } from '@/utils/reactive';
 
 interface Tab {
   id: string;
   label: string;
-  content: ReactNode;
+  content: Child;
 }
-
 interface TabsProps {
-  tabs: Tab[];
+  tabs: Reactive<Tab[]>;
   defaultTab?: string;
-  activeTab?: string;
+  activeTab?: Reactive<string>;
   onTabChange?: (tabId: string) => void;
 }
-
-const Tabs = ({ tabs, defaultTab, activeTab: controlledActiveTab, onTabChange }: TabsProps) => {
-  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || tabs[0]?.id || '');
-  const [contentKey, setContentKey] = useState(0);
-  const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
-
-  const activeTabContent = tabs.find((tab) => tab.id === activeTab)?.content;
-
-  // Trigger animation when activeTab changes programmatically
-  useEffect(() => {
-    setContentKey((prev) => prev + 1);
-  }, [activeTab]);
-
+export default function Tabs({
+  tabs,
+  defaultTab,
+  activeTab: controlledActiveTab,
+  onTabChange,
+}: TabsProps) {
+  const internalActiveTab = signal(defaultTab || read(tabs)[0]?.id || '');
+  const activeTab = computed(() =>
+    controlledActiveTab !== undefined ? read(controlledActiveTab) : internalActiveTab.value,
+  );
   return (
     <div>
-      {/* Tab buttons */}
-      <div className="flex gap-[14px] border-b-2 border-zd-white text-base px-[20px]">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => {
-              if (controlledActiveTab === undefined) {
-                setInternalActiveTab(tab.id);
-              }
-              onTabChange?.(tab.id);
-            }}
-            className={`
-              flex-1 transition-all grid
-              outline-offset-[-10px]
-              rounded-[14px]
-              ${activeTab === tab.id ? 'bg-zd-black text-zd-white' : 'bg-zd-black text-zd-gray'}
-            `}
-          >
-            <span
-              className={`
-              bg-amber-200 px-hgap-sm pt-vgap-sm pb-vgap-xs
-              ${
-                activeTab === tab.id
-                  ? 'bg-zd-black text-zd-white border-t-2 border-l-2 border-r-2 border-zd-white'
-                  : 'bg-zd-black text-zd-gray border-t-2 border-l-2 border-r-2 border-b-0 border-zd-gray hover:text-zd-white'
-              }
-            `}
+      <div class="flex gap-[14px] border-b-2 border-zd-white text-base px-[20px]">
+        <For each={computed(() => read(tabs))} by={(tab) => tab.id}>
+          {(tab) => (
+            <button
+              on:click={() => {
+                if (controlledActiveTab === undefined) internalActiveTab.value = tab.value.id;
+                onTabChange?.(tab.value.id);
+              }}
+              class={computed(
+                () =>
+                  `flex-1 transition-all grid outline-offset-[-10px] rounded-[14px] ${activeTab.value === tab.value.id ? 'bg-zd-black text-zd-white' : 'bg-zd-black text-zd-gray'}`,
+              )}
             >
-              {tab.label}
-            </span>
-            <span
-              className={`
-              ${
-                activeTab === tab.id
-                  ? 'mb-[-2px] bg-zd-black h-[14px] border-r-2 border-l-2 border-zd-white'
-                  : 'h-[12px]'
-              }
-            `}
-            ></span>
-          </button>
-        ))}
+              <span
+                class={computed(
+                  () =>
+                    `bg-amber-200 px-hgap-sm pt-vgap-sm pb-vgap-xs ${activeTab.value === tab.value.id ? 'bg-zd-black text-zd-white border-t-2 border-l-2 border-r-2 border-zd-white' : 'bg-zd-black text-zd-gray border-t-2 border-l-2 border-r-2 border-b-0 border-zd-gray hover:text-zd-white'}`,
+                )}
+              >
+                {computed(() => tab.value.label)}
+              </span>
+              <span
+                class={computed(() =>
+                  activeTab.value === tab.value.id
+                    ? 'mb-[-2px] bg-zd-black h-[14px] border-r-2 border-l-2 border-zd-white'
+                    : 'h-[12px]',
+                )}
+              />
+            </button>
+          )}
+        </For>
       </div>
-
-      {/* Tab content with connected border */}
       <div
-        key={contentKey}
-        className="transition-opacity duration-300 ease-in-out animate-fade-in"
-        style={{
-          animation: 'fadeIn 300ms ease-in-out',
-        }}
+        class="transition-opacity duration-300 ease-in-out animate-fade-in"
+        style="animation: fadeIn 300ms ease-in-out"
       >
-        {activeTabContent}
+        <For
+          each={computed(() => read(tabs).filter((tab) => tab.id === activeTab.value))}
+          by={(tab) => tab.id}
+        >
+          {(tab) => tab.value.content}
+        </For>
       </div>
     </div>
   );
-};
-
-export default Tabs;
+}

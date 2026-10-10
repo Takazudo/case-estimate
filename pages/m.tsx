@@ -62,7 +62,7 @@ export default function ConfiguratorPage({ currentPath }: ConfiguratorPageProps)
           in the static HTML (matching the old Suspense fallback={null}); the
           full tree hydrates on load. The fallback element fills the height so
           the layout reserves the viewport before hydration. */}
-      <Island when="load" ssrFallback={<div className="h-full" />}>
+      <Island when="load" ssrFallback={<div class="h-full" />}>
         <Configurator />
       </Island>
     </DefaultLayout>
