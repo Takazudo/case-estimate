@@ -46,7 +46,7 @@ export default defineConfig({
    * reuseExistingServer is always false here so the production config always
    * starts with a clean, freshly-built artifact — no stale preview risk. */
   webServer: {
-    command: `pnpm --filter zfb-app run build && pnpm --filter zfb-app exec zfb preview --port ${process.env.PORT ?? '3200'}`,
+    command: `pnpm run build && pnpm exec zfb preview --port ${process.env.PORT ?? '3200'}`,
     url: process.env.PORT ? `http://localhost:${process.env.PORT}` : 'http://localhost:3200',
     reuseExistingServer: false,
     /* Generous timeout: zfb build (~5-10s) + preview boot. */

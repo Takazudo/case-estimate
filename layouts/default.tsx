@@ -66,7 +66,6 @@ export default function DefaultLayout({
   title = SITE_NAME,
   description = DEFAULT_DESCRIPTION,
   currentPath = '/',
-  pwaCapable = false,
   configurator = false,
   children,
 }: DefaultLayoutProps) {
