@@ -1,36 +1,36 @@
-import React from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface H2Props {
-  children: React.ReactNode;
+  children: Child;
   id?: string;
   noTopPad?: boolean;
 }
 
-export const H2: React.FC<H2Props> = ({ children, id, noTopPad = false }) => {
+export const H2 = ({ children, id, noTopPad = false }: H2Props) => {
   return (
     <h2
       id={id}
-      className={`
+      class={`
         group
         ${noTopPad ? '' : 'md:pt-vgap-sm lg:pt-vgap-lg'}
-        text-base md:text-lg lg:text-xl pb-vgap-md lg:pb-vgap-lg font-bold ml-[-1.5em] pl-[1.5em]
+        text-base md:text-lg lg:text-xl pb-vgap-md lg:pb-vgap-lg font-bold -ml-[1.5em] pl-[1.5em]
         clear-both
         font-futura
       `}
     >
-      <span className="block border-t-1 border-zd-white will-change-[transform]">
+      <span class="block border-t-1 border-zd-white will-change-[transform]">
         <span
-          className="
+          class="
             inline-block border-t-[8px] border-zd-white
-            pt-vgap-md mt-[-1px]
+            pt-vgap-md -mt-[1px]
             min-w-[30%]
           "
         >
-          <span className="block relative">
+          <span class="block relative">
             {children}
             {id && (
               <span
-                className="
+                class="
                   inline-block w-0 h-0
                   relative align-bottom
                 "
@@ -38,7 +38,7 @@ export const H2: React.FC<H2Props> = ({ children, id, noTopPad = false }) => {
                 <a
                   href={`#${id}`}
                   aria-hidden="true"
-                  className="
+                  class="
                     font-bold hidden no-underline text-zd-white
                     text-sm sm:text-base md:text-xl
                     hover:text-white

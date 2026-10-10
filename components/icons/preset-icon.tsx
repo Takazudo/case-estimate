@@ -1,15 +1,13 @@
-import React from 'react';
-
 interface PresetIconProps {
   className?: string;
 }
 
-export const PresetIcon: React.FC<PresetIconProps> = ({ className = '' }) => {
+export const PresetIcon = ({ className = '' }: PresetIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 474.654 474.654"
-      className={className}
+      class={className}
       fill="currentColor"
     >
       <g>

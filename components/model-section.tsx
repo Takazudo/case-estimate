@@ -1,10 +1,8 @@
-'use client';
-
-import React from 'react';
+import { flattenChildren, isDescription, type Child } from '@takazudo/zfb/zudo-react';
 import { H2 } from './article/h2';
 
 interface ModelSectionProps {
-  children: React.ReactNode;
+  children: Child;
   heading?: string;
   id?: string;
 }
@@ -23,35 +21,32 @@ interface ModelSectionProps {
  * </ModelSection>
  */
 export default function ModelSection({ children, heading, id }: ModelSectionProps) {
-  // Filter out whitespace and only keep actual React elements
-  const childrenArray = React.Children.toArray(children).filter((child) =>
-    React.isValidElement(child),
-  );
+  const childrenArray = flattenChildren(children).filter(isDescription);
 
   const [gallery, body] = childrenArray;
 
   return (
-    <div className="2xl:mx-[-100px]">
+    <div class="2xl:-mx-[100px]">
       {/*
         Grid layout:
         Mobile: single column (H2, Gallery, Body stacked vertically)
         Desktop: 2 columns with Gallery spanning 2 rows on the left
       */}
-      <div className="grid gap-x-hgap-lg grid-cols-1 lg:grid-cols-[400px_1fr] xl:grid-cols-[500px_1fr] lg:[grid-template-rows:auto_1fr]">
+      <div class="grid gap-x-hgap-lg grid-cols-1 lg:grid-cols-[400px_1fr] xl:grid-cols-[500px_1fr] model-section-grid">
         {/* H2: Mobile first row, Desktop right column first row */}
         {heading && (
-          <div className="lg:col-start-2 lg:row-start-1">
+          <div class="lg:col-start-2 lg:row-start-1">
             <H2 id={id}>{heading}</H2>
           </div>
         )}
 
         {/* Gallery: Mobile second row, Desktop left column spanning 2 rows */}
-        <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2 pb-vgap-lg lg:pb-vgap-xl">
+        <div class="lg:col-start-1 lg:row-start-1 lg:row-span-2 pb-vgap-lg lg:pb-vgap-xl">
           {gallery}
         </div>
 
         {/* Body: Mobile third row, Desktop right column second row */}
-        <div className="lg:col-start-2 lg:row-start-2 pb-vgap-xl">{body}</div>
+        <div class="lg:col-start-2 lg:row-start-2 pb-vgap-xl">{body}</div>
       </div>
     </div>
   );

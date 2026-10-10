@@ -1,14 +1,14 @@
-import React from 'react';
+import type { SVGAttributes } from '@takazudo/zfb/zudo-react';
 
-export const PaletteIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+export const PaletteIcon = (props: SVGAttributes<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
     {...props}
   >
     <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />

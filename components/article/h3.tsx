@@ -1,34 +1,34 @@
-import * as React from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface H3Props {
-  children: React.ReactNode;
+  children: Child;
   subText?: string;
   id?: string;
 }
 
-export const H3: React.FC<H3Props> = ({ children, subText, id }) => {
+export const H3 = ({ children, subText, id }: H3Props) => {
   return (
     <h3
       id={id}
-      className="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm font-futura"
+      class="text-sm sm:text-lg font-bold border-t-1 border-zd-white pt-vgap-sm pb-vgap-sm font-futura"
     >
-      <span className="flow-root">
-        <span className="flex justify-between items-center relative group">
+      <span class="flow-root">
+        <span class="flex justify-between items-center relative group">
           <span>
             {children}
             {id && (
-              <span className="inline-block w-0 h-0 relative align-bottom">
+              <span class="inline-block w-0 h-0 relative align-bottom">
                 <a
                   href={`#${id}`}
                   aria-hidden="true"
-                  className="font-bold hidden no-underline text-zd-gray absolute left-0 bottom-0 px-[0.4em] group-hover:block"
+                  class="font-bold hidden no-underline text-zd-gray absolute left-0 bottom-0 px-[0.4em] group-hover:block"
                 >
                   #
                 </a>
               </span>
             )}
           </span>
-          {subText && <span className="text-base font-normal text-zd-gray">{subText}</span>}
+          {subText && <span class="text-base font-normal text-zd-gray">{subText}</span>}
         </span>
       </span>
     </h3>

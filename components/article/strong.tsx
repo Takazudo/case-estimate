@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface StrongProps {
-  children: ReactNode;
+  children: Child;
 }
 
 export function Strong({ children }: StrongProps) {
-  return <strong className="font-bold text-zd-strong">{children}</strong>;
+  return <strong class="font-bold text-zd-strong">{children}</strong>;
 }

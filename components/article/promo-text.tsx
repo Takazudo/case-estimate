@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import type { Child } from '@takazudo/zfb/zudo-react';
 
 interface PromoTextProps {
-  children: ReactNode;
+  children: Child;
 }
 
 export function PromoText({ children }: PromoTextProps) {
-  return <p className="text-lg pb-vgap-sm font-bold">{children}</p>;
+  return <p class="text-lg pb-vgap-sm font-bold">{children}</p>;
 }
